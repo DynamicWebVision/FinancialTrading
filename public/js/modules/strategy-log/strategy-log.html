@@ -1,0 +1,205 @@
+<div class="panel panel-primary" ng-class="sl.fiftyOpacity(sl.processing)">
+    <div class="panel-heading">
+        <h3 class="panel-title">Strategy Log</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-md-3 col-lg-3 control-label">Account</label>
+                        <div class="col-md-9 col-lg-9">
+                            <select name="account" class="form-control input-med margin-top-five"
+                                    ng-model="sl.account"
+                                    ng-options="account.id as account.account_name for account in sl.accounts">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-md-3 col-lg-3 control-label">Exchange</label>
+                        <div class="col-md-9 col-lg-9">
+                            <select name="exchange" class="form-control input-med margin-top-five"
+                                    ng-model="sl.exchange"
+                                    ng-options="exchange.id as exchange.exchange for exchange in sl.exchanges">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-md-3 col-lg-3 control-label">Date/Time Start</label>
+                        <div class="col-md-9 col-lg-9">
+                            <input type="text" class="input-med form-control" name="dateTime" placeholder="Date/Time"
+                                   ng-model="sl.dateTime" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-md-3 col-lg-3 control-label">Only Events</label>
+                        <div class="col-md-9 col-lg-9">
+                            <input type="checkbox" class="input-med form-control" name="dateTime" placeholder="Date/Time"
+                                   ng-model="sl.onlyEvents" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn' ng-click="sl.loadLog()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-class="sl.fiftyOpacity(sl.processing)">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{sl.accountName}} Logs</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover content-table"
+               ng-class="sl.fiftyOpacityOffset(sl.processing)">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Exchange</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Decision Type</th>
+                <th>Decision Made</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr dir-paginate="log in sl.logs | itemsPerPage: 10"
+                total-items="sl.totalLogCount">
+                <td>{{log.id}}</td>
+                <td>{{log.exchange}}</td>
+                <td>{{log.start_date_time}}</td>
+                <td>{{log.end_date_time}}</td>
+                <td>{{log.decision_type}}</td>
+                <td>{{log.decision_made}}</td>
+                <td><button class = 'btn-success btn-sm' ng-click="sl.loadMessages(log)">Messages</button></td>
+                <td><button class = 'btn-success btn-sm' ng-click="sl.loadApi(log)">Api</button></td>
+                <td><button class = 'btn-success btn-sm' ng-click="sl.loadIndicators(log)">Indicators</button></td>
+            </tr>
+            </tbody>
+        </table>
+        <dir-pagination-controls max-size="7"
+                                 ng-show="sl.logs.length > 0"
+                                 on-page-change="sl.changeLogSet(newPageNumber)"></dir-pagination-controls>
+    </div>
+</div>
+
+
+<div id="log-messages-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Create New Menu" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close m-r-5" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Log #{{sl.activeLog.id}} {{sl.activeLog.exchange}}  {{sl.activeLog.start_date_time}} Messages</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover content-table">
+                        <thead>
+                        <tr>
+                            <th>Message</th>
+                            <th>Type</th>
+                            <th>Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="message in sl.logMessagesSet">
+                            <td>{{message.message}}</td>
+                            <td>{{message.message_type_id}}</td>
+                            <td>{{message.created_at}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="buttons-create-merchant">
+                        <div>
+                            <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="log-indicators-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Create New Menu" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close m-r-5" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Log #{{sl.activeLog.id}} {{sl.activeLog.exchange}}  {{sl.activeLog.start_date_time}} Indicators</h4>
+                </div>
+                <div class="modal-body">
+                    {{sl.logIndicators}}
+                </div>
+
+                <div class="modal-footer">
+                    <div class="buttons-create-merchant">
+                        <div>
+                            <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+<div id="log-api-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Create New Menu" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close m-r-5" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Log #{{sl.activeLog.id}} {{sl.activeLog.exchange}}  {{sl.activeLog.start_date_time}} API Response(s)</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover content-table">
+                        <thead>
+                        <!--<tr>-->
+                            <!--<th>Action</th>-->
+                            <!--<th>Url</th>-->
+                            <!--<th>Fields</th>-->
+                            <!--<th>Response</th>-->
+                        <!--</tr>-->
+                        </thead>
+                        <tbody ng-repeat="apiRecord in sl.logApi">
+                        <tr >
+                            <td>{{apiRecord.action}}</td>
+                            <td>{{apiRecord.url}}</td>
+                            <td>{{apiRecord.fields}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{apiRecord.response}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="buttons-create-merchant">
+                        <div>
+                            <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,192 @@
+<div class="row">
+    <div class="row">
+        <div class="col-xs-12 col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Servers</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>BTG</th>
+                                <th>Strategy</th>
+                                <th>Iteration</th>
+                                <th>Unix</th>
+                                <th>Start</th>
+                                <th>Finish</th>
+                                <th>Stats</th>
+                                <!--<th>Address</th>-->
+
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="server in s.servers">
+                                <td>{{server.id}}</td>
+                                <td>{{server.name}}</td>
+                                <!--<td>-->
+                                    <!--<input type="text" class="input-large form-control inline" name="current_task" placeholder="Phone" ng-fade-->
+                                           <!--ng-model="server.current_task" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">-->
+                                <!--</td>-->
+                                <td>
+                                    <input type="number" class="input-micro form-control inline" name="current_back_test_group_id" placeholder="Back Test Group ID" ng-fade
+                                           ng-model="server.current_back_test_group_id" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">
+                                </td>
+                                <td>
+                                    <input type="text" class="input-large form-control inline" name="current_back_test_strategy" placeholder="Back Test Strategy" ng-fade
+                                           ng-model="server.current_back_test_strategy" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">
+                                </td>
+                                <td>
+                                    <input type="text" class="input-med form-control inline" name="strategy_iteration" placeholder="Back Test Strategy" ng-fade
+                                           ng-model="server.strategy_iteration" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">
+                                </td>
+                                <td>
+                                    <select name="cmb_promo_type" class="form-control input-small margin-top-five" ng-required="true"
+                                            ng-change="s.updateServers()"
+                                            ng-model="server.rate_unix_time_start" ng-fade
+                                            ng-options="unix_date.unix_time as unix_date.readable_date for unix_date in s.rate_unix_options">
+                                        <option class="placeholder-color" value="" selected disabled>Start</option>
+                                    </select>
+                                </td>
+                                <!--<td>-->
+                                    <!--<a ng-href="{{s.serverLink(server.ip_address)}}" target="_blank">{{server.ip_address}}</a>-->
+                                <!--</td>-->
+                                <td>
+                                    {{server.start_count}}
+                                </td>
+                                <td>
+                                    {{server.finish_count}}
+                                </td>
+                                <td>
+                                    {{server.stats_left}}
+                                </td>
+                                <td>
+                                    <button class = 'btn-success btn btn-sm' ng-click="s.copyToLocal(server)">Copy TO Local</button>
+                                </td>
+                                <td>
+                                    <button class = 'btn-success btn btn-sm' ng-click="s.copyFromLocal(server)">Copy FROM Local</button>
+                                </td>
+                                <td>
+                                    <button class = 'btn-success btn btn-sm' ng-click="s.openEditServer($index, server)" data-toggle="modal" data-target="#edit-server-modal">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-md-12">
+                            <div class="pull-right fade-effect" ng-show="s.updateSuccess">
+                                <div class="absolute">
+                                    <div class="table-row-success-message">
+                                        <div class="table-change-success">
+                                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Commands</h3>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        <li>
+                            process_env_backtest
+                        </li>
+                        <li>
+                            populate_historical_data
+                        </li>
+                        <li>
+                            process_back_stats
+                        </li>
+                        <li>
+                            process_ema_momentum
+                        </li>
+                        <li>
+                            historical_rates_volume
+                        </li>
+                        <li>
+                            historical_integrity_test
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="edit-server-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Create New Menu" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="s.edit_server_form" class="form-horizontal" novalidate
+                  ng-submit="s.updateServer()" >
+                <div class="modal-header">
+                    <button type="button" class="close m-r-5" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit Server {{s.editServer.name}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Group ID</label>
+                        <div class="col-md-8">
+                            <input type="number" class="input-micro form-control inline" name="current_back_test_group_id" placeholder="Back Test Group ID" ng-fade
+                                   ng-model="s.editServer.current_back_test_group_id">
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-md-4 control-label">Strategy</label>-->
+                        <!--<div class="col-md-8">-->
+                            <!--<input type="text" class="input-large form-control inline" name="current_back_test_strategy" placeholder="Back Test Strategy" ng-fade-->
+                                   <!--ng-model="s.editServer.current_back_test_strategy">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-md-4 control-label">Iteration</label>-->
+                        <!--<div class="col-md-8">-->
+                            <!--<input type="text" class="input-large form-control inline" name="strategy_iteration" placeholder="Iteration" ng-fade-->
+                                   <!--ng-model="s.editServer.strategy_iteration">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-md-4 control-label">Iteration</label>-->
+                        <!--<div class="col-md-8">-->
+                            <!--<select name="cmb_promo_type" class="form-control input-small margin-top-five" ng-required="true"-->
+                                    <!--ng-model="s.editServer.rate_unix_time_start" ng-fade-->
+                                    <!--ng-options="unix_date.unix_time as unix_date.readable_date for unix_date in s.rate_unix_options">-->
+                                <!--<option class="placeholder-color" value="" selected disabled>Start</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="modal-footer">
+                        <div class="buttons-create-merchant">
+                            <div>
+                                <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

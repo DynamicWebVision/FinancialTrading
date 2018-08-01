@@ -1,0 +1,175 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Tax</h4>
+            <ol class="breadcrumb pull-right">
+                <li><a href="/home">Merchant</a></li>
+                <li><a href="#tax">Tax</a></li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div id="sales-tax-tax" class="row">
+    <!-- Basic example -->
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Sales Tax</h3></div>
+            <div class="panel-body">
+                <form name="tax.sales_tax_form" class="form-horizontal" novalidate ng-submit="tax.updateSalesTax()">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Description</label>
+                        <div class="col-md-10">
+                            <input type="text" class="input-x-large form-control" name="locale_description" placeholder="Municipality Description"
+                                   ng-model="tax.sales_tax.locale_description">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Rate in %</label>
+                        <div class="col-md-10">
+                            <input type="number" class="input-med form-control" name="rate" placeholder="Enter Rate"
+                                   ng-model="tax.sales_tax.rate" ng-fade>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="(tax.sales_tax_form.rate.$error.required || tax.sales_tax_form.rate.$error.number)
+                                        && (tax.sales_tax_form.rate.$faded || tax.sales_tax.submit)" role="alert">
+                                Rate required and must be numeric.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div ng-show="tax.sales_tax.processing" class="form-loader">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                        <div class="alert alert-success alert-reg-position form-submit-success"
+                             ng-show="tax.sales_tax.success"
+                             role="alert">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i> Sales Tax Updated!
+                        </div>
+                    </div>
+
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn'>Submit</button>
+                    </div>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Fixed Tax</h3></div>
+            <div class="panel-body">
+                <form name="tax.fixed_tax_form" class="form-horizontal" novalidate ng-submit="tax.updateFixTax()">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Name</label>
+                            <div class="col-md-10">
+                                <input type="text" class="input-med form-control" name="name" placeholder="Enter Name"
+                                       ng-model="tax.fixed_tax.name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Description</label>
+                            <div class="col-md-10">
+                                <input type="text" class="input-x-large form-control" name="description" placeholder="Enter Description"
+                                       ng-model="tax.fixed_tax.description">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Amount</label>
+                            <div class="col-md-10">
+                                <input type="number" class="input-med form-control" name="amount" placeholder="Enter Amount"
+                                       ng-model="tax.fixed_tax.amount">
+
+                                <div class="alert alert-danger ng-hide alert-reg-position"
+                                     ng-show="(fixed_tax_form.amount.$error.required || fixed_tax_form.amount.$error.number)
+                                        && (fixed_tax_form.amount.$faded || tax.fixed_tax.submit)"
+                                     role="alert">
+                                    Amount is required and must be numeric.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12">
+                        <div ng-show="tax.fixed_tax.processing" class="form-loader">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                        <div class="alert alert-success alert-reg-position form-submit-success"
+                             ng-show="tax.fixed_tax.success"
+                             role="alert">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i> Fixed Tax Updated!
+                        </div>
+                    </div>
+
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn'>Submit</button>
+                    </div>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Delivery Tax</h3></div>
+            <div class="panel-body">
+                <form name="tax.delivery_tax_form" class="form-horizontal" novalidate ng-submit="tax.updateDeliveryTax()">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Description</label>
+                        <div class="col-md-10">
+                            <input type="text" class="input-x-large form-control" name="locale_description" placeholder="Municipality Description"
+                                   ng-model="tax.delivery_tax.locale_description">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Rate in %</label>
+                        <div class="col-md-10">
+                            <input type="number" class="input-med form-control" name="rate" placeholder="Enter Rate"
+                                   ng-model="tax.delivery_tax.rate" ng-fade>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="(tax.delivery_tax_form.rate.$error.required || tax.delivery_tax_form.rate.$error.number)
+                                        && (tax.delivery_tax_form.rate.$faded || tax.delivery_tax.submit)" role="alert">
+                                Rate required and must be numeric.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div ng-show="tax.delivery_tax.processing" class="form-loader">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                        <div class="alert alert-success alert-reg-position form-submit-success"
+                             ng-show="tax.delivery_tax.success"
+                             role="alert">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i> Delivery Tax Updated!
+                        </div>
+                    </div>
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn'>Submit</button>
+                    </div>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div>
+</div>

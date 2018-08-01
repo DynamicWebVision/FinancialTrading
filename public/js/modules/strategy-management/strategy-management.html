@@ -1,0 +1,122 @@
+<div class="row">
+    <div class="panel panel-primary" ng-class="sm.utility.fiftyOpacity(sm.processing)">
+        <div class="panel-heading">
+            <h3 class="panel-title">Strategies</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Search</label>
+                            <div class="col-md-9">
+                                <input type="text" class="input-med form-control m-b-5" name="name" placeholder="Strategy Name"
+                                       ng-model="sm.strategy.searchText">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="submit-contain pull-right">
+                            <button class = 'btn-success btn' ng-click="sm.createStrategy()">Create Strategy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="sm.strategy.searchText.length == 0 && sm.strategy.currentSet">
+    <div class="panel panel-primary" ng-class="sm.utility.fiftyOpacity(sm.processing)">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{sm.strategy.currentStrategy.id}} - {{sm.strategy.currentStrategy.name}}</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="col-md-8">
+                        <div class="row" ng-repeat="note in sm.strategyNote.notes | filter:sm.strategyNote.filterNotes">
+                            <div class="col-md-12" >
+                                <h3 class="text-danger">{{note.title}}
+                                    <small class="text-muted">{{note.created_at}}</small>
+                                </h3>
+                                <p class="m-b-30">{{note.note}}</p>
+                                <div class="pull-right"><span class="blue-text">{{note.method}}</span> - <span class="green-text">{{note.frequency_code}}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Strategy System</label>
+                                <div class="col-md-9">
+                                    <select name="strategy_system" class="form-control input-large margin-top-five"
+                                            ng-model="sm.strategyNote.strategySystemId" ng-fade
+                                            ng-options="strategySystem.id as strategySystem.name for strategySystem in sm.strategySystem.strategySystems">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Frequency</label>
+                                <div class="col-md-9">
+                                    <select name="strategy_system" class="form-control input-large margin-top-five"
+                                            ng-model="sm.strategyNote.currentFrequencyId" ng-fade
+                                            ng-options="frequency.id as frequency.frequency for frequency in sm.strategyNote.frequencies">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn' ng-click="sm.createStrategySystem()">Create Strategy System</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="sm.strategy.searchText.length > 0">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Strategies</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover content-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>BT Variable</th>
+                            <th>Namespace</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="strategy in sm.strategy.strategies | filter:sm.strategy.search"
+                                ng-click="sm.setStrategy(strategy)">
+                                <td>{{strategy.id}}</td>
+                                <td>{{strategy.name}}</td>
+                                <td>{{strategy.back_test_strategy_variable}}</td>
+                                <td>{{strategy.namespace}}</td>
+                                <td>{{strategy.created_at}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

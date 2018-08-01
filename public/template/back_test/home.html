@@ -1,0 +1,448 @@
+
+    <div class="panel-body" ng-class="home.fiftyOpacityOffset()">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-plus-square header-icon float-right" aria-hidden="true" ng-show="!home.searchFilters"
+                           ng-click="home.searchFilters = !home.searchFilters"></i>
+
+                        <i class="fa fa-minus-square header-icon float-right" aria-hidden="true" ng-show="home.searchFilters"
+                           ng-click="home.searchFilters = !home.searchFilters"></i>
+
+                        <h3 class="panel-title">Search</h3>
+                    </div>
+
+                    <div ng-show="home.searchFilters" class="panel-body">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    Search
+                                </label>
+
+                                <div class="col-md-9 mt-15">
+                                    <input type="text" class="input-med form-control m-b-5" name="search_text"
+                                           ng-model="home.backTestFactory.searchText">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-md-12 control-label">
+                                    <input type="checkbox" name="search_text"
+                                           ng-model="home.backTestFactory.allUnReviewed"> Needs Review
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="home.backTestFactory.searchText.length == 0 && !home.backTestFactory.allUnReviewed">
+            <div class="col-xs-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-plus-square header-icon float-right" aria-hidden="true" ng-show="!home.fullFilters"
+                           ng-click="home.fullFilters = !home.fullFilters"></i>
+
+                        <i class="fa fa-minus-square header-icon float-right" aria-hidden="true" ng-show="home.fullFilters"
+                           ng-click="home.fullFilters = !home.fullFilters"></i>
+
+                        <select name="brand" class="form-control input-large float-right m-t-negative-five"
+                                ng-model="home.currentSortBy"
+                                ng-options="sortOption.code as sortOption.desc for sortOption in home.sortByOptions">
+                            <option class="placeholder-color" value="" selected disabled>Sort Type</option>
+                        </select>
+
+
+                        <h3 class="panel-title">{{home.backTestGroup.id}} - {{home.backTestGroup.name}} {{home.backTestGroup.strategy_method}} </h3>
+                    </div>
+
+                    <div ng-show="home.fullFilters" class="panel-body">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span class="bold"> {{home.backTestGroup.variable_1_desc}} (V_1):</span> {{home.backTestFactory.backTestGroupVariables.variable_1}}
+                                <input type="text" class="form-control input-med inline" ng-model="home.backTestFactory.iterationFilters.variable_1">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span class="bold"> {{home.backTestGroup.variable_2_desc}} (V_2):</span> {{home.backTestFactory.backTestGroupVariables.variable_2}}
+                                <input type="text" class="form-control input-med inline" ng-model="home.backTestFactory.iterationFilters.variable_2">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span class="bold"> {{home.backTestGroup.variable_3_desc}} (V_3):</span> {{home.backTestFactory.backTestGroupVariables.variable_3}}
+                                <input type="text" class="form-control input-med inline" ng-model="home.backTestFactory.iterationFilters.variable_3">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span class="bold"> {{home.backTestGroup.variable_4_desc}} (V_4):</span> {{home.backTestFactory.backTestGroupVariables.variable_4}}
+                                <input type="text" class="form-control input-med inline" ng-model="home.backTestFactory.iterationFilters.variable_4">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span class="bold"> {{home.backTestGroup.variable_5_desc}} (V_5):</span> {{home.backTestFactory.backTestGroupVariables.variable_5}}
+                                <input type="text" class="form-control input-med inline" ng-model="home.backTestFactory.iterationFilters.variable_5">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span class="bold"> Stop Losses:</span> {{home.backTestFactory.backTestGroupVariables.stop_losses}}
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span class="bold"> Take Profits:</span> {{home.backTestFactory.backTestGroupVariables.take_profits}}
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span class="bold"> Trailing Stops:</span> {{home.backTestFactory.backTestGroupVariables.trailing_stops}}
+                            </div>
+                        </div>
+
+                        <div class="pull-right">
+                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="home.rollBackConfirm()">Roll Back Group</button>
+                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="home.openCreateStrategyNote()">Create Note</button>
+                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="home.markStrategyReviewed()">Mark Reviewed</button>
+                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="home.loadStrategyNotes()">View Notes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="home.backTestFactory.searchText.length == 0 && !home.backTestFactory.allUnReviewed">
+            <div class="col-xs-12">
+                <div class="panel panel-primary" ng-repeat="backTest in home.backTestFactory.backTestIterations | orderBy : home.sortBackTest | filter:home.filterIterations">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">BT_ID {{backTest.id}} - PROCESS_ID {{backTest.processed_id}} {{backTest.strategy_name}}: - {{backTest.exchange}} {{backTest.frequency}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">Variables</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-show="backTest.variable_1.length > 1">
+                                        <td>{{backTest.variable_1_desc}}</td>
+                                        <td>{{backTest.variable_1}}</td>
+                                    </tr>
+
+                                    <tr ng-show="backTest.variable_2.length > 1">
+                                        <td>{{backTest.variable_2_desc}}</td>
+                                        <td>{{backTest.variable_2}}</td>
+                                    </tr>
+
+                                    <tr ng-show="backTest.variable_3.length > 1">
+                                        <td>{{backTest.variable_3_desc}}</td>
+                                        <td>{{backTest.variable_3}}</td>
+                                    </tr>
+
+                                    <tr ng-show="backTest.variable_4.length > 1">
+                                        <td>{{backTest.variable_4_desc}}</td>
+                                        <td>{{backTest.variable_4}}</td>
+                                    </tr>
+
+                                    <tr ng-show="backTest.variable_5.length > 1">
+                                        <td>{{backTest.variable_5_desc}}</td>
+                                        <td>{{backTest.variable_5}}</td>
+                                    </tr>
+
+                                    <tr ng-show="backTest.take_profit_pips != 0">
+                                        <td>Take Profit</td>
+                                        <td>{{backTest.take_profit_pips}}</td>
+                                    </tr>
+
+                                    <tr ng-show="backTest.stop_loss_pips != 0">
+                                        <td>Stop Loss</td>
+                                        <td>{{backTest.stop_loss_pips}}</td>
+                                    </tr>
+
+                                    <tr ng-show="backTest.trailing_stop_pips != 0">
+                                        <td>Trailing Stop</td>
+                                        <td>{{backTest.trailing_stop_pips}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-md-3">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">Totals</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Net G/L Pips</td>
+                                        <td>{{backTest.total_gain_loss_pips}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>GL Ratio</td>
+                                        <td>{{home.getRatio(backTest.total_gain_transactions, backTest.total_loss_transactions)}}%</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <span class="positive-green">
+                                                {{backTest.total_gain_transactions}}
+                                            </span>-
+                                            <span class="negative-green">
+                                                {{backTest.total_loss_transactions}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Medians</td>
+                                        <td>
+                                            <span class="positive-green">
+                                                {{backTest.median_loss}}
+                                            </span>
+                                            <span class="negative-green">
+                                                {{backTest.median_loss}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Means</td>
+                                        <td>
+                                            <span class="positive-green">
+                                                {{backTest.mean_gain}}
+                                            </span>
+                                            <span class="negative-green">
+                                                {{backTest.mean_loss}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-md-3">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="4">Month Data</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Month Ratio</td>
+                                        <td>{{home.getRatio(backTest.positive_months, backTest.negative_months)}}%</td>
+
+                                        <td class="negative-green" colspan="2">Losses</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <span class="positive-green">
+                                                {{backTest.positive_months}}
+                                            </span> -
+                                            <span class="negative-green">
+                                                {{backTest.negative_months}}
+                                            </span>
+
+                                            <td>
+                                                Median
+                                            </td>
+                                            <td>
+                                                {{backTest.median_month_losses}}
+                                            </td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td>
+                                            Mean
+                                        </td>
+                                        <td>
+                                            {{backTest.mean_month_losses}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Gain Loss Together</td>
+                                        <td class="positive-green" colspan="2">Gains</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Median
+                                        </td>
+                                        <td>
+                                            {{backTest.median_month_pip_gl}}
+                                        </td>
+                                        <td>
+                                            Median
+                                        </td>
+                                        <td>
+                                            {{backTest.median_month_gains}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Mean
+                                        </td>
+                                        <td>
+                                            {{backTest.mean_month_pip_gl}}
+                                        </td>
+                                        <td>
+                                            Mean
+                                        </td>
+                                        <td>
+                                            {{backTest.mean_month_gains}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-md-3">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="4">Kelly Stuff</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td colspan="2">Kelly Total</td>
+                                        <td colspan="2">{{backTest.total_kelly_criterion_gain_loss}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Kelly Month</td>
+                                        <td colspan="2">{{backTest.total_kelly_by_month}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Month Gain% Standard Dev.</td>
+                                        <td colspan="2">{{backTest.month_gain_loss_probability_sd}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">% To Risk Per Trade</td>
+                                        <td colspan="2">{{backTest.percent_to_risk}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Position Amount 10K</td>
+                                        <td colspan="2">{{backTest.position_amount_ten_k}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Expected Gain/Loss Per Transaction 10K</td>
+                                        <td colspan="2">{{backTest.expected_gain_loss}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="4">High Low Analysis</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="positive-green" colspan="2">Gains</td>
+                                        <td class="negative-green" colspan="2">Losses</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Median
+                                        </td>
+                                        <td>
+                                            {{backTest.median_max_gain}}
+                                        </td>
+                                        <td>
+                                            Median
+                                        </td>
+                                        <td>
+                                            {{backTest.median_max_loss}}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            Mean
+                                        </td>
+                                        <td>
+                                            {{backTest.mean_max_gain}}
+                                        </td>
+                                        <td>
+                                            Mean
+                                        </td>
+                                        <td>
+                                            {{backTest.mean_max_loss}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-md-12">
+                                <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="home.viewFullBackTest(backTest)">View Full</button>
+                                <button class = 'm-l-10 btn-primary btn btn-lg pull-right' ng-click="home.viewHighLowAnalysis(backTest)">View H/L Analysis</button>
+                                <button class = 'm-l-10 btn-primary btn btn-lg pull-right' ng-click="home.openIterationStrategyNote(backTest)">Strategy Note</button>
+                            </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" ng-show="home.backTestFactory.searchText.length > 0 || home.backTestFactory.allUnReviewed">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Back Test Groups</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover content-table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Strategy</th>
+                                <th>System</th>
+                                <th>Method</th>
+                                <th>Frequency</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="backTestGroup in home.backTestGroups | filter:home.backTestFactory.filterGroups"
+                                ng-click="home.setBackTestGroup(backTestGroup, $index)">
+                                <td>{{backTestGroup.id}}</td>
+                                <td>{{backTestGroup.name}}</td>
+                                <td>{{backTestGroup.strategy_name}}</td>
+                                <td>{{backTestGroup.strategy_system_name}}</td>
+                                <td>{{backTestGroup.strategy_method}}</td>
+                                <td>{{backTestGroup.frequency_name}}</td>
+                                <td>{{backTestGroup.created_at}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <create-strategy-note></create-strategy-note>
+    <strategy-note-view></strategy-note-view>

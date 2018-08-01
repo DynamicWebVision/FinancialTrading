@@ -1,0 +1,351 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Info</h4>
+            <ol class="breadcrumb pull-right">
+                <li><a href="/home">Merchant</a></li>
+                <li><a href="#general_info">Info</a></li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Configurations</h3></div>
+            <div class="panel-body">
+                <form name="info.config_form" class="form-horizontal" novalidate ng-submit="info.updateConfig()">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Active</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="active"
+                                           on-label="Active"
+                                           off-label="Inactive"
+                                           ng-model="info.config.active">
+                            </toggle-switch>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Ordering On</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="ordering_on" ng-model="info.config.ordering_on"></toggle-switch>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Immediate Msg Delivery</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="immediate_message_delivery" ng-model="info.config.immediate_message_delivery"></toggle-switch>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Order Lead Time</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="number" class="input-med form-control" name="lead_time" placeholder="Enter Minutes for Lead Time"
+                                   ng-model="info.config.lead_time" ng-fade >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Advanced Ordering</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="advanced_ordering" ng-model="info.config.advanced_ordering"></toggle-switch>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Delivery</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="delivery" ng-model="info.config.delivery"></toggle-switch>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="!info.info.config.active">
+                        <label class="col-md-3 control-label">Inactive Reason</label>
+                        <div class="col-md-9 m-t-10">
+                            <select name="inactive_reason" class="form-control input-x-large margin-left-five"
+                                    ng-model="info.config.inactive_reason"
+                                    ng-options="inactive_reason.type_id_value as inactive_reason.type_id_name for inactive_reason in info.inactive_reasons">
+                                <option class="placeholder-color" value="" selected disabled>Inactive Reason</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Show Tip</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="show_tip" ng-model="info.config.show_tip"></toggle-switch>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Tip Min. % (INT)</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="number" class="input-med form-control" name="tip_minimum_percentage" placeholder="% Enter Min"
+                                   ng-model="info.config.tip_minimum_percentage" ng-fade ng-min="1">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="(info.config_form.tip_minimum_percentage.$error.number || info.config_form.tip_minimum_percentage.$error.min)
+                                 && (info.config_form.tip_minimum_percentage.$faded || info.config.submit)"
+                                 role="alert">
+                                Tip Minimum % must be a positive numeric value in a whole percent (5% rather than .05).
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Tip Min. Trigger $</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="number" class="input-med form-control" name="tip_minimum_trigger_amount"
+                                   ng-model="info.config.tip_minimum_trigger_amount" ng-fade ng-min="0" placeholder="$ Enter Min">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="(info.config_form.tip_minimum_trigger_amount.$error.number || info.config_form.tip_minimum_trigger_amount.$error.min)
+                                 && (info.config_form.tip_minimum_trigger_amount.$faded || info.config.submit)"
+                                 role="alert">
+                                Tip Min. Trigger $ must be a positive numeric value.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Group Ordering</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="group_ordering_on" ng-model="info.config.group_ordering_on"></toggle-switch>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div ng-show="info.config.processing" class="form-loader">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                        <div class="alert alert-success alert-reg-position form-submit-success col-md-9 pull-right"
+                             ng-show="info.config.success"
+                             role="alert">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i> Configurations Updated!
+                        </div>
+                    </div>
+
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn'>Submit</button>
+                    </div>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+
+    <!-- Basic example -->
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Location</h3></div>
+            <div class="panel-body">
+                <form name="info.location_form" class="form-horizontal" novalidate ng-submit="info.updateLocation()">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Name
+                           <i class="fa fa-question-circle tool-tip" aria-hidden="true">
+                                <span class="tool-tip-text">This is the name of your business.</span></i>
+                        </label>
+
+                        <div class="col-md-9 mt-15">
+                            <input type="text" class="input-med form-control" name="business_name" placeholder="Enter Name"
+                                   ng-model="info.location.business_name" ng-required="true" ng-fade>
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="info.location_form.business_name.$error.required && (info.location_form.business_name.$faded || info.location.submit)"
+                                 role="alert">
+                                Business Name is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Display Name</label>
+                        <div class="col-md-9 mt-5">
+                            <input type="text" class="input-med form-control" name="display_name" placeholder="Enter Display Name"
+                                   ng-model="info.location.display_name" ng-required="true" ng-fade>
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="info.location_form.display_name.$error.required && (info.location_form.display_name.$faded || info.location.submit)"
+                                 role="alert">
+                                Display Name is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Address</label>
+                        <div class="col-md-9 mt-5">
+                            <input type="text" class="input-large form-control" name="address1" placeholder="Address Line 1"
+                                   ng-model="info.location.address1" ng-required="true" ng-fade>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="info.location_form.addressline1.$error.required && (info.location_form.addressline1.$faded || info.location.submit)"
+                                 role="alert">
+                                Address Line 1 is required.
+                            </div>
+
+                            <input type="text" class="input-large form-control margin-top-five" name="address2" placeholder="Address Line 2"
+                                   ng-model="info.location.address2" ng-fade>
+
+                            <input type="text" class="input-med form-control margin-top-five inline" name="city" placeholder="City"
+                                   ng-model="info.location.city" ng-required="true" ng-fade>
+
+
+                            <select name="state" class="form-control input-micro inline margin-left-five" ng-required="true"
+                                    ng-model="info.location.state"
+                                    ng-options="state.type_id_value as state.type_id_value for state in info.states">
+                                <option class="placeholder-color" value="" selected disabled>ST</option>
+                            </select>
+
+                            <input type="text" class="input-small form-control margin-left-five inline" name="zip" placeholder="Zip Code"
+                                   ng-model="info.location.zip" ng-required="true" ng-fade>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="info.location_form.city.$error.required && (info.location_form.city.$faded || info.location.submit)"
+                                 role="alert">
+                                City is required.
+                            </div>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="info.location_form.state.$error.required && (info.location_form.state.$faded || info.location.submit)"
+                                 role="alert">
+                                State is required.
+                            </div>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="info.location_form.zip.$error.required && (info.location_form.zip.$faded || info.location.submit)"
+                                 role="alert">
+                                Zip code is required.
+                            </div>
+
+                            <select name="country" class="form-control input-large margin-top-five" ng-required="true"
+                                    ng-model="info.location.country"
+                                    ng-options="country.type_id_value as country.type_id_name for country in info.countries">
+                                <option class="placeholder-color" value="" selected disabled>Country</option>
+                            </select>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="info.location_form.country.$error.required && (info.location_form.country.$faded || info.location.submit)"
+                                 role="alert">
+                                Country is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Time Zone</label>
+                        <div class="col-md-9 mt-5">
+                            <select name="time_zone" class="form-control input-x-large margin-top-five" ng-required="true"
+                                    ng-model="info.location.time_zone" ng-change="test()"
+                                    ng-options="item as item.type_id_name for item in info.time_zones track by item.type_id_value">
+                                <option class="placeholder-color" value="" disabled>Time Zone</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="info.location_form.timezone.$error.required && (info.location_form.timezone.$faded || info.location.submit)"
+                                 role="alert">
+                                Time Zone is required.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Store Email</label>
+                        <div class="col-md-9 mt-5">
+                            <input type="text" class="input-med form-control" name="shop_email"
+                                   ng-model="info.location.shop_email" ng-fade>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="info.location_form.shop_email.$error.required
+                             && (info.location_form.shop_email.$faded || info.location.submit)"
+                                 role="alert">
+                                Shop email is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Phone</label>
+                        <div class="col-md-9 mt-5">
+                            <input type="text" class="input-med form-control" name="phone_no"
+                                   ng-model="info.location.phone_no" ng-fade>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="info.location_form.phone_no.$error.required
+                             && (info.location_form.phone_no.$faded || info.location.submit)"
+                                 role="alert">
+                                Phone Number is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Fax</label>
+                        <div class="col-md-9 mt-5">
+                            <input type="text" class="input-med form-control" name="fax_no"
+                                   ng-model="info.location.fax_no" ng-fade>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div ng-show="info.location.processing" class="form-loader">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                        <div class="alert alert-success alert-reg-position form-submit-success col-md-9 pull-right"
+                             ng-show="info.location.success"
+                             role="alert">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i> Location Updated!
+                        </div>
+                    </div>
+
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn'>Submit</button>
+                    </div>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Custom Messages</h3></div>
+            <div class="panel-body">
+                <form name="info.message_form" class="form-horizontal" novalidate ng-submit="info.updatePrepTime()">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Order Message</label>
+                        <div class="col-md-9 mt-5">
+                            <textarea class="form-control" rows="3" name="custom_order_message" ng-model="info.message.custom_order_message"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Menu Message</label>
+                        <div class="col-md-9 mt-5">
+                            <textarea class="form-control" rows="3" name="custom_menu_message"
+                                      ng-model="info.message.custom_menu_message"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div ng-show="info.message.processing" class="form-loader">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                        <div class="alert alert-success alert-reg-position form-submit-success col-md-9 pull-right"
+                             ng-show="info.message.success"
+                             role="alert">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i> Messages Updated!
+                        </div>
+                    </div>
+
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn'>Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

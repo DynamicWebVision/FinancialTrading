@@ -1,0 +1,307 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Delivery</h4>
+            <ol class="breadcrumb pull-right">
+                <li><a href="/home">Merchant</a></li>
+                <li><a href="#delivery">Delivery</a></li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div id="delivery-section" class="row">
+    <!-- Basic example -->
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Delivery Fees</h3></div>
+            <div class="panel-body">
+                <form name="delivery.delivery_form" class="form-horizontal" novalidate ng-submit="delivery.editDeliveryInfo()">
+                    <div class="form-group">
+                        <label class="col-md-5 control-label">Delivery Area Defined by</label>
+                        <div class="col-md-7 m-t-5">
+                            <select name="inactive_reason" class="form-control input-med margin-left-five"
+                                    ng-model="delivery.delivery_info.delivery_price_type"
+                                    ng-options="delivery_definition.id as delivery_definition.name for delivery_definition in delivery.lookup.delivery_area_defined_bys">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-5 control-label">Min. Order Value ($)</label>
+                        <div class="col-md-7 m-t-5">
+                            <input type="number" class="input-med form-control" name="minimum_order" placeholder="($) Enter Amount"
+                                   ng-model="delivery.delivery_info.minimum_order" ng-required="true" ng-fade>
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="(delivery.delivery_form.minimum_order.$error.required || delivery.delivery_form.minimum_order.$error.number)
+                                    && (delivery.delivery_form.minimum_order.$faded || delivery.delivery_info.submit)"
+                                 role="alert">
+                                Minimum Order is required and must be numeric.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-5 control-label">Max. Days Advanced Scheduling</label>
+                        <div class="col-md-7 m-t-5">
+                            <input type="number" class="input-med form-control" name="max_days_out" placeholder="Enter Max Days Out"
+                                   ng-model="delivery.delivery_info.max_days_out" ng-required="true" ng-fade>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="(delivery.delivery_form.max_days_out.$error.required || delivery.delivery_form.max_days_out.$error.number)
+                                    && (delivery.delivery_form.max_days_out.$faded || delivery.delivery_info.submit)"
+                                 role="alert">
+                                Max days out is required and must be numeric.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-5 control-label">Min. Delivery Lead Time (mins)</label>
+                        <div class="col-md-7 m-t-5">
+                            <input type="number" class="input-med form-control" name="minimum_delivery_time" placeholder="Ent Min Lead Time"
+                                   ng-model="delivery.delivery_info.minimum_delivery_time" ng-required="true" ng-fade>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="(delivery_form.minimum_delivery_time.$error.required || delivery_form.minimum_delivery_time.$error.number)
+                                        && (delivery_form.minimum_delivery_time.$faded || delivery.delivery_info.submit)"
+                                 role="alert">
+                                Minimum Lead Time is required and must be numeric.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-5 control-label">App Delivery Increments</label>
+                        <div class="col-md-7 m-t-5">
+                            <input type="number" class="input-med form-control" name="delivery_increment" placeholder="Ent Delivery Time Increment"
+                                   ng-model="delivery.delivery_info.delivery_increment" ng-required="true" ng-fade>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-5 control-label">Delivery ASAP</label>
+                        <div class="col-md-7 m-t-10">
+                            <toggle-switch name="allow_asap_on_delivery" ng-model="delivery.delivery_info.allow_asap_on_delivery"></toggle-switch>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div ng-show="delivery.delivery_info.processing" class="form-loader">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                        <div class="alert alert-success alert-reg-position form-submit-success col-md-9 pull-right"
+                             ng-show="delivery.delivery_info.success"
+                             role="alert">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i> Delivery Fees Updated!
+                        </div>
+                    </div>
+
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn'>Submit</button>
+                    </div>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+    <div class="col-md-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Delivery Zones</h3></div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th ng-show="delivery.saved_delivery_zone == 'driving'">Distance</th>
+                        <th ng-show="delivery.saved_delivery_zone == 'zip'">Zip Codes</th>
+                        <th ng-show="delivery.saved_delivery_zone == 'polygon'">Polygon</th>
+                        <th>Price</th>
+                        <th>Min. Order ($)</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="delivery_zone in delivery.delivery_zones">
+                        <td>{{delivery_zone.name}}</td>
+                        <td ng-show="delivery.saved_delivery_zone == 'driving'">{{delivery_zone.distance_up_to}}</td>
+                        <td ng-show="delivery.saved_delivery_zone == 'zip'">{{delivery.shorten(delivery_zone.zip_codes)}}</td>
+                        <td ng-show="delivery.saved_delivery_zone == 'polygon'">{{delivery.shorten(delivery_zone.polygon_coordinates)}}</td>
+                        <td>{{delivery_zone.price}}</td>
+                        <td>{{delivery_zone.minimum_order_amount}}</td>
+                        <td class="edit-icon">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal"
+                               data-target="#edit-delivery-zone-modal" ng-click="delivery.editDeliveryZoneDialog(delivery_zone, $index)"></i>
+                        </td>
+                        <td class="delete-icon">
+                            <i class="fa fa-times" aria-hidden="true" data-toggle="modal"
+                               data-target="#delete-delivery-zone-modal" ng-click="delivery.deleteDeliveryZoneDialog(delivery_zone, $index)"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="alert alert-success alert-reg-position form-submit-success"
+                     ng-show="delivery_zone_update_success"
+                     role="alert">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i> The delivery zone <strong>{{edit_delivery_zone.name}}</strong> has been updated!
+                </div>
+                <button type="button" ng-disabled class="btn btn-success pull-right"
+                        data-toggle="modal" data-target="#create-delivery-zone-modal">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Create Delivery Zone
+                </button>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div>
+</div>
+
+<div class="row">
+    <!-- Basic example -->
+     <!-- col-->
+</div>
+
+<div id="create-delivery-zone-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">New Delivery Zone</h4>
+            </div>
+            <form name="delivery.create_delivery_zone_form" novalidate ng-submit="delivery.createDeliveryZone()">
+                <div class="modal-body">
+                    <label class="block" for="name">Name</label>
+                    <input type="text" class="input-med form-control" name="name" placeholder="Enter Name"
+                           ng-model="delivery.new_delivery_zone.name" ng-required="true" ng-fade>
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="delivery.create_delivery_zone_form.name.$error.required && (delivery.create_delivery_zone_form.name.$faded || delivery.new_delivery_zone.submit)"
+                         role="alert">
+                        Name is required.
+                    </div>
+
+                    <label class="block" for="distance_up_to" ng-show="delivery.saved_delivery_zone == 'driving'">Distance Up To</label>
+                    <input type="text" class="input-med form-control" name="name" placeholder="Enter Mile Radius"
+                           ng-model="delivery.new_delivery_zone.distance_up_to" ng-show="delivery.saved_delivery_zone == 'driving'">
+
+                    <label for="zip_codes" ng-show="delivery.saved_delivery_zone == 'zip'">Zip Codes</label>
+                    <input type="text" class="input-x-large form-control" name="zip_codes" placeholder="Enter Zip Codes"
+                           ng-model="delivery.new_delivery_zone.zip_codes" ng-show="delivery.saved_delivery_zone == 'zip'">
+
+                    <label for="polygon_coordinates" ng-show="delivery.saved_delivery_zone == 'polygon'">Polygon</label>
+                    <textarea class="form-control" rows="3" name="polygon_coordinates"
+                              ng-model="delivery.new_delivery_zone.polygon_coordinates" ng-show="delivery.saved_delivery_zone == 'polygon'"></textarea>
+
+                    <label for="price">Price</label>
+                    <input type="text" class="input-med form-control" name="price" placeholder="Enter Price"
+                           ng-model="delivery.new_delivery_zone.price" ng-fade>
+
+                    <label for="minimum_order_amount">Min. Order $</label>
+                    <input type="text" class="input-med form-control" name="price" placeholder="Enter Amount"
+                           ng-model="delivery.new_delivery_zone.minimum_order_amount" ng-fade>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="edit-delivery-zone-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Delivery Zone</h4>
+            </div>
+            <form name="delivery.update_delivery_zone_form" class="form-horizontal" novalidate ng-submit="delivery.editDeliveryZone()">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Name</label>
+                        <div class="col-md-9 mt-15">
+                            <input type="text" class="input-med form-control" name="name" placeholder="Enter Name"
+                                   ng-model="delivery.edit_delivery_zone.name" ng-required="true" ng-fade>
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="delivery.update_delivery_zone_form.name.$error.required && (update_delivery_zone_form.name.$faded || location.submit)"
+                                 role="alert">
+                                Name is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="delivery.saved_delivery_zone == 'driving'">
+                        <label class="col-md-3 control-label" >Distance Up To</label>
+                        <div class="col-md-9 mt-15">
+                            <input type="text" class="input-med form-control" name="name" placeholder="Enter Mile Radius"
+                                   ng-model="delivery.edit_delivery_zone.distance_up_to" >
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="delivery.saved_delivery_zone == 'zip'">
+                        <label class="col-md-3 control-label">Zip Codes</label>
+                        <div class="col-md-9 mt-15">
+                            <input type="text" class="input-x-large form-control" name="zip_codes" placeholder="Enter Zip Codes"
+                                   ng-model="delivery.edit_delivery_zone.zip_codes">
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="delivery.saved_delivery_zone == 'polygon'">
+                        <label class="col-md-3 control-label">Polygon</label>
+                        <div class="col-md-9 mt-15">
+                            <textarea class="form-control" rows="3" name="polygon_coordinates"
+                                      ng-model="delivery.edit_delivery_zone.polygon_coordinates"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Price</label>
+                        <div class="col-md-9 mt-15">
+                            <input type="text" class="input-med form-control" name="price" placeholder="Enter Price"
+                                   ng-model="delivery.edit_delivery_zone.price" ng-fade>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Min. Order $</label>
+                        <div class="col-md-9 mt-15">
+                            <input type="text" class="input-med form-control" name="price" placeholder="Enter Amount"
+                                   ng-model="delivery.edit_delivery_zone.minimum_order_amount" ng-fade>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="delete-delivery-zone-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >Delete Delivery Zone</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove the delivery zone <strong>{{delivery.delete_delivery_zone_name}}</strong>?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" ng-click="delivery.confirmDeleteDeliveryZone()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

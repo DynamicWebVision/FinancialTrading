@@ -1,0 +1,364 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Ordering</h4>
+            <ol class="breadcrumb pull-right">
+                <li><a href="/home">Merchant</a></li>
+                <li><a href="#ordering">Ordering</a></li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Order Receiving Info</h3></div>
+            <div class="panel-body">
+                <form name="merchant_info_form" novalidate ng-submit="updateSendOrder()">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Format</th>
+                            <th>Address</th>
+                            <th>Delay</th>
+                            <th>Text</th>
+                            <th>Info</th>
+                            <th>Type</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="send_order in ordering.send_orders">
+                            <td>{{ordering.shortenBackend(send_order.message_format_value)}}</td>
+                            <td>{{send_order.delivery_addr}}</td>
+                            <td>{{send_order.delay}}</td>
+                            <td>{{send_order.message_text}}</td>
+                            <td>{{send_order.info}}</td>
+                            <td>{{send_order.message_type_value}}</td>
+                            <td class="edit-icon">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal"
+                                   data-target="#edit-send-order-modal" ng-click="ordering.editSendOrderDialog(send_order, $index)"></i>
+                            </td>
+                            <td class="delete-icon">
+                                <i class="fa fa-times" aria-hidden="true" data-toggle="modal"
+                                   data-target="#delete-send-order-modal" ng-click="ordering.deleteSendOrderDialog(send_order, $index)"></i>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="alert alert-success alert-reg-position form-submit-success"
+                         ng-show="send_order_update_success"
+                         role="alert">
+                        <i class="fa fa-check-circle" aria-hidden="true"></i> The order receiving record <strong>{{edit_send_order.message_text}}</strong> has been updated!
+                    </div>
+                    <div class="alert alert-success alert-reg-position form-submit-success"
+                         ng-show="update_success"
+                         role="alert">
+                        <i class="fa fa-check-circle" aria-hidden="true"></i> Send Order Saved!
+                    </div>
+                    <button type="button" ng-disabled class="btn btn-default pull-right btn-success" data-toggle="modal" data-target="#add-send-order-modal">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Create New Order Receiving
+                    </button>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+</div>
+
+<div id="ordering-leadtime" class="row">
+    <!-- Basic example -->
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Prep Time</h3></div>
+            <div class="panel-body">
+                <form name="ordering.prep_time_form" class="form-horizontal" novalidate ng-submit="ordering.updatePrepTime()">
+                    <div class="form-group">
+                        <label class="col-md-5 control-label">Seconds Per Entree</label>
+                        <div class="col-md-7 mt-15">
+                            <input type="number" class="input-med form-control" name="entree_preptime_seconds" placeholder="Enter Seconds"
+                                   ng-model="ordering.prep_time.entree_preptime_seconds" ng-required="true" ng-fade>
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="(ordering.prep_time_form.entree_preptime_seconds.$error.required || ordering.prep_time_form.entree_preptime_seconds.$error.number)
+                                && (ordering.prep_time_form.entree_preptime_seconds.$faded || ordering.prep_time.submit)"
+                                 role="alert">
+                                Seconds Per Entree is required and must be numeric.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-5 control-label">Concurrent Orders</label>
+                        <div class="col-md-7 mt-15">
+                            <input type="number" class="input-med form-control" name="concurrently_able_to_make"
+                                   ng-model="ordering.prep_time.concurrently_able_to_make" ng-required="true" ng-fade>
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="(ordering.prep_time_form.concurrently_able_to_make.$error.required || ordering.prep_time_form.concurrently_able_to_make.$error.number)
+                                    && (ordering.prep_time_form.concurrently_able_to_make.$faded || ordering.prep_time.submit)"
+                                 role="alert">
+                                Concurrent Orders and must be numeric.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div ng-show="ordering.prep_time.processing" class="form-loader">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                        <div class="alert alert-success alert-reg-position form-submit-success col-md-9 pull-right"
+                             ng-show="ordering.prep_time.success"
+                             role="alert">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i> Messages Updated!
+                        </div>
+                    </div>
+
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn'>Submit</button>
+                    </div>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Payment</h3></div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Payment Type</th>
+                        <th>Billing Entity</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="payment_group in ordering.payment_groups">
+                            <td>
+                                {{payment_group.payment_type.name}}
+                            </td>
+                            <td>
+                                {{payment_group.billing_entity.name}}
+                            </td>
+                            <td class="delete-icon" >
+                                <i class="fa fa-times" aria-hidden="true" data-toggle="modal" data-target="#delete-payment_group-modal"
+                                   ng-click="ordering.deletePaymentGroupDialog(payment_group, $index)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="alert alert-success alert-reg-position form-submit-success"
+                     ng-show="payments_form_updated_success"
+                     role="alert">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i> Payments Saved!
+                </div>
+                <button type="button" ng-disabled class="btn btn-success pull-right"
+                        data-toggle="modal" data-target="#add-payment-group-modal">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Add Payment Group
+                </button>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+</div>
+
+<div id="add-payment-group-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Custom Holiday Hours</h4>
+            </div>
+            <form name="ordering.new_payment_group_form" novalidate ng-submit="ordering.createPaymentGroup()">
+                <div class="modal-body">
+                    <label class="block">Payment Type</label>
+                    <select name="payment_type" class="form-control input-large" ng-required="true"
+                            ng-model="ordering.new_payment_group.payment"
+                            ng-options="payment_type.id as payment_type.name for payment_type in ordering.payment_types">
+                    </select>
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="ordering.new_payment_group_form.payment_type.$error.required
+                                    && (ordering.new_payment_group_form.payment_type.$faded || ordering.new_payment_group.submit)"
+                         role="alert">
+                        Payment is required.
+                    </div>
+
+                    <label>Billing Entity</label>
+                    <select name="billing_entity" class="form-control input-large" ng-required="true"
+                            ng-model="ordering.new_payment_group.billing_entity"
+                            ng-options="billing_entity.id as billing_entity.name for billing_entity in ordering.billing_entities">
+                    </select>
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="ordering.new_payment_group_form.billing_entity.$error.required
+                                    && (ordering.new_payment_group_form.billing_entity.$faded || ordering.new_payment_group.submit)"
+                         role="alert">
+                        Billing Entity is required.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="delete-payment_group-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >Delete Payment Group</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove the payment group for the payment type
+                <strong>{{ordering.delete_payment_group.payment_type.name}}</strong>
+                and billing entity <strong>{{ordering.delete_payment_group.billing_entity.name}}</strong>?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" ng-click="ordering.deletePaymentGroup()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="add-send-order-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Create Order Receiving</h4>
+            </div>
+            <form name="ordering.new_send_order_form" novalidate ng-submit="ordering.createSendOrder()">
+                <div class="modal-body">
+                    <label>Format</label>
+                    <select name="message_format" class="form-control input-large margin-top-five" ng-required="true"
+                            ng-model="ordering.new_send_order.message_format"
+                            ng-options="message_format.type_id_value as message_format.type_id_name for message_format in ordering.lookup.message_formats">
+                        <option class="placeholder-color" value="" selected disabled>Select</option>
+                    </select>
+
+                    <label>Address</label>
+                    <input type="text" name="delivery_addr" class="form-control input-med" placeholder="Enter Email"
+                           ng-model="ordering.new_send_order.delivery_addr" >
+
+                    <label>Delay</label>
+                    <input type='text' class='form-control input-med' name='delay' placeholder="Enter Seconds"
+                           ng-model='ordering.new_send_order.delay'>
+
+                    <label>Message Text</label>
+                    <textarea class="form-control" rows="3" name="message_text" ng-model="ordering.new_send_order.message_text" ng-required='true'></textarea>
+                    <div class='alert alert-danger ng-hide alert-reg-position'
+                         ng-show='ordering.new_send_order_form.message_text.$error.required && (ordering.new_send_order_form.message_text.$faded || ordering.new_send_order.submit)'role='alert'>
+                        Message text is required.
+                    </div>
+
+                    <label>Info</label>
+                    <input type='text' class='form-control input-med' name='info'
+                           ng-model='ordering.new_send_order.info'>
+
+                    <label>Message Type</label>
+                    <select name="message_type" class="form-control input-large margin-top-five" ng-required="true"
+                            ng-model="ordering.new_send_order.message_type"
+                            ng-options="message_type.type_id_value as message_type.type_id_name for message_type in ordering.lookup.messages_types">
+                        <option class="placeholder-color" value="" selected disabled>Select</option>
+                    </select>
+                    <div class='alert alert-danger ng-hide alert-reg-position'
+                         ng-show='ordering.new_send_order_form.message_type.$error.required && (ordering.new_send_order_form.message_type.$faded || ordering.new_send_order.submit)'role='alert'>
+                        Message Type is required.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="edit-send-order-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >Edit Order Receiving</h4>
+            </div>
+            <form name="ordering.ordering.edit_send_order_form" novalidate ng-submit="ordering.editSendOrder()">
+                <div class="modal-body">
+                    <label>Format</label>
+                    <select name="message_format" class="form-control input-large margin-top-five" ng-required="true"
+                            ng-model="ordering.edit_send_order.message_format"
+                            ng-options="message_format.type_id_value as message_format.type_id_name for message_format in ordering.lookup.message_formats">
+                        <option class="placeholder-color" value="" selected disabled>Select</option>
+                    </select>
+
+                    <label>Address</label>
+                    <input type="text" name="delivery_addr" class="form-control input-med" placeholder="Enter Email"
+                           ng-model="ordering.edit_send_order.delivery_addr" >
+
+                    <label>Delay</label>
+                    <input type='text' class='form-control input-med' name='delay' placeholder="Enter Seconds"
+                           ng-model='ordering.edit_send_order.delay'>
+
+                    <label>Message Text</label>
+                    <textarea class="form-control" rows="3" name="message_text" ng-model="ordering.edit_send_order.message_text" ng-required='true'></textarea>
+                    <div class='alert alert-danger ng-hide alert-reg-position'
+                         ng-show='ordering.edit_send_order_form.message_text.$error.required && (ordering.ordering.edit_send_order_form.message_text.$faded || ordering.edit_send_order.submit)'role='alert'>
+                        Message text is required.
+                    </div>
+
+                    <label>Info</label>
+                    <input type='text' class='form-control input-med' name='info'
+                           ng-model='ordering.edit_send_order.info'>
+
+                    <label>Message Type</label>
+                    <select name="message_type" class="form-control input-large margin-top-five" ng-required="true"
+                            ng-model="ordering.edit_send_order.message_type"
+                            ng-options="message_type.type_id_value as message_type.type_id_name for message_type in ordering.lookup.messages_types">
+                        <option class="placeholder-color" value="" selected disabled>Select</option>
+                    </select>
+                    <div class='alert alert-danger ng-hide alert-reg-position'
+                         ng-show='ordering.edit_send_order_form.message_type.$error.required && (ordering.ordering.edit_send_order_form.message_type.$faded || ordering.edit_send_order.submit)'role='alert'>
+                        Message Type is required.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success" >Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="delete-send-order-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >Delete Order Receiving</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove the order receiving record for <strong>{{ordering.delete_send_order_desc}}</strong>?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" ng-click="ordering.confirmDeleteSendOrder()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

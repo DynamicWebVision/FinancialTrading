@@ -1,0 +1,434 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Contact</h4>
+            <ol class="breadcrumb pull-right">
+                <li><a href="/home">Merchant</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Basic example -->
+    <div class="col-md-7">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Admin Emails</h3></div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th class="center-head">Daily Rpts</th>
+                        <th class="center-head">Store Notification Settings</th>
+                        <th class="center-head">Weekly Stmts</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="admin_email in contact.admin_emails">
+                        <td>
+                            {{contact.shortenText(admin_email.name)}}
+                        </td>
+                        <td>
+                            {{contact.shortenText(admin_email.email)}}
+                        </td>
+                        <td class="boolean-table-field">
+                            <i class="fa fa-check-square-o" aria-hidden="true" ng-show="admin_email.daily"></i>
+                            <i class="fa fa-ban" aria-hidden="true" ng-show="!admin_email.daily"></i>
+                        </td>
+                        <td class="boolean-table-field">
+                            <i class="fa fa-check-square-o" aria-hidden="true" ng-show="admin_email.weekly"></i>
+                            <i class="fa fa-ban" aria-hidden="true" ng-show="!admin_email.weekly"></i>
+                        </td>
+                        <td class="boolean-table-field">
+                            <i class="fa fa-check-square-o" aria-hidden="true" ng-show="admin_email.admin"></i>
+                            <i class="fa fa-ban" aria-hidden="true" ng-show="!admin_email.admin"></i>
+                        </td>
+                        <td class="edit-icon">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal"
+                               data-target="#edit-admin-email-modal" ng-click="contact.editEditAdminEmailDialog(admin_email, $index)"></i>
+                        </td>
+                        <td class="delete-icon" >
+                            <i class="fa fa-times" aria-hidden="true" data-toggle="modal" data-target="#delete-adm-email-modal"
+                               ng-click="contact.deleteAdmEmailDialog(admin_email, $index)"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="alert alert-success alert-reg-position"
+                     ng-show="contact.new_admin_email.success"
+                     role="alert">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i> New Admin Email Created!
+                </div>
+                <div class="alert alert-success alert-reg-position"
+                     ng-show="contact.edit_admin_email.success"
+                     role="alert">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i> The Admin Email for <strong>{{contact.edit_admin_email.name}}</strong> has been updated!
+                </div>
+                <button type="button" ng-disabled class="btn btn-success pull-right" data-toggle="modal" data-target="#add-admin-email-modal">
+                    <i class="fa fa-plus" aria-hidden="true"></i> New Admin Email
+                </button>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+
+    <div class="col-md-5">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Additional Contact Info</h3></div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Phone</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="admin_phone in contact.admin_phones">
+                        <td>
+                            {{contact.shortenText(admin_phone.name)}}
+                        </td>
+                        <td>
+                            {{contact.shortenText(admin_phone.title)}}
+                        </td>
+                        <td>
+                            {{admin_phone.phone_no}}
+                        </td>
+                        <td class="edit-icon">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal"
+                               data-target="#edit-admin-phone-modal" ng-click="contact.editAdminPhoneDialog(admin_phone, $index)"></i>
+                        </td>
+                        <td class="delete-icon" >
+                            <i class="fa fa-times" aria-hidden="true" data-toggle="modal" data-target="#delete-admin-phone-modal"
+                               ng-click="contact.deleteAdminPhoneDialog(admin_phone, $index)"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="alert alert-success alert-reg-position"
+                     ng-show="contact.new_admin_phone.success"
+                     role="alert">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i> New Admin Phone Created!
+                </div>
+                <div class="alert alert-success alert-reg-position"
+                     ng-show="contact.edit_admin_email.success"
+                     role="alert">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i> The Admin Email for <strong>{{contact.edit_admin_email.name}}</strong> has been updated!
+                </div>
+                <button type="button" ng-disabled class="btn btn-success pull-right" data-toggle="modal" data-target="#add-admin-phone-modal">
+                    <i class="fa fa-plus" aria-hidden="true"></i> New Additional Contact
+                </button>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+</div>
+<!-- End row -->
+
+<div id="add-admin-email-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Update Admin Email</h4>
+            </div>
+            <div class="modal-body">
+                <form name="contact.new_admin_email_form" class="form-horizontal" novalidate ng-submit="contact.createNewAdminEmail()">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Name</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="text" class="input-med form-control" name="name"
+                                   ng-model="contact.new_admin_email.name" ng-fade>
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="contact.new_admin_email_form.name.$error.required
+                                 && (contact.new_admin_email_form.name.$faded || contact.new_admin_email.submit)"
+                                 role="alert">
+                                Name is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Email</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="text" class="input-med form-control" name="email"
+                                   ng-model="contact.new_admin_email.email" ng-fade>
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="contact.new_admin_email_form.email.$error.required
+                                 && (contact.new_admin_email_form.email.$faded || contact.new_admin_email.submit)"
+                                 role="alert">
+                                Email is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Daily</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="daily"
+                                           ng-model="contact.new_admin_email.daily">
+                            </toggle-switch>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Weekly</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="weekly"
+                                           ng-model="contact.new_admin_email.weekly">
+                            </toggle-switch>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Admin</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="admin"
+                                           ng-model="contact.new_admin_email.admin">
+                            </toggle-switch>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success">Submit</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="edit-admin-email-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">New Admin Email</h4>
+            </div>
+            <div class="modal-body">
+                <form name="contact.edit_admin_email_form" class="form-horizontal" novalidate ng-submit="contact.updateAdminEmail()">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Name</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="text" class="input-med form-control" name="name"
+                                   ng-model="contact.edit_admin_email.name" ng-fade>
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="contact.edit_admin_email_form.name.$error.required
+                                 && (contact.edit_admin_email_form.name.$faded || contact.edit_admin_email.submit)"
+                                 role="alert">
+                                Name is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Email</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="text" class="input-med form-control" name="email"
+                                   ng-model="contact.edit_admin_email.email" ng-fade>
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="contact.edit_admin_email_form.email.$error.required
+                                 && (contact.edit_admin_email_form.email.$faded || contact.edit_admin_email.submit)"
+                                 role="alert">
+                                Email is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Daily</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="daily"
+                                           ng-model="contact.edit_admin_email.daily">
+                            </toggle-switch>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Weekly</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="weekly"
+                                           ng-model="contact.edit_admin_email.weekly">
+                            </toggle-switch>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Admin</label>
+                        <div class="col-md-9 m-t-10">
+                            <toggle-switch name="admin"
+                                           ng-model="contact.edit_admin_email.admin">
+                            </toggle-switch>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="delete-adm-email-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Delete Admin Email</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the admin email for <span class="bold">{{contact.delete_admin_email_name}}</span>?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" ng-click="contact.confirmDeleteEmail()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="add-admin-phone-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">New Additional Contact</h4>
+            </div>
+            <div class="modal-body">
+                <form name="contact.new_admin_phone_form" class="form-horizontal" novalidate ng-submit="contact.createNewAdminPhone()">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Name</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="text" class="input-med form-control" name="name"
+                                   ng-model="contact.new_admin_phone.name" ng-fade ng-required="true">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="contact.new_admin_phone_form.name.$error.required
+                                 && (contact.new_admin_phone_form.name.$faded || contact.new_admin_phone.submit)"
+                                 role="alert">
+                                Name is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Title</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="text" class="input-med form-control" name="title"
+                                   ng-model="contact.new_admin_phone.title" ng-fade maxlength="10">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Phone Number</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="text" class="input-med form-control" name="phone_no"
+                                   ng-model="contact.new_admin_phone.phone_no" ng-fade ng-required="true">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="contact.new_admin_phone_form.phone_no.$error.required
+                                 && (contact.new_admin_phone_form.phone_no.$faded || contact.new_admin_phone.submit)"
+                                 role="alert">
+                                Phone Number is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="edit-admin-phone-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">New Additional Contact</h4>
+            </div>
+            <div class="modal-body">
+                <form name="contact.edit_admin_phone_form" class="form-horizontal" novalidate ng-submit="contact.updateAdminPhone()">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Name</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="text" class="input-med form-control" name="name"
+                                   ng-model="contact.edit_admin_phone.name" ng-fade ng-required="true">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="contact.edit_admin_phone.name.$error.required
+                                 && (contact.edit_admin_phone.name.$faded || contact.edit_admin_phone.submit)"
+                                 role="alert">
+                                Name is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Title</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="text" class="input-med form-control" name="title"
+                                   ng-model="contact.edit_admin_phone.title" ng-fade maxlength="10">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Email</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="text" class="input-med form-control" name="email"
+                                   ng-model="contact.edit_admin_phone.email" ng-fade maxlength="10">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Phone Number</label>
+                        <div class="col-md-9 m-t-5">
+                            <input type="text" class="input-med form-control" name="phone_no"
+                                   ng-model="contact.edit_admin_phone.phone_no" ng-fade ng-required="true">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="contact.edit_admin_phone.phone_no.$error.required
+                                 && (contact.edit_admin_phone.phone_no.$faded || contact.edit_admin_phone.submit)"
+                                 role="alert">
+                                Phone Number is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="delete-admin-phone-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >Delete Additional Contact</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the admin phone for <span class="bold">{{contact.delete_admin_phone_name}}</span>?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" ng-click="contact.confirmDeleteAdminPhone()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

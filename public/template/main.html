@@ -1,0 +1,114 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+
+                <i class="fa fa-plus-square header-icon float-right" aria-hidden="true" ng-show="!main.fullFilters"
+                   ng-click="main.fullFilters = !main.fullFilters"></i>
+
+                <i class="fa fa-minus-square header-icon float-right" aria-hidden="true" ng-show="main.fullFilters"
+                   ng-click="main.fullFilters = !main.fullFilters"></i>
+                <h3 class="panel-title">Filter</h3>
+            </div>
+
+            <div ng-show="main.fullFilters" class="panel-body">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Account
+                        </label>
+
+                        <div class="col-md-9 mt-15">
+                            <select name="brand" class="m-t-5 form-control input-large float-right m-t-negative-five"
+                                    ng-model="main.transactionParameters.account"
+                                    ng-change="main.loadAllAccountTransactions()"
+                                    ng-options="account.oanda_id as account.account_name for account in main.oandaAccounts">
+                                <option class="placeholder-color" value="" selected disabled>Account</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Exchange
+                        </label>
+
+                        <div class="col-md-9 mt-15">
+                            <select name="brand" class="m-t-5 form-control input-large float-right m-t-negative-five"
+                                    ng-model="main.transactionParameters.exchange"
+                                    ng-change="main.loadTransactions()"
+                                    ng-options="exchange.exchange as exchange.exchange for exchange in main.exchanges">
+                                <option class="placeholder-color" value="" selected disabled>Exchange</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Past This Month</label>
+                        <div class="col-md-9 m-t-10">
+                            <input type="checkbox" name="past_this_month" ng-change="main.loadTransactions()"
+                                   ng-model="main.transactionParameters.pastThisMonth">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-contain pull-right">
+                    <button ng-click="main.loadTransactions()" class = 'btn-success btn'>Submit</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-12">
+            <div class="panel panel-primary" ng-class="main.fiftyOpacityOffset()">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Transactions</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Oanda ID</th>
+                                <th>Exchange</th>
+                                <th>Units</th>
+                                <th>Open</th>
+                                <th>Price</th>
+                                <th>Close</th>
+                                <th>Price</th>
+                                <th></th>
+                                <th>Update</th>
+                                <th>P/L</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="transaction in main.transactions">
+                                <td>{{transaction.oanda_open_id}}</td>
+                                <td>{{transaction.instrument}}</td>
+                                <td>{{transaction.units}}</td>
+                                <td>{{transaction.open_date_time}}</td>
+                                <td>{{transaction.price}}</td>
+                                <td>{{transaction.close_date_time}}</td>
+                                <td>{{transaction.close_price}}</td>
+                                <td class="text-center table-icon">
+                                    <i class="fa fa-angle-double-up" ng-show="transaction.side == 1" aria-hidden="true"></i>
+                                    <i class="fa fa-angle-double-down" ng-show="transaction.side == -1" aria-hidden="true"></i>
+                                </td>
+                                <td>{{transaction.trade_update_date_time}}</td>
+                                <td ng-class="main.gainLossClass(transaction.profit_loss)"><span ng-show="transaction.profit_loss != 0">{{transaction.profit_loss}}</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

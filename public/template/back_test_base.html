@@ -1,0 +1,54 @@
+<div class="container">
+<div class="row">
+    <div class="col-xs-12 col-md-12" ng-repeat="month in back_test.monthData">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Gain/Loss Offset</th>
+                    <th>Biggest Gain</th>
+                    <th>Biggest Loss</th>
+                    <th>Gain Count</th>
+                    <th>Loss Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{month.transaction_month}}</td>
+                    <td>{{month.sum_gain_loss}}</td>
+                    <td>{{month.max_gain}}</td>
+                    <td>{{month.max_loss}}</td>
+                    <td>{{month.positiveCount}}</td>
+                    <td>{{month.negativeCount}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Gain Loss</th>
+                    <th>10K Gain Loss</th>
+                    <th>Month Gain Loss</th>
+                    <th>Month Account Value</th>
+                    <th>Running Account Gain Loss</th>
+                    <th>Running Account Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="monthTransaction in month.transactions">
+                    <td>{{monthTransaction.open_date_date}}</td>
+                    <td ng-class="back_test.gainLossClass(monthTransaction.gain_loss)">{{monthTransaction.gain_loss}}</td>
+                    <td ng-class="back_test.gainLossClass(monthTransaction.ten_k_gain_loss)">{{monthTransaction.ten_k_gain_loss}}</td>
+                    <td ng-class="back_test.gainLossClass(monthTransaction.mounth_account_gain_loss)">{{monthTransaction.mounth_account_gain_loss}}</td>
+                    <td ng-class="back_test.gainLossClass(monthTransaction.mounth_account_amount)">{{monthTransaction.mounth_account_amount}}</td>
+                    <td ng-class="back_test.gainLossClass(monthTransaction.running_account_gain_loss)">{{monthTransaction.running_account_gain_loss}}</td>
+                    <td ng-class="back_test.gainLossClass(monthTransaction.running_account_amount)">{{monthTransaction.running_account_amount}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,143 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Home</h4>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Filter Merchants</h3>
+            </div>
+            <div class="panel-body">
+                <div class="merchant-search">
+                    <form name="search_form" novalidate ng-submit="merchantSearch()">
+                        <div class="form-group">
+                            <label for="search_text">Search</label>
+                            <input type="text" class="input-large form-control" name="search_text" placeholder=""
+                                   ng-model="search_text" ng-required="true">
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="search_form.search_text.$error.required && search_submit"
+                                 role="alert">
+                                You must type at least one letter into the Merchant Name field.
+                            </div>
+                        </div>
+
+                        <div class="submit-contain">
+                            <button class = 'btn-success btn'>Search</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="merchant-search">
+                    <form name="orders_search_form" novalidate ng-submit="orderSearch()">
+                        <div class="form-group">
+                            <label for="search_text">Orders Search</label>
+                            <input type="text" class="input-large form-control" name="search_text" placeholder=""
+                                   ng-model="order_search_text" ng-required="true">
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="search_form.search_text.$error.required && search_submit"
+                                 role="alert">
+                                You must type at least one letter into the Merchant Name field.
+                            </div>
+                        </div>
+
+                        <div class="submit-contain">
+                            <button class = 'btn-success btn'>Search</button>
+                        </div>
+                    </form>
+                </div>
+
+                <label>Filter by First Letter</label>
+                <ul class="alphabet">
+                    <li ng-class="currentLetter('A')" ng-click="merchantLetter('A')">A</li>
+                    <li ng-class="currentLetter('B')" ng-click="merchantLetter('B')">B</li>
+                    <li ng-class="currentLetter('C')" ng-click="merchantLetter('C')">C</li>
+                    <li ng-class="currentLetter('D')" ng-click="merchantLetter('D')">D</li>
+                    <li ng-class="currentLetter('E')" ng-click="merchantLetter('E')">E</li>
+                    <li ng-class="currentLetter('F')" ng-click="merchantLetter('F')">F</li>
+                    <li ng-class="currentLetter('G')" ng-click="merchantLetter('G')">G</li>
+                    <li ng-class="currentLetter('H')" ng-click="merchantLetter('H')">H</li>
+                    <li ng-class="currentLetter('I')" ng-click="merchantLetter('I')">I</li>
+                    <li ng-class="currentLetter('J')" ng-click="merchantLetter('J')">J</li>
+                    <li ng-class="currentLetter('K')" ng-click="merchantLetter('K')">K</li>
+                    <li ng-class="currentLetter('L')" ng-click="merchantLetter('L')">L</li>
+                    <li ng-class="currentLetter('M')" ng-click="merchantLetter('M')">M</li>
+                    <li ng-class="currentLetter('N')" ng-click="merchantLetter('N')">N</li>
+                    <li ng-class="currentLetter('O')" ng-click="merchantLetter('O')">O</li>
+                    <li ng-class="currentLetter('P')" ng-click="merchantLetter('P')">P</li>
+                    <li ng-class="currentLetter('Q')" ng-click="merchantLetter('Q')">Q</li>
+                    <li ng-class="currentLetter('R')" ng-click="merchantLetter('R')">R</li>
+                    <li ng-class="currentLetter('S')" ng-click="merchantLetter('S')">S</li>
+                    <li ng-class="currentLetter('T')" ng-click="merchantLetter('T')">T</li>
+                    <li ng-class="currentLetter('U')" ng-click="merchantLetter('U')">U</li>
+                    <li ng-class="currentLetter('V')" ng-click="merchantLetter('V')">V</li>
+                    <li ng-class="currentLetter('W')" ng-click="merchantLetter('W')">W</li>
+                    <li ng-class="currentLetter('X')" ng-click="merchantLetter('X')">X</li>
+                    <li ng-class="currentLetter('Y')" ng-click="merchantLetter('Y')">Y</li>
+                    <li ng-class="currentLetter('Z')" ng-click="merchantLetter('Z')">Z</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Home</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <button class="pull-right btn btn-primary btn-lg" ng-click="createMerchant()">Create New Merchant</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Filter Results</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h5 class="pre-load-text" ng-show="!initial_search">No Filter Set</h5>
+                        <div class="filter-loader-contain" ng-show="processing"><div class="filter-loader"></div></div>
+                        <table class="table table-hover" ng-show="result_merchants.length > 0">
+                            <thead>
+                            <tr>
+                                <th>Merchant ID</th>
+                                <th>Business Name</th>
+                                <th>Address</th>
+                                <th>Phone Number</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="merchant in result_merchants" ng-click="viewMerchant(merchant)">
+                                <td>{{merchant.merchant_id}}</td>
+                                <td>{{merchant.name}}</td>
+                                <td>
+                                    {{merchant.address1}}<BR>
+                                    {{merchant.city}}, {{merchant.state}} {{merchant.zip}}
+                                </td>
+                                <td>{{formatPhone(merchant.phone_no)}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

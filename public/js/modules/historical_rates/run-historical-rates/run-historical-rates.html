@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Update Historical Rates</h4>
+            <ol class="breadcrumb pull-right">
+                <li><a href="#home">Home</a></li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Basic example -->
+    <div class="col-md-8">
+        <div class="panel panel-primary" ng-class="hr.fiftyOpacity(hr.processing)">
+            <div class="panel-heading"><h3 class="panel-title">New Back Test Group</h3></div>
+            <div class="panel-body">
+                <form name="hr.create_form" class="form-horizontal" novalidate ng-submit="hr.runSpecificHistoricalRates()">
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Currency Pairs</label>
+                        <div class="col-md-9">
+                            <select name="exchange" class="form-control input-large margin-top-five" ng-required="!hr.newBacktestGroup.all_currency_pairs"
+                                    ng-model="hr.currencyId" ng-fade
+                                    ng-options="exchange.id as exchange.exchange for exchange in hr.exchanges">
+                            </select>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="hr.create_form.exchange.$error.required
+                                         && (hr.create_form.exchange.$faded || hr.newBacktestGroup.submit)"
+                                 role="alert">
+                                Exchange is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Frequency</label>
+                        <div class="col-md-9">
+                            <select name="frequency" class="form-control input-large margin-top-five" ng-required="!hr.newBacktestGroup.all_frequencies"
+                                    ng-model="hr.frequencyId" ng-fade
+                                    ng-options="frequency.id as frequency.frequency for frequency in hr.frequencies">
+                            </select>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="hr.create_form.frequency.$error.required
+                                         && (hr.create_form.frequency.$faded || hr.newBacktestGroup.submit)"
+                                 role="alert">
+                                Frequency is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn'>Submit</button>
+                    </div>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+</div>

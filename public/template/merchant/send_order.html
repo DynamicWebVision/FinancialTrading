@@ -1,0 +1,189 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Order Receiving Info</h3></div>
+            <div class="panel-body">
+                <form name="merchant_info_form" novalidate ng-submit="updateSendOrder()">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Format</th>
+                                <th>Address</th>
+                                <th>Delay</th>
+                                <th>Text</th>
+                                <th>Info</th>
+                                <th>Type</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="send_order in send_orders">
+                            <td>{{shortenBackend(send_order.message_format_value)}}</td>
+                            <td>{{send_order.delivery_addr}}</td>
+                            <td>{{send_order.delay}}</td>
+                            <td>{{send_order.message_text}}</td>
+                            <td>{{send_order.info}}</td>
+                            <td>{{send_order.message_type_value}}</td>
+                            <td class="edit-icon">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal"
+                                   data-target="#edit-send-order-modal" ng-click="editSendOrderDialog(send_order, $index)"></i>
+                            </td>
+                            <td class="delete-icon">
+                                <i class="fa fa-times" aria-hidden="true" data-toggle="modal"
+                                   data-target="#delete-send-order-modal" ng-click="deleteSendOrderDialog(send_order, $index)"></i>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="alert alert-success alert-reg-position form-submit-success"
+                         ng-show="send_order_update_success"
+                         role="alert">
+                        <i class="fa fa-check-circle" aria-hidden="true"></i> The order receiving record <strong>{{edit_send_order.message_text}}</strong> has been updated!
+                    </div>
+                    <div class="alert alert-success alert-reg-position form-submit-success"
+                         ng-show="update_success"
+                         role="alert">
+                        <i class="fa fa-check-circle" aria-hidden="true"></i> Send Order Saved!
+                    </div>
+                    <button type="button" ng-disabled class="btn btn-default pull-right btn-success" data-toggle="modal" data-target="#add-send-order-modal">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Create New Order Receiving
+                    </button>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+</div>
+
+<div id="add-send-order-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Create Order Receiving</h4>
+            </div>
+            <form name="ordering.new_send_order_form" novalidate ng-submit="ordering.createSendOrder()">
+                <div class="modal-body">
+                    <label>Format</label>
+                    <select name="message_format" class="form-control input-large margin-top-five" ng-required="true"
+                            ng-model="ordering.new_send_order.message_format"
+                            ng-options="message_format.type_id_value as message_format.type_id_name for message_format in lookup.message_formats">
+                        <option class="placeholder-color" value="" selected disabled>Select</option>
+                    </select>
+
+                    <label>Address</label>
+                    <input type="text" name="delivery_addr" class="form-control input-med" placeholder="Enter Email"
+                           ng-model="ordering.new_send_order.delivery_addr" >
+
+                    <label>Delay</label>
+                    <input type='text' class='form-control input-med' name='delay' placeholder="Enter Seconds"
+                           ng-model='ordering.new_send_order.delay'>
+
+                    <label>Message Text</label>
+                    <textarea class="form-control" rows="3" name="message_text" ng-model="ordering.new_send_order.message_text" ng-required='true'></textarea>
+                    <div class='alert alert-danger ng-hide alert-reg-position'
+                         ng-show='ordering.new_send_order_form.message_text.$error.required && (ordering.new_send_order_form.message_text.$faded || ordering.new_send_order.submit)'role='alert'>
+                        Message text is required.
+                    </div>
+
+                    <label>Info</label>
+                    <input type='text' class='form-control input-med' name='info'
+                           ng-model='ordering.new_send_order.info'>
+
+                    <label>Message Type</label>
+                    <select name="message_type" class="form-control input-large margin-top-five" ng-required="true"
+                            ng-model="ordering.new_send_order.message_type"
+                            ng-options="message_type.type_id_value as message_type.type_id_name for message_type in lookup.message_types">
+                        <option class="placeholder-color" value="" selected disabled>Select</option>
+                    </select>
+                    <div class='alert alert-danger ng-hide alert-reg-position'
+                         ng-show='ordering.new_send_order_form.message_type.$error.required && (ordering.new_send_order_form.message_type.$faded || ordering.new_send_order.submit)'role='alert'>
+                        Message Type is required.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success" ng-click="ordering.createSendOrder()">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="delete-send-order-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >Delete Order Receiving</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove the order receiving record for <strong>{{delete_send_order_desc}}</strong>?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" ng-click="confirmDeleteSendOrder()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="edit-send-order-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >Edit Order Receiving</h4>
+            </div>
+            <form name="edit_send_order_form" novalidate ng-submit="editSendOrder()">
+                <div class="modal-body">
+                    <label>Format</label>
+                    <select name="message_format" class="form-control input-large margin-top-five" ng-required="true"
+                            ng-model="edit_send_order.message_format"
+                            ng-options="message_format.type_id_value as message_format.type_id_name for message_format in lookup.message_formats">
+                        <option class="placeholder-color" value="" selected disabled>Select</option>
+                    </select>
+
+                    <label>Address</label>
+                    <input type="text" name="delivery_addr" class="form-control input-med" placeholder="Enter Email"
+                           ng-model="edit_send_order.delivery_addr" >
+
+                    <label>Delay</label>
+                    <input type='text' class='form-control input-med' name='delay' placeholder="Enter Seconds"
+                           ng-model='edit_send_order.delay'>
+
+                    <label>Message Text</label>
+                    <textarea class="form-control" rows="3" name="message_text" ng-model="edit_send_order.message_text" ng-required='true'></textarea>
+                    <div class='alert alert-danger ng-hide alert-reg-position'
+                         ng-show='edit_send_order_form.message_text.$error.required && (edit_send_order_form.message_text.$faded || edit_send_order.submit)'role='alert'>
+                        Message text is required.
+                    </div>
+
+                    <label>Info</label>
+                    <input type='text' class='form-control input-med' name='info'
+                           ng-model='edit_send_order.info'>
+
+                    <label>Message Type</label>
+                    <select name="message_type" class="form-control input-large margin-top-five" ng-required="true"
+                            ng-model="edit_send_order.message_type"
+                            ng-options="message_type.type_id_value as message_type.type_id_name for message_type in lookup.message_types">
+                        <option class="placeholder-color" value="" selected disabled>Select</option>
+                    </select>
+                    <div class='alert alert-danger ng-hide alert-reg-position'
+                         ng-show='edit_send_order_form.message_type.$error.required && (edit_send_order_form.message_type.$faded || edit_send_order.submit)'role='alert'>
+                        Message Type is required.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success" >Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

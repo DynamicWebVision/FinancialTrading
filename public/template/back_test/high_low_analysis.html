@@ -1,0 +1,232 @@
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <i class="fa fa-plus-square header-icon float-right" aria-hidden="true" ng-show="!hl.fullFilters"
+                       ng-click="hl.fullFilters = !hl.fullFilters"></i>
+
+                    <i class="fa fa-minus-square header-icon float-right" aria-hidden="true" ng-show="hl.fullFilters"
+                       ng-click="hl.fullFilters = !hl.fullFilters"></i>
+                    <h3 class="panel-title">Filter</h3>
+                </div>
+
+                <div ng-show="hl.fullFilters" class="panel-body">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                Take Profit
+                            </label>
+
+                            <div class="col-md-9 mt-15">
+                                <input name="brand" class="m-t-5 form-control input-large float-right m-t-negative-five"
+                                        ng-model="hl.takeProfitValue"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                Stop Loss
+                            </label>
+
+                            <div class="col-md-9 mt-15">
+                                <input name="brand" class="m-t-5 form-control input-large float-right m-t-negative-five"
+                                       ng-model="hl.stopLossValue"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-contain pull-right">
+                        <button ng-click="hl.evaluateTpSl()" class = 'btn-success btn'>Submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+                <div class="panel panel-default" >
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{hl.info.id}} - {{hl.info.strategy_name}} {{hl.info.exchange}} {{hl.info.frequency}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">Variables</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-show="hl.info.variable_1.length > 1">
+                                        <td>{{hl.info.variable_1_desc}}</td>
+                                        <td>{{hl.info.variable_1}}</td>
+                                    </tr>
+
+                                    <tr ng-show="hl.info.variable_2.length > 1">
+                                        <td>{{hl.info.variable_2_desc}}</td>
+                                        <td>{{hl.info.variable_2}}</td>
+                                    </tr>
+
+                                    <tr ng-show="hl.info.variable_3.length > 1">
+                                        <td>{{hl.info.variable_3_desc}}</td>
+                                        <td>{{hl.info.variable_3}}</td>
+                                    </tr>
+
+                                    <tr ng-show="hl.info.variable_4.length > 1">
+                                        <td>{{hl.info.variable_4_desc}}</td>
+                                        <td>{{hl.info.variable_4}}</td>
+                                    </tr>
+
+                                    <tr ng-show="hl.info.variable_5.length > 1">
+                                        <td>{{hl.info.variable_5_desc}}</td>
+                                        <td>{{hl.info.variable_5}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">TP/SL Stats</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Take Profit Hits</td>
+                                        <td>{{hl.tpHitCount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stop Loss Hits</td>
+                                        <td>{{hl.slHitCount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Net Pips</td>
+                                        <td>{{hl.netPips}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-md-4">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="4">High Low Analysis</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="positive-green" colspan="2">Gains</td>
+                                        <td class="negative-green" colspan="2">Losses</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Median
+                                        </td>
+                                        <td>
+                                            {{hl.info.median_max_gain}}
+                                        </td>
+                                        <td>
+                                            Median
+                                        </td>
+                                        <td>
+                                            {{hl.info.median_max_loss}}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            Mean
+                                        </td>
+                                        <td>
+                                            {{hl.info.mean_max_gain}}
+                                        </td>
+                                        <td>
+                                            Mean
+                                        </td>
+                                        <td>
+                                            {{hl.info.mean_max_loss}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class=" col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{month.transaction_month}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Open</th>
+                                        <th></th>
+                                        <th>Close Date</th>
+                                        <th>High Date</th>
+                                        <th>Highest</th>
+                                        <th>Low Date</th>
+                                        <th>Lowest</th>
+
+                                        <th>TP/SL</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="transaction in hl.transactions">
+                                        <td>{{transaction.open_date_date}}</td>
+                                        <td class="text-center table-icon">
+                                            <i class="fa fa-angle-double-up" ng-show="monthTransaction.position_type == 1" aria-hidden="true"></i>
+                                            <i class="fa fa-angle-double-down" ng-show="monthTransaction.position_type == -1" aria-hidden="true"></i>
+                                        </td>
+                                        <td>{{transaction.close_date_date}}</td>
+
+                                        <td>{{transaction.highest_price_date}}</td>
+                                        <td>{{transaction.highPips}}</td>
+
+                                        <td>{{transaction.lowest_price_date}}</td>
+                                        <td>{{transaction.lowPips}}</td>
+
+                                        <td class="positive-green" ng-show="transaction.outcome == 'tp'">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                            Take Profit
+                                        </td>
+
+                                        <td class="negative-green" ng-show="transaction.outcome == 'sl'">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                            Stop Loss
+                                        </td>
+
+                                        <td ng-show="transaction.outcome == 'np'">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            New Position {{transaction.np_gl}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

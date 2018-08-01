@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Hours</h4>
+            <ol class="breadcrumb pull-right">
+                <li><a href="/home">Merchant</a></li>
+                <li><a href="#hours">Hours</a></li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div id="hours-default-section" class="row">
+    <div class="col-md-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Hours</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Weekday</th>
+                                    <th>Open</th>
+                                    <th>Close</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="hour in vm_hour.hours">
+                                    <td>{{vm_hour.decodeWeekday(hour.day_of_week)}}</td>
+                                    <td>
+                                        <input type="time" class="form-control input-med inline" placeholder="HH:MM" name="open"
+                                               ng-model="hour.open_human" ng-required="true" maxlength="5">
+
+                                        <select name="open_am_pm" class="form-control input-micro inline margin-left-five"
+                                                ng-model="hour.open_am_pm" ng-required="true" >
+                                            <option value="am">am</option>
+                                            <option value="pm">pm</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="time" class="form-control input-med inline" placeholder="HH:MM" name="close"
+                                               ng-model="hour.close_human" ng-required="true" maxlength="5">
+
+                                        <select name="close_am_pm" class="form-control input-micro inline margin-left-five"
+                                                ng-model="hour.close_am_pm" ng-required="true" >
+                                            <option value="am">am</option>
+                                            <option value="pm">pm</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+
+/* make sidebar nav vertical */
+@media (min-width: 768px) {
+    .vertical-nav {
+        width: 200px;
+    }
+}

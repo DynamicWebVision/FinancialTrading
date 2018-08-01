@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Hours</h4>
+            <ol class="breadcrumb pull-right">
+                <li><a href="/home">Merchant</a></li>
+                <li><a href="#hours">Hours</a></li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div id="hours-default-section" class="row">
+    <div class="col-md-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <h3 class="panel-title col-md-6">Transactions</h3>
+                    <select name="oanda_accounts" class="form-control input-x-large pull-right oanda-select col-md-6"
+                            ng-model="transaction.currentOandaAccount" ng-change="transaction.changeOandaAccount()"
+                            ng-options="oandaAccount.oanda_id as oandaAccount.account_name for oandaAccount in transaction.oandaAccounts">
+                    </select>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12" ng-repeat="month in transaction.monthData">
+
+                    </div>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Gain/Loss Offset</th>
+                                    <th>Bjig</th>
+                                    <th>Close</th>
+                                    <th>Gain/Loss</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            {{transaction.tradeStats}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+transaction_month = "01/2010"
+sum(gain_loss) = "0.03867"
+max(gain_loss) = "0.02071"
+min(gain_loss) = "-0.00136"
+transactions = {array} [14]
+positiveCount = 8
+negativeCount = 6

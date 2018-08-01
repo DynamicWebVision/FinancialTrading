@@ -1,0 +1,154 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Create New Merchant</h4>
+            <ol class="breadcrumb pull-right">
+                <li><a href="#home">Home</a></li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Basic example -->
+    <div class="col-md-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">New Merchant</h3></div>
+            <div class="panel-body">
+                <form name="new_merchant_form" class="form-horizontal" novalidate ng-submit="create()">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Name</label>
+                        <div class="col-md-9">
+                            <input type="text" class="input-med form-control" name="name" placeholder="Enter Merchant Name"
+                                   ng-model="new_merchant.name" ng-fade ng-required="true">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="new_merchant_form.name.$error.required
+                                 && (new_merchant_form.name.$faded || new_merchant.submit)"
+                                 role="alert">
+                                Name is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Brand</label>
+                        <div class="col-md-9">
+                            <select name="brand" class="form-control input-large margin-top-five" ng-required="true"
+                                    ng-model="new_merchant.brand"
+                                    ng-options="brand.brand_id as brand.brand_name for brand in brands">
+                                <option class="placeholder-color" value="" selected disabled>Brand</option>
+                            </select>
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="new_merchant_form.brand.$error.required
+                                 && (new_merchant_form.brand.$faded || new_merchant.submit)"
+                                 role="alert">
+                                Brand is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Phone  Number</label>
+                        <div class="col-md-9">
+                            <input type="text" class="input-large form-control" name="phone_no" placeholder="Phone" ng-fade
+                                   ng-model="new_merchant.phone_no" ng-required="true">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="new_merchant_form.phone_no.$error.required
+                                 && (new_merchant_form.phone_no.$faded || new_merchant.submit)"
+                                 role="alert">
+                                Phone Number is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Address</label>
+                        <div class="col-md-9 mt-5">
+                            <input type="text" class="input-large form-control" name="address1" placeholder="Address Line 1"
+                                   ng-model="new_merchant.address1" ng-required="true" ng-fade>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="new_merchant_form.addressline1.$error.required
+                                 && (new_merchant_form.addressline1.$faded || new_merchant.submit)"
+                                 role="alert">
+                                Address Line 1 is required.
+                            </div>
+
+                            <input type="text" class="input-large form-control margin-top-five" name="address2" placeholder="Address Line 2"
+                                   ng-model="new_merchant.address2" ng-fade>
+
+                            <input type="text" class="input-med form-control margin-top-five inline" name="city" placeholder="City"
+                                   ng-model="new_merchant.city" ng-required="true" ng-fade>
+
+
+                            <select name="state" class="form-control input-micro inline margin-left-five" ng-required="true"
+                                    ng-model="new_merchant.state"
+                                    ng-options="state.type_id_value as state.type_id_value for state in lookup.states">
+                                <option class="placeholder-color" value="" selected disabled>ST</option>
+                            </select>
+
+                            <input type="text" class="input-small form-control margin-left-five inline" name="zip" placeholder="Zip Code"
+                                   ng-model="new_merchant.zip" ng-required="true" ng-fade>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="new_merchant_form.city.$error.required && (new_merchant_form.city.$faded || new_merchant.submit)"
+                                 role="alert">
+                                City is required.
+                            </div>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="new_merchant_form.state.$error.required && (new_merchant_form.state.$faded || new_merchant.submit)"
+                                 role="alert">
+                                State is required.
+                            </div>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="new_merchant_form.zip.$error.required && (new_merchant_form.zip.$faded || new_merchant.submit)"
+                                 role="alert">
+                                Zip code is required.
+                            </div>
+
+                            <select name="country" class="form-control input-large margin-top-five" ng-required="true"
+                                    ng-model="new_merchant.country"
+                                    ng-options="country.type_id_value as country.type_id_name for country in lookup.countries">
+                                <option class="placeholder-color" value="" selected disabled>Country</option>
+                            </select>
+
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="new_merchant_form.country.$error.required && (new_merchant_form.country.$faded || new_merchant.submit)"
+                                 role="alert">
+                                Country is required.
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger ng-hide alert-reg-position"
+                                 ng-show="merchant_exist_error"
+                                 role="alert">
+                                The merchant name and phone number combination you entered has already been stored in our database.  <a href="/merchant">Click here</a> to view the previously created merchant.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div ng-show="new_merchant.processing" class="form-loader">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                        <div class="alert alert-success alert-reg-position form-submit-success"
+                             ng-show="tax.sales_tax.success"
+                             role="alert">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i> Sales Tax Updated!
+                        </div>
+                    </div>
+
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn'>Submit</button>
+                    </div>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+</div>

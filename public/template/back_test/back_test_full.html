@@ -1,0 +1,354 @@
+<div class="container">
+    <div class="row">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-default" >
+                    <div class="panel-heading">
+                        <h3 class="panel-title">BTG {{full.backTestFactory.id}} BT {{full.info.id}} - Process ID {{full.info.processed_id}} {{full.info.strategy_name}} {{full.info.exchange}} {{full.info.frequency}}</h3>
+                        <div class="pull-right">
+                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="full.openCreateStrategyNote()">Strategy Note</button>
+                        </div>
+                        <div class="pull-right">
+                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="full.rollBackConfirm()">Roll Back Iteration</button>
+                        </div>
+                        <div class="pull-right">
+                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="full.copyToOtherPairs()">Copy To Other Pairs</button>
+                        </div>
+                        <div class="pull-right">
+                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="full.setUpNewBackTestGroupWithIteration()">Create BT Full from Iteration</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">Variables</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-show="full.info.variable_1.length > 1">
+                                        <td>{{full.info.variable_1_desc}}</td>
+                                        <td>{{full.info.variable_1}}</td>
+                                    </tr>
+
+                                    <tr ng-show="full.info.variable_2.length > 1">
+                                        <td>{{full.info.variable_2_desc}}</td>
+                                        <td>{{full.info.variable_2}}</td>
+                                    </tr>
+
+                                    <tr ng-show="full.info.variable_3.length > 1">
+                                        <td>{{full.info.variable_3_desc}}</td>
+                                        <td>{{full.info.variable_3}}</td>
+                                    </tr>
+
+                                    <tr ng-show="full.info.variable_4.length > 1">
+                                        <td>{{full.info.variable_4_desc}}</td>
+                                        <td>{{full.info.variable_4}}</td>
+                                    </tr>
+
+                                    <tr ng-show="full.info.variable_5.length > 1">
+                                        <td>{{full.info.variable_5_desc}}</td>
+                                        <td>{{full.info.variable_5}}</td>
+                                    </tr>
+
+                                    <tr ng-show="full.info.take_profit_pips != 0">
+                                        <td>Take Profit</td>
+                                        <td>{{full.info.take_profit_pips}}</td>
+                                    </tr>
+
+                                    <tr ng-show="full.info.stop_loss_pips != 0">
+                                        <td>Stop Loss</td>
+                                        <td>{{full.info.stop_loss_pips}}</td>
+                                    </tr>
+
+                                    <tr ng-show="full.info.trailing_stop_pips != 0">
+                                        <td>Trailing Stop</td>
+                                        <td>{{full.info.trailing_stop_pips}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-md-3">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">Totals</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Net G/L Pips</td>
+                                        <td>{{full.info.total_gain_loss_pips}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>GL Ratio</td>
+                                        <td>{{full.getRatio(full.info.total_gain_transactions, full.info.total_loss_transactions)}}%</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <span class="positive-green">
+                                                {{full.info.total_gain_transactions}}
+                                            </span>-
+                                            <span class="negative-green">
+                                                {{full.info.total_loss_transactions}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Medians</td>
+                                        <td>
+                                            <span class="positive-green">
+                                                {{full.info.median_gain}}
+                                            </span>
+                                            <span class="negative-green">
+                                                {{full.info.median_loss}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Means</td>
+                                        <td>
+                                            <span class="positive-green">
+                                                {{full.info.mean_gain}}
+                                            </span>
+                                            <span class="negative-green">
+                                                {{full.info.mean_loss}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-md-3">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="4">Month Data</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Month Ratio</td>
+                                        <td>{{full.getRatio(full.info.positive_months, full.info.negative_months)}}%</td>
+
+                                        <td class="negative-green" colspan="2">Losses</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <span class="positive-green">
+                                                {{full.info.positive_months}}
+                                            </span> -
+                                            <span class="negative-green">
+                                                {{full.info.negative_months}}
+                                            </span>
+
+                                        <td>
+                                            Median
+                                        </td>
+                                        <td>
+                                            {{full.info.mean_month_losses}}
+                                        </td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td>
+                                            Mean
+                                        </td>
+                                        <td>
+                                            {{full.info.mean_month_pip_gl}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Gain Loss Together</td>
+                                        <td class="positive-green" colspan="2">Gains</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Median
+                                        </td>
+                                        <td>
+                                            {{full.info.median_month_pip_gl}}
+                                        </td>
+                                        <td>
+                                            Median
+                                        </td>
+                                        <td>
+                                            {{full.info.median_month_gains}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Mean
+                                        </td>
+                                        <td>
+                                            {{full.info.mean_month_pip_gl}}
+                                        </td>
+                                        <td>
+                                            Mean
+                                        </td>
+                                        <td>
+                                            {{full.info.mean_month_gains}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            {{full.backTestGroup}}
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th colspan="4">All Variables</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><span class="bold"> {{full.info.variable_1_desc}} (V_1)</span></td>
+                                    <td colspan="3">{{full.backTestFactory.backTestGroupVariables.variable_1}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="bold"> {{full.info.variable_2_desc}} (V_2)</span></td>
+                                    <td colspan="3">{{full.backTestFactory.backTestGroupVariables.variable_2}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="bold"> {{full.info.variable_3_desc}} (V_3)</span></td>
+                                    <td colspan="3">{{full.backTestFactory.backTestGroupVariables.variable_3}}</td>
+                                </tr>
+                                <tr ng-show="full.info.variable_1_desc.variable_4_desc.length > 2">
+                                    <td><span class="bold"> {{full.info.variable_4_desc}} (V_4)</span></td>
+                                    <td colspan="3">{{full.backTestFactory.backTestGroupVariables.variable_4}}</td>
+                                </tr>
+                                <tr ng-show="full.info.variable_1_desc.length > 2">
+                                    <td><span class="bold"> {{full.info.variable_5_desc}} (V_5)</span></td>
+                                    <td colspan="3">{{full.backTestFactory.backTestGroupVariables.variable_5}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="bold">Stop Losses</span></td>
+                                    <td colspan="3">{{full.backTestFactory.backTestGroupVariables.stop_losses}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="bold">Take Profits</span></td>
+                                    <td colspan="3">{{full.backTestFactory.backTestGroupVariables.take_profits}}</td>
+                                </tr>
+                                <tr ng-show="full.backTestFactory.backTestGroupVariables.trailing_stops.length > 2">
+                                    <td><span class="bold">Trailing Stops</span></td>
+                                    <td colspan="3">{{full.backTestFactory.backTestGroupVariables.trailing_stops}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+
+
+
+                        <div class="filter-loader-contain" ng-show="full.loadingBackTest"><div class="filter-loader"></div></div>
+
+                        <div class="cushion" ng-show="full.loadingBackTest"></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12">
+            <canvas id="line" class="chart chart-line" chart-data="full.chartAccountValues"
+                    chart-labels="full.chartLabels">
+            </canvas>
+        </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-12" ng-repeat="month in full.monthData">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{month.transaction_month}}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Gain/Loss Offset</th>
+                                    <th>Biggest Gain</th>
+                                    <th>Biggest Loss</th>
+                                    <th>Gain Count</th>
+                                    <th>Loss Count</th>
+                                    <th>10K GL</th>
+                                    <th>Running Account GL</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{month.transaction_month}}</td>
+                                    <td>{{month.sum_gain_loss}}</td>
+                                    <td>{{month.max_gain}}</td>
+                                    <td>{{month.max_loss}}</td>
+                                    <td>{{month.positiveCount}}</td>
+                                    <td>{{month.negativeCount}}</td>
+                                    <td>{{month.sum10KGainLoss}}</td>
+                                    <td>{{month.sumRunningAccountGainLoss}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Open Price</th>
+                                <th></th>
+                                <th>Close Date</th>
+                                <th>Close Price</th>
+                                <th>Close Reason</th>
+                                <th>Gain Loss</th>
+                                <th>10K Gain Loss</th>
+                                <th>Month Gain Loss</th>
+                                <th>Month Account Value</th>
+                                <th>Running Account Gain Loss</th>
+                                <th>Running Account Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="monthTransaction in month.transactions">
+                                <td>{{monthTransaction.open_date_date}}</td>
+                                <td>{{monthTransaction.open_price}}</td>
+                                <td class="text-center table-icon">
+                                    <i class="fa fa-angle-double-up" ng-show="monthTransaction.position_type == 1" aria-hidden="true"></i>
+                                    <i class="fa fa-angle-double-down" ng-show="monthTransaction.position_type == -1" aria-hidden="true"></i>
+                                </td>
+                                <td>{{monthTransaction.close_date_date}}</td>
+                                <td>{{monthTransaction.close_price}}</td>
+                                <td>{{monthTransaction.close_reason}}</td>
+                                <td ng-class="full.gainLossClass(monthTransaction.gain_loss)">{{monthTransaction.gain_loss}}</td>
+                                <td ng-class="full.gainLossClass(monthTransaction.ten_k_gain_loss)">{{monthTransaction.ten_k_gain_loss}}</td>
+                                <td ng-class="full.gainLossClass(monthTransaction.mounth_account_gain_loss)">{{monthTransaction.mounth_account_gain_loss}}</td>
+                                <td>{{monthTransaction.mounth_account_amount}}</td>
+                                <td ng-class="full.gainLossClass(monthTransaction.running_account_gain_loss)">{{monthTransaction.running_account_gain_loss}}</td>
+                                <td>{{monthTransaction.running_account_amount}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+
+<create-strategy-note></create-strategy-note>

@@ -1,0 +1,66 @@
+<div id="create-strategy-note-modal" class="modal fade promo-merchant-select-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Strategy Note</h4>
+            </div>
+            <form name="create_form" class="form-horizontal" novalidate ng-submit="create()">
+            <div class="modal-body">
+                <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Title</label>
+                            <div class="col-md-9">
+                                <input type="text" class="input-med form-control m-b-5" name="title" placeholder="Title"
+                                       ng-required="true" ng-fade
+                                       ng-model="strategyNote.newStrategyNote.title">
+
+                                <div class="alert alert-danger ng-hide alert-reg-position"
+                                     ng-show="sc.create_form.title.$error.required
+                                     && (sc.create_form.title.$faded || sc.submit)"
+                                     role="alert">
+                                    Title is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Note</label>
+                            <div class="col-md-9">
+                                <textarea class="form-control" rows="4" ng-required="true" ng-fade
+                                          name="note" ng-model="strategyNote.newStrategyNote.note"></textarea>
+
+                                <div class="alert alert-danger ng-hide alert-reg-position"
+                                     ng-show="create_form.note.$error.required
+                                     && (create_form.note.$faded || submit)"
+                                     role="alert">
+                                    Note is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"><input type="checkbox" ng-model="strategyNote.newStrategyNote.bt_feedback"> Backtest Feedback</label>
+                            <label class="col-md-3 control-label"><input type="checkbox" ng-model="strategyNote.newStrategyNote.live_feedback"> Live Feedback</label>
+                            <label class="col-md-3 control-label"><input type="checkbox" ng-model="strategyNote.newStrategyNote.for_future"> For Future</label>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div ng-show="processing" class="form-loader">
+                                <div class="line"></div>
+                                <div class="line"></div>
+                                <div class="line"></div>
+                                <div class="line"></div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-success" >Submit</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Users & Roles</h4>
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div id="delivery-section" class="row">
+    <!-- Basic example -->
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">Create User</h3></div>
+            <div class="panel-body">
+                <form name="create_user_form" novalidate ng-submit="createNewUser()">
+                    <div class="form-group">
+                        <label class = 'label-input'>Name</label>
+                        <input id = 'first_name' name="first_name" class = 'input-med form-control' type = 'text'
+                               ng-required="true" ng-model="new_user.first_name" ng-fade placeholder="First">
+                        <input id = 'last_name' name="last_name" class = 'input-med form-control margin-top' type = 'text'
+                               ng-required="true" ng-model="new_user.last_name" ng-fade placeholder="Last">
+
+                        <label class = 'label-input'>Email</label>
+                        <input id = 'email' name="email" class = 'input-med form-control' type = 'email'
+                               ng-required="true" ng-model="new_user.email" ng-fade placeholder="">
+
+                        <div class="alert alert-danger ng-hide alert-reg-position"
+                             ng-show="create_user_form.email.$error.required && (create_user_form.email.$faded || submit)"
+                             role="alert">Email is required.</div>
+
+                        <div class="alert alert-danger ng-hide alert-reg-position"
+                             ng-show="(create_user_form.email.$error.email && !create_user_form.email.$error.required) && (create_user_form.email.$faded || submit)"
+                             role="alert">Entered email is invalid.</div>
+
+                        <div class="alert alert-danger alert-reg-position ng-hide"
+                             ng-show="emailExist">This email has already been registered.</div>
+
+                        <label for="role">Role</label>
+                        <select name="role" class="form-control input-large margin-top-five" ng-required="true"
+                                ng-model="new_user.role" ng-fade
+                                ng-options="role.id as role.name for role in roles">
+                            <option class="placeholder-color" value="" selected disabled>Select</option>
+                        </select>
+
+                        <div class="alert alert-danger ng-hide alert-reg-position"
+                             ng-show="create_user_form.role.$error.required && (create_user_form.role.$faded || submit)"
+                             role="alert">Role is required.</div>
+
+                        <label class = 'label-input'>Password</label>
+                        <input type="password" name="password"  class="input-med form-control " placeholder="Password"
+                               ng-model="new_user.password" ng-fade ng-required="true">
+
+                        <input type="password" name="retype_password" class="input-med form-control inline margin-top" ng-fade
+                               match="new_user.password" placeholder="Confirm Password" ng-model="new_user.retype_password" ng-required="true">
+
+                        <div class="alert alert-danger ng-hide alert-reg-position"
+                             ng-show="(create_user_form.password.$error.required && create_user_form.retype_password.$error.required)
+                        && (create_user_form.retype_password.$faded || submit)"
+                             role="alert">Password is a required field.</div>
+
+                        <div class="alert alert-danger alert-reg-position ng-hide"
+                             ng-show="create_user_form.retype_password.$error.mismatch && (create_user_form.retype_password.$faded || submit)">
+                            Passwords do not match.
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success alert-reg-position form-submit-success"
+                         ng-show="create_user_success"
+                         role="alert">
+                        <i class="fa fa-check-circle" aria-hidden="true"></i> The user {{success_new_user}} Created!
+                    </div>
+
+                    <div class="submit-contain">
+                        <div class="absolute" ng-show="new_user_processing">
+                            <div class="loader"></div>
+                        </div>
+                        <button id = 'submitRegister' class = 'btn-success btn'>Create</button>
+                    </div>
+            </form><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+</div>
+</div>

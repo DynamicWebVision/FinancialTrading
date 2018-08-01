@@ -1,0 +1,81 @@
+<div class="panel panel-primary" ng-class="ssc.utility.fiftyOpacity(ssc.processing)">
+    <div class="panel-heading">
+        <h3 class="panel-title">Strategy System Create</h3>
+    </div>
+    <div class="panel-body">
+        <form name="ssc.create_form" class="form-horizontal" novalidate ng-submit="ssc.create()">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Name</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-med form-control m-b-5" name="name" placeholder="Iteration Name"
+                           ng-required="true" ng-fade
+                           ng-model="ssc.strategySystem.newStrategySystem.name">
+
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="ssc.create_form.name.$error.required
+                                     && (ssc.create_form.name.$faded || ssc.submit)"
+                         role="alert">
+                        Name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Description</label>
+                <div class="col-md-9">
+                    <textarea class="form-control" rows="4" ng-required="true" ng-fade
+                              name="description" ng-model="ssc.strategySystem.newStrategySystem.description"></textarea>
+
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="ssc.create_form.description.$error.required
+                                     && (ssc.create_form.description.$faded || ssc.submit)"
+                         role="alert">
+                        Description is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">BT Iteration Variable</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-med form-control m-b-5" name="strategy_iteration_variable" placeholder="ALL_CAPS_UNDERSCORE"
+                           ng-required="true" ng-fade
+                           ng-model="ssc.strategySystem.newStrategySystem.strategy_iteration_variable">
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="ssc.create_form.strategy_iteration_variable.$error.required
+                                     && (ssc.create_form.strategy_iteration_variable.$faded || ssc.submit)"
+                         role="alert">
+                        BT Iteration Variable is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Method/Function</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-med form-control m-b-5" name="method"
+                           ng-required="true" ng-fade
+                           ng-model="ssc.strategySystem.newStrategySystem.method">
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="ssc.create_form.method.$error.required
+                                     && (ssc.create_form.method.$faded || ssc.submit)"
+                         role="alert">
+                        Function/Method is required.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div ng-show="ssc.processing" class="form-loader">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+            <div class="submit-contain pull-right">
+                <button class = 'btn-success btn'>Submit</button>
+            </div>
+
+            {{cbg.create_form.$error}}
+        </form>
+    </div><!-- panel-body -->
+</div>

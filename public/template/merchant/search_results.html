@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Merchant Search</h4>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Results</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Merchant ID</th>
+                                <th>Business Name</th>
+                                <th>Address</th>
+                                <th>Phone Number</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="merchant in search_results.search_results" ng-click="viewMerchant(merchant)">
+                                <td>{{merchant.merchant_id}}</td>
+                                <td>{{merchant.name}}</td>
+                                <td>
+                                    {{merchant.address1}}<BR>
+                                    {{merchant.city}}, {{merchant.state}} {{merchant.zip}}
+                                </td>
+                                <td>{{formatPhone(merchant.phone_no)}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

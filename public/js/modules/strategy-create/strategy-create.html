@@ -1,0 +1,81 @@
+<div class="panel panel-primary" ng-class="sc.utility.fiftyOpacity(sc.processing)">
+    <div class="panel-heading">
+        <h3 class="panel-title">Strategy Create</h3>
+    </div>
+    <div class="panel-body">
+        <form name="sc.create_form" class="form-horizontal" novalidate ng-submit="sc.create()">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Name</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-med form-control m-b-5" name="name" placeholder="Group Name"
+                           ng-required="true" ng-fade
+                           ng-model="sc.strategy.newStrategy.name">
+
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="sc.create_form.name.$error.required
+                                     && (sc.create_form.name.$faded || sc.submit)"
+                         role="alert">
+                        Name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Description</label>
+                <div class="col-md-9">
+                    <textarea class="form-control" rows="4" ng-required="true" ng-fade
+                              name="description" ng-model="sc.strategy.newStrategy.description"></textarea>
+
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="sc.create_form.description.$error.required
+                                     && (sc.create_form.description.$faded || sc.submit)"
+                         role="alert">
+                        Description is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">BT Strategy Variable</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-med form-control m-b-5" name="back_test_strategy_variable" placeholder="ALL_CAPS_UNDERSCORE"
+                           ng-required="true" ng-fade
+                           ng-model="sc.strategy.newStrategy.back_test_strategy_variable">
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="sc.create_form.back_test_strategy_variable.$error.required
+                                     && (sc.create_form.back_test_strategy_variable.$faded || sc.submit)"
+                         role="alert">
+                        BT Strategy Variable is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Namespace</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-med form-control m-b-5" name="namespace"
+                           ng-required="true" ng-fade
+                           ng-model="sc.strategy.newStrategy.namespace">
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="sc.create_form.namespace.$error.required
+                                     && (sc.create_form.namespace.$faded || sc.submit)"
+                         role="alert">
+                        Namespace is required.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div ng-show="sc.processing" class="form-loader">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+            <div class="submit-contain pull-right">
+                <button class = 'btn-success btn'>Submit</button>
+            </div>
+
+            {{cbg.create_form.$error}}
+        </form>
+    </div><!-- panel-body -->
+</div>
