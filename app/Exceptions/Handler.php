@@ -4,7 +4,12 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\DB;
+
+use \Log;
+use App\Model\BackTestToBeProcessed;
 
 class Handler extends ExceptionHandler
 {
