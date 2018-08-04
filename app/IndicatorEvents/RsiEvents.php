@@ -16,13 +16,13 @@
  */
 
 
-namespace App\StrategyEvents;
+namespace App\IndicatorEvents;
 use \Log;
 use \App\Services\CurrencyIndicators;
 use \App\Services\Utility;
-use \App\StrategyEvents\EventHelpers;
+use \App\IndicatorEvents\EventHelpers;
 
-class RsiEvents extends \App\StrategyEvents\StrategyEventsBase {
+class RsiEvents extends \App\IndicatorEvents\IndicatorEventsBase {
 
     public $utility;
     public $indicators;

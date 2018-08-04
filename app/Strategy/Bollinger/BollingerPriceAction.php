@@ -15,7 +15,7 @@
 namespace App\Strategy\Bollinger;
 use \Log;
 use Illuminate\Support\Facades\DB;
-use App\StrategyEvents\Bollinger;
+use App\IndicatorEvents\Bollinger;
 
 class BollingerPriceAction extends \App\Strategy\Strategy  {
 

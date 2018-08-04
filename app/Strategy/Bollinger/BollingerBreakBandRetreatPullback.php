@@ -15,9 +15,9 @@
 namespace App\Strategy\Bollinger;
 use \Log;
 use Illuminate\Support\Facades\DB;
-use App\StrategyEvents\Bollinger;
-use App\StrategyEvents\RsiEvents;
-use App\StrategyEvents\EmaEvents;
+use App\IndicatorEvents\Bollinger;
+use App\IndicatorEvents\RsiEvents;
+use App\IndicatorEvents\EmaEvents;
 
 class BollingerBreakBandRetreatPullback extends \App\Strategy\Strategy  {
 

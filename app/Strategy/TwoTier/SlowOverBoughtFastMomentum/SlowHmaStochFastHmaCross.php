@@ -18,8 +18,8 @@
 
 namespace App\Strategy\TwoTier\SlowOverBoughtFastMomentum;
 use \Log;
-use \App\StrategyEvents\Momentum;
-use \App\StrategyEvents\StochasticEvents;
+use \App\IndicatorEvents\Momentum;
+use \App\IndicatorEvents\StochasticEvents;
 
 class SlowHmaStochFastHmaCross extends \App\Strategy\Strategy  {
 

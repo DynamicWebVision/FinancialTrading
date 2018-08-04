@@ -16,12 +16,12 @@
  */
 
 
-namespace App\StrategyEvents;
+namespace App\IndicatorEvents;
 use \Log;
 use \App\Services\CurrencyIndicators;
-use \App\StrategyEvents\EventHelpers;
+use \App\IndicatorEvents\EventHelpers;
 use \App\Services\Utility;
-use \App\StrategyEvents\WeightedMovingAverage;
+use \App\IndicatorEvents\WeightedMovingAverage;
 
 class HullMovingAverage {
 

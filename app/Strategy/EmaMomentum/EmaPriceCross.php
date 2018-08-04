@@ -19,7 +19,7 @@
 namespace App\Strategy\EmaMomentum;
 
 use \Log;
-use App\StrategyEvents\EmaEvents;
+use App\IndicatorEvents\EmaEvents;
 
 class EmaPriceCross extends \App\Strategy\Strategy  {
 

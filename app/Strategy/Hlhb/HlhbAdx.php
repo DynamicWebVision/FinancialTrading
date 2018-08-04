@@ -18,10 +18,10 @@
 
 namespace App\Strategy\Hlhb;
 use \Log;
-use App\StrategyEvents\Momentum;
-use App\StrategyEvents\RsiEvents;
-use \App\StrategyEvents\EventHelpers;
-use \App\StrategyEvents\AdxEvents;
+use App\IndicatorEvents\Momentum;
+use App\IndicatorEvents\RsiEvents;
+use \App\IndicatorEvents\EventHelpers;
+use \App\IndicatorEvents\AdxEvents;
 
 class HlhbAdx extends \App\Strategy\Strategy  {
 

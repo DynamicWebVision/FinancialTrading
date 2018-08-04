@@ -13,12 +13,12 @@
 
 
 namespace App\Strategy\Bollinger;
-use App\StrategyEvents\RsiEvents;
+use App\IndicatorEvents\RsiEvents;
 use \Log;
 use Illuminate\Support\Facades\DB;
-use App\StrategyEvents\Bollinger;
-use App\StrategyEvents\AdxEvents;
-use App\StrategyEvents\EmaEvents;
+use App\IndicatorEvents\Bollinger;
+use App\IndicatorEvents\AdxEvents;
+use App\IndicatorEvents\EmaEvents;
 
 class BollingerPriceTouchCloseAdx extends \App\Strategy\Strategy  {
 

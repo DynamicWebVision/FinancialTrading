@@ -22,7 +22,7 @@ class IndicatorRunThroughTest extends \App\BackTest\BackTest  {
 
         $this->setLastId();
 
-        $this->recordBackTestStart();
+        $this->startNewPeriod();
 
         //Start the Indexes
 

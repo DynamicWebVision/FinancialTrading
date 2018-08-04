@@ -18,7 +18,7 @@
 
 namespace App\Strategy\TwoTier\PivotPoints;
 use \Log;
-use \App\StrategyEvents\Momentum;
+use \App\IndicatorEvents\Momentum;
 
 class HmaMomentumConfirm extends \App\Strategy\Strategy  {
 

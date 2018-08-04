@@ -16,11 +16,11 @@
  */
 
 
-namespace App\StrategyEvents;
+namespace App\IndicatorEvents;
 use \Log;
 use \App\Services\CurrencyIndicators;
 use \App\Services\Utility;
 
-class StrategyEventsBase {
+class IndicatorEventsBase {
 
 }

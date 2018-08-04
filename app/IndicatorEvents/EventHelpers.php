@@ -16,7 +16,7 @@
  */
 
 
-namespace App\StrategyEvents;
+namespace App\IndicatorEvents;
 use App\Services\Utility;
 use \Log;
 use \App\Services\CurrencyIndicators;

@@ -18,11 +18,11 @@
 
 namespace App\Strategy\EmaMomentum;
 use \Log;
-use App\StrategyEvents\EmaEvents;
-use App\StrategyEvents\RsiEvents;
-use \App\StrategyEvents\EventHelpers;
-use \App\StrategyEvents\AdxEvents;
-use \App\StrategyEvents\TrueRange;
+use App\IndicatorEvents\EmaEvents;
+use App\IndicatorEvents\RsiEvents;
+use \App\IndicatorEvents\EventHelpers;
+use \App\IndicatorEvents\AdxEvents;
+use \App\IndicatorEvents\TrueRange;
 
 class EmaXAdxConfirmWithMarketIfTouched extends \App\Strategy\Strategy  {
 

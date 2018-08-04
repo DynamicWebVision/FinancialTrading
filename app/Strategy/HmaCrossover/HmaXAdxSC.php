@@ -18,8 +18,8 @@
 
 namespace App\Strategy\HmaCrossover;
 use \Log;
-use \App\StrategyEvents\Momentum;
-use \App\StrategyEvents\AdxEvents;
+use \App\IndicatorEvents\Momentum;
+use \App\IndicatorEvents\AdxEvents;
 
 class HmaXAdxSC extends \App\Strategy\Strategy  {
 

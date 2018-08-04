@@ -112,7 +112,7 @@ abstract class BackTest  {
             $this->getMoreOneTierRates();
         }
 
-        if ($this->rates[$this->rateIndex]['rate_unix_time'] == 1528099200) {
+        if ($this->rates[$this->rateIndex]['rate_unix_time'] == 1530545400) {
             $debug = 1;
         }
 
@@ -419,23 +419,6 @@ abstract class BackTest  {
             ->orderBy('rate_dt')
             ->get()
             ->toArray();
-
-        $minNecessaryRateCount = $this->slowRateIndicatorMin*2;
-
-//        if (sizeof($this->slowRates) <= $minNecessaryRateCount) {
-//            $skipAmount = $skipAmount - (($this->slowRateIndicatorMin*2) - sizeof($this->slowRates));
-//
-//            $this->slowRates = HistoricalRates::where('currency_id', '=', $this->currencyId)
-//                ->where('frequency_id', '=', $this->slowFrequencyId)
-//                ->where('rate_unix_time', '>=', $this->slowRateUnixStart)
-//                ->skip($skipAmount)
-//                ->take($this->slowRateCount)
-//                ->orderBy('rate_dt')
-//                ->get()
-//                ->toArray();
-//        }
-
-      //  $this->currentSlowRatesProcessed = $this->currentSlowRatesProcessed + ($this->rateCount - $this->slowRateIndicatorMin);
 
         $this->slowRateIndex = $this->slowRateIndicatorMin;
     }
@@ -744,5 +727,9 @@ abstract class BackTest  {
                 }
             }
         }
+    }
+
+    public function getLastPosition() {
+        return end($this->strategy->backTestPositions);
     }
 }

@@ -13,8 +13,8 @@
 
 
 namespace App\Strategy\HullMovingAverage;
-use App\StrategyEvents\Momentum;
-use \App\StrategyEvents\StochasticEvents;
+use App\IndicatorEvents\Momentum;
+use \App\IndicatorEvents\StochasticEvents;
 use \Log;
 use Illuminate\Support\Facades\DB;
 

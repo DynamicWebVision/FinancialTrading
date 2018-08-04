@@ -17,8 +17,8 @@
 
 
 namespace App\Strategy\EmaMomentum;
-use \App\StrategyEvents\Momentum;
-use \App\StrategyEvents\TrendStrength;
+use \App\IndicatorEvents\Momentum;
+use \App\IndicatorEvents\TrendStrength;
 use \Log;
 
 class ThreeLineAndTwoTierAdxConfirm extends \App\Strategy\Strategy  {

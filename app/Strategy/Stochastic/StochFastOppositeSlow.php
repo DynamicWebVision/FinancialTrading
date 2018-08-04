@@ -19,8 +19,8 @@
 namespace App\Strategy\Stochastic;
 use \Log;
 
-use \App\StrategyEvents\Momentum;
-use \App\StrategyEvents\StochasticEvents;
+use \App\IndicatorEvents\Momentum;
+use \App\IndicatorEvents\StochasticEvents;
 
 
 class StochFastOppositeSlow extends \App\Strategy\Strategy  {

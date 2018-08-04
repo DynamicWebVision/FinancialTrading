@@ -18,8 +18,8 @@
 
 namespace App\Strategy\Hlhb;
 use \Log;
-use App\StrategyEvents\Momentum;
-use App\StrategyEvents\RsiEvents;
+use App\IndicatorEvents\Momentum;
+use App\IndicatorEvents\RsiEvents;
 
 class HlhbMoreExitRules extends \App\Strategy\Strategy  {
 

@@ -16,10 +16,10 @@
  */
 
 
-namespace App\StrategyEvents;
+namespace App\IndicatorEvents;
 use \Log;
 use \App\Services\CurrencyIndicators;
-use \App\StrategyEvents\EventHelpers;
+use \App\IndicatorEvents\EventHelpers;
 
 class TrueRange {
 

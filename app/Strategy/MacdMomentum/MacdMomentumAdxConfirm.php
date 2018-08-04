@@ -18,8 +18,8 @@
 
 namespace App\Strategy\MacdMomentum;
 use \Log;
-use \App\StrategyEvents\Momentum;
-use \App\StrategyEvents\TrendStrength;
+use \App\IndicatorEvents\Momentum;
+use \App\IndicatorEvents\TrendStrength;
 
 
 class MacdMomentumAdxConfirm extends \App\Strategy\Strategy  {

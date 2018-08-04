@@ -18,7 +18,7 @@
 
 namespace App\Strategy\TwoTier\ThreeMa;
 use \Log;
-use \App\StrategyEvents\Momentum;
+use \App\IndicatorEvents\Momentum;
 
 class SimpleMaNoOtherConfirm extends \App\Strategy\Strategy  {
 

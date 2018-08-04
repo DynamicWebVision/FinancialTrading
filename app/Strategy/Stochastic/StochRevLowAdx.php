@@ -20,8 +20,8 @@ namespace App\Strategy\Stochastic;
 use \Log;
 
 
-use \App\StrategyEvents\StochasticEvents;
-use \App\StrategyEvents\AdxEvents;
+use \App\IndicatorEvents\StochasticEvents;
+use \App\IndicatorEvents\AdxEvents;
 
 
 class StochRevLowAdx extends \App\Strategy\Strategy  {
