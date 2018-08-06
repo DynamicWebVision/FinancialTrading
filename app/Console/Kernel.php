@@ -36,48 +36,48 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-   //     if (env('APP_ENV') == 'live_practice') {
-//            $schedule->call('App\Http\Controllers\LivePracticeController@twoLevelHmaDaily')->dailyAt('00:00');
-//
-//            //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumAdx15MinutesTPSL')->everyFifteenMinutes();
-//            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenMinuteStochPullback')->everyFifteenMinutes();
-//
-//            $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->hourly();
-//
-//
-//            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenAfter')->everyFifteenMinutes();
-//
-//            $schedule->call('App\Http\Controllers\LivePracticeController@hourStochFastOppositeSlow')->hourly();
-//            $schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyAfterHour')->hourly();
-            //$schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->hourly();
+        if (env('APP_ENV') == 'live_practice') {
+            $schedule->call('App\Http\Controllers\LivePracticeController@twoLevelHmaDaily')->dailyAt('00:00');
 
-            //Four Hour Interval
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('1:00');
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('5:00');
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('9:00');
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('13:00');
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('17:00');
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('21:00');
+            //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumAdx15MinutesTPSL')->everyFifteenMinutes();
+            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenMinuteStochPullback')->everyFifteenMinutes();
 
-//            $schedule->call('App\Http\Controllers\TransactionController@getOandaTransactions')->everyFifteenMinutes();
-//
-//
-//            //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyBeforeHour')->cron($this->everyHourEarlyInterval);
-//            $schedule->call('App\Http\Controllers\AccountsController@createNewAccounts')->sundays();
-//
-//            //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenEarly')->cron($this->everyFifteenMinuteEarlyInterval);
-//            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenBefore')->cron($this->everyFifteenMinuteEarlyInterval);
-//
-//            //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumHourly')->hourly();
-//
-//            $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
-//        }
-//        elseif (env('APP_ENV') == 'historical_data') {
-//            $schedule->call('App\Http\Controllers\HistoricalDataController@initialLoad')->everyFifteenMinutes();
-//        }
-//        elseif (env('APP_ENV') == 'backtest') {
-//            $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
-//        }
+            $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->hourly();
+
+
+            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenAfter')->everyFifteenMinutes();
+
+            $schedule->call('App\Http\Controllers\LivePracticeController@hourStochFastOppositeSlow')->hourly();
+            $schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyAfterHour')->hourly();
+            $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->hourly();
+
+            Four Hour Interval
+            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('1:00');
+            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('5:00');
+            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('9:00');
+            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('13:00');
+            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('17:00');
+            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('21:00');
+
+            $schedule->call('App\Http\Controllers\TransactionController@getOandaTransactions')->everyFifteenMinutes();
+
+
+            //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyBeforeHour')->cron($this->everyHourEarlyInterval);
+            $schedule->call('App\Http\Controllers\AccountsController@createNewAccounts')->sundays();
+
+            //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenEarly')->cron($this->everyFifteenMinuteEarlyInterval);
+            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenBefore')->cron($this->everyFifteenMinuteEarlyInterval);
+
+            //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumHourly')->hourly();
+
+            $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
+        }
+        elseif (env('APP_ENV') == 'historical_data') {
+            $schedule->call('App\Http\Controllers\HistoricalDataController@initialLoad')->everyFifteenMinutes();
+        }
+        elseif (env('APP_ENV') == 'backtest') {
+            $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
+        }
     }
 
     /**

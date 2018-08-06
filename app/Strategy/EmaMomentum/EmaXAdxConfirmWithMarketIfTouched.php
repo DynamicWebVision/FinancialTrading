@@ -54,8 +54,8 @@ class EmaXAdxConfirmWithMarketIfTouched extends \App\Strategy\Strategy  {
         $this->decisionIndicators['averageTrueRangeProfitLossValues'] = $trueRange->getTakeProfitLossPipValues($this->rates['full'], $this->trueRangeLength,
             $this->exchange->pip, $this->takeProfitTrueRangeMultiplier, $this->stopLossTrueRangeMultiplier);
 
-        $this->takeProfitPipAmount = $this->decisionIndicators['averageTrueRangeProfitLossValues']['profitPips'];
-        $this->stopLossPipAmount = $this->decisionIndicators['averageTrueRangeProfitLossValues']['lossPips'];
+        $this->takeProfitPipAmount = round($this->decisionIndicators['averageTrueRangeProfitLossValues']['profitPips']);
+        $this->stopLossPipAmount = round($this->decisionIndicators['averageTrueRangeProfitLossValues']['lossPips']);
     }
 
     public function getEntryDecision() {

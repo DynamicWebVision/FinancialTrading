@@ -248,7 +248,7 @@ abstract class Strategy  {
                 $params['timeInForce'] = 'GTD';
                 $params['gtdTime'] = $this->calculateLimitEndTime();
 
-                $this->strategyLogger->logMessage('Long MARKET_IF_TOUCHED Order with limit Price '.$params['limitPrice'].' good until '.$params['gtdTime'], 1);
+                $this->strategyLogger->logMessage('Long MARKET_IF_TOUCHED Order with mkt if touched Price '.$params['marketIfTouchedOrderPrice'].' good until '.$params['gtdTime'], 1);
 
                 if (isset($this->takeProfitPipAmount)) {
                     $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateLongTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
@@ -879,7 +879,5 @@ abstract class Strategy  {
 
     public function startStrategy() {
         $this->setOpenPosition();
-
-
     }
 }
