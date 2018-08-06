@@ -746,7 +746,7 @@ class LivePracticeController extends Controller {
             }
 
             $systemStrategy->exchange = $exchange;
-            $systemStrategy->oanda->frequency = 'H1';
+            $systemStrategy->oanda->frequency = 'M15';
 
             $systemStrategy->rateCount = 1000;
 
@@ -761,11 +761,12 @@ class LivePracticeController extends Controller {
             $systemStrategy->maxPositions = 3;
 
             //Specific Strategy Variables
-            $systemStrategy->fastEma = 5;
-            $systemStrategy->slowEma = 10;
+            $systemStrategy->fastEma = 75;
+            $systemStrategy->slowEma = 100;
+            $systemStrategy->trueRangeLength = 20;
 
-            $systemStrategy->takeProfitTrueRangeMultiplier = 3;
-            $systemStrategy->stopLossTrueRangeMultiplier = 2;
+            $systemStrategy->takeProfitTrueRangeMultiplier = 10;
+            $systemStrategy->stopLossTrueRangeMultiplier = .5;
 
             $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
 
