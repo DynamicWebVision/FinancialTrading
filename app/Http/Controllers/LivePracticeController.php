@@ -766,7 +766,7 @@ class LivePracticeController extends Controller {
             $systemStrategy->trueRangeLength = 20;
 
             $systemStrategy->takeProfitTrueRangeMultiplier = 10;
-            $systemStrategy->stopLossTrueRangeMultiplier = .5;
+            $systemStrategy->stopLossTrueRangeMultiplier = 2;
 
             $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
 
@@ -820,7 +820,7 @@ class LivePracticeController extends Controller {
             $systemStrategy->trueRangeLength = 30;
 
             $systemStrategy->takeProfitTrueRangeMultiplier = 10;
-            $systemStrategy->stopLossTrueRangeMultiplier = .5;
+            $systemStrategy->stopLossTrueRangeMultiplier = 2;
 
             $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
 
