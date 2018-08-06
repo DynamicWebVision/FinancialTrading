@@ -70,4 +70,8 @@ class HullMovingAverage {
         $lastThree = $this->hullLineLastThree($rates, $length);
         return $this->eventHelpers->lineChangeDirection($lastThree);
     }
+
+    public function bruteForceHmaDirectionChange() {
+//        X + ()
+    }
 }
