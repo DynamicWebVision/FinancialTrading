@@ -762,8 +762,62 @@ class LivePracticeController extends Controller {
 
             //Specific Strategy Variables
             $systemStrategy->fastEma = 75;
-            $systemStrategy->slowEma = 100;
+            $systemStrategy->slowEma = 150;
             $systemStrategy->trueRangeLength = 20;
+
+            $systemStrategy->takeProfitTrueRangeMultiplier = 10;
+            $systemStrategy->stopLossTrueRangeMultiplier = .5;
+
+            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $systemStrategy->checkForNewPosition();
+        }
+        Log::info('hourlyStochPullback: END');
+    }
+
+    public function emaXAdxConfirmWithMarketIfTouchedHr() {
+        Log::info('emaXAdxConfirmWithMarketIfTouched: START LivePracticeController->emaXAdxConfirmWithMarketIfTouched');
+
+        $strategy = new Strategy();
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logPrefix = "emaXAdxConfirmWithMarketIfTouched-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new EmaXAdxConfirmWithMarketIfTouched('101-001-7608904-009', $logPrefix);
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'emaXAdxConfirmWithMarketIfTouched';
+            $strategyLogger->oanda_account_id = 8;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            if ($exchange->exchange == 'EUR_USD') {
+                $systemStrategy->logDbRates = true;
+            }
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'M15';
+
+            $systemStrategy->rateCount = 1000;
+
+            $systemStrategy->rates = $systemStrategy->getRates('both');
+            $systemStrategy->setCurrentPrice();
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->strategyId = 5;
+            $systemStrategy->strategyDesc = 'emaXAdxConfirmWithMarketIfTouched';
+            $systemStrategy->positionMultiplier = 5;
+
+            $systemStrategy->maxPositions = 3;
+
+            //Specific Strategy Variables
+            $systemStrategy->fastEma = 50;
+            $systemStrategy->slowEma = 100;
+            $systemStrategy->trueRangeLength = 30;
 
             $systemStrategy->takeProfitTrueRangeMultiplier = 10;
             $systemStrategy->stopLossTrueRangeMultiplier = .5;
