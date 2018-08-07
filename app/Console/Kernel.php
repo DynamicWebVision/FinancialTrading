@@ -60,7 +60,7 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('17:00');
             $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('21:00');
 
-            $schedule->call('App\Http\Controllers\TransactionController@getOandaTransactions')->cron($this->everyFifteenMinutesInterval);
+            //$schedule->call('App\Http\Controllers\TransactionController@getOandaTransactions')->cron($this->everyFifteenMinutesInterval);
 
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyBeforeHour')->cron($this->everyHourEarlyInterval);

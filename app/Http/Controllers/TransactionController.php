@@ -49,8 +49,6 @@ class TransactionController extends Controller {
             $transactions = $broker->getTransactionHistory();
         }
 
-        \DB::insert('insert into oanda_transactions_dump (response) values (?);', [json_encode($transactions)]);
-
         Log::info('Get Transactions Response Account '.$id.' Oanda Response - '.$runId.PHP_EOL.json_encode($transactions));
 
         if (!isset($transactions)) {
