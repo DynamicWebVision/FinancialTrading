@@ -62,7 +62,7 @@
 
                 <div class="form-group text-center m-t-20">
                     <div class="col-xs-12">
-                        <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Log In</button>
+                        <button id="login-button"  class="btn btn-primary w-md waves-effect waves-light" type="submit">Log In</button>
                     </div>
                 </div>
 

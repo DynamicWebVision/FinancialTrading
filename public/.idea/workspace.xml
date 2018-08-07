@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fb8f474-0577-4141-988a-8e7f685fd999" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/e2e_testing/conf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/e2e_testing/spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../tests/Unit/StrategyBaseClassTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/Strategy/EmaMomentum/EmaXAdxConfirmWithMarketIfTouched.php" beforeDir="false" afterPath="$PROJECT_DIR$/../app/Strategy/EmaMomentum/EmaXAdxConfirmWithMarketIfTouched.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/Strategy/Strategy.php" beforeDir="false" afterPath="$PROJECT_DIR$/../app/Strategy/Strategy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e_testing/spec.js" beforeDir="false" afterPath="$PROJECT_DIR$/e2e_testing/spec.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/views/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../resources/views/login.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/views/welcome.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../resources/views/welcome.blade.php" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -21,8 +20,10 @@
     <session id="1227557284">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.0" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -37,28 +38,28 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="js" value="81" />
+          <entry key="js" value="144" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JavaScript" value="81" />
+          <entry key="JavaScript" value="144" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/e2e_testing/spec.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
+            <state>
+              <caret column="20" selection-start-column="10" selection-end-column="20" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/e2e_testing/conf.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
@@ -146,6 +147,16 @@
       </list>
     </option>
   </component>
+  <component name="RunManager">
+    <configuration name="spec.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" nameIsGenerated="true" path-to-js-file="spec.js" working-dir="$PROJECT_DIR$/e2e_testing">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.spec.js" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -156,31 +167,31 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1533585590017</updated>
-      <workItem from="1533585591100" duration="1114000" />
+      <workItem from="1533585591100" duration="1981000" />
+      <workItem from="1533593055902" duration="510000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1114000" />
+    <option name="totallyTimeSpent" value="2491000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24947146" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32891566" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -192,21 +203,32 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/e2e_testing/spec.js</url>
+          <line>2</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.htaccess">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/e2e_testing/spec.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="20" selection-start-column="10" selection-end-column="20" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/e2e_testing/conf.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/e2e_testing/spec.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
         </state>
       </provider>
     </entry>

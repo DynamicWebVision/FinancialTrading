@@ -38,11 +38,11 @@ class Handler extends ExceptionHandler
     public function report(Exception $exception)
     {
         if (env('TEXT_ERROR_ALERT') == 'Y') {
-            $this->sendTwilioErrorAlert($exception);
+            //$this->sendTwilioErrorAlert($exception);
         }
 
         if (env('EMAIL_ERROR_ALERT') == 'Y') {
-            $this->sendTwilioErrorAlert($exception);
+            //$this->sendTwilioErrorAlert($exception);
         }
 
         if (env('APP_ENV') == 'backtest' || env('APP_ENV') == 'backtest_temp_offline') {
