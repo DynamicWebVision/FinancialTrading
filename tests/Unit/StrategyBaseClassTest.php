@@ -75,6 +75,21 @@ class StrategyBaseClassTest extends TestCase
             $this->systemStrategy->stopLossPipAmount = 11.32434;
             $this->systemStrategy->newLongPosition();
         }
+    }
 
+    public function testMarketIfTouchedShort() {
+        $this->setUpStrategy();
+
+        $dayOfWeek = date('l');
+
+        if (!in_array($dayOfWeek,$this->tradingDays)) {
+            echo 'NOT TRADING DAY';
+        }
+        else {
+            $this->systemStrategy->marketIfTouchedOrderPrice = $this->systemStrategy->currentPriceData->mid - .001;
+            $this->systemStrategy->takeProfitPipAmount = 22.32434;
+            $this->systemStrategy->stopLossPipAmount = 11.32434;
+            $this->systemStrategy->newShortPosition();
+        }
     }
 }

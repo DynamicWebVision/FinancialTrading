@@ -520,12 +520,12 @@ abstract class Strategy  {
             }
             elseif ($this->orderType == 'MARKET_IF_TOUCHED') {
                 $params['type'] = 'MARKET_IF_TOUCHED';
-                $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->limitOrderPrice, $this->exchange->pip);
+                $params['marketIfTouchedOrderPrice'] = $this->oanda->getOandaPrecisionPrice($this->marketIfTouchedOrderPrice, $this->exchange->pip);
 
                 $params['timeInForce'] = 'GTD';
                 $params['gtdTime'] = $this->calculateLimitEndTime();
 
-                $this->strategyLogger->logMessage('Short MARKET_IF_TOUCHED Order with limit Price '.$params['limitPrice'].' good until '.$params['gtdTime'], 1);
+                $this->strategyLogger->logMessage('Short MARKET_IF_TOUCHED Order with MIT Price '.$params['marketIfTouchedOrderPrice'].' good until '.$params['gtdTime'], 1);
 
                 if (isset($this->takeProfitPipAmount)) {
                     $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateShortTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
