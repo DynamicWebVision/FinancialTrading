@@ -26,7 +26,8 @@ class Kernel extends ConsoleKernel
     ];
 
     public $everyFifteenMinuteEarlyInterval = '59,14,29,44 * * * * *';
-    public $everyHourEarlyInterval = '59 * * * * *';
+    public $everyFifteenMinutesInterval = '00,15,30,45 * * * * *';
+    public $everyHourEarlyInterval = '00 * * * * *';
 
     /**
      * Define the application's command schedule.
@@ -39,13 +40,13 @@ class Kernel extends ConsoleKernel
         if (env('APP_ENV') == 'live_practice') {
             $schedule->call('App\Http\Controllers\LivePracticeController@twoLevelHmaDaily')->dailyAt('00:00');
 
-            //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumAdx15MinutesTPSL')->everyFifteenMinutes();
-            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenMinuteStochPullback')->everyFifteenMinutes();
+            //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumAdx15MinutesTPSL')->cron($this->everyFifteenMinutesInterval);
+            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenMinuteStochPullback')->cron($this->everyFifteenMinutesInterval);
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->hourly();
 
 
-            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenAfter')->everyFifteenMinutes();
+            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenAfter')->cron($this->everyFifteenMinutesInterval);
 
             $schedule->call('App\Http\Controllers\LivePracticeController@hourStochFastOppositeSlow')->hourly();
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyAfterHour')->hourly();
@@ -59,7 +60,7 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('17:00');
             $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('21:00');
 
-            $schedule->call('App\Http\Controllers\TransactionController@getOandaTransactions')->everyFifteenMinutes();
+            $schedule->call('App\Http\Controllers\TransactionController@getOandaTransactions')->cron($this->everyFifteenMinutesInterval);
 
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyBeforeHour')->cron($this->everyHourEarlyInterval);
@@ -73,7 +74,7 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
         }
         elseif (env('APP_ENV') == 'historical_data') {
-            $schedule->call('App\Http\Controllers\HistoricalDataController@initialLoad')->everyFifteenMinutes();
+            $schedule->call('App\Http\Controllers\HistoricalDataController@initialLoad')->cron($this->everyFifteenMinutesInterval);
         }
         elseif (env('APP_ENV') == 'backtest') {
             $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
