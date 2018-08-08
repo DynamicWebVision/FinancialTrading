@@ -72,6 +72,6 @@ class HullMovingAverage {
     }
 
     public function bruteForceHmaDirectionChange() {
-//        X + ()
+
     }
 }

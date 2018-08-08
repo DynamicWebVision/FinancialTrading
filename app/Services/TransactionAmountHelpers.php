@@ -2,7 +2,15 @@
 
 class TransactionAmountHelpers  {
     public function kellyCriterion($potentialGain, $potentialLoss, $probabilityOfWinning) {
+        if ($potentialLoss == 0) {
+            return 0;
+        }
         $b = $potentialGain/$potentialLoss;
+
+        if ($b == 0) {
+            return 0;
+        }
+
         return ($probabilityOfWinning*($b + 1) - 1)/$b;
     }
 

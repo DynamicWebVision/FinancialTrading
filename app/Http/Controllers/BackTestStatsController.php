@@ -24,7 +24,7 @@ use \App\Strategy\HullMovingAverage\HmaIndicatorRunThrough;
 use Illuminate\Support\Facades\Config;
 
 
-class BackTestingController extends Controller {
+class BackTestStatsController extends Controller {
 
     public function __construct() {
         set_time_limit(0);
@@ -33,100 +33,6 @@ class BackTestingController extends Controller {
 
     public function index() {
         return view('back_test');
-    }
-
-    public function backTestGroups() {
-        $backTestGroups = DB::select("select btg.*, s.name as 'strategy_name', ss.name as 'strategy_system_name', ss.method as 'strategy_method', 
-                            exchange.exchange as 'exchange_name', f1.frequency as 'frequency_name', f1.oanda_code as 'frequency_code', f2.frequency as 'slow_frequency_name'
-                            from back_test_group btg
-                            join exchange on btg.exchange_id = exchange.id
-                            join decode_frequency f1 on btg.frequency_id = f1.id
-                            left join decode_frequency f2 on btg.slow_frequency_id = f1.id
-                            join strategy s on btg.strategy_id = s.id
-                            join strategy_system ss on btg.strategy_system_id = ss.id
-                            ;");
-
-        return $backTestGroups;
-    }
-
-    public function indicatorTest() {
-        $indicatorRunThroughTest = new IndicatorRunThroughTest('test');
-
-        $indicatorRunThroughTest->strategyRunName = 'Indicator Run Through';
-        $indicatorRunThroughTest->strategyId = 6;
-
-        //All Back Tests
-        $indicatorRunThroughTest->currencyId = 1;
-        $fullExchange = Exchange::find(1);
-
-        $indicatorRunThroughTest->exchange = $fullExchange;
-        $indicatorRunThroughTest->frequencyId = 2;
-
-     //   $indicatorRunThroughTest->recordBackTestStart(12);
-
-        //Starting Unix Time to Run Strategy
-        $indicatorRunThroughTest->rateUnixStart = 1492044382;
-
-        /******************************
-         * SET STRATEGY
-         ******************************/
-        //Set Strategy
-        $strategy = new HmaIndicatorRunThrough(7827172, 'BackTestABC', true);
-
-        $strategy->strategyId = 5;
-        $strategy->strategyDesc = 'fiftyOneHundred';
-        $strategy->positionMultiplier = 5;
-
-        //Unique Strategy Variables
-        $strategy->slowEmaLength = 10;
-        $strategy->fastEmaLength = 9;
-
-        //ALL
-        $strategy->exchange = $fullExchange;
-        $strategy->maxPositions = 5;
-
-        $indicatorRunThroughTest->strategy = $strategy;
-
-        //Values for Getting Rates
-        $indicatorRunThroughTest->rateCount = 250*10;
-        $indicatorRunThroughTest->rateIndicatorMin = 250*3;
-        $indicatorRunThroughTest->currentRatesProcessed = $indicatorRunThroughTest->rateCount;
-
-        $indicatorRunThroughTest->run();
-    }
-
-    public function highLowAnalysis($backTestId) {
-        $backTestPositions = BackTestPosition::where('back_test_id', '=', $backTestId)->get()->toArray();
-        $exchangePip = .0001;
-
-        foreach ($backTestPositions as $index=>$position) {
-            if ($position['position_type'] == 1) {
-                $backTestPositions[$index]['highPips'] = ($position['highest_price']/$exchangePip) - ($position['open_price']/$exchangePip);
-                $backTestPositions[$index]['lowPips'] = ($position['open_price']/$exchangePip) - ($position['lowest_price']/$exchangePip);
-            }
-            else {
-                $backTestPositions[$index]['lowPips'] = ($position['highest_price']/$exchangePip) - ($position['open_price']/$exchangePip);
-                $backTestPositions[$index]['highPips'] = ($position['open_price']/$exchangePip) - ($position['lowest_price']/$exchangePip);
-            }
-
-            if ($position['highest_price_date'] < $position['lowest_price_date']) {
-                $backTestPositions[$index]['highLowFirst'] = 'highFirst';
-            }
-            elseif ((strtotime($position['lowest_price_date']) - strtotime($position['open_date_date'])) < 360) {
-                $backTestPositions[$index]['highLowFirst'] = 'lowEarly';
-            }
-            else {
-                $backTestPositions[$index]['highLowFirst'] = 'lowFirst';
-            }
-        }
-        return $backTestPositions;
-    }
-
-    public function getBackTests() {
-
-        $backTestGroups = $this->backTestGroups();
-
-        return ['back_test_groups'=>$backTestGroups];
     }
 
     public function getBackTestsByGroupId($groupId) {
@@ -210,7 +116,7 @@ class BackTestingController extends Controller {
 
         return ['back_tests'=>$back_tests, 'variable_1_values'=>$variable_1_values, 'variable_2_values'=>$variable_2_values,
             'variable_3_values'=>$variable_3_values, 'variable_4_values'=>$variable_4_values, 'variable_5_values'=>$variable_5_values,
-                'take_profits'=>$take_profits,'stop_losses'=>$stop_losses,'trailing_stops'=>$trailing_stops];
+            'take_profits'=>$take_profits,'stop_losses'=>$stop_losses,'trailing_stops'=>$trailing_stops];
     }
 
 
@@ -239,7 +145,7 @@ class BackTestingController extends Controller {
             if ($statCount > 0) {
                 $processedBackTest = BackTestToBeProcessed::where('stats_finish', '=', 0)->where('stats_start', '=', 0)->where('hung_up', '=', 0)
                     ->where('finish', '=', 1)->where('start', '=', 1)->where('back_test_group_id', '=', $server->current_back_test_group_id)
-                                        ->orderBy('back_test_group_id', 'desc')->first();
+                    ->orderBy('back_test_group_id', 'desc')->first();
             }
             else {
                 $processedBackTest = BackTestToBeProcessed::where('stats_finish', '=', 0)->where('stats_start', '=', 0)->where('hung_up', '=', 0)
