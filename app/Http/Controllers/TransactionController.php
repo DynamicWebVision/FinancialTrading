@@ -40,7 +40,7 @@ class TransactionController extends Controller {
         $broker->accountId = $id;
 
         $minId = OandaTrades::where('oanda_account_id', '=', $id)->max('oanda_open_id');
-        $minId = 2900;
+        //$minId = 0;
 
         if ($minId != null) {
             $transactions = $broker->getTransactionsSince($minId);
@@ -60,7 +60,7 @@ class TransactionController extends Controller {
             foreach ($transactions as $t) {
                 if ($t->type == "ORDER_FILL") {
 
-                    if ($t->reason == 'MARKET_ORDER' || $t->reason == 'LIMIT_ORDER') {
+                    if ($t->reason == 'MARKET_ORDER' || $t->reason == 'LIMIT_ORDER' || $t->reason == 'MARKET_IF_TOUCHED_ORDER') {
                         $oandaTrade = OandaTrades::firstOrNew(['oanda_open_id'=>$t->id]);
 
                         $oandaTrade->oanda_account_id = $broker->accountId;

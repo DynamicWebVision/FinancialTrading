@@ -23,7 +23,7 @@ class OrderManagementTest extends TestCase
     }
 
     public function testGetOandaTransactions() {
-        $this->transactionController->getOandaTransactions(7);
+        $this->transactionController->getOandaTransactions(8);
     }
 
     public function testPlayWithJson() {

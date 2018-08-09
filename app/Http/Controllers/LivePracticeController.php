@@ -783,7 +783,7 @@ class LivePracticeController extends Controller {
         $exchanges = \App\Model\Exchange::get();
 
         foreach ($exchanges as $exchange) {
-            $logPrefix = "emaXAdxConfirmWithMarketIfTouched-".$exchange->exchange."-".uniqid();
+            $logPrefix = "emaXAdxConfirmWithMarketIfTouchedHr-".$exchange->exchange."-".uniqid();
 
             $systemStrategy = new EmaXAdxConfirmWithMarketIfTouched('101-001-7608904-009', $logPrefix);
 
@@ -800,7 +800,7 @@ class LivePracticeController extends Controller {
             }
 
             $systemStrategy->exchange = $exchange;
-            $systemStrategy->oanda->frequency = 'M15';
+            $systemStrategy->oanda->frequency = 'H1';
 
             $systemStrategy->rateCount = 1000;
 

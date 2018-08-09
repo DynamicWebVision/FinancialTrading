@@ -211,47 +211,47 @@ class BackTestClassTest extends TestCase
         return HistoricalRates::find($nextRateId);
     }
 
-    public function testGetRatesLooping()
-    {
-        ini_set('memory_limit', '-1');
-
-        $backtest = new IndicatorRunThroughTest('abc');
-        $backtest->strategy = new EmaXAdxConfirmWithMarketIfTouched(123, 123);
-        $backtest->strategy->backtesting = true;
-        $backtest->rateUnixStart = 1507769138;
-        $backtest->rateIndicatorMin = 200;
-        $backtest->currencyId = 1;
-        $backtest->frequencyId = 1;
-
-        $fullExchange = Exchange::find(1);
-
-        $backtest->exchange = $fullExchange;
-        $backtest->frequencyId = 1;
-
-        $previousPriceData = false;
-        $backtest->setLastId();
-
-        $backtest->rateIndex = $backtest->rateIndicatorMin - 1;
-
-        $backtest->getInitialRates();
-
-        $backtest->currentRatesProcessed = $backtest->rateCount;
-
-        while (!$backtest->lastIdCheck()) {
-            $backtest->startNewPeriod();
-
-            if ($previousPriceData) {
-                $dbNextRate = $this->getNextRate($previousPriceData, $backtest->frequencyId, $backtest->currencyId);
-
-                $this->assertEquals($dbNextRate->id, $backtest->currentPriceData->id);
-                $this->assertEquals($dbNextRate->open_mid, $backtest->currentPriceData->ask);
-
-                if (isset($previousDbRate)) {
-                    $this->assertEquals($previousDbRate->close_mid, end($backtest->currentRates));
-                }
-                $previousDbRate = $dbNextRate;
-            }
-            $previousPriceData = $backtest->currentPriceData;
-        }
-    }
+//    public function testGetRatesLooping()
+//    {
+//        ini_set('memory_limit', '-1');
+//
+//        $backtest = new IndicatorRunThroughTest('abc');
+//        $backtest->strategy = new EmaXAdxConfirmWithMarketIfTouched(123, 123);
+//        $backtest->strategy->backtesting = true;
+//        $backtest->rateUnixStart = 1507769138;
+//        $backtest->rateIndicatorMin = 200;
+//        $backtest->currencyId = 1;
+//        $backtest->frequencyId = 1;
+//
+//        $fullExchange = Exchange::find(1);
+//
+//        $backtest->exchange = $fullExchange;
+//        $backtest->frequencyId = 1;
+//
+//        $previousPriceData = false;
+//        $backtest->setLastId();
+//
+//        $backtest->rateIndex = $backtest->rateIndicatorMin - 1;
+//
+//        $backtest->getInitialRates();
+//
+//        $backtest->currentRatesProcessed = $backtest->rateCount;
+//
+//        while (!$backtest->lastIdCheck()) {
+//            $backtest->startNewPeriod();
+//
+//            if ($previousPriceData) {
+//                $dbNextRate = $this->getNextRate($previousPriceData, $backtest->frequencyId, $backtest->currencyId);
+//
+//                $this->assertEquals($dbNextRate->id, $backtest->currentPriceData->id);
+//                $this->assertEquals($dbNextRate->open_mid, $backtest->currentPriceData->ask);
+//
+//                if (isset($previousDbRate)) {
+//                    $this->assertEquals($previousDbRate->close_mid, end($backtest->currentRates));
+//                }
+//                $previousDbRate = $dbNextRate;
+//            }
+//            $previousPriceData = $backtest->currentPriceData;
+//        }
+//    }
 }

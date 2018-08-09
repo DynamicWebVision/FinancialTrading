@@ -32,6 +32,47 @@ class StochasticEvents {
         $this->utility = new Utility();
     }
 
+    public function stochastics($rates, $kLength, $smoothingSlow, $smoothingFull) {
+
+        $utility = new Utility();
+        $rates = $utility->getLastXElementsInArray($rates, $kLength*2);
+
+        $highs = array_column($rates,'highMid');
+        $lows = array_column($rates,'lowMid');
+
+        $responseValues = [];
+
+        foreach ($rates as $index => $rate) {
+            if (($index +1) >= $kLength) {
+
+                $arrayIndexStart = $index - $kLength + 1;
+
+                $currentHighs = array_slice($highs, $arrayIndexStart, $kLength);
+                $currentLows = array_slice($lows, $arrayIndexStart, $kLength);
+
+                $lowValue = min($currentLows);
+                $highValue = max($currentHighs);
+
+                if ($highValue - $lowValue == 0) {
+                    $responseValues['fast']['k'][] = 100;
+                }
+                else {
+                    $responseValues['fast']['k'][] = (($rate->closeMid - $lowValue)/($highValue - $lowValue))*100;
+                }
+            }
+        }
+
+        $responseValues['fast']['d'] = $this->indicators->sma($responseValues['fast']['k'], $smoothingSlow);
+
+        $responseValues['slow']['k'] = $this->indicators->sma($responseValues['fast']['d'], $smoothingSlow);
+        $responseValues['slow']['d'] = $this->indicators->sma($responseValues['slow']['k'], $smoothingSlow);
+
+        $responseValues['full']['k'] = $this->indicators->sma($responseValues['slow']['d'], $smoothingFull);
+        $responseValues['full']['d'] = $this->indicators->sma($responseValues['full']['k'], $smoothingFull);
+
+        return $responseValues;
+    }
+
     public function fastKMovesOutOfOverbought($rates, $klength, $smoothingSlow, $smoothingFull, $overBoughtThreshold) {
         $stochastic = $this->indicators->stochastics($rates, $klength, $smoothingSlow, $smoothingFull);
 
@@ -96,6 +137,18 @@ class StochasticEvents {
         }
         else {
             return 'none';
+        }
+    }
+
+    public function getReturnFromOverBoughtPrice($overboughtCutoff, $rates, $kLength) {
+        $upperLine = 100 - $overboughtCutoff;
+
+        $stoch = $this->stochastics($rates, $kLength, $kLength, $kLength, $kLength);
+
+        $currentFastK = $stoch['fast']['k'];
+
+        if ($currentFastK > $overboughtCutoff) {
+
         }
     }
 }
