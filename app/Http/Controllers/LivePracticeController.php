@@ -750,7 +750,7 @@ class LivePracticeController extends Controller {
 
             $systemStrategy->rateCount = 1000;
 
-            $systemStrategy->rates = $systemStrategy->getRates('both');
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
             $systemStrategy->setCurrentPrice();
 
             $systemStrategy->exchange = $exchange;
@@ -804,7 +804,7 @@ class LivePracticeController extends Controller {
 
             $systemStrategy->rateCount = 1000;
 
-            $systemStrategy->rates = $systemStrategy->getRates('both');
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
             $systemStrategy->setCurrentPrice();
 
             $systemStrategy->exchange = $exchange;

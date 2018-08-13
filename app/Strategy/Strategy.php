@@ -707,7 +707,7 @@ abstract class Strategy  {
                     order by strategy_exchange_rules.rank;", [$this->strategyId]);
     }
 
-    public function getRates($type) {
+    public function getRates($type, $removeUnfinished = false) {
         $this->oanda->exchange = $this->exchange->exchange;
 
         if ($this->rateCount) {
@@ -717,13 +717,13 @@ abstract class Strategy  {
         $this->oanda->addCurrentPriceToRates = $this->addCurrentPriceToRates;
 
         if ($type == 'simple') {
-            return $this->oanda->simpleRates();
+            return $this->oanda->simpleRates($removeUnfinished);
         }
         elseif ($type == 'full') {
-            return $this->oanda->fullRates();
+            return $this->oanda->fullRates($removeUnfinished);
         }
         elseif ($type == 'both') {
-            return $this->oanda->fullAndSimpleRates();
+            return $this->oanda->fullAndSimpleRates($removeUnfinished);
         }
     }
 
