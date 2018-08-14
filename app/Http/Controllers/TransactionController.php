@@ -18,6 +18,7 @@ class TransactionController extends Controller {
             $account = OandaAccounts::find($account);
             $id = $account->oanda_id;
             $dbAccountId = $account->id;
+            $lastProcessedId = $account->last_order_id;
         }
         else {
             $nextAccount = OandaAccounts::orderBy('last_transaction_pull')
@@ -39,11 +40,11 @@ class TransactionController extends Controller {
 
         $broker->accountId = $id;
 
-        $minId = OandaTrades::where('oanda_account_id', '=', $id)->max('oanda_open_id');
+        //$minId = OandaTrades::where('oanda_account_id', '=', $id)->max('oanda_open_id');
         //$minId = 0;
 
-        if ($minId != null) {
-            $transactions = $broker->getTransactionsSince($minId);
+        if ($lastProcessedId != 0) {
+            $transactions = $broker->getTransactionsSince($lastProcessedId);
         }
         else {
             $transactions = $broker->getTransactionHistory();
@@ -111,12 +112,15 @@ class TransactionController extends Controller {
                         $oandaTrade->save();
                     }
                 }
+                $lastProcessedId = $t->id;
             }
         }
 
         $accountUpdate = OandaAccounts::find($dbAccountId);
 
         $accountUpdate->last_transaction_pull = time();
+
+        $accountUpdate->last_order_id = $lastProcessedId;
 
         $accountUpdate->save();
 

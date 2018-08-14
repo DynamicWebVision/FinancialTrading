@@ -147,7 +147,7 @@ class StochasticEvents {
 
         $currentFastK = $stoch['fast']['k'];
 
-        if ($currentFastK > $overboughtCutoff) {
+        if ($currentFastK > $upperLine) {
 
         }
     }
