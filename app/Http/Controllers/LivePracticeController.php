@@ -22,46 +22,6 @@ use \App\Strategy\EmaMomentum\EmaXAdxConfirmWithMarketIfTouched;
 
 class LivePracticeController extends Controller {
 
-    public $macdShortPeriod;
-    public $macdLongPeriod;
-
-    public $macdIndicatorPeriod;
-
-    public $rsiPeriods;
-    public $rsiUpperCutoff;
-    public $rsiLowerCutoff;
-
-    public $bollingerPeriods;
-
-    public $currentPositionStatus;
-
-    public $currentLongPrice;
-    public $currentShortPrice;
-
-    public $currentLoss;
-
-    public $accountValue;
-
-    public $smaShortPeriod;
-    public $smaLongPeriod;
-
-    public $rateOfChangePeriod;
-
-    public $transactions;
-
-    public $lossCutoff;
-
-    public $currentShortMin;
-    public $currentLongMax;
-
-    public $fivePeriodsSincePositionRate;
-    public $tenPeriodsSincePositionRate;
-
-    public $maxGain;
-
-    public $periodsSincePosition;
-    public $biggestGainPeriodSince;
-
     public $utility;
 
     public function __construct() {
@@ -723,6 +683,7 @@ class LivePracticeController extends Controller {
 
     public function emaXAdxConfirmWithMarketIfTouched() {
         Log::info('emaXAdxConfirmWithMarketIfTouched: START LivePracticeController->emaXAdxConfirmWithMarketIfTouched');
+        $this->utility->sleepUntilAtLeastFiveSeconds();
 
         $strategy = new Strategy();
         //Need to Change
@@ -777,6 +738,7 @@ class LivePracticeController extends Controller {
 
     public function emaXAdxConfirmWithMarketIfTouchedHr() {
         Log::info('emaXAdxConfirmWithMarketIfTouched: START LivePracticeController->emaXAdxConfirmWithMarketIfTouched');
+        $this->utility->sleepUntilAtLeastFiveSeconds();
 
         $strategy = new Strategy();
         //Need to Change

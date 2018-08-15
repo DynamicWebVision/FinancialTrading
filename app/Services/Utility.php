@@ -159,4 +159,14 @@ class Utility  {
         unset($array[count($array)-1]);
         return $array;
     }
+
+    public function sleepUntilAtLeastFiveSeconds() {
+        $currentSeconds = (int) date('s');
+
+        if ($currentSeconds < 5) {
+            sleep(5 - $currentSeconds);
+            return true;
+        }
+        return true;
+    }
 }

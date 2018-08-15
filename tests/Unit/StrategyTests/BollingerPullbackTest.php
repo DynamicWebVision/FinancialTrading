@@ -26,6 +26,10 @@ class BollingerPullbackTest extends TestCase
 
         $bollingerStrategy->rsiPeriodsBack = 5;
 
+        $bollingerStrategy->rates = $historicalRates->getRatesSpecificTimeBoth(1,1,1000,'2018-08-15 2:00:00');
+
+        $test = 1;
+
         /****NOT WORKING*****/
 
         //CROSSED ABOVE EVENT

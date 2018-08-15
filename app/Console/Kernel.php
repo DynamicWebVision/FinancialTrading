@@ -52,7 +52,6 @@ class Kernel extends ConsoleKernel
 
             $schedule->call('App\Http\Controllers\LivePracticeController@hourStochFastOppositeSlow')->hourly();
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyAfterHour')->hourly();
-            $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->hourly();
 
             //Four Hour Interval
 //            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('1:00');

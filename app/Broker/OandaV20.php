@@ -95,6 +95,7 @@ class OandaV20 extends \App\Broker\Base  {
                 $stdRate->closeMid = (float) $rate->mid->c;
                 $stdRate->lowMid = (float) $rate->mid->l;
                 $stdRate->openMid = (float) $rate->mid->o;
+                $stdRate->dateTime = date("Y-m-d H:i:s",(int) $rate->time);
                 $stdRate->volume = (float) $rate->volume;
 
                 return $stdRate;
@@ -126,6 +127,7 @@ class OandaV20 extends \App\Broker\Base  {
                 $stdRate->closeMid = (float) $rate->mid->c;
                 $stdRate->lowMid = (float) $rate->mid->l;
                 $stdRate->openMid = (float) $rate->mid->o;
+                $stdRate->dateTime = date("Y-m-d H:i:s",(int) $rate->time);
                 $stdRate->volume = (float) $rate->volume;
                 return $stdRate;
             }, $rates);

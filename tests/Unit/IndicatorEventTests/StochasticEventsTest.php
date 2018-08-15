@@ -10,7 +10,7 @@ use App\IndicatorEvents\StochasticEvents;
 use App\Model\HistoricalRates;
 use App\Model\TmpTestRates;
 
-class AdxEventsTest extends TestCase
+class StochasticEventsTest extends TestCase
 {
 
     public function testStochIndicator() {
