@@ -3,7 +3,8 @@
  * and open the template in the editor.
  */
 
-var app = angular.module('app', ['ngRoute','ngAnimate','utility.directives','oitozero.ngSweetAlert', 'chart.js', 'angularUtils.directives.dirPagination']);
+var app = angular.module('app', ['ngRoute','ngAnimate','utility.directives','oitozero.ngSweetAlert',
+    'chart.js', 'angularUtils.directives.dirPagination', 'jsonFormatter']);
 
 app.config(function($routeProvider) {
     $routeProvider

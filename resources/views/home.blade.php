@@ -13,12 +13,14 @@
     <script src="/js/angular-animate.js"></script>
     <script src="/js/app/home_app.js"></script>
     <script src="/js/angular_directives.js"></script>
+    <script src="/bower_components/json-formatter/src/json-formatter.js"></script>
+    <script src="/bower_components/json-formatter/src/recursion-helper.js"></script>
 
     <!– Angular Factories and Services ->
     <script src="/js/factory/merchant.js"></script>
     <script src="/js/service/sweet_alert.js"></script>
     <script src="/js/factory/lookup.js"></script>
-    <script src="/js/factory/back_test.js"></script>
+    <script src="/js/factory/back_test.js"></script>omeap
     <script src="/js/factory/strategy.js"></script>
     <script src="/js/factory/strategy_system.js"></script>
     <script src="/js/factory/strategy_note.js"></script>

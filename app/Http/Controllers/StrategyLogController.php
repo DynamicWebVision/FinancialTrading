@@ -40,7 +40,17 @@ class StrategyLogController extends Controller {
             $this->logQuery = $this->logQuery->where('exchange_id', '=', $exchange);
         }
 
-        if (strlen($dateTime) > 5) {
+        if (strlen($dateTime) <= 5 && strlen($dateTime) > 1) {
+            $dateTime = date('Y-m').'-'.$dateTime;
+            $this->logQuery = $this->logQuery->where('start_date_time', '>=', $dateTime);
+            $this->orderDesc = false;
+        }
+        elseif (strlen($dateTime) > 5 && strlen($dateTime) < 10) {
+            $dateTime = date('Y').'-'.$dateTime;
+            $this->logQuery = $this->logQuery->where('start_date_time', '>=', $dateTime);
+            $this->orderDesc = false;
+        }
+        elseif (strlen($dateTime) > 10) {
             $this->logQuery = $this->logQuery->where('start_date_time', '>=', $dateTime);
             $this->orderDesc = false;
         }
@@ -102,10 +112,20 @@ class StrategyLogController extends Controller {
 
     public function getLogIndicators($logId) {
         $indicators = StrategyLogIndicators::where('log_id', '=', $logId)->first(['indicators']);
-        return json_decode($indicators->indicators);
+        $indicators = json_decode($indicators->indicators);
+        return $indicators;
     }
 
     public function getLogApi($logId) {
-        return StrategyLogApi::where('log_id', '=', $logId)->orderBy('updated_at')->get()->toArray();
+        $logs = StrategyLogApi::where('log_id', '=', $logId)->orderBy('updated_at')->get()->toArray();
+
+        $logs = array_map(function($log) {
+           $log['response'] = json_decode($log['response']);
+           $log['response_expand'] = false;
+           $log['fields'] = json_decode($log['fields']);
+           $log['fields_expand'] = false;
+           return $log;
+        }, $logs);
+        return $logs;
     }
 }

@@ -148,6 +148,11 @@ app.service('UtilityService', function($http, $q) {
         }
     }
 
+    service.beautifyJson = function(json_text, id) {
+        var element = document.getElementById(id);
+        element.innerHTML = document.createTextNode(JSON.stringify(json_text, null, 4));
+    }
+
     return service;
 });
 

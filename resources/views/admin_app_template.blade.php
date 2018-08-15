@@ -13,9 +13,12 @@
     <link rel="shortcut icon" href="img/currency_bears.png">
     <link href="/assets/plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="assets/css/icons.css" rel="stylesheet" type="text/css">
     <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="bower_components/ng-prettyjson/src/ng-prettyjson.css">
     @yield('css')
 
 </head>

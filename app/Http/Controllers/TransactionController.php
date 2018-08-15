@@ -27,6 +27,7 @@ class TransactionController extends Controller {
 
             $id = $nextAccount[0]->oanda_id;
             $dbAccountId = $nextAccount[0]->id;
+            $lastProcessedId = $nextAccount[0]->last_order_id;
         }
 
         $broker = new OandaV20();

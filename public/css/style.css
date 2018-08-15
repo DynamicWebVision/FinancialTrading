@@ -341,6 +341,9 @@ label {
 	margin-left: 20px;
 }
 
+.pointer {
+	cursor: pointer;
+}
 
 .fade-effect.ng-hide {
 	opacity: 0;
@@ -385,4 +388,10 @@ label {
 
 .green-text {
 	color: #01ba9a;
+}
+
+.pretty-son-pre {
+	overflow: visible !important;
+	overflow-x: visible !important;
+	overflow-y: visible !important;
 }

@@ -10,6 +10,7 @@
         vm.account = 1;
         vm.dateTime = '';
         vm.exchange = -1;
+        vm.utility = UtilityService;
 
         vm.processing = true;
 
@@ -21,6 +22,7 @@
         vm.onlyEvents = false;
 
         vm.accountName = '';
+
 
         vm.activeLog = {};
 
@@ -106,9 +108,8 @@
             vm.activeLog = log;
             $http.get('strategy_logger/log_api/'+log.id).then(function(response) {
                 vm.processing = false;
-
+                console.log(response.data);
                 vm.logApi = response.data;
-
                 $("#log-api-modal").modal('toggle');
             });
         }
