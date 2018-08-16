@@ -243,8 +243,8 @@ abstract class Strategy  {
                 $this->strategyLogger->logMessage('Long Limit Order with limit Price '.$params['limitPrice'].' good until '.$params['gtdTime'], 1);
             }
             elseif ($this->orderType == 'MARKET_IF_TOUCHED') {
-                if ($this->currentPriceData->mid >= $this->marketIfTouchedOrderPrice) {
-                    $newPosition['amount'] = $this->currentPriceData->mid;
+                if ($this->currentPriceData->ask >= $this->marketIfTouchedOrderPrice) {
+                    $newPosition['amount'] = $this->currentPriceData->ask;
                 }
                 else {
                     $newPosition['amount'] = $this->marketIfTouchedOrderPrice;
@@ -526,8 +526,8 @@ abstract class Strategy  {
                 ];
 
             if ($this->orderType == 'MARKET_IF_TOUCHED') {
-                if ($this->currentPriceData->mid <= $this->marketIfTouchedOrderPrice) {
-                    $newPosition['amount'] = $this->currentPriceData->mid;
+                if ($this->currentPriceData->ask <= $this->marketIfTouchedOrderPrice) {
+                    $newPosition['amount'] = $this->currentPriceData->ask;
                 }
                 else {
                     $newPosition['amount'] = $this->marketIfTouchedOrderPrice;

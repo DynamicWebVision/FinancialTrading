@@ -24,6 +24,7 @@ use App\Model\BackTest;
 use App\Model\BackTestToBeProcessed;
 use App\Model\BackTestGroup;
 use \App\Http\Controllers\BackTestingController;
+use \App\Http\Controllers\BackTestStatsController;
 use \App\Http\Controllers\ServersController;
 use App\Model\Servers;
 
@@ -121,7 +122,7 @@ class AutomatedBackTestController extends Controller {
 
         if ($recordCount > 0) {
             while ($recordCount > 0) {
-                $autoController = new BackTestingController();
+                $autoController = new BackTestStatsController();
                 $autoController->backtestProcessStats();
 
                 $recordCount = BackTestToBeProcessed::where('stats_finish', '=', 0)->where('stats_start', '=', 0)->where('finish', '=', 1)->where('start', '=', 1)
