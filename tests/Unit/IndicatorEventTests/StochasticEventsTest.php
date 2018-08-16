@@ -26,26 +26,50 @@ class StochasticEventsTest extends TestCase
 
     //Test from
     public function testGetReturnFromOverBoughtPrice() {
-        $currencyIndicators = new HistoricalRates();
+        $historicalRates = new \App\Model\HistoricalRates();
         $stochasticEvents = new StochasticEvents();
 
-        $tmpTestRates = TmpTestRates::where('test', '=', 'adx')->orderBy('id')->get()->toArray();
+        $rates = $historicalRates->getRatesSpecificTimeFull(1,4,100,'2018-08-08 1:00:00');
 
-        $rates = $fullRates = array_map(function($rate) {
+        //Low Check
 
-            $stdRate = new \StdClass();
+        $response = $stochasticEvents->getReturnFromOverBoughtPrice($rates, 14, 20);
 
-            $stdRate->highMid = (float) $rate['high_mid'];
-            $stdRate->closeMid = (float) $rate['close_mid'];
-            $stdRate->lowMid = (float) $rate['low_mid'];
-            $stdRate->openMid = (float) $rate['open_mid'];
-            //$stdRate->volume = (float) $rate['volume'];
+        $stdRate = new \StdClass();
 
-            return $stdRate;
-        }, $tmpTestRates);
+        $stdRate->highMid = $response['priceTarget'];
+        $stdRate->closeMid = $response['priceTarget'];
+        $stdRate->lowMid = $response['priceTarget'];
+        $stdRate->openMid = $response['priceTarget'];
 
-        $adx = $currencyIndicators->adx($rates, 14);
+        $rates[] = $stdRate;
 
-        $this->assertEquals(round(end($adx), 1), 16.7);
+        $stoch = $stochasticEvents->stochastics($rates, 14, 1, 3);
+
+        $endStoch = round(end($stoch['fast']['k']));
+        $this->assertEquals($endStoch,79 );
+
+        $rates = $historicalRates->getRatesSpecificTimeFull(1,4,100,'2018-08-03 5:00:00');
+
+        $stochasticEvents = new StochasticEvents();
+
+        //Low Check
+
+        $response = $stochasticEvents->getReturnFromOverBoughtPrice($rates, 14, 20);
+
+        $stdRate = new \StdClass();
+
+        $stdRate->highMid = $response['priceTarget'];
+        $stdRate->closeMid = $response['priceTarget'];
+        $stdRate->lowMid = $response['priceTarget'];
+        $stdRate->openMid = $response['priceTarget'];
+
+        $rates[] = $stdRate;
+
+        $stoch = $stochasticEvents->stochastics($rates, 14, 1, 3);
+
+        $endStoch = round(end($stoch['fast']['k']));
+        $this->assertEquals($endStoch, 21 );
+
     }
 }

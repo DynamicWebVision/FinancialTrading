@@ -53,12 +53,18 @@ class StochasticEvents {
                 $lowValue = min($currentLows);
                 $highValue = max($currentHighs);
 
-                if ($highValue - $lowValue == 0) {
-                    $responseValues['fast']['k'][] = 100;
+                try {
+                    if ($highValue - $lowValue == 0) {
+                        $responseValues['fast']['k'][] = 100;
+                    }
+                    else {
+                        $responseValues['fast']['k'][] = (($rate->closeMid - $lowValue)/($highValue - $lowValue))*100;
+                    }
                 }
-                else {
-                    $responseValues['fast']['k'][] = (($rate->closeMid - $lowValue)/($highValue - $lowValue))*100;
+                catch (\Exception $e) {
+                    $d=1;
                 }
+
             }
         }
 
@@ -140,15 +146,36 @@ class StochasticEvents {
         }
     }
 
-    public function getReturnFromOverBoughtPrice($overboughtCutoff, $rates, $kLength) {
+    public function getReturnFromOverBoughtPrice($rates, $kLength, $overboughtCutoff) {
         $upperLine = 100 - $overboughtCutoff;
 
         $stoch = $this->stochastics($rates, $kLength, $kLength, $kLength, $kLength);
 
-        $currentFastK = $stoch['fast']['k'];
+        $currentFastK = end($stoch['fast']['k']);
+
+        $nextRates = $this->utility->getLastXElementsInArray($rates, $kLength-1);
+
+        $highs = array_column($nextRates,'highMid');
+        $lows = array_column($nextRates,'lowMid');
+
+        $previousHighestHigh = max($highs);
+        $previousLowestLow = min($lows);
+
+        $response = [];
 
         if ($currentFastK > $upperLine) {
-
+            $targetStoch = $upperLine - 1;
+            $response['priceTarget'] = (($targetStoch/100)*($previousHighestHigh - $previousLowestLow)) + $previousLowestLow;
+            $response['entry'] = 'short';
         }
+        elseif ($currentFastK < $upperLine) {
+            $targetStoch = $overboughtCutoff + 1;
+            $response['priceTarget'] = (($targetStoch/100)*($previousHighestHigh - $previousLowestLow)) + $previousLowestLow;
+            $response['entry'] = 'long';
+        }
+        else {
+            $response['entry'] = false;
+        }
+        return $response;
     }
 }

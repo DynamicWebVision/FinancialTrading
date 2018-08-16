@@ -71,7 +71,62 @@ class HullMovingAverage {
         return $this->eventHelpers->lineChangeDirection($lastThree);
     }
 
-    public function bruteForceHmaDirectionChange() {
+    public function hmaSlope($rates, $length, $pip, $minSlope) {
+        $lastThree = $this->hullLineLastThree($rates, $length);
+        $slope = round(($lastThree[2] - $lastThree[1])/$pip);
 
+        if ($slope >= $minSlope) {
+            return 'long';
+        }
+        elseif ($slope <= $minSlope*-1) {
+            return 'short';
+        }
+        else {
+            return false;
+        }
+    }
+
+    public function hullChangeDirectionPoint($rates, $length) {
+        $lastThreeHma = $this->hullLineLastThree($rates, $length);
+        $secondToLast = $lastThreeHma[1];
+        $lastHma = $lastThreeHma[2];
+
+        $response = [];
+
+        if ($lastHma > $secondToLast) {
+            $targetHma = $lastHma;
+            $response['side'] = 'long';
+        }
+        elseif ($lastHma < $secondToLast) {
+            $targetHma = $lastHma;
+            $response['side'] = 'short';
+        }
+
+        $squareRootLength = round(sqrt($length));
+
+        $differenceValues = $this->getDifferenceValues($rates, $length);
+
+        $outerDivisor = $this->weightedMovingAverage->getDivisior($squareRootLength);
+
+        $differenceValuesBesidesNext = $this->utility->getLastXElementsInArray($differenceValues, $squareRootLength-1);
+
+        $diffValuesTotalBesidesNext = $this->weightedMovingAverage->walkValuesWithIndexMultiplier($differenceValuesBesidesNext);
+
+        $necessaryDifference = (($targetHma*$outerDivisor) - $diffValuesTotalBesidesNext)/$squareRootLength;
+
+        $fastLength = round($length/2);
+        $fastDivisor = $this->weightedMovingAverage->getDivisior($fastLength);
+        $slowDivisor = $this->weightedMovingAverage->getDivisior($length);
+
+        //Fast Value Sum Besides Next
+        $fastRatesBesidesNext = $this->utility->getLastXElementsInArray($rates, $fastLength-1);
+        $fastDiffValuesSumBesidesNext = $this->weightedMovingAverage->walkValuesWithIndexMultiplier($fastRatesBesidesNext);
+
+        //Slow Value Sum Besides Next
+        $slowRatesBesidesNext = $this->utility->getLastXElementsInArray($rates, $length-1);
+        $slowDiffValuesSumBesidesNext = $this->weightedMovingAverage->walkValuesWithIndexMultiplier($slowRatesBesidesNext);
+
+        $response['priceTarget'] = (($fastDivisor*$slowDivisor*$necessaryDifference) + ($fastDivisor*$slowDiffValuesSumBesidesNext) - (2*$slowDivisor*$fastDiffValuesSumBesidesNext))/((-$fastDivisor*$length) + (2*$slowDivisor*$fastLength));
+        return $response;
     }
 }

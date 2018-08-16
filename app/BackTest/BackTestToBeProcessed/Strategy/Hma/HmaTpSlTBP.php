@@ -96,6 +96,8 @@ class HmaTpSlTBP extends \App\BackTest\BackTestToBeProcessed\Base
         $strategy->exchange = $fullExchange;
         $strategy->maxPositions = 5;
 
+        $strategy->strategyLogger = new StrategyLogger();
+
         $backTest->strategy = $strategy;
 
         //Values for Getting Rates

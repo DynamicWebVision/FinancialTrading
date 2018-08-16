@@ -45,4 +45,21 @@ class WeightedMovingAverage {
         }
         return $sumTotal/$divisor;
     }
+
+    public function getDivisior($length) {
+        $divisor = 0;
+        while ($length > 0) {
+            $divisor = $divisor + $length;
+            $length--;
+        }
+        return $divisor;
+    }
+
+    public function walkValuesWithIndexMultiplier($values) {
+        $valueTotal = 0;
+        foreach ($values as $index=>$value) {
+            $valueTotal = $valueTotal + ($value*($index +1));
+        }
+        return $valueTotal;
+    }
 }

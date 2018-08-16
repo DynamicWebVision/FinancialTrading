@@ -17,6 +17,7 @@ use App\BackTest\BackTestToBeProcessed\Strategy\Stochastic\StochasticTPSl;
 use App\BackTest\BackTestToBeProcessed\Strategy\TwoTier\SlowOverBoughtFastMomentum\SlowOverboughtFastMomentumTpSL;
 use App\BackTest\BackTestToBeProcessed\Strategy\Hlhb\HlhbTpWTrailingStop;
 use App\BackTest\BackTestToBeProcessed\Strategy\BollingerMomentum\BollingerMomentumBackTest;
+use App\BackTest\BackTestToBeProcessed\Strategy\Hma\HmaRev;
 use \Log;
 
 use App\Model\BackTest;
@@ -235,6 +236,10 @@ class AutomatedBackTestController extends Controller {
         elseif ($server->current_back_test_strategy == 'BOLLINGER' || $server->current_back_test_strategy == 'BOLLINGER_PULLBACK') {
             $bolingerMomentumTest = new BollingerMomentumBackTest($processId, $server);
             $bolingerMomentumTest->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'HMA_CHANGE_DIRECTION') {
+            $hmaReverseTest = new HmaRev($processId, $server);
+            $hmaReverseTest->callProcess();
         }
     }
 }
