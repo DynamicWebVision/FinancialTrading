@@ -112,70 +112,6 @@ abstract class Strategy  {
         }
     }
 
-//    public function checkFullPositionInfo() {
-//        if (!$this->backtesting) {
-//            $this->oanda->exchange = $this->exchange->exchange;
-//
-//            $responsePosition = $this->oanda->getInstrumentPosition();
-//            $responseTrades = $this->oanda->getInstrumentTrade();
-//
-//            if (isset($responsePosition->side) || isset($responseTrades->trades[0])) {
-//
-//                if (!isset($responsePosition->side)) {
-//                    $this->fullPositionInfo['open'] = true;
-//                    $this->fullPositionInfo['side'] = false;
-//
-//                    $this->strategyLogger->logMessage('Open Position but no side', 1);
-//
-//                    $this->fullPositionInfo['stopLossAmount'] = 0;
-//                    $this->fullPositionInfo['trailingStop'] = 0;
-//                }
-//                else {
-//                    $this->fullPositionInfo['open'] = true;
-//                    $this->fullPositionInfo['side'] = $responsePosition->side;
-//
-//                    $this->fullPositionInfo['currentPipProfitLoss'] = $this->getOpenPositionProfitInPips($responsePosition);
-//
-//                    if (isset($responseTrades->trades[0])) {
-//                        $this->fullPositionInfo['stopLossAmount'] = abs($responseTrades->trades[0]->price - $responseTrades->trades[0]->stopLoss);
-//                        $this->fullPositionInfo['trailingStop'] = $responseTrades->trades[0]->trailingStop;
-//                        $this->fullPositionInfo['tradeId'] = $responseTrades->trades[0]->id;
-//                    }
-//                    else {
-//                        $this->fullPositionInfo['stopLossAmount'] = 0;
-//                        $this->fullPositionInfo['trailingStop'] = 0;
-//                    }
-//                }
-//            }
-//            else {
-//                $this->fullPositionInfo['open'] = false;
-//                $this->fullPositionInfo['side'] = false;
-//                $this->fullPositionInfo['trailingStop'] = 0;
-//            }
-//        }
-//        else {
-//            if (!is_null($this->backTestCurrentPosition)) {
-//
-//                if ($this->backTestCurrentPosition == 'long') {
-//                    $this->fullPositionInfo['side'] = 'buy';
-//                    $this->fullPositionInfo['open'] = true;
-//
-//                }
-//                else {
-//                    $this->fullPositionInfo['side'] = 'sell';
-//                    $this->fullPositionInfo['open'] = true;
-//                }
-//                $this->fullPositionInfo['currentPipProfitLoss'] = $this->getOpenPositionProfitInPips(null);
-//                $this->fullPositionInfo['trailingStop'] = $this->backTestTrailingStop;
-//            }
-//            else {
-//                $this->fullPositionInfo['open'] = false;
-//                $this->fullPositionInfo['side'] = false;
-//                $this->fullPositionInfo['trailingStop'] = 0;
-//            }
-//        }
-//    }
-
     public function calculatePositionAmount() {
         if (!$this->backtesting) {
             $accountInfo = $this->oanda->accountInfo();
@@ -242,8 +178,14 @@ abstract class Strategy  {
                 }
             }
             elseif ($this->orderType == 'MARKET_IF_TOUCHED') {
-                $params['type'] = 'MARKET_IF_TOUCHED';
-                $params['marketIfTouchedOrderPrice'] = $this->oanda->getOandaPrecisionPrice($this->marketIfTouchedOrderPrice, $this->exchange->pip);
+                if ($this->currentPriceData->mid >= $this->marketIfTouchedOrderPrice) {
+                    $params['type'] = 'LIMIT';
+                    $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->mid, $this->exchange->pip);
+                }
+                else {
+                    $params['type'] = 'MARKET_IF_TOUCHED';
+                    $params['marketIfTouchedOrderPrice'] = $this->oanda->getOandaPrecisionPrice($this->marketIfTouchedOrderPrice, $this->exchange->pip);
+                }
 
                 $params['timeInForce'] = 'GTD';
                 $params['gtdTime'] = $this->calculateLimitEndTime();
@@ -301,7 +243,13 @@ abstract class Strategy  {
                 $this->strategyLogger->logMessage('Long Limit Order with limit Price '.$params['limitPrice'].' good until '.$params['gtdTime'], 1);
             }
             elseif ($this->orderType == 'MARKET_IF_TOUCHED') {
-                $newPosition['amount'] = $this->marketIfTouchedOrderPrice;
+                if ($this->currentPriceData->mid >= $this->marketIfTouchedOrderPrice) {
+                    $newPosition['amount'] = $this->currentPriceData->mid;
+                }
+                else {
+                    $newPosition['amount'] = $this->marketIfTouchedOrderPrice;
+                }
+
                 $newPosition['takeProfit'] = $this->oanda->getOandaPrecisionPrice($this->calculateLongTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
                 $newPosition['stopLoss'] = $this->oanda->getOandaPrecisionPrice($this->calculateLongStopLoss($this->marketIfTouchedOrderPrice), $this->exchange->pip);
 
@@ -519,8 +467,14 @@ abstract class Strategy  {
                 }
             }
             elseif ($this->orderType == 'MARKET_IF_TOUCHED') {
-                $params['type'] = 'MARKET_IF_TOUCHED';
-                $params['marketIfTouchedOrderPrice'] = $this->oanda->getOandaPrecisionPrice($this->marketIfTouchedOrderPrice, $this->exchange->pip);
+                if ($this->currentPriceData->mid <= $this->marketIfTouchedOrderPrice) {
+                    $params['type'] = 'LIMIT';
+                    $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->mid, $this->exchange->pip);
+                }
+                else {
+                    $params['type'] = 'MARKET_IF_TOUCHED';
+                    $params['marketIfTouchedOrderPrice'] = $this->oanda->getOandaPrecisionPrice($this->marketIfTouchedOrderPrice, $this->exchange->pip);
+                }
 
                 $params['timeInForce'] = 'GTD';
                 $params['gtdTime'] = $this->calculateLimitEndTime();
@@ -572,7 +526,13 @@ abstract class Strategy  {
                 ];
 
             if ($this->orderType == 'MARKET_IF_TOUCHED') {
-                $newPosition['amount'] = $this->marketIfTouchedOrderPrice;
+                if ($this->currentPriceData->mid <= $this->marketIfTouchedOrderPrice) {
+                    $newPosition['amount'] = $this->currentPriceData->mid;
+                }
+                else {
+                    $newPosition['amount'] = $this->marketIfTouchedOrderPrice;
+                }
+
                 $newPosition['takeProfit'] = $this->oanda->getOandaPrecisionPrice($this->calculateShortTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
                 $newPosition['stopLoss'] = $this->oanda->getOandaPrecisionPrice($this->calculateShortStopLoss($this->marketIfTouchedOrderPrice), $this->exchange->pip);
 
