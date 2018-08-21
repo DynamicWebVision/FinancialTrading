@@ -178,4 +178,16 @@ class StochasticEvents {
         }
         return $response;
     }
+
+    public function getPricePointAtSpecificStochValue($rates, $kLength, $targetStoch) {
+        $nextRates = $this->utility->getLastXElementsInArray($rates, $kLength-1);
+
+        $highs = array_column($nextRates,'highMid');
+        $lows = array_column($nextRates,'lowMid');
+
+        $previousHighestHigh = max($highs);
+        $previousLowestLow = min($lows);
+
+        return (($targetStoch/100)*($previousHighestHigh - $previousLowestLow)) + $previousLowestLow;;
+    }
 }

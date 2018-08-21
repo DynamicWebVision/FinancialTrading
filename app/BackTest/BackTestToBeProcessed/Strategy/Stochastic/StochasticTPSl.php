@@ -22,6 +22,7 @@ use \App\Services\StrategyLogger;
 use \App\Strategy\Stochastic\SingleHmaMomentumTpSl;
 use \App\Strategy\Stochastic\StochFastOppositeSlow;
 use \App\Strategy\Stochastic\StochRevLowAdx;
+use \App\Strategy\Stochastic\StochRevHmaSlopeMin;
 
 use \Log;
 
@@ -96,7 +97,18 @@ class StochasticTPSl extends \App\BackTest\BackTestToBeProcessed\Base
             $backTest->rateCount = intval($this->backTestToBeProcessed->variable_3)*10;
             $backTest->rateIndicatorMin = intval($this->backTestToBeProcessed->variable_3)*5;
         }
+        elseif ($this->server->strategy_iteration == 'STOCH_REV_HMA_SLOPE_MIN') {
+            $strategy = new StochRevHmaSlopeMin(7827172, 'BackTestABC', true);
+            $strategy->orderType = 'MARKET_IF_TOUCHED';
 
+            $strategy->slowHma = intval($this->backTestToBeProcessed->variable_3);
+            $strategy->stochLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->stochOverboughtCutoff = intval($this->backTestToBeProcessed->variable_2);
+            $strategy->slowHmaSlopeMin = intval($this->backTestToBeProcessed->variable_4);
+
+            $backTest->rateCount = intval($this->backTestToBeProcessed->variable_3)*6;
+            $backTest->rateIndicatorMin = intval($this->backTestToBeProcessed->variable_3)*3;
+        }
 
         $strategy->strategyId = 5;
         $strategy->strategyDesc = 'Stoch';

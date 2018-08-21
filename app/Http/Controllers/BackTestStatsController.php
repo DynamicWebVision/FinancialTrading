@@ -223,7 +223,12 @@ class BackTestStatsController extends Controller {
 
         $gainProbabilityStandardDeviation = $indicators->standardDeviation($gainProbabilities);
 
-        $gainProbability = $gainCount[0]->gain_count/($gainCount[0]->gain_count + $lossCount[0]->loss_count);
+        if (($gainCount[0]->gain_count + $lossCount[0]->loss_count) == 0) {
+            $gainProbability = 1;
+        }
+        else {
+            $gainProbability = $gainCount[0]->gain_count/($gainCount[0]->gain_count + $lossCount[0]->loss_count);
+        }
 
         $percentageToRisk = $transactionHelpers->kellyCriterion($processedBackTest['take_profit_pips'], $processedBackTest['stop_loss_pips'] + 2, $gainProbability);
 
