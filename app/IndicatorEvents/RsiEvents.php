@@ -22,7 +22,7 @@ use \App\Services\CurrencyIndicators;
 use \App\Services\Utility;
 use \App\IndicatorEvents\EventHelpers;
 
-class RsiEvents extends \App\IndicatorEvents\IndicatorEventsBase {
+class RsiEvents  {
 
     public $utility;
     public $indicators;
