@@ -256,7 +256,13 @@ class BackTestStatsController extends Controller {
 
             $totalGainLoss = round(($gainCount[0]->gain_count + $lossCount[0]->loss_count)*$expectedGanLoss);
 
-            $totalGainLossByMonth = round($totalGainLoss/sizeof($monthPositiveNegative));
+            if (sizeof($monthPositiveNegative) == 0) {
+                $totalGainLossByMonth = 0;
+            }
+            else {
+                $totalGainLossByMonth = round($totalGainLoss/sizeof($monthPositiveNegative));
+            }
+
         }
 
         $backTestPositions = BackTestPosition::where('position_type', '=', 1)->where('back_test_id', '=', $backTestId)->get()->toArray();
