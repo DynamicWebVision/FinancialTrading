@@ -66,11 +66,11 @@ class HmaSwitchShortConfirmLongAdx extends \App\Strategy\Strategy  {
 
         if ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'long' && $this->decisionIndicators['slowHmaSlope'] == 'long') {
             $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
-            $this->newLongPosition();
+            $this->newShortPosition();
         }
         elseif ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'short'  && $this->decisionIndicators['slowHmaSlope'] == 'short') {
             $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
-            $this->newShortPosition();
+            $this->newLongPosition();
         }
     }
 

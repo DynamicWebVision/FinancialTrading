@@ -1,7 +1,654 @@
-<div class="col-md-3" ng-click="apiRecord.response_expand = !apiRecord.response_expand">
-    <strong>
-        <i ng-show="!apiRecord.response_expand"  class="fas fa-plus-square"></i>
-        <i ng-show="apiRecord.response_expand" class="fas fa-minus-square"></i>
-        response
-    </strong>
+<!DOCTYPE html>
+<html lang="en" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/ dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# sioc: http://rdfs.org/sioc/ns# sioct: http://rdfs.org/sioc/types# skos: http://www.w3.org/2004/02/skos/core# xsd: http://www.w3.org/2001/XMLSchema#">
+<head>
+    <link rel="profile" href="http://www.w3.org/1999/xhtml/vocab"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="https://www.flexcarestaff.com/sites/default/files/favicon-32x32.png" type="image/png" />
+    <meta name="generator" content="Drupal 7 (https://www.drupal.org)" />
+    <link rel="canonical" href="https://www.flexcarestaff.com/jobs/search" />
+    <link rel="shortlink" href="https://www.flexcarestaff.com/jobs/search" />
+    <title>Job Listings | FlexCare Medical Staffing</title>
+    <link type="text/css" rel="stylesheet" href="https://www.flexcarestaff.com/sites/default/files/css/css_lQaZfjVpwP_oGNqdtWCSpJT1EMqXdMiU84ekLLxQnc4.css" media="all" />
+    <link type="text/css" rel="stylesheet" href="https://www.flexcarestaff.com/sites/default/files/css/css_K111J_nwkIzfWbDyskOXRSLCdwZq-uI-pZ2kKXHu9lw.css" media="all" />
+    <link type="text/css" rel="stylesheet" href="https://www.flexcarestaff.com/sites/default/files/css/css_OdQ247l7xxbJOTRa1icxlfa2TL32ljXJykb_U_kDtJE.css" media="all" />
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Shadows+Into+Light+Two|Open+Sans:400,700,700italic,400italic|Arvo:700" media="all" />
+    <link type="text/css" rel="stylesheet" href="https://www.flexcarestaff.com/sites/default/files/css/css_AL6jcaF9TDNIXjNQB9jGsgL_e06Vn3uDp--G95BKHfA.css" media="all" />
+    <link type="text/css" rel="stylesheet" href="https://www.flexcarestaff.com/sites/default/files/css/css_7r_iXF0xSLJScrZLbxOrJg_maCeps5dLK_dWUqLl7-0.css" media="all" />
+    <script src="https://www.flexcarestaff.com/sites/default/files/js/js_xvYJgU6LChHqbcSh4y1AvdXfD5QBIwT3GVGVUeuksbM.js"></script>
+    <script src="https://www.flexcarestaff.com/sites/default/files/js/js_BLxotNs2yt7YGlf9QRI9L9AMfdnkQfnN-_ADBTW3SiE.js"></script>
+    <script src="https://www.flexcarestaff.com/sites/default/files/js/js_f_BpsloZtITWNBq8h8TQNh4SUGlZKD__yTkMLSN2_t8.js"></script>
+    <script src="https://www.flexcarestaff.com/sites/default/files/js/js_xYFWq03Oxa0kP80bf04s6ZskmIzuCojbaZIjLA83cwE.js"></script>
+    <script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-24568453-1", {"cookieDomain":"auto"});ga("set", "anonymizeIp", true);ga("send", "pageview");</script>
+    <script src="https://www.flexcarestaff.com/sites/default/files/js/js_V7OpeuvqiyhEKLzVn_WVFCjY_0Za8HTqSH4Qm67WfYY.js"></script>
+    <script src="https://www.flexcarestaff.com/sites/default/files/js/js_h_lO4IgXKQQtvZFuzLn3v8C_Z0SkT3q-4AJPOqq6VMY.js"></script>
+    <script src="https://www.flexcarestaff.com/sites/default/files/js/js_v89jUZ_l2LR8NzEXW2kWQ6me12tC-jCbLw8O3mpuQ2A.js"></script>
+    <script>jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"flexcarestaff","theme_token":"5M7TLoVNk9K6ts9eGZC_r5bbnVBaQJjnL3KAmYeySLQ","jquery_version":"1.10","js":{"sites\/all\/themes\/bootstrap\/js\/bootstrap.js":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/jquery\/1.10\/jquery.min.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/ui\/external\/jquery.cookie.js":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/misc\/jquery.form.min.js":1,"misc\/ajax.js":1,"sites\/all\/modules\/contrib\/jquery_update\/js\/jquery_update.js":1,"sites\/all\/modules\/contrib\/spamspan\/spamspan.js":1,"sites\/all\/libraries\/bootstrap\/js\/bootstrap.min.js":1,"sites\/all\/libraries\/selectize\/dist\/js\/standalone\/selectize.min.js":1,"sites\/all\/modules\/contrib\/google_analytics\/googleanalytics.js":1,"sites\/all\/modules\/contrib\/selectize\/js\/selectize.drupal.js":1,"sites\/all\/themes\/flexcarestaff\/js\/job-search-results-advanced-filters.js":1,"0":1,"sites\/all\/libraries\/jquery.imagemapster\/jquery.imagemapster.js":1,"sites\/all\/libraries\/jquery.matchheight\/jquery.matchheight.js":1,"sites\/all\/modules\/contrib\/views\/js\/base.js":1,"sites\/all\/themes\/bootstrap\/js\/misc\/_progress.js":1,"sites\/all\/modules\/contrib\/views\/js\/ajax_view.js":1,"sites\/all\/themes\/flexcarestaff\/js\/multiple-select.js":1,"sites\/all\/themes\/flexcarestaff\/js\/jquery.dependent.fields.js":1,"sites\/all\/themes\/flexcarestaff\/js\/flexcarestaff.js":1,"sites\/all\/themes\/flexcarestaff\/js\/profiles.js":1,"sites\/all\/themes\/flexcarestaff\/js\/hotjobs.js":1,"sites\/all\/themes\/flexcarestaff\/js\/hotjobs-profile.js":1,"sites\/all\/themes\/bootstrap\/js\/modules\/views\/js\/ajax_view.js":1,"sites\/all\/themes\/bootstrap\/js\/misc\/ajax.js":1},"css":{"modules\/system\/system.base.css":1,"sites\/all\/modules\/contrib\/date\/date_api\/date.css":1,"sites\/all\/modules\/contrib\/date\/date_popup\/themes\/datepicker.1.7.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/contrib\/logintoboggan\/logintoboggan.css":1,"modules\/node\/node.css":1,"sites\/all\/modules\/contrib\/video_filter\/video_filter.css":1,"sites\/all\/modules\/contrib\/views\/css\/views.css":1,"sites\/all\/modules\/contrib\/ckeditor\/css\/ckeditor.css":1,"sites\/all\/libraries\/bootstrap\/css\/bootstrap.min.css":1,"sites\/all\/libraries\/bootstrap\/css\/bootstrap-theme.min.css":1,"sites\/all\/modules\/contrib\/ctools\/css\/ctools.css":1,"sites\/all\/modules\/contrib\/panels\/css\/panels.css":1,"sites\/all\/libraries\/selectize\/dist\/css\/selectize.default.css":1,"sites\/all\/modules\/contrib\/selectize\/css\/selectize.drupal.css":1,"https:\/\/fonts.googleapis.com\/css?family=Shadows+Into+Light+Two|Open+Sans:400,700,700italic,400italic|Arvo:700":1,"sites\/all\/libraries\/fontawesome\/css\/font-awesome.css":1,"sites\/all\/themes\/flexcarestaff\/css\/bootstrap-overrides.min.css":1,"sites\/all\/themes\/flexcarestaff\/css\/flexcarestaff.css":1,"sites\/all\/themes\/flexcarestaff\/css\/multiple-select.css":1,"sites\/all\/themes\/flexcarestaff\/css\/shame.css":1,"sites\/all\/themes\/flexcarestaff\/css\/edits.css":1}},"video_filter":{"url":{"ckeditor":"\/video_filter\/dashboard\/ckeditor"},"instructions_url":"\/video_filter\/instructions","modulepath":"sites\/all\/modules\/contrib\/video_filter"},"selectize":{"settings":{"edit-specialty":"{\u0022create\u0022:false,\u0022sortField\u0022:\u0022text\u0022,\u0022plugins\u0022:[\u0022remove_button\u0022],\u0022highlight\u0022:false,\u0022maxItems\u0022:10,\u0022delimiter\u0022:null,\u0022persist\u0022:false,\u0022closeAfterSelect\u0022:true,\u0022allowEmptyOption\u0022:true}","edit-state":"{\u0022create\u0022:false,\u0022sortField\u0022:\u0022text\u0022,\u0022plugins\u0022:[\u0022remove_button\u0022],\u0022highlight\u0022:false,\u0022maxItems\u0022:10,\u0022delimiter\u0022:null,\u0022persist\u0022:false,\u0022closeAfterSelect\u0022:true,\u0022allowEmptyOption\u0022:true}"}},"urlIsAjaxTrusted":{"\/jobs\/search":true,"\/views\/ajax":true},"googleanalytics":{"trackOutbound":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip"},"views":{"ajax_path":"\/views\/ajax","ajaxViews":{"views_dom_id:44692743fe5dafdace48fdb683d53d0d":{"view_name":"hot_jobs","view_display_id":"block_1","view_args":"","view_path":"jobs\/search","view_base_path":"hot-jobs-test","view_dom_id":"44692743fe5dafdace48fdb683d53d0d","pager_element":0}}},"bootstrap":{"anchorsFix":"0","anchorsSmoothScrolling":"0","formHasError":1,"popoverEnabled":1,"popoverOptions":{"animation":1,"html":0,"placement":"right","selector":"","trigger":"click","triggerAutoclose":1,"title":"","content":"","delay":0,"container":"body"},"tooltipEnabled":0,"tooltipOptions":{"animation":1,"html":0,"placement":"auto left","selector":"","trigger":"hover focus","delay":0,"container":"body"}}});</script>
+
+    <!-- JobTarget -->
+    <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://analyticsdev.jobtarget.com/ats/custom/flexcarestaff/v1.0.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'jobtarget-jssdk'));
+    </script>
+</head>
+<body class="navbar-is-fixed-top html not-front not-logged-in no-sidebars page-jobs page-jobs-search role-anonymous-user">
+<div id="skip-link">
+    <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
 </div>
+
+<div class="header-wrapper-hero">
+    <!-- 	<div class="header-wrapper-hero-top"></div> -->
+</div>
+
+<header id="navbar" role="banner" class="navbar navbar-fixed-top navbar-default">
+    <div class="above-header clearfix">
+        <div class="social-navbar text-center">
+            <ul>
+                <li>
+                    <a href="https://www.facebook.com/FlexCare/"
+                       title="Facebook" target="_blank"><span
+                            class="fa fa-facebook"></span></a>
+                </li>
+                <!-- <li><a href="https://www.pinterest.com/kk123abcks/flexcare-medical-staffing-travel-nursing/" title="Pinterest"><span class="fa fa-pinterest"></span></a></li> -->
+                <!-- <li><a href="https://twitter.com/flexcarestaff/" title="Twitter"><span class="fa fa-twitter"></span></a></li> -->
+                <li>
+                    <a href="https://www.linkedin.com/company/1799955"
+                       title="LinkedIn" target="_blank"><span
+                            class="fa fa-linkedin"></span></a>
+                </li>
+                <li>
+                    <a href="https://www.instagram.com/flexcaremedicalstaffing/"
+                       title="Instagram" target="_blank"><span
+                            class="fa fa-instagram"></span></a>
+                </li>
+                <li>
+                    <a href="https://twitter.com/flexcarestaff" title="Google+"
+                       target="_blank"><span class="fa fa-twitter"></span></a>
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- user menu -->
+        <div class="container user-nav">
+            <ul class="menu nav navbar-nav secondary"><li class="first leaf"><a href="/user/login?current=jobs/search">Log in</a></li>
+                <li class="last leaf"><a href="/user/register">Sign up</a></li>
+            </ul>          </div>
+    </div>
+
+
+    <div class="navbar-container-wrapper">
+        <div class="container">
+            <div class="navbar-header">
+
+                <a class="name navbar-brand text-hide"
+                   href="/"
+                   title="Home">FlexCare Medical Staffing</a>
+
+                <button type="button" class="navbar-toggle"
+                        data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="hamburger">Menu</span>
+                </button>
+            </div>
+
+
+            <div class="navbar-collapse collapse">
+                <nav role="navigation">
+                    <ul class="menu nav navbar-nav"><li class="first leaf"><a href="/jobs">Search Jobs</a></li>
+                        <li class="expanded dropdown"><a href="/travel-nursing-done-better" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Why FlexCare? <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf"><a href="/travel-nursing-done-better">Travel Nursing Done Better</a></li>
+                            <li class="leaf"><a href="/s1nglepoint">S1nglepoint</a></li>
+                            <li class="leaf"><a href="/maxpay">MAXPAY</a></li>
+                            <li class="leaf"><a href="/nationwide-travel-nurse-jobs">Nationwide Jobs</a></li>
+                            <li class="leaf"><a href="/traveling-nurse-virtual-recruiter">Virtual Recruiter</a></li>
+                            <li class="leaf"><a href="/awards-news">Awards &amp; News</a></li>
+                            <li class="last leaf"><a href="/testimonials-page">Testimonials</a></li>
+                        </ul></li>
+                        <li class="expanded dropdown"><a href="/hrpayroll" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Resources <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf"><a href="/hrpayroll">HR/Payroll</a></li>
+                            <li class="leaf"><a href="/certification-course-listings">Certification Course Listings</a></li>
+                            <li class="leaf"><a href="/state-board-travel-nursing-info">State Board of Nursing Info</a></li>
+                            <li class="leaf"><a href="/allied-health-boards-info">Allied Health Boards Info</a></li>
+                            <li class="leaf"><a href="/travel-housing">Travel &amp; Housing</a></li>
+                            <li class="last leaf"><a href="/online-communities-publications">Online Communities &amp; Publications</a></li>
+                        </ul></li>
+                        <li class="expanded dropdown"><a href="/our-team" data-target="#" class="dropdown-toggle" data-toggle="dropdown">About <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf"><a href="/blog">Blog</a></li>
+                            <li class="leaf"><a href="/our-team">Our Team</a></li>
+                            <li class="leaf"><a href="/our-recruitment-team">Our Recruitment Team</a></li>
+                            <li class="leaf"><a href="/our-client-relations-team">Our Client Relations Team</a></li>
+                            <li class="leaf"><a href="/our-operations-team">Our Operations Team</a></li>
+                            <li class="last leaf"><a href="/interested-joining-our-team">Interested in Joining Our Team?</a></li>
+                        </ul></li>
+                        <li class="last expanded dropdown"><a href="/contact-us" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Contact <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf"><a href="/user/register">Sign Up</a></li>
+                            <li class="leaf"><a href="/refer-a-friend">Refer A Friend</a></li>
+                            <li class="last leaf"><a href="/contact-us">Contact Us</a></li>
+                        </ul></li>
+                    </ul>
+                    <!-- phone and email -->
+                    <ul class="phone-email">
+                        <li class="phone">
+                            <a href="tel:1-866-564-3589">(866) 564-3589</a>
+                        </li>
+                        <li class="email"><a href="/contact-us">Email</a></li>
+                    </ul>
+
+
+                    <div class="region region-navigation">
+                        <section id="block-menu-menu-secondary-menu" class="block block-menu clearfix">
+
+
+                            <ul class="menu nav"><li class="first expanded dropdown"><a href="/why-partner-flexcare" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Healthcare Facilities <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf"><a href="/why-partner-flexcare">Why partner with FlexCare?</a></li>
+                                <li class="leaf"><a href="/send-request">Send A Request</a></li>
+                                <li class="leaf"><a href="/screening-credentialing">Screening &amp; Credentialing</a></li>
+                                <li class="last leaf"><a href="/express-care">Express Care</a></li>
+                            </ul></li>
+                                <li class="leaf"><span class="phone nolink">(866) 564-3589</span></li>
+                                <li class="last leaf"><a href="/contact-us" title="Email us" class="email">Email</a></li>
+                            </ul>
+                        </section>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<div id="page-scroll-wrap">
+
+
+    <!-- <span class="fa fa-angle-right"></span>  <span class="fa fa-angle-left"></span> -->
+
+    <div class="container headline-wrapper">
+        <div class="headline-graphic"></div>
+    </div>
+
+    <!-- header-wrapper-hero -->
+    <div id="main-content-wrap">
+        <div class="main-container">
+
+            <header role="banner" id="page-header">
+
+            </header> <!-- /#page-header -->
+
+            <div class="row">
+
+                <!--     <section class="col-sm-12"> -->
+                <section>
+                    <a id="main-content"></a>
+                    <h1 class="page-header container">Job Listings</h1>
+
+                    <div class="signup-wrapper">
+                        <p class="signup"><a href="/user/register">&gt; Sign up today &lt;</a></p>
+                    </div>
+                    <div class="send-wrapper"><p class="sendarequest">
+                        <a href="/send-request"> Send A Request </a>
+                    </p></div>
+                    <section id="messages"
+                             class="container"></section>
+
+
+                    <div id="body-content-wrap">
+                        <section class="container tabs">
+                        </section>
+                        <div class="container">
+                            <div class="col-sm-12">
+
+                                <div class="region region-content">
+                                    <section id="block-system-main" class="block block-system clearfix">
+
+
+                                        <div id="">
+
+                                            <div id="main-above">
+                                                <div class="panel-pane pane-panels-mini pane-job-search-form"  >
+
+
+
+                                                    <div class="pane-content">
+                                                        <div class="panel-pane pane-block pane-block-6"  >
+
+
+
+                                                            <div class="pane-content">
+                                                                <p>Regardless of your specialty or location preference, we'll help you find exactly what you're looking for. Here's an up-to-date database of our hottest available positions. You can search via location and specialty in order to find the jobs you want.</p>
+                                                            </div>
+
+
+                                                        </div>
+                                                        <div class="panel-separator"></div><div class="panel-pane pane-block pane-views-exp-jobs-list"  id="search-form" >
+
+
+
+                                                        <div class="pane-content">
+                                                            <form action="/jobs/search" method="get" id="views-exposed-form-jobs-list" accept-charset="UTF-8"><div><div class="views-exposed-form">
+                                                                <div class="views-exposed-widgets clearfix">
+                                                                    <div id="edit-specialty-wrapper" class="views-exposed-widget views-widget-filter-field_primary_specialty">
+                                                                        <div class="views-widget">
+                                                                            <div class="form-item form-item-specialty form-type-selectize form-group"><select placeholder="Specialty" multiple="multiple" name="specialty[]" id="edit-specialty" size="4" class="form-select"><option value="Case Manager">Case Manager</option><option value="Cath Lab">Cath Lab</option><option value="CCU">CCU</option><option value="CVICU">CVICU</option><option value="CVOR">CVOR</option><option value="Dialysis">Dialysis</option><option value="Emergency Room" selected="selected">Emergency Room</option><option value="Endo">Endo</option><option value="GI">GI</option><option value="Hematology">Hematology</option><option value="ICU">ICU</option><option value="Interventional Radiology">Interventional Radiology</option><option value="Labor and Delivery">Labor and Delivery</option><option value="Med/Surg">Med/Surg</option><option value="MICU">MICU</option><option value="Manager">Manager</option><option value="Mother/Baby">Mother/Baby</option><option value="Neonatal ICU">Neonatal ICU</option><option value="Neuro ICU">Neuro ICU</option><option value="Nursery">Nursery</option><option value="Oncology">Oncology</option><option value="OB">OB</option><option value="OR">OR</option><option value="ORFA">ORFA</option><option value="Ortho">Ortho</option><option value="Out Patient">Out Patient</option><option value="PACU">PACU</option><option value="Pediatric">Pediatric</option><option value="Pediatric Emergency Room">Pediatric Emergency Room</option><option value="Pediatric ICU">Pediatric ICU</option><option value="Perioperative">Perioperative</option><option value="Post Partum">Post Partum</option><option value="Pre Op">Pre Op</option><option value="Psychiatric">Psychiatric</option><option value="Rehab/LTC">Rehab/LTC</option><option value="SICU">SICU</option><option value="Skilled Nursing">Skilled Nursing</option><option value="Stepdown - DOU/PCU">Stepdown - DOU/PCU</option><option value="Telemetry">Telemetry</option></select></div>              </div>
+                                                                    </div>
+                                                                    <div id="edit-state-wrapper" class="views-exposed-widget views-widget-filter-field_client_field_state">
+                                                                        <div class="views-widget">
+                                                                            <div class="form-item form-item-state form-type-selectize form-group"><select placeholder="State" multiple="multiple" name="state[]" id="edit-state" size="4" class="form-select"><option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO" selected="selected">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option><option value="DC">District of Columbia</option></select></div>              </div>
+                                                                    </div>
+                                                                    <div id="edit-query-wrapper" class="views-exposed-widget views-widget-filter-search_api_views_fulltext">
+                                                                        <label for="edit-query">
+                                                                            Keywords                </label>
+                                                                        <div class="views-widget">
+                                                                            <div class="form-item form-item-query form-type-textfield form-group"><input class="form-control form-text" type="text" id="edit-query" name="query" value="" size="30" maxlength="128" /></div>              </div>
+                                                                    </div>
+                                                                    <div id="edit-shift-wrapper" class="views-exposed-widget views-widget-filter-field_shift">
+                                                                        <label for="edit-shift">
+                                                                            Shift Type                </label>
+                                                                        <div class="views-widget">
+                                                                            <div class="form-item form-item-shift form-type-select form-group"><select class="form-control form-select" id="edit-shift" name="shift"><option value="All" selected="selected">- Any -</option><option value="Days">Days</option><option value="Eves">Eves</option><option value="Nights">Nights</option><option value="Rotating">Rotating</option><option value="Variable">Variable</option></select></div>              </div>
+                                                                    </div>
+                                                                    <div class="views-exposed-widget views-reset-button">
+                                                                        <button type="submit" id="edit-reset" name="op" value="Clear Filters" class="btn btn-primary form-submit">Clear Filters</button>
+                                                                    </div>
+                                                                    <div class="views-exposed-widget views-submit-button">
+                                                                        <button type="submit" id="edit-submit-jobs" name="" value="Search" class="btn btn-primary form-submit">Search</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            </div></form>  </div>
+
+
+                                                    </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+                                            <div id="page-title-wrapper">
+                                                <div class="panel-pane pane-custom pane-1"  >
+
+
+
+                                                    <div class="pane-content">
+                                                        <h1 id="page-title">Job Results</h1>  </div>
+
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <aside id="sidebar" class="col-md-3">
+                                                    <div class="panel-pane pane-block pane-views-exp-jobs-list"  id="advanced-filters" >
+
+
+
+                                                        <div class="pane-content">
+                                                            <form action="/jobs/search" method="get" id="views-exposed-form-jobs-list" accept-charset="UTF-8"><div><div class="views-exposed-form">
+                                                                <div class="views-exposed-widgets clearfix">
+                                                                    <div id="edit-specialty-wrapper" class="views-exposed-widget views-widget-filter-field_primary_specialty">
+                                                                        <div class="views-widget">
+                                                                            <div class="form-item form-item-specialty form-type-selectize form-group"><select placeholder="Specialty" multiple="multiple" name="specialty[]" id="edit-specialty" size="4" class="form-select"><option value="Case Manager">Case Manager</option><option value="Cath Lab">Cath Lab</option><option value="CCU">CCU</option><option value="CVICU">CVICU</option><option value="CVOR">CVOR</option><option value="Dialysis">Dialysis</option><option value="Emergency Room" selected="selected">Emergency Room</option><option value="Endo">Endo</option><option value="GI">GI</option><option value="Hematology">Hematology</option><option value="ICU">ICU</option><option value="Interventional Radiology">Interventional Radiology</option><option value="Labor and Delivery">Labor and Delivery</option><option value="Med/Surg">Med/Surg</option><option value="MICU">MICU</option><option value="Manager">Manager</option><option value="Mother/Baby">Mother/Baby</option><option value="Neonatal ICU">Neonatal ICU</option><option value="Neuro ICU">Neuro ICU</option><option value="Nursery">Nursery</option><option value="Oncology">Oncology</option><option value="OB">OB</option><option value="OR">OR</option><option value="ORFA">ORFA</option><option value="Ortho">Ortho</option><option value="Out Patient">Out Patient</option><option value="PACU">PACU</option><option value="Pediatric">Pediatric</option><option value="Pediatric Emergency Room">Pediatric Emergency Room</option><option value="Pediatric ICU">Pediatric ICU</option><option value="Perioperative">Perioperative</option><option value="Post Partum">Post Partum</option><option value="Pre Op">Pre Op</option><option value="Psychiatric">Psychiatric</option><option value="Rehab/LTC">Rehab/LTC</option><option value="SICU">SICU</option><option value="Skilled Nursing">Skilled Nursing</option><option value="Stepdown - DOU/PCU">Stepdown - DOU/PCU</option><option value="Telemetry">Telemetry</option></select></div>              </div>
+                                                                    </div>
+                                                                    <div id="edit-state-wrapper" class="views-exposed-widget views-widget-filter-field_client_field_state">
+                                                                        <div class="views-widget">
+                                                                            <div class="form-item form-item-state form-type-selectize form-group"><select placeholder="State" multiple="multiple" name="state[]" id="edit-state" size="4" class="form-select"><option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO" selected="selected">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option><option value="DC">District of Columbia</option></select></div>              </div>
+                                                                    </div>
+                                                                    <div id="edit-query-wrapper" class="views-exposed-widget views-widget-filter-search_api_views_fulltext">
+                                                                        <label for="edit-query">
+                                                                            Keywords                </label>
+                                                                        <div class="views-widget">
+                                                                            <div class="form-item form-item-query form-type-textfield form-group"><input class="form-control form-text" type="text" id="edit-query" name="query" value="" size="30" maxlength="128" /></div>              </div>
+                                                                    </div>
+                                                                    <div id="edit-shift-wrapper" class="views-exposed-widget views-widget-filter-field_shift">
+                                                                        <label for="edit-shift">
+                                                                            Shift Type                </label>
+                                                                        <div class="views-widget">
+                                                                            <div class="form-item form-item-shift form-type-select form-group"><select class="form-control form-select" id="edit-shift" name="shift"><option value="All" selected="selected">- Any -</option><option value="Days">Days</option><option value="Eves">Eves</option><option value="Nights">Nights</option><option value="Rotating">Rotating</option><option value="Variable">Variable</option></select></div>              </div>
+                                                                    </div>
+                                                                    <div class="views-exposed-widget views-reset-button">
+                                                                        <button type="submit" id="edit-reset" name="op" value="Clear Filters" class="btn btn-primary form-submit">Clear Filters</button>
+                                                                    </div>
+                                                                    <div class="views-exposed-widget views-submit-button">
+                                                                        <button type="submit" id="edit-submit-jobs" name="" value="Search" class="btn btn-primary form-submit">Search</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            </div></form>  </div>
+
+
+                                                    </div>
+                                                </aside>
+                                                <div id="main-wrapper" class="col-md-9">
+                                                    <div class="panel-pane pane-views-panes pane-jobs-list"  >
+
+
+
+                                                        <div class="pane-content">
+                                                            <div class="view view-jobs view-id-jobs view-display-id-list view-dom-id-c45f95b85743c638baa960a033b624d8">
+
+
+
+                                                                <div class="view-content">
+                                                                    <div class="views-row views-row-1 views-row-odd views-row-first">
+
+                                                                        <div class="primary-specialty-view-node">
+                                                                            <h3 class="views-field views-field-field-primary-specialty">                <span class="field-content">Emergency Room</span>        </h3>
+                                                                            <div class="views-field views-field-view-node">                <span class="field-content"><a href="/job/185424">Details</a></span>        </div>          </div>
+
+                                                                        <div class="assignment-shift-location">
+
+                                                                            <div class="views-field views-field-field-client-field-state">        <span class="views-label views-label-field-client-field-state">Location: </span>        <span class="field-content">Boulder, CO</span>        </div>
+                                                                            <div class="views-field views-field-field-shift">        <span class="views-label views-label-field-shift">Shift Type: </span>        <span class="field-content">Days</span>        </div>
+                                                                            <div class="views-field views-field-field-assignment-length">        <span class="views-label views-label-field-assignment-length">Assignment Length: </span>        <span class="field-content">8 weeks</span>        </div>
+
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="views-row views-row-2 views-row-even views-row-last">
+
+                                                                        <div class="primary-specialty-view-node">
+                                                                            <h3 class="views-field views-field-field-primary-specialty">                <span class="field-content">Emergency Room</span>        </h3>
+                                                                            <div class="views-field views-field-view-node">                <span class="field-content"><a href="/job/184440">Details</a></span>        </div>          </div>
+
+                                                                        <div class="assignment-shift-location">
+
+                                                                            <div class="views-field views-field-field-client-field-state">        <span class="views-label views-label-field-client-field-state">Location: </span>        <span class="field-content">Brush, CO</span>        </div>
+                                                                            <div class="views-field views-field-field-shift">        <span class="views-label views-label-field-shift">Shift Type: </span>        <span class="field-content">Nights</span>        </div>
+                                                                            <div class="views-field views-field-field-assignment-length">        <span class="views-label views-label-field-assignment-length">Assignment Length: </span>        <span class="field-content">13 weeks</span>        </div>
+
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+
+
+
+
+
+                                                            </div>  </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </section> <!-- end section -->
+
+
+
+            </div>
+
+
+
+
+
+            <footer class="footer ">
+                <div class="footer-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="region region-footer">
+                                <section id="block-block-3" class="block block-block clearfix">
+
+                                    <div class="container">
+                                        <!-- <span class="fa fa-angle-down leader center-block"></span> -->
+                                        <h2>Jobs&nbsp;</h2>
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <div class="view view-hot-jobs view-id-hot_jobs view-display-id-block_1 view-dom-id-44692743fe5dafdace48fdb683d53d0d">
+
+
+
+                                                    <div class="view-content">
+                                                        <div class="views-row views-row-1 views-row-odd views-row-first col-md-4 col-sm-6 job-spotlight">
+
+                                                            <div class="views-field views-field-field-primary-specialty">        <strong class="field-content job-title"><a href="/node/19178/182864">Stepdown - DOU/PCU</a></strong>  </div>
+                                                            <div class="views-field views-field-field-state">        <div class="field-content">Cooperstown, NY</div>  </div>
+                                                            <div class="views-field views-field-changed">        <span class="field-content"><em class="placeholder">42 min 59 sec</em> ago</span>  </div>
+                                                            <div class="views-field views-field-view-node">        <span class="field-content"><a href="/job/182864">Details <span class="fa fa-angle-right"></span></a></span>  </div>  </div>
+                                                        <div class="views-row views-row-2 views-row-even col-md-4 col-sm-6 job-spotlight">
+
+                                                            <div class="views-field views-field-field-primary-specialty">        <strong class="field-content job-title"><a href="/node/19178/185688">Med/Surg</a></strong>  </div>
+                                                            <div class="views-field views-field-field-state">        <div class="field-content">Burlingame, CA</div>  </div>
+                                                            <div class="views-field views-field-changed">        <span class="field-content"><em class="placeholder">1 hour 42 min</em> ago</span>  </div>
+                                                            <div class="views-field views-field-view-node">        <span class="field-content"><a href="/job/185688">Details <span class="fa fa-angle-right"></span></a></span>  </div>  </div>
+                                                        <div class="views-row views-row-3 views-row-odd col-md-4 col-sm-6 job-spotlight">
+
+                                                            <div class="views-field views-field-field-primary-specialty">        <strong class="field-content job-title"><a href="/node/19178/161533">ICU</a></strong>  </div>
+                                                            <div class="views-field views-field-field-state">        <div class="field-content">Saint Louis, MO</div>  </div>
+                                                            <div class="views-field views-field-changed">        <span class="field-content"><em class="placeholder">1 hour 42 min</em> ago</span>  </div>
+                                                            <div class="views-field views-field-view-node">        <span class="field-content"><a href="/job/161533">Details <span class="fa fa-angle-right"></span></a></span>  </div>  </div>
+                                                        <div class="views-row views-row-4 views-row-even col-md-4 col-sm-6 job-spotlight">
+
+                                                            <div class="views-field views-field-field-primary-specialty">        <strong class="field-content job-title"><a href="/node/19178/183950">Med/Surg</a></strong>  </div>
+                                                            <div class="views-field views-field-field-state">        <div class="field-content">Lakewood, WA</div>  </div>
+                                                            <div class="views-field views-field-changed">        <span class="field-content"><em class="placeholder">2 hours 42 min</em> ago</span>  </div>
+                                                            <div class="views-field views-field-view-node">        <span class="field-content"><a href="/job/183950">Details <span class="fa fa-angle-right"></span></a></span>  </div>  </div>
+                                                        <div class="views-row views-row-5 views-row-odd col-md-4 col-sm-6 job-spotlight">
+
+                                                            <div class="views-field views-field-field-primary-specialty">        <strong class="field-content job-title"><a href="/node/19178/183956">PCU</a></strong>  </div>
+                                                            <div class="views-field views-field-field-state">        <div class="field-content">Lakewood, WA</div>  </div>
+                                                            <div class="views-field views-field-changed">        <span class="field-content"><em class="placeholder">2 hours 42 min</em> ago</span>  </div>
+                                                            <div class="views-field views-field-view-node">        <span class="field-content"><a href="/job/183956">Details <span class="fa fa-angle-right"></span></a></span>  </div>  </div>
+                                                        <div class="views-row views-row-6 views-row-even col-md-4 col-sm-6 job-spotlight">
+
+                                                            <div class="views-field views-field-field-primary-specialty">        <strong class="field-content job-title"><a href="/node/19178/183738">Pediatric ICU</a></strong>  </div>
+                                                            <div class="views-field views-field-field-state">        <div class="field-content">Portland, OR</div>  </div>
+                                                            <div class="views-field views-field-changed">        <span class="field-content"><em class="placeholder">2 hours 42 min</em> ago</span>  </div>
+                                                            <div class="views-field views-field-view-node">        <span class="field-content"><a href="/job/183738">Details <span class="fa fa-angle-right"></span></a></span>  </div>  </div>
+                                                        <div class="views-row views-row-7 views-row-odd col-md-4 col-sm-6 job-spotlight">
+
+                                                            <div class="views-field views-field-field-primary-specialty">        <strong class="field-content job-title"><a href="/node/19178/182529">OR</a></strong>  </div>
+                                                            <div class="views-field views-field-field-state">        <div class="field-content">Ranson, WV</div>  </div>
+                                                            <div class="views-field views-field-changed">        <span class="field-content"><em class="placeholder">3 hours 42 min</em> ago</span>  </div>
+                                                            <div class="views-field views-field-view-node">        <span class="field-content"><a href="/job/182529">Details <span class="fa fa-angle-right"></span></a></span>  </div>  </div>
+                                                        <div class="views-row views-row-8 views-row-even col-md-4 col-sm-6 job-spotlight">
+
+                                                            <div class="views-field views-field-field-primary-specialty">        <strong class="field-content job-title"><a href="/node/19178/186128">ICU</a></strong>  </div>
+                                                            <div class="views-field views-field-field-state">        <div class="field-content">West Hills, CA</div>  </div>
+                                                            <div class="views-field views-field-changed">        <span class="field-content"><em class="placeholder">3 hours 42 min</em> ago</span>  </div>
+                                                            <div class="views-field views-field-view-node">        <span class="field-content"><a href="/job/186128">Details <span class="fa fa-angle-right"></span></a></span>  </div>  </div>
+                                                        <div class="views-row views-row-9 views-row-odd views-row-last col-md-4 col-sm-6 job-spotlight">
+
+                                                            <div class="views-field views-field-field-primary-specialty">        <strong class="field-content job-title"><a href="/node/19178/186159">Emergency Room</a></strong>  </div>
+                                                            <div class="views-field views-field-field-state">        <div class="field-content">Porterville, CA</div>  </div>
+                                                            <div class="views-field views-field-changed">        <span class="field-content"><em class="placeholder">3 hours 42 min</em> ago</span>  </div>
+                                                            <div class="views-field views-field-view-node">        <span class="field-content"><a href="/job/186159">Details <span class="fa fa-angle-right"></span></a></span>  </div>  </div>
+                                                    </div>
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-12 call-contact">
+                                                <h4>
+                                                    <p>Call now:</p>
+                                                    <p><a href="tel:1-866-564-3589">(866) 564-3589</a></p>
+                                                </h4>
+                                                <h4><a href="/contact-us">Email now</a></h4>
+                                                <a href="/jobs" class="call-now btn btn-primary btn-lg">View more jobs</a>            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid real-footer">
+                    <div class="container">
+                        <div itemscope
+                             itemtype="http://schema.org/LocalBusiness"
+                             class="row footer-contact">
+                            <div class="col-sm-4 contact-col">
+                                <p itemprop="name">FlexCare Medical Staffing</p>
+
+                                <span itemprop="address" itemscope
+                                      itemtype="http://schema.org/PostalAddress"><p
+                                        itemprop="streetAddress">532 Gibson Drive, Suite 100</p>
+				  	<p>
+<span itemprop="addressLocality">Roseville</span>,
+<span itemprop="addressRegion">CA</span>
+<span itemprop="postalCode">95678</span></p></span>
+                            </div>
+
+                            <div class="col-sm-4 contact-col">
+                                <p>Phone: <a href="tel:1-866-564-3589">
+                                    <span itemprop="telephone">(866) 564-3589</span></a>
+                                </p>
+                                <p>Fax: 866-350-6502</p>
+                                <p>Email:
+                                    <a href="mailto:info@flexcarestaff.com">info@flexcarestaff.com</a>
+                                </p>
+                                <p class="privacy">
+                                    <a href="/privacy-policy">Privacy Policy</a>
+                                </p>
+                                <p class="privacy">
+                                    <a href="/terms-of-use">Terms Of Use</a></p>
+                            </div>
+
+                            <div class="col-sm-4 contact-col">
+                                <p>Hours of Operation:</p>
+                                <p>Monday - Friday</p>
+                                <p>8:00am - 5:00pm PST</p>
+
+                                <p>After Hours Contact Number:</p>
+                                <p>
+                                    <a href="tel:1-866-564-3589">(866)
+                                        564-3589</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- EEO policy for jobs pages only -->
+                        <div class="row eeo-copy">
+                            <div class="col-sm-12">
+                                <h4>FlexCare EEO and Fair Chance Policies</h4>
+                                <h5>EEO Policy</h5>
+                                <p>FlexCare provides equal employment
+                                    opportunity to all persons, regardless of
+                                    race, color, religion, creed, sex, gender,
+                                    pregnancy, childbirth or related medical
+                                    condition, ancestry, citizenship, national
+                                    origin, age, marital status, gender
+                                    identity, gender expression, sexual
+                                    orientation, physical or mental disability,
+                                    medical condition, genetic characteristics,
+                                    veteran or military status, or any other
+                                    characteristic protected by federal, state,
+                                    or local law. This policy applies to all
+                                    employment practices, including recruitment,
+                                    hiring, compensation, benefits, promotion,
+                                    training, transfer, discipline, layoff,
+                                    recall, and termination.</p>
+                                <h5>Fair Chance Policy</h5>
+                                <p>FlexCare will consider for employment
+                                    qualified applicants with criminal histories
+                                    in a manner consistent with the law.</p>
+                            </div>
+                        </div>
+                        <!-- ! EEO policy -->
+
+                        <div class="row sosumi">
+                            Copyright &copy; 2018 <a href="/">FlexCare Medical Staffing</a>. All Rights Reserved.                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div><!-- End Main-Content-Wrap -->
+    </div><!-- End Page-Scroll-Wrap -->
+</div>  <div class="region region-page-bottom">
+    <script type="text/javascript">
+        _linkedin_data_partner_id = "227681";
+    </script><script type="text/javascript">
+    (function(){var s = document.getElementsByTagName("script")[0];
+        var b = document.createElement("script");
+        b.type = "text/javascript";b.async = true;
+        b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+        s.parentNode.insertBefore(b, s);})();
+</script>
+    <noscript>
+        <img height="1" width="1" style="display:none;" alt="" src="https://dc.ads.linkedin.com/collect/?pid=227681&fmt=gif" />
+    </noscript>  </div>
+<script src="https://www.flexcarestaff.com/sites/default/files/js/js_L50O_PWoAuMOxVjnzZCkNSSmI0kFwhZsO1_KS8WnGKw.js"></script>
+
+<script type="text/javascript">
+    piAId = '299662';
+    piCId = '1310';
+
+    (function() {
+        function async_load() {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.src = ('https:' == document.location.protocol
+                    ? 'https://pi'
+                    : 'http://cdn') + '.pardot.com/pd.js';
+            var c = document.getElementsByTagName('script')[0];
+            c.parentNode.insertBefore(s, c);
+        }
+
+        if (window.attachEvent) { window.attachEvent('onload', async_load); }
+        else { window.addEventListener('load', async_load, false); }
+    })();
+</script>
+<!-- Crazy Egg -->
+<script type="text/javascript">
+    setTimeout(function() {
+        var a = document.createElement('script');
+        var b = document.getElementsByTagName('script')[0];
+        a.src = document.location.protocol +
+            '//script.crazyegg.com/pages/scripts/0026/0985.js?' +
+            Math.floor(new Date().getTime() / 3600000);
+        a.async = true;
+        a.type = 'text/javascript';
+        b.parentNode.insertBefore(a, b);
+    }, 1);
+</script>
+<!-- End Crazy Egg -->
+
+<!-- Facebook Pixel Code -->
+<script>
+    !function(f, b, e, v, n, t, s) {
+        if (f.fbq) {
+            return;
+        }
+        n = f.fbq = function() {
+            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+        };
+        if (!f._fbq) {
+            f._fbq = n;
+        }
+        n.push = n;
+        n.loaded = !0;
+        n.version = '2.0';
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+    }(window,
+        document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '327424817600384');
+    fbq('track', 'PageView');
+    fbq('track', 'ViewContent');
+</script>
+<noscript>
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=327424817600384&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Facebook Pixel Code -->
+</body>
+</html>

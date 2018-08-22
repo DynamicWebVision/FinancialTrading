@@ -34,4 +34,15 @@ class OrderManagementTest extends TestCase
         $this->oanda->accountId = '101-001-7608904-008';
         $this->oanda->getSpecificTransaction(2932);
     }
+
+    public function testCOAbc() {
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.env('OANDA_AUTHORIZATION_TOKEN'),'Content-Type: application/json', 'Accept-Datetime-Format: UNIX']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt($ch, CURLOPT_URL, 'https://www.flexcarestaff.com/jobs/search?specialty%5B%5D=Emergency+Room&state%5B%5D=CO&query=&shift=All');
+        $resp = curl_exec($ch);
+    }
 }
