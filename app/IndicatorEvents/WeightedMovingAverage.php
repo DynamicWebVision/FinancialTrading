@@ -43,6 +43,12 @@ class WeightedMovingAverage {
             $divisor = $currentPeriodMultiplier + $divisor;
             $currentPeriodMultiplier = $currentPeriodMultiplier - 1;
         }
+        try {
+
+        }
+        catch (\Exception $e) {
+            $debug=1;
+        }
         return $sumTotal/$divisor;
     }
 

@@ -60,6 +60,7 @@ class HmaRev extends \App\BackTest\BackTestToBeProcessed\Base
             $backTest->rateLevel = 'both';
 
             $strategy = new HmaSwitchShortConfirmLongAdx(1,1,true);
+            $strategy->orderType = 'MARKET_IF_TOUCHED';
 
             $strategy->fastHma = intval($this->backTestToBeProcessed->variable_1);
             $strategy->slowHma = intval($this->backTestToBeProcessed->variable_2);

@@ -112,7 +112,7 @@ abstract class BackTest  {
             $this->getMoreOneTierRates();
         }
 
-        if ($this->rates[$this->rateIndex]['rate_unix_time'] == 1531098000) {
+        if ($this->rates[$this->rateIndex]['rate_unix_time'] == 1534280400) {
             $debug = 1;
         }
 
