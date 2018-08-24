@@ -185,12 +185,11 @@ abstract class Strategy  {
                 else {
                     $params['type'] = 'MARKET_IF_TOUCHED';
                     $params['marketIfTouchedOrderPrice'] = $this->oanda->getOandaPrecisionPrice($this->marketIfTouchedOrderPrice, $this->exchange->pip);
+                    $this->strategyLogger->logMessage('Long MARKET_IF_TOUCHED Order with mkt if touched Price '.$params['marketIfTouchedOrderPrice'].' good until '.$params['gtdTime'], 1);
                 }
 
                 $params['timeInForce'] = 'GTD';
                 $params['gtdTime'] = $this->calculateLimitEndTime();
-
-                $this->strategyLogger->logMessage('Long MARKET_IF_TOUCHED Order with mkt if touched Price '.$params['marketIfTouchedOrderPrice'].' good until '.$params['gtdTime'], 1);
 
                 if (isset($this->takeProfitPipAmount)) {
                     $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateLongTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
@@ -314,7 +313,7 @@ abstract class Strategy  {
     public function modifyStopLoss($newPricePoint) {
         if (!$this->backtesting) {
             $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($newPricePoint);
-            $this->oanda->modifyStopLoss($this->openPosition['stopLossId']);
+            $this->oanda->modifyStopLoss($this->openPosition['stopLossId'], $this->exchange->pip);
         }
         else {
             $this->backTestPositions[sizeof($this->backTestPositions)-1]['stopLoss'] = $newPricePoint;
@@ -474,12 +473,12 @@ abstract class Strategy  {
                 else {
                     $params['type'] = 'MARKET_IF_TOUCHED';
                     $params['marketIfTouchedOrderPrice'] = $this->oanda->getOandaPrecisionPrice($this->marketIfTouchedOrderPrice, $this->exchange->pip);
+
+                    $this->strategyLogger->logMessage('Short MARKET_IF_TOUCHED Order with MIT Price '.$params['marketIfTouchedOrderPrice'].' good until '.$params['gtdTime'], 1);
                 }
 
                 $params['timeInForce'] = 'GTD';
                 $params['gtdTime'] = $this->calculateLimitEndTime();
-
-                $this->strategyLogger->logMessage('Short MARKET_IF_TOUCHED Order with MIT Price '.$params['marketIfTouchedOrderPrice'].' good until '.$params['gtdTime'], 1);
 
                 if (isset($this->takeProfitPipAmount)) {
                     $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateShortTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
