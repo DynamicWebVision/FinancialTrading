@@ -92,4 +92,33 @@ class RsiEvents  {
         }
         return $this->eventHelpers->periodsBackGetLastResultEvent($rsiCrossResults, ['crossedAbove', 'crossedBelow']);
     }
+
+    public function getGainLossSums($rates) {
+        $gains = [];
+        $losses = [];
+
+        foreach ($rates as $index=>$rate) {
+            if (isset($endRates[$index+1])) {
+
+                $diff = $endRates[$index+1] - $rate;
+
+                if ($diff > 0) {
+                    $gains[] = $diff;
+                }
+                elseif ($diff < 0) {
+                    $losses[] = abs($diff);
+                }
+            }
+        }
+    }
+
+    public function getCrossLevelPricePoint($rates, $length, $rsiCrossLevel) {
+        $endRates = $this->utility->getLastXElementsInArray($rates, $length + 1);
+
+        $currentRSI = $this->rsi($endRates, $length);
+
+        $ratesBesidesNext = $this->utility->getLastXElementsInArray($rates, $length);
+
+
+    }
 }

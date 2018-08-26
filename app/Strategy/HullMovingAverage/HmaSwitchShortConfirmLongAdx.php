@@ -64,11 +64,11 @@ class HmaSwitchShortConfirmLongAdx extends \App\Strategy\Strategy  {
 
         Log::info($this->runId.': New Position Decision Indicators: '.PHP_EOL.' '.$this->logIndicators());
 
-        if ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'long' && $this->decisionIndicators['slowHmaSlope'] == 'long') {
+        if ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'short' && $this->decisionIndicators['slowHmaSlope'] == 'long') {
             $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
             $this->newShortPosition();
         }
-        elseif ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'short'  && $this->decisionIndicators['slowHmaSlope'] == 'short') {
+        elseif ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'long'  && $this->decisionIndicators['slowHmaSlope'] == 'short') {
             $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
             $this->newLongPosition();
         }
