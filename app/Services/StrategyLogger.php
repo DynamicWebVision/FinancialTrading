@@ -45,7 +45,7 @@ class StrategyLogger  {
         }
     }
 
-    public function logMessage($message, $type) {
+    public function logMessage($message, $type = 1) {
         if ($this->loggingOn) {
             $logMessage = new StrategyLogMessage();
             $logMessage->log_id = $this->logId;

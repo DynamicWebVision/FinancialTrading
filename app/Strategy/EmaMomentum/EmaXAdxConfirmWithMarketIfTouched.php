@@ -61,7 +61,7 @@ class EmaXAdxConfirmWithMarketIfTouched extends \App\Strategy\Strategy  {
     public function getEntryDecision() {
         $this->setEntryIndicators();
 
-        Log::info($this->runId.': New Position Decision Indicators: '.PHP_EOL.' '.$this->logIndicators());
+        $this->strategyLogger->logIndicators($this->decisionIndicators);
 
         if ($this->decisionIndicators['adxAboveThreshold']) {
             $this->marketIfTouchedOrderPrice = $this->decisionIndicators['emaCrossInfo']['crossRate'];
@@ -92,6 +92,8 @@ class EmaXAdxConfirmWithMarketIfTouched extends \App\Strategy\Strategy  {
             $this->exchange->pip, $this->takeProfitTrueRangeMultiplier, $this->stopLossTrueRangeMultiplier);
 
         $this->marketIfTouchedOrderPrice = $this->decisionIndicators['emaCrossInfo']['crossRate'];
+
+        $this->strategyLogger->logIndicators($this->decisionIndicators);
 
         if ($this->openPosition['side'] == 'long') {
             if ($this->decisionIndicators['emaCrossInfo']['side'] == 'long') {
@@ -129,9 +131,11 @@ class EmaXAdxConfirmWithMarketIfTouched extends \App\Strategy\Strategy  {
         $this->setOpenPosition();
 
         if (!$this->openPosition) {
+            $this->strategyLogger->logMessage('No Open Position');
             $this->decision = $this->getEntryDecision();
         }
         else {
+            $this->strategyLogger->logMessage('In Open Position');
             $this->inPositionDecision();
         }
     }
