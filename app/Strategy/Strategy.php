@@ -154,6 +154,9 @@ abstract class Strategy  {
 
             $params['side'] = 'buy';
 
+            $params['timeInForce'] = 'GTD';
+            $params['gtdTime'] = $this->calculateLimitEndTime();
+
             if ($this->orderType == 'LIMIT') {
                 $params['type'] = 'LIMIT';
 
@@ -187,9 +190,6 @@ abstract class Strategy  {
                     $params['marketIfTouchedOrderPrice'] = $this->oanda->getOandaPrecisionPrice($this->marketIfTouchedOrderPrice, $this->exchange->pip);
                     $this->strategyLogger->logMessage('Long MARKET_IF_TOUCHED Order with mkt if touched Price '.$params['marketIfTouchedOrderPrice'].' good until '.$params['gtdTime'], 1);
                 }
-
-                $params['timeInForce'] = 'GTD';
-                $params['gtdTime'] = $this->calculateLimitEndTime();
 
                 if (isset($this->takeProfitPipAmount)) {
                     $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateLongTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
@@ -446,6 +446,9 @@ abstract class Strategy  {
 
             $params['side'] = 'sell';
 
+            $params['timeInForce'] = 'GTD';
+            $params['gtdTime'] = $this->calculateLimitEndTime();
+
             if ($this->orderType == 'LIMIT') {
                 $params['type'] = 'LIMIT';
 
@@ -479,9 +482,6 @@ abstract class Strategy  {
 
                     $this->strategyLogger->logMessage('Short MARKET_IF_TOUCHED Order with MIT Price '.$params['marketIfTouchedOrderPrice'].' good until '.$params['gtdTime'], 1);
                 }
-
-                $params['timeInForce'] = 'GTD';
-                $params['gtdTime'] = $this->calculateLimitEndTime();
 
                 if (isset($this->takeProfitPipAmount)) {
                     $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateShortTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
