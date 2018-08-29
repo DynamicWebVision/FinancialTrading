@@ -312,11 +312,11 @@ abstract class Strategy  {
 
     public function modifyStopLoss($newPricePoint) {
         if (!$this->backtesting) {
-            $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($newPricePoint);
+            $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($newPricePoint, $this->exchange->pip);
 
             $this->strategyLogger->logMessage('Modify Stop Loss Start', 2);
 
-            $this->oanda->modifyStopLoss($this->openPosition['stopLossId'], $this->exchange->pip);
+            $this->oanda->modifyStopLoss($this->openPosition['stopLossId']);
         }
         else {
             $this->backTestPositions[sizeof($this->backTestPositions)-1]['stopLoss'] = $newPricePoint;
