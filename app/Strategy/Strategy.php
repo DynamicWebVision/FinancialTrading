@@ -147,7 +147,6 @@ abstract class Strategy  {
         if (!$this->backtesting) {
             $this->strategyLogger->logMessage('Starting New Long Position', 2);
 
-            $this->currentPriceData = $this->oanda->currentPrice();
             $this->calculatePositionAmount();
 
             $params = [];
