@@ -20,6 +20,7 @@ use App\Model\Exchange;
 use \App\BackTest\TakeProfitStopLossTest;
 use \App\Services\StrategyLogger;
 use \App\Strategy\HullMovingAverage\HmaSwitchShortConfirmLongAdx;
+use \App\Strategy\HullMovingAverage\HmaSimple;
 
 use \Log;
 
@@ -78,6 +79,27 @@ class HmaRev extends \App\BackTest\BackTestToBeProcessed\Base
             //Values for Getting Rates
             $backTest->rateCount = intval($this->backTestToBeProcessed->variable_2)*10;
             $backTest->rateIndicatorMin = intval($this->backTestToBeProcessed->variable_2)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'HMA_SIMPLE') {
+            $backTest->rateLevel = 'both';
+
+            $strategy = new HmaSimple(1,1,true);
+            $strategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $strategy->fastHma = intval($this->backTestToBeProcessed->variable_1);
+
+            $strategy->adxLength = 14;
+            $strategy->adxUndersoldThreshold = intval($this->backTestToBeProcessed->variable_5);
+
+            //Strategy Will Determine Exit
+            $strategy->takeProfitPipAmount = 0;
+
+            $multiplyValue = max([$strategy->adxLength, $strategy->fastHma]);
+
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
             $backTest->currentRatesProcessed = $backTest->rateCount;
         }
 
