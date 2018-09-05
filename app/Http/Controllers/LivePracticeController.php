@@ -698,7 +698,6 @@ class LivePracticeController extends Controller {
             $logPrefix = "emaXAdxConfirmWithMarketIfTouched-".$exchange->exchange."-".uniqid();
 
             $systemStrategy = new EmaXAdxConfirmWithMarketIfTouched('101-001-7608904-008', $logPrefix);
-            $systemStrategy->setAccountInfo();
             $systemStrategy->accountAvailableMargin = $marginAvailable;
 
             $strategyLogger = new StrategyLogger();
@@ -758,7 +757,6 @@ class LivePracticeController extends Controller {
             $logPrefix = "emaXAdxConfirmWithMarketIfTouchedHr-".$exchange->exchange."-".uniqid();
 
             $systemStrategy = new EmaXAdxConfirmWithMarketIfTouched('101-001-7608904-009', $logPrefix);
-            $systemStrategy->setAccountInfo();
             $systemStrategy->accountAvailableMargin = $marginAvailable;
 
             $strategyLogger = new StrategyLogger();

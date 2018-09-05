@@ -98,9 +98,9 @@ class RsiEvents  {
         $losses = [];
 
         foreach ($rates as $index=>$rate) {
-            if (isset($endRates[$index+1])) {
+            if (isset($rates[$index+1])) {
 
-                $diff = $endRates[$index+1] - $rate;
+                $diff = $rates[$index+1] - $rate;
 
                 if ($diff > 0) {
                     $gains[] = $diff;
@@ -110,15 +110,46 @@ class RsiEvents  {
                 }
             }
         }
+
+        return ['gains'=>$gains, 'losses'=>$losses];
+    }
+
+    public function calculateTargetRS($targetRsi) {
+        return (-$targetRsi)/($targetRsi - 100);
     }
 
     public function getCrossLevelPricePoint($rates, $length, $rsiCrossLevel) {
-        $endRates = $this->utility->getLastXElementsInArray($rates, $length + 1);
-
-        $currentRSI = $this->rsi($endRates, $length);
-
         $ratesBesidesNext = $this->utility->getLastXElementsInArray($rates, $length);
+        $currentRSIWithoutNextRate = $this->rsi($ratesBesidesNext, $length-1);
 
+        $currentGainsLosses = $this->getGainLossSums($ratesBesidesNext);
 
+        $rsTarget = $this->calculateTargetRS($rsiCrossLevel);
+
+        $response = [];
+
+        if ($currentRSIWithoutNextRate > $rsiCrossLevel) {
+            $gainAverage = array_sum($currentGainsLosses['gains'])/$length;
+            $losses = array_sum($currentGainsLosses['losses']);
+
+            $averageLoss = $gainAverage/$rsTarget;
+
+            $lastLoss = ($averageLoss*$length) - $losses;
+
+            $response['targetPrice'] = end($rates) - $lastLoss;
+            $response['side'] = 'short';
+        }
+        else {
+            $gains = array_sum($currentGainsLosses['gains']);
+            $lossAverage = array_sum($currentGainsLosses['losses'])/$length;
+
+            $averageGain = $lossAverage*$rsTarget;
+
+            $lastGain = ($averageGain*$length) - $gains;
+
+            $response['targetPrice'] = end($rates) + $lastGain;
+            $response['side'] = 'long';
+        }
+        return $response;
     }
 }
