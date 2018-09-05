@@ -49,7 +49,6 @@ class Kernel extends ConsoleKernel
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenAfter')->cron($this->everyFifteenMinutesInterval);
 
-
             //$schedule->call('App\Http\Controllers\LivePracticeController@hourStochFastOppositeSlow')->hourly();
             //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyAfterHour')->hourly();
 
