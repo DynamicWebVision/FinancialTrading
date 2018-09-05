@@ -38,20 +38,20 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         if (env('APP_ENV') == 'live_practice') {
-            $schedule->call('App\Http\Controllers\LivePracticeController@twoLevelHmaDaily')->dailyAt('00:00');
+            //$schedule->call('App\Http\Controllers\LivePracticeController@twoLevelHmaDaily')->dailyAt('00:00');
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumAdx15MinutesTPSL')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
-            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenMinuteStochPullback')->cron($this->everyFifteenMinutesInterval);
+            //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenMinuteStochPullback')->cron($this->everyFifteenMinutesInterval);
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouchedHr')->hourly();
 
 
-            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenAfter')->cron($this->everyFifteenMinutesInterval);
+            //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenAfter')->cron($this->everyFifteenMinutesInterval);
 
 
-            $schedule->call('App\Http\Controllers\LivePracticeController@hourStochFastOppositeSlow')->hourly();
-            $schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyAfterHour')->hourly();
+            //$schedule->call('App\Http\Controllers\LivePracticeController@hourStochFastOppositeSlow')->hourly();
+            //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyAfterHour')->hourly();
 
             //Four Hour Interval
 //            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('1:00');
@@ -81,8 +81,6 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
         }
 
-
-        $schedule->call('App\Http\Controllers\TestController@testHittingCron')->everyFiveMinutes();
     }
 
     /**

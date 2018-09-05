@@ -686,6 +686,11 @@ class LivePracticeController extends Controller {
         $this->utility->sleepUntilAtLeastFiveSeconds();
 
         $strategy = new Strategy();
+
+        $strategy = new EmaXAdxConfirmWithMarketIfTouched('101-001-7608904-008', 'initialload');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
         //Need to Change
         $exchanges = \App\Model\Exchange::get();
 
@@ -693,6 +698,8 @@ class LivePracticeController extends Controller {
             $logPrefix = "emaXAdxConfirmWithMarketIfTouched-".$exchange->exchange."-".uniqid();
 
             $systemStrategy = new EmaXAdxConfirmWithMarketIfTouched('101-001-7608904-008', $logPrefix);
+            $systemStrategy->setAccountInfo();
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
 
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;
@@ -740,7 +747,10 @@ class LivePracticeController extends Controller {
         Log::info('emaXAdxConfirmWithMarketIfTouched: START LivePracticeController->emaXAdxConfirmWithMarketIfTouched');
         $this->utility->sleepUntilAtLeastFiveSeconds();
 
-        $strategy = new Strategy();
+        $strategy = new EmaXAdxConfirmWithMarketIfTouched('101-001-7608904-009', 'initialload');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
         //Need to Change
         $exchanges = \App\Model\Exchange::get();
 
@@ -748,6 +758,8 @@ class LivePracticeController extends Controller {
             $logPrefix = "emaXAdxConfirmWithMarketIfTouchedHr-".$exchange->exchange."-".uniqid();
 
             $systemStrategy = new EmaXAdxConfirmWithMarketIfTouched('101-001-7608904-009', $logPrefix);
+            $systemStrategy->setAccountInfo();
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
 
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;

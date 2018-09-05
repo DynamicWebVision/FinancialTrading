@@ -91,6 +91,8 @@ abstract class Strategy  {
 
     public $rateCount = false;
     public $addCurrentPriceToRates = false;
+    public $accountInfo;
+    public $accountAvailableMargin;
 
     public $openPosition;
 
@@ -112,14 +114,17 @@ abstract class Strategy  {
         }
     }
 
+    public function getAvailableMargin() {
+        $this->accountInfo = $this->oanda->accountInfo();
+        return $this->accountInfo->marginAvailable;
+    }
+
     public function calculatePositionAmount() {
         if (!$this->backtesting) {
-            $accountInfo = $this->oanda->accountInfo();
-
-            $this->positionAmount = round(round($accountInfo->marginAvailable)*$this->positionMultiplier);
+            $this->positionAmount = round(round($this->accountAvailableMargin)*$this->positionMultiplier);
             $this->oanda->positionAmount = $this->positionAmount;
 
-            $this->strategyLogger->logMessage('Margin Available: '.$accountInfo->marginAvailable.'Position Multiplier '.$this->positionMultiplier.' Position Amount: '.$this->positionAmount, 1);
+            $this->strategyLogger->logMessage('Margin Available: '.$this->accountAvailableMargin.'Position Multiplier '.$this->positionMultiplier.' Position Amount: '.$this->positionAmount, 1);
         }
     }
 
@@ -703,9 +708,9 @@ abstract class Strategy  {
 
     public function calculateKelterPositionAmount() {
         if (!$this->backtesting) {
-            $accountInfo = $this->oanda->accountInfo();
+            $this->accountInfo = $this->oanda->accountInfo();
 
-            $this->positionAmount = round(round($accountInfo->balance)*$this->positionMultiplier);
+            $this->positionAmount = round(round($this->accountInfo->balance)*$this->positionMultiplier);
             $this->oanda->positionAmount = $this->positionAmount;
         }
     }
@@ -717,9 +722,9 @@ abstract class Strategy  {
 
     public function calculatePositionAmountByAmountToRisk() {
         if (!$this->backtesting) {
-            $accountInfo = $this->oanda->accountInfo();
+            $this->accountInfo = $this->oanda->accountInfo();
 
-            $riskAmount = $this->accountPercentToRisk*$accountInfo->marginAvailable;
+            $riskAmount = $this->accountPercentToRisk*$this->accountAvailableMargin;
 
             $this->positionAmount = $this->transactionHelpers->calculatePositionAmount($this->currentPriceData->ask, $this->exchange->pip,$this->stopLossPipAmount, $riskAmount);
             $this->oanda->positionAmount = $this->positionAmount;
