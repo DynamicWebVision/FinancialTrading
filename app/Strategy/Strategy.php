@@ -300,7 +300,6 @@ abstract class Strategy  {
 
     public function modifyLongStopLoss($openPosition) {
         if (!$this->backtesting) {
-            $this->currentPriceData = $this->oanda->currentPrice();
             $this->oanda->stopLoss = $this->calculateLongStopLoss($this->currentPriceData->mid);
             $this->oanda->modifyStopLoss($openPosition['stopLossId']);
         }
@@ -324,7 +323,6 @@ abstract class Strategy  {
 
     public function modifyShortStopLoss($openPosition) {
         if (!$this->backtesting) {
-            $this->currentPriceData = $this->oanda->currentPrice();
             $this->oanda->stopLoss = $this->calculateShortStopLoss($this->currentPriceData->mid);
             $this->oanda->modifyStopLoss($openPosition['stopLossId']);
         }
@@ -399,7 +397,6 @@ abstract class Strategy  {
 
     public function newLongOrStayInPosition() {
         if (!$this->backtesting) {
-            $this->currentPriceData = $this->oanda->currentPrice();
             $this->oanda->stopLoss = $this->calculateLongStopLoss($this->currentPriceData->mid);
         }
 
@@ -418,7 +415,6 @@ abstract class Strategy  {
 
     public function newShortOrStayInPosition() {
         if (!$this->backtesting) {
-            $this->currentPriceData = $this->oanda->currentPrice();
             $this->oanda->stopLoss = $this->calculateShortStopLoss($this->currentPriceData->mid);
         }
 
@@ -438,7 +434,6 @@ abstract class Strategy  {
     public function newShortPosition() {
         if (!$this->backtesting) {
             $this->strategyLogger->logMessage('New Short Position', 2);
-            $this->currentPriceData = $this->oanda->currentPrice();
             $this->calculatePositionAmount();
 
             $params = [];
