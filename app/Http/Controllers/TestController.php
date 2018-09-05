@@ -12,6 +12,8 @@ use \App\Model\HistoricalRates;
 use Twilio;
 use Illuminate\Support\Facades\Mail;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Services\Utility;
 use \App\Strategy\EmaMomentum\EmaSimpleMomentum;
 
@@ -334,5 +336,11 @@ class TestController extends Controller {
                 ->where('rate_unix_time', '=', $unix)
                 ->first();
         }
+    }
+
+    public function testHittingCron() {
+        DB::table('tbd_exception_logs')->insert(
+            ['exception' => 'test cron']
+        );
     }
 }

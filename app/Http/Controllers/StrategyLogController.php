@@ -40,20 +40,25 @@ class StrategyLogController extends Controller {
             $this->logQuery = $this->logQuery->where('exchange_id', '=', $exchange);
         }
 
-        if (strlen($dateTime) <= 5 && strlen($dateTime) > 1) {
-            $dateTime = date('Y-m').'-'.$dateTime;
-            $this->logQuery = $this->logQuery->where('start_date_time', '>=', $dateTime);
-            $this->orderDesc = false;
+        if ($dateTime != 'none' || $dateTime == '') {
+            if (strlen($dateTime) <= 5 && strlen($dateTime) > 1) {
+                $dateTime = date('Y-m').'-'.$dateTime;
+                $this->logQuery = $this->logQuery->where('start_date_time', '>=', $dateTime);
+                $this->orderDesc = false;
+            }
+            elseif (strlen($dateTime) > 5 && strlen($dateTime) < 10) {
+                $dateTime = date('Y').'-'.$dateTime;
+                $this->logQuery = $this->logQuery->where('start_date_time', '>=', $dateTime);
+                $this->orderDesc = false;
+            }
+            elseif (strlen($dateTime) > 10) {
+                $this->logQuery = $this->logQuery->where('start_date_time', '>=', $dateTime);
+                $this->orderDesc = false;
+            }
         }
-        elseif (strlen($dateTime) > 5 && strlen($dateTime) < 10) {
-            $dateTime = date('Y').'-'.$dateTime;
-            $this->logQuery = $this->logQuery->where('start_date_time', '>=', $dateTime);
-            $this->orderDesc = false;
-        }
-        elseif (strlen($dateTime) > 10) {
-            $this->logQuery = $this->logQuery->where('start_date_time', '>=', $dateTime);
-            $this->orderDesc = false;
-        }
+
+
+
 
         if ($onlyEvents == 1) {
             $this->logQuery = $this->logQuery->where('decision_made', '!=', 'none');

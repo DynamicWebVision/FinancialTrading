@@ -80,6 +80,9 @@ class Kernel extends ConsoleKernel
         elseif (env('APP_ENV') == 'backtest') {
             $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
         }
+
+
+        $schedule->call('App\Http\Controllers\TestController@testHittingCron')->everyFiveMinutes();
     }
 
     /**

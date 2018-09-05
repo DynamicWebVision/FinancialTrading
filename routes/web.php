@@ -148,6 +148,11 @@ Route::get('testAccountINfo', 'LivePracticeController@testAccountINfo');
 
 Route::get('all_accounts', 'AccountsController@createNewAccounts');
 
+Route::get('quick_tes123t', 'RentalController@createRentalTable');
+Route::get('load_rentals', 'RentalController@loadRentals');
+
+
+
 /******************************
  * HISTORICAL RATES
  ******************************/
@@ -178,8 +183,6 @@ Route::resource('strategy_notes', 'StrategyNotesController');
 Route::get('php', function () {
     echo phpinfo();
 });
-
-
 
 
 //TBD Test
