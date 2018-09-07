@@ -68,7 +68,6 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\AccountsController@createNewAccounts')->sundays();
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenEarly')->cron($this->everyFifteenMinuteEarlyInterval);
-            $schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenBefore')->cron($this->everyFifteenMinuteEarlyInterval);
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumHourly')->hourly();
 
