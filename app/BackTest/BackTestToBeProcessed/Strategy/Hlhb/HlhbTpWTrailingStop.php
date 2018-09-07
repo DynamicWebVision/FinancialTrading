@@ -24,6 +24,7 @@ use \App\Strategy\Hlhb\BasicHlhb;
 use \App\Strategy\Hlhb\HlhbMoreExitRules;
 use \App\Strategy\Hlhb\HlhbOnePeriodCrossover;
 use \App\Strategy\Hlhb\HlhbAdx;
+use \App\Strategy\Hlhb\HlhbTargetPrice;
 use \App\Services\StrategyLogger;
 
 use \Log;
@@ -105,15 +106,35 @@ class HlhbTpWTrailingStop extends \App\BackTest\BackTestToBeProcessed\Base
             }
 
             $strategy->strategyLogger = new StrategyLogger();
+
+            //Most Back Tests
+            $strategy->stopLossPipAmount = $this->backTestToBeProcessed->stop_loss_pips;
+            $strategy->takeProfitPipAmount = $this->backTestToBeProcessed->take_profit_pips;
+        }
+        elseif ($this->server->strategy_iteration == 'HLHB_TARGET_PRICE') {
+            $strategy = new HlhbTargetPrice(7827172, 'BackTestABC', true);
+            $strategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $strategy->fastEma = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->slowEma = intval($this->backTestToBeProcessed->variable_2);
+
+            $strategy->rsiLength = intval($this->backTestToBeProcessed->variable_3);
+            $strategy->adxLength = intval($this->backTestToBeProcessed->variable_3);
+            $strategy->trueRangeLength = intval($this->backTestToBeProcessed->variable_3);
+
+            $possibleRateMultipliers = [$strategy->rsiLength, $strategy->fastEma, $strategy->slowEma];
+
+            $multiplierValue = max($possibleRateMultipliers);
+
+            $backTest->rateCount = $multiplierValue*10;
+            $backTest->rateIndicatorMin = $multiplierValue*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+
         }
 
         $strategy->strategyId = 5;
         $strategy->strategyDesc = 'HMA X';
         $strategy->positionMultiplier = 5;
-
-        //Most Back Tests
-        $strategy->stopLossPipAmount = $this->backTestToBeProcessed->stop_loss_pips;
-        $strategy->takeProfitPipAmount = $this->backTestToBeProcessed->take_profit_pips;
 
         //ALL
         $strategy->exchange = $fullExchange;
