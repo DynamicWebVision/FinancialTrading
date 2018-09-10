@@ -106,60 +106,60 @@ class LivePracticeController extends Controller {
         Log::info('HmaTwoTierDaily: END');
     }
 
-    public function thirtyMinute() {
-        Log::info('30Min: START LivePracticeController->thirtyMinute');
-
-        //Need to Change
-        $exchanges = \App\Model\Exchange::get();
-
-        foreach ($exchanges as $exchange) {
-
-            $logPrefix = "30Min-".$exchange->exchange."-".uniqid();
-
-            $hmaAdxConfirmStrategy = new EmaMomentumDifferenceSlope('101-001-7608904-008', $logPrefix);
-
-            /*** LOGGING ***/
-            $strategyLogger = new StrategyLogger();
-            $strategyLogger->exchange_id = $exchange->id;
-            $strategyLogger->method = 'thirtyMinute';
-            $strategyLogger->oanda_account_id = 7;
-
-            $strategyLogger->newStrategyLog();
-            $hmaAdxConfirmStrategy->setLogger($strategyLogger);
-
-            if ($exchange->exchange == 'EUR_USD') {
-                $hmaAdxConfirmStrategy->logDbRates = true;
-            }
-
-            $hmaAdxConfirmStrategy->exchange = $exchange;
-            $hmaAdxConfirmStrategy->oanda->frequency = 'M30';
-
-            $hmaAdxConfirmStrategy->rateCount = 200;
-
-            $hmaAdxConfirmStrategy->rates = $hmaAdxConfirmStrategy->getRates('both');
-
-            $hmaAdxConfirmStrategy->positionMultiplier = 25;
-
-            $hmaAdxConfirmStrategy->maxPositions = 3;
-            $hmaAdxConfirmStrategy->stopLossPipAmount = 5;
-            $hmaAdxConfirmStrategy->takeProfitPipAmount = 20;
-
-            //Most Back Tests
-            $hmaAdxConfirmStrategy->stopLossPipAmount = 5;
-            $hmaAdxConfirmStrategy->takeProfitPipAmount = 50;
-
-            //Unique Strategy Variables
-            $hmaAdxConfirmStrategy->hmaFastLength = 5;
-            $hmaAdxConfirmStrategy->hmaSlowLength = 10;
-            $hmaAdxConfirmStrategy->adxCutoff = 20;
-            $hmaAdxConfirmStrategy->adxPeriodLength = 14;
-            $hmaAdxConfirmStrategy->slopeDiffLength = 3;
-
-            $hmaAdxConfirmStrategy->checkForNewPosition();
-            $strategyLogger->logStrategyEnd();
-        }
-        Log::info('HmaAdxStayInFourHour: END');
-    }
+//    public function thirtyMinute() {
+//        Log::info('30Min: START LivePracticeController->thirtyMinute');
+//
+//        //Need to Change
+//        $exchanges = \App\Model\Exchange::get();
+//
+//        foreach ($exchanges as $exchange) {
+//
+//            $logPrefix = "30Min-".$exchange->exchange."-".uniqid();
+//
+//            $hmaAdxConfirmStrategy = new EmaMomentumDifferenceSlope('101-001-7608904-008', $logPrefix);
+//
+//            /*** LOGGING ***/
+//            $strategyLogger = new StrategyLogger();
+//            $strategyLogger->exchange_id = $exchange->id;
+//            $strategyLogger->method = 'thirtyMinute';
+//            $strategyLogger->oanda_account_id = 7;
+//
+//            $strategyLogger->newStrategyLog();
+//            $hmaAdxConfirmStrategy->setLogger($strategyLogger);
+//
+//            if ($exchange->exchange == 'EUR_USD') {
+//                $hmaAdxConfirmStrategy->logDbRates = true;
+//            }
+//
+//            $hmaAdxConfirmStrategy->exchange = $exchange;
+//            $hmaAdxConfirmStrategy->oanda->frequency = 'M30';
+//
+//            $hmaAdxConfirmStrategy->rateCount = 200;
+//
+//            $hmaAdxConfirmStrategy->rates = $hmaAdxConfirmStrategy->getRates('both');
+//
+//            $hmaAdxConfirmStrategy->positionMultiplier = 25;
+//
+//            $hmaAdxConfirmStrategy->maxPositions = 3;
+//            $hmaAdxConfirmStrategy->stopLossPipAmount = 5;
+//            $hmaAdxConfirmStrategy->takeProfitPipAmount = 20;
+//
+//            //Most Back Tests
+//            $hmaAdxConfirmStrategy->stopLossPipAmount = 5;
+//            $hmaAdxConfirmStrategy->takeProfitPipAmount = 50;
+//
+//            //Unique Strategy Variables
+//            $hmaAdxConfirmStrategy->hmaFastLength = 5;
+//            $hmaAdxConfirmStrategy->hmaSlowLength = 10;
+//            $hmaAdxConfirmStrategy->adxCutoff = 20;
+//            $hmaAdxConfirmStrategy->adxPeriodLength = 14;
+//            $hmaAdxConfirmStrategy->slopeDiffLength = 3;
+//
+//            $hmaAdxConfirmStrategy->checkForNewPosition();
+//            $strategyLogger->logStrategyEnd();
+//        }
+//        Log::info('HmaAdxStayInFourHour: END');
+//    }
 
 
     public function hmaHourlyAfterHour() {
@@ -816,7 +816,7 @@ class LivePracticeController extends Controller {
         foreach ($exchanges as $exchange) {
             $logPrefix = "emaXAdxConfirmWithMarketIfTouchedHr-".$exchange->exchange."-".uniqid();
 
-            $systemStrategy = new HmaSimple('101-001-7608904-009', $logPrefix);
+            $systemStrategy = new HmaSimple('101-001-7608904-007', $logPrefix);
             $systemStrategy->accountAvailableMargin = $marginAvailable;
 
             $strategyLogger = new StrategyLogger();
