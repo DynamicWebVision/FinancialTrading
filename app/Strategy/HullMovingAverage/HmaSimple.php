@@ -59,11 +59,11 @@ class HmaSimple extends \App\Strategy\Strategy  {
 
         Log::info($this->runId.': New Position Decision Indicators: '.PHP_EOL.' '.$this->logIndicators());
 
-        if ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'short') {
+        if ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'long') {
             $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
             $this->newShortPosition();
         }
-        elseif ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'long') {
+        elseif ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'short') {
             $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
             $this->newLongPosition();
         }
