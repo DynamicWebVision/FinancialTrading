@@ -106,6 +106,7 @@ Route::get('fifteenEmaFiveTenBefore', 'LivePracticeController@fifteenEmaFiveTenB
 Route::get('hourlyStochPullback', 'LivePracticeController@hourlyStochPullback');
 Route::get('fifteenMinuteStochPullback', 'LivePracticeController@fifteenMinuteStochPullback');
 Route::get('emaXAdxConfirmWithMarketIfTouched', 'LivePracticeController@emaXAdxConfirmWithMarketIfTouched');
+Route::get('hmaFifteenMinutes', 'LivePracticeController@hmaFifteenMinutes');
 
 /******************************
  * SERVERS
