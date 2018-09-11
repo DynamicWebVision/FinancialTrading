@@ -331,6 +331,16 @@ class OandaV20 extends \App\Broker\Base  {
         $this->modifyTrade($tradeId, $fieldObject);
     }
 
+    public function addStopLoss($tradeId) {
+        $stopLossObject = new \StdClass();
+        $stopLossObject->price = (string) $this->stopLoss;
+
+        $fieldObject = new \StdClass();
+        $fieldObject->stopLoss = $stopLossObject;
+
+        $this->modifyTrade($tradeId, $fieldObject);
+    }
+
     public function modifyTrade($tradeId, $fields) {
         $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/trades/".$tradeId."/orders";
 

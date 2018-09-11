@@ -92,4 +92,19 @@ class StrategyBaseClassTest extends TestCase
             $this->systemStrategy->newShortPosition();
         }
     }
+
+    public function testModifyStopLossNoCurentStopLoss() {
+        $this->setUpStrategy();
+
+        $dayOfWeek = date('l');
+
+        if (!in_array($dayOfWeek,$this->tradingDays)) {
+            echo 'NOT TRADING DAY';
+        }
+        else {
+            $this->systemStrategy->setOpenPosition();
+
+            $this->systemStrategy->modifyStopLoss(1.05);
+        }
+    }
 }

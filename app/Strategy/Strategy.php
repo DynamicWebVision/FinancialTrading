@@ -317,9 +317,16 @@ abstract class Strategy  {
         if (!$this->backtesting) {
             $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($newPricePoint, $this->exchange->pip);
 
-            $this->strategyLogger->logMessage('Modify Stop Loss Start', 2);
+            if (isset($this->openPosition['stopLossId'])) {
+                $this->strategyLogger->logMessage('Modify Stop Loss Start', 2);
 
-            $this->oanda->modifyStopLoss($this->openPosition['stopLossId']);
+                $this->oanda->modifyStopLoss($this->openPosition['stopLossId']);
+            }
+            else {
+                $this->strategyLogger->logMessage('Add Stop Loss Start', 2);
+                $this->oanda->addStopLoss($this->openPosition['tradeId']);
+            }
+
         }
         else {
             $this->backTestPositions[sizeof($this->backTestPositions)-1]['stopLoss'] = $newPricePoint;
