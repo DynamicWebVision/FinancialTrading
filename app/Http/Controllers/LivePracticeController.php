@@ -821,7 +821,7 @@ class LivePracticeController extends Controller {
 
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;
-            $strategyLogger->method = 'emaXAdxConfirmWithMarketIfTouched';
+            $strategyLogger->method = 'hmaFifteenMinutes';
             $strategyLogger->oanda_account_id = 4;
 
             $strategyLogger->newStrategyLog();
