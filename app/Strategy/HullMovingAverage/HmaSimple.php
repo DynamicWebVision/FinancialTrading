@@ -78,20 +78,24 @@ class HmaSimple extends \App\Strategy\Strategy  {
         if ($this->openPosition['side'] == 'long') {
             if ($this->decisionIndicators['fastHmaChangeDirection']['side'] == 'short' ) {
                 $this->closePosition();
+                $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
                 $this->newShortPosition();
             }
             else {
                 $this->modifyStopLoss($this->decisionIndicators['fastHmaChangeDirection']['priceTarget']);
+                $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
                 $this->newShortPosition();
             }
         }
         elseif ($this->openPosition['side'] == 'short') {
             if ($this->decisionIndicators['fastHmaChangeDirection']['side'] == 'long' ) {
                 $this->closePosition();
+                $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
                 $this->newLongPosition();
             }
             else {
                 $this->modifyStopLoss($this->decisionIndicators['fastHmaChangeDirection']['priceTarget']);
+                $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
                 $this->newLongPosition();
             }
         }
