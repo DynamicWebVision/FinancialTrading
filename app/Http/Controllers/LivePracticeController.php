@@ -860,4 +860,122 @@ class LivePracticeController extends Controller {
             $systemStrategy->checkForNewPosition();
         }
     }
+
+    public function hmaThirty() {
+
+        $this->utility->sleepUntilAtLeastFiveSeconds();
+
+        $strategy = new HmaSimple('101-001-7608904-003', 'initialload');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logPrefix = "hmaThirty-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new HmaSimple('101-001-7608904-003', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'hmaThirty';
+            $strategyLogger->oanda_account_id = 2;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            if ($exchange->exchange == 'EUR_USD') {
+                $systemStrategy->logDbRates = true;
+            }
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'M30';
+
+            $systemStrategy->rateCount = 1000;
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+            $systemStrategy->setCurrentPrice();
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->strategyId = 5;
+            $systemStrategy->strategyDesc = 'hmaSimple';
+            $systemStrategy->positionMultiplier = 5;
+
+            $systemStrategy->maxPositions = 3;
+
+            //Specific Strategy Variables
+            $systemStrategy->fastHma = 50;
+
+            $systemStrategy->adxLength = 14;
+            $systemStrategy->adxUndersoldThreshold = 20;
+
+            $systemStrategy->takeProfitTrueRangeMultiplier = 10;
+            $systemStrategy->stopLossTrueRangeMultiplier = 2;
+
+            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $systemStrategy->checkForNewPosition();
+        }
+    }
+
+    public function hmaHour() {
+
+        $this->utility->sleepUntilAtLeastFiveSeconds();
+
+        $strategy = new HmaSimple('101-001-7608904-004', 'initialload');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logPrefix = "hmaHour-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new HmaSimple('101-001-7608904-004', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'hmaHour';
+            $strategyLogger->oanda_account_id = 1;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            if ($exchange->exchange == 'EUR_USD') {
+                $systemStrategy->logDbRates = true;
+            }
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'H1';
+
+            $systemStrategy->rateCount = 1000;
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+            $systemStrategy->setCurrentPrice();
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->strategyId = 5;
+            $systemStrategy->strategyDesc = 'hmaSimple';
+            $systemStrategy->positionMultiplier = 5;
+
+            $systemStrategy->maxPositions = 3;
+
+            //Specific Strategy Variables
+            $systemStrategy->fastHma = 50;
+
+            $systemStrategy->adxLength = 14;
+            $systemStrategy->adxUndersoldThreshold = 20;
+
+            $systemStrategy->takeProfitTrueRangeMultiplier = 10;
+            $systemStrategy->stopLossTrueRangeMultiplier = 2;
+
+            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $systemStrategy->checkForNewPosition();
+        }
+    }
 }

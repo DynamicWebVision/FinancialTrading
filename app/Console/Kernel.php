@@ -45,7 +45,10 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
             //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenMinuteStochPullback')->cron($this->everyFifteenMinutesInterval);
 
+            $schedule->call('App\Http\Controllers\LivePracticeController@hmaThirty')->everyThirtyMinutes();
+
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouchedHr')->hourly();
+            $schedule->call('App\Http\Controllers\LivePracticeController@hmaHour')->hourly();
 
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenAfter')->cron($this->everyFifteenMinutesInterval);
