@@ -241,6 +241,7 @@ class OandaV20 extends \App\Broker\Base  {
 
         $openPosition = [];
         $openPosition['side'] = false;
+        $openPosition['positionTradeIds'] = [];
 
         if ($response->position->long->units > 0) {
             $openPosition['side'] = 'long';
@@ -258,6 +259,7 @@ class OandaV20 extends \App\Broker\Base  {
                         $openPosition['stopLossPrice'] = $tradeResponse->trade->stopLossOrder->price;
                         $openPosition['stopLossId'] = $tradeId;
                     }
+                    $openPosition['positionTradeIds'][] = $tradeId;
                 }
             }
         }
@@ -277,6 +279,7 @@ class OandaV20 extends \App\Broker\Base  {
                         $openPosition['stopLossPrice'] = $tradeResponse->trade->stopLossOrder->price;
                         $openPosition['stopLossId'] = $tradeId;
                     }
+                    $openPosition['positionTradeIds'][] = $tradeId;
                 }
             }
         }

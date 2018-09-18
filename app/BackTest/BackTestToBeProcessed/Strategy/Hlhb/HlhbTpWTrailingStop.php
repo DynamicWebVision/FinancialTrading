@@ -129,7 +129,9 @@ class HlhbTpWTrailingStop extends \App\BackTest\BackTestToBeProcessed\Base
             $backTest->rateCount = $multiplierValue*10;
             $backTest->rateIndicatorMin = $multiplierValue*3;
             $backTest->currentRatesProcessed = $backTest->rateCount;
+            $strategy->strategyLogger = new StrategyLogger();
 
+            $backTest->rateLevel = 'both';
         }
 
         $strategy->strategyId = 5;

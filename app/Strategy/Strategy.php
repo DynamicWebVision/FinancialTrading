@@ -306,7 +306,10 @@ abstract class Strategy  {
     public function modifyLongStopLoss($openPosition) {
         if (!$this->backtesting) {
             $this->oanda->stopLoss = $this->calculateLongStopLoss($this->currentPriceData->mid);
-            $this->oanda->modifyStopLoss($openPosition['stopLossId']);
+
+            foreach ($openPosition['positionTradeIds'] as $tradeId) {
+                $this->oanda->modifyStopLoss($tradeId);
+            }
         }
         else {
             $this->backTestPositions[sizeof($this->backTestPositions)-1]['stopLoss'] = $this->calculateLongStopLoss($this->currentPriceData->open);
@@ -316,16 +319,18 @@ abstract class Strategy  {
     public function modifyStopLoss($newPricePoint) {
         if (!$this->backtesting) {
             $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($newPricePoint, $this->exchange->pip);
-
-            if (isset($this->openPosition['stopLossId'])) {
-                $this->strategyLogger->logMessage('Modify Stop Loss Start', 2);
-
-                $this->oanda->modifyStopLoss($this->openPosition['stopLossId']);
+            foreach ($this->openPosition['positionTradeIds'] as $tradeId) {
+                $this->oanda->modifyStopLoss($tradeId);
             }
-            else {
-                $this->strategyLogger->logMessage('Add Stop Loss Start', 2);
-                $this->oanda->addStopLoss($this->openPosition['tradeId']);
-            }
+//            if (isset($this->openPosition['stopLossId'])) {
+//                $this->strategyLogger->logMessage('Modify Stop Loss Start', 2);
+//
+//                $this->oanda->modifyStopLoss($this->openPosition['stopLossId']);
+//            }
+//            else {
+//                $this->strategyLogger->logMessage('Add Stop Loss Start', 2);
+//                $this->oanda->addStopLoss($this->openPosition['tradeId']);
+//            }
 
         }
         else {
