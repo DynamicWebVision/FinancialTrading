@@ -31,7 +31,8 @@ class AwsService  {
         echo '<BR><BR><BR><BR>';
 
         if (isset($response['Reservations'])) {
-            dd($response['Reservations']);
+            $instance = $response['Reservations'][0]['Instances'][0];
+            dd($instance);
         }
 
         echo '<BR><BR><BR><BR>';
