@@ -77,7 +77,7 @@ Route::get('/backtest_process_stats', 'BackTestingController@backtestProcessStat
 Route::get('/ebt_stats/{id}', 'BackTestingController@backtestProcessStatsSpecificProcess');
 Route::get('indicator_run_through', 'BackTestingController@indicatorTest');
 Route::get('manual_rollback', 'BackTestingController@manualRollback');
-Route::get('manual_rollback', 'BackTestingController@manualRollback');
+Route::get('manual_rollback_process', 'BackTestingController@manualRollbackProcess');
 Route::get('manual_rollback_stats', 'BackTestingController@manualRollbackGroupStats');
 Route::get('copy_back_test_process_to_other_exchanges/{processId}', 'BackTestManagementController@createBackTestGroupFromProcessIdToOtherExchanges');
 Route::get('back_test_group_from_iteration/{processId}', 'BackTestManagementController@backTestGroupFromIteration');

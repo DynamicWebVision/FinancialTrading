@@ -483,9 +483,9 @@ abstract class Strategy  {
                 }
             }
             elseif ($this->orderType == 'MARKET_IF_TOUCHED') {
-                if ($this->currentPriceData->bid <= $this->marketIfTouchedOrderPrice) {
+                if ($this->currentPriceData->mid <= $this->marketIfTouchedOrderPrice) {
                     $params['type'] = 'LIMIT';
-                    $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->bid, $this->exchange->pip);
+                    $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->mid, $this->exchange->pip);
                 }
                 else {
                     $params['type'] = 'MARKET_IF_TOUCHED';

@@ -81,13 +81,13 @@ class HmaSimple extends \App\Strategy\Strategy  {
                 $this->strategyLogger->logMessage('Closing Long Position when Hma is Short. Then creating new Short Position', 1);
                 $this->closePosition();
                 $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
+                $this->quickPositionTypeTarget('short');
                 $this->newShortPosition();
             }
             else {
                 $this->strategyLogger->logMessage('Modifying Stop Loss and Creating New MIT Short', 1);
                 $this->modifyStopLoss($this->decisionIndicators['fastHmaChangeDirection']['priceTarget']);
                 $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
-                $this->quickPositionTypeTarget('short');
                 $this->newShortPosition();
             }
         }
@@ -96,13 +96,13 @@ class HmaSimple extends \App\Strategy\Strategy  {
                 $this->strategyLogger->logMessage('Closing Short Position when Hma is Short. Then creating new Long Position', 1);
                 $this->closePosition();
                 $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
+                $this->quickPositionTypeTarget('long');
                 $this->newLongPosition();
             }
             else {
                 $this->strategyLogger->logMessage('Modifying Stop Loss and Creating New MIT Long', 1);
                 $this->modifyStopLoss($this->decisionIndicators['fastHmaChangeDirection']['priceTarget']);
                 $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
-                $this->quickPositionTypeTarget('long');
                 $this->newLongPosition();
             }
         }

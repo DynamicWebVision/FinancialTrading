@@ -19,7 +19,7 @@
                                 <th>Start</th>
                                 <th>Finish</th>
                                 <th>Stats</th>
-                                <!--<th>Address</th>-->
+                                <th>Address</th>
 
                                 <th></th>
                                 <th></th>
@@ -55,9 +55,6 @@
                                         <option class="placeholder-color" value="" selected disabled>Start</option>
                                     </select>
                                 </td>
-                                <!--<td>-->
-                                    <!--<a ng-href="{{s.serverLink(server.ip_address)}}" target="_blank">{{server.ip_address}}</a>-->
-                                <!--</td>-->
                                 <td>
                                     {{server.start_count}}
                                 </td>
@@ -66,6 +63,10 @@
                                 </td>
                                 <td>
                                     {{server.stats_left}}
+                                </td>
+
+                                <td>
+                                    <a ng-href="{{s.serverLink(server.ip_address)}}" target="_blank">{{server.ip_address}}</a>
                                 </td>
                                 <td>
                                     <button class = 'btn-success btn btn-sm' ng-click="s.copyToLocal(server)">Copy TO Local</button>

@@ -158,7 +158,7 @@ class ServersController extends Controller {
     }
 
     public function setServerId() {
-        if (env('APP_ENV') == 'locatl') {
+        if (env('APP_ENV') == 'local') {
             Config::set('server_id', 6);
         }
         else {
@@ -179,6 +179,7 @@ class ServersController extends Controller {
         $server = Servers::find($this->serverId);
         $server->ip_address = $awsService->currentInstance['PublicIpAddress'];
         $server->save();
-
     }
+
+
 }
