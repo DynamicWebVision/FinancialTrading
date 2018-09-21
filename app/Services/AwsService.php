@@ -18,6 +18,8 @@ class AwsService  {
 
         $response = $this->ec2Client->describeInstances(['InstanceIds'=>[$instance_id]]);
 
+        dd($response);
+
         echo json_encode($response);
 
     }
