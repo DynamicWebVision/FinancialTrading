@@ -177,7 +177,7 @@ class ServersController extends Controller {
 
 
         $server = Servers::find($this->serverId);
-        $server->ip_address = $awsService->currentInstance->PublicIpAddress;
+        $server->ip_address = $awsService->currentInstance['PublicIpAddress'];
         $server->save();
 
     }
