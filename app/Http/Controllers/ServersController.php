@@ -150,4 +150,9 @@ class ServersController extends Controller {
 
         return $server;
     }
+
+    public function setServerEnvironment() {
+        $instance_id = file_get_contents("http://instance-data/latest/meta-data/instance-id");
+        echo $instance_id, "\n";
+    }
 }
