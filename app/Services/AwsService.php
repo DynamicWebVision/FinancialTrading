@@ -31,7 +31,7 @@ class AwsService  {
         echo '<BR><BR><BR><BR>';
 
         if (isset($response['Reservations'])) {
-            echo '444444444 Set';
+            dd($response['Reservations']);
         }
 
         echo '<BR><BR><BR><BR>';
