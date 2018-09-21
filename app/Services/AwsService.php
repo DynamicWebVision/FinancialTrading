@@ -9,6 +9,6 @@ class AwsService  {
             'region' => 'us-east-1',
             'version'=>'latest'
         ]);
-        echo 'asdfasdf';
+        dd($ec2->describeInstances());
     }
 }
