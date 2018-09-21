@@ -8,6 +8,7 @@ use App\Model\BackTestToBeProcessed;
 use \DB;
 use \Log;
 use Request;
+use App\Services\AwsService;
 
 class ServersController extends Controller {
 
@@ -153,6 +154,11 @@ class ServersController extends Controller {
 
     public function setServerEnvironment() {
         $instance_id = file_get_contents("http://instance-data/latest/meta-data/instance-id");
+
+        $awsService = new AwsService();
+
         echo $instance_id, "\n";
+
+
     }
 }
