@@ -6,7 +6,8 @@ class AwsService  {
 
     public function __construct() {
         $ec2 = new Aws\Ec2\Ec2Client([
-            'region' => 'us-east-1'
+            'region' => 'us-east-1',
+            'version'=>'latest'
         ]);
         echo 'asdfasdf';
     }
