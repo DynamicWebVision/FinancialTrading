@@ -6,7 +6,7 @@ class AwsService  {
 
     protected $ec2Client;
 
-    public function __construct($instance_id) {
+    public function __construct() {
         $this->ec2Client = new Aws\Ec2\Ec2Client([
             'region' => 'us-east-1',
             'version'=>'latest'
