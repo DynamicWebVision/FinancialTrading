@@ -155,7 +155,7 @@ class ServersController extends Controller {
     public function setServerEnvironment() {
         $instance_id = file_get_contents("http://instance-data/latest/meta-data/instance-id");
 
-        $awsService = new AwsService();
+        $awsService = new AwsService($instance_id);
 
         echo $instance_id, "\n";
 
