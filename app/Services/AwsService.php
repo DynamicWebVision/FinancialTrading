@@ -9,6 +9,6 @@ class AwsService  {
             'region' => 'us-east-1',
             'version'=>'latest'
         ]);
-        dd($ec2->describeInstances(['instanceIds'=>[$instance_id]]));
+        dd($ec2->describeInstances(['InstanceIds'=>[$instance_id]]));
     }
 }
