@@ -181,5 +181,38 @@ class ServersController extends Controller {
         $server->save();
     }
 
+    public function reWriteServerIpLocal() {
+        $file = '/Users/boneill/BashAliases/FinancialServers';
+        unlink($file);
+        $handle = fopen($file, 'w');
 
+
+        $server = Servers::find(1);
+        $text = "jordan_ip='".$server->ip_address."'\n";
+        $text .= 'alias open_jordan=\'/usr/bin/open -a "/Applications/Google Chrome.app" "http://'.$server->ip_address.'"\'';
+        $text .= "\n";
+
+        $server = Servers::find(2);
+        $text .= "bill_ip='".$server->ip_address."'\n";
+        $text .= 'alias open_bill=\'/usr/bin/open -a "/Applications/Google Chrome.app" "http://'.$server->ip_address.'"\'';
+        $text .= "\n";
+
+        $server = Servers::find(3);
+        $text .= "martha_ip='".$server->ip_address."'\n";
+        $text .= 'alias open_martha=\'/usr/bin/open -a "/Applications/Google Chrome.app" "http://'.$server->ip_address.'"\'';
+        $text .= "\n";
+
+        $server = Servers::find(4);
+        $text .= "musk_ip='".$server->ip_address."'\n";
+        $text .= 'alias open_musk=\'/usr/bin/open -a "/Applications/Google Chrome.app" "http://'.$server->ip_address.'"\'';
+        $text .= "\n";
+
+        $server = Servers::find(5);
+        $text .= "tywin_ip='".$server->ip_address."'\n";
+        $text .= 'alias open_tywin=\'/usr/bin/open -a "/Applications/Google Chrome.app" "http://'.$server->ip_address.'"\'';
+        $text .= "\n";
+
+        fwrite($handle, $text);
+        fclose($handle);
+    }
 }
