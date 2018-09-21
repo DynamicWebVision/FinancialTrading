@@ -9,8 +9,11 @@ use \DB;
 use \Log;
 use Request;
 use App\Services\AwsService;
+use Illuminate\Support\Facades\Config;
 
 class ServersController extends Controller {
+
+    public $serverId;
 
     public function index() {
         $servers = Servers::get()->toArray();
@@ -88,18 +91,20 @@ class ServersController extends Controller {
     }
 
     public function getNextBackTestGroupForServer() {
-        $server = Servers::find(env('SERVER_ID'));
+        $this->setServerId();
+        
+        $server = Servers::find(Config::get('server_id'));
 
         $notFinishedCount = BackTestGroup::where((function ($query) {
             $query->where('process_run', '=', 0)
                 ->orWhere('stats_run', '=', 0);
-        }))->where('server', '=', env('SERVER_ID'))->count();
+        }))->where('server', '=', Config::get('server_id'))->count();
 
         if ($notFinishedCount > 0) {
             $backTestGroup = BackTestGroup::where((function ($query) {
                 $query->where('process_run', '=', 0)
                     ->orWhere('stats_run', '=', 0);
-            }))->where('server', '=', env('SERVER_ID'))->orderBy('priority', 'desc')->first();
+            }))->where('server', '=', Config::get('server_id'))->orderBy('priority', 'desc')->first();
         }
         else {
             $backTestGroup = BackTestGroup::where((function ($query) {
@@ -120,7 +125,7 @@ class ServersController extends Controller {
 
         $serverBackTestGroup = BackTestGroup::find($backTestGroup->id);
 
-        $serverBackTestGroup->server = env('SERVER_ID');
+        $serverBackTestGroup->server = Config::get('server_id');
 
         $serverBackTestGroup->save();
 
@@ -152,10 +157,28 @@ class ServersController extends Controller {
         return $server;
     }
 
+    public function setServerId() {
+        if (env('APP_ENV') == 'locatl') {
+            Config::set('server_id', 6);
+        }
+        else {
+            $awsService = new AwsService();
+            $awsService->setCurrentServerAttributes();
+            $this->serverId = $awsService->getInstanceTagValue('server_id');
+
+            Config::set('server_id', $this->serverId);
+        }
+    }
+
     public function setServerEnvironment() {
         $awsService = new AwsService();
         $awsService->setCurrentServerAttributes();
+        $this->serverId = $awsService->getInstanceTagValue('server_id');
 
+
+        $server = Servers::find($this->serverId);
+        $server->ip_address = $awsService->currentInstance->PublicIpAddress;
+        $server->save();
 
     }
 }

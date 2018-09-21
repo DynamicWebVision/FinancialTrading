@@ -5,6 +5,7 @@ use \Aws;
 class AwsService  {
 
     protected $ec2Client;
+    public $currentInstance;
 
     public function __construct() {
         $this->ec2Client = new Aws\Ec2\Ec2Client([
@@ -18,24 +19,15 @@ class AwsService  {
 
         $response = $this->ec2Client->describeInstances(['InstanceIds'=>[$instance_id]]);
 
-        if (isset($response->Reservations)) {
-            echo 'Reservations Set';
+        $this->currentInstance = $response['Reservations'][0]['Instances'][0];
+    }
+
+    public function getInstanceTagValue($tagKey) {
+        foreach ($this->currentInstance['Tags'] as $tag) {
+            if ($tag['Key'] == $tagKey) {
+                return $tag['Value'];
+                break;
+            }
         }
-
-        echo '<BR><BR><BR><BR>';
-
-        if (isset($response[0])) {
-            echo '324234 Set';
-        }
-
-        echo '<BR><BR><BR><BR>';
-
-        if (isset($response['Reservations'])) {
-            $instance = $response['Reservations'][0]['Instances'][0];
-            dd($instance);
-        }
-
-        echo '<BR><BR><BR><BR>';
-
     }
 }

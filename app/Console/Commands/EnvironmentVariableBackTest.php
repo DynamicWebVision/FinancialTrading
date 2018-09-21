@@ -7,6 +7,8 @@ use Illuminate\Console\Command;
 use \App\Model\BackTestToBeProcessed;
 use \App\Http\Controllers\AutomatedBackTestController;
 use App\Model\Servers;
+use App\Http\Controllers\ServersController;
+use Illuminate\Support\Facades\Config;
 
 class EnvironmentVariableBackTest extends Command
 {
@@ -42,7 +44,10 @@ class EnvironmentVariableBackTest extends Command
     public function handle()
     {
         $recordCount = 1;
-        $server = Servers::find(env('SERVER_ID'));
+        $serverController = new ServersController();
+        $serverController->setServerId();
+
+        $server = Servers::find(Config::get('server_id'));
 
         $groupId = $server->current_back_test_group_id;
 

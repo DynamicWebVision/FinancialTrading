@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\HistoricalRatesVolume',
         'App\Console\Commands\TestHistoricalDataIntegrity',
         'App\Console\Commands\AutoBackTestWithoutReRun',
+        'App\Console\Commands\UpdateServers',
     ];
 
     public $everyFifteenMinuteEarlyInterval = '59,14,29,44 * * * * *';

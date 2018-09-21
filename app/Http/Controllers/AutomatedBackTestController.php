@@ -23,9 +23,8 @@ use \Log;
 use App\Model\BackTest;
 use App\Model\BackTestToBeProcessed;
 use App\Model\BackTestGroup;
-use \App\Http\Controllers\BackTestingController;
-use \App\Http\Controllers\BackTestStatsController;
-use \App\Http\Controllers\ServersController;
+use App\Http\Controllers\ServersController;
+use Illuminate\Support\Facades\Config;
 use App\Model\Servers;
 
 
@@ -34,6 +33,9 @@ class AutomatedBackTestController extends Controller {
     public function __construct() {
         set_time_limit(0);
         ini_set('memory_limit', '-1');
+
+        $serverController = new ServersController();
+        $serverController->setServerId();
     }
 
     public function sleepThirty() {
@@ -50,7 +52,8 @@ class AutomatedBackTestController extends Controller {
 
     public function runAutoBackTestIfFailsUpdate() {
         Log::info('runAutoBackTestIfFailsUpdate starting');
-        $server = Servers::find(env('SERVER_ID'));
+
+        $server = Servers::find(Config::get('server_id'));
 
         $firstCount = BackTestToBeProcessed::where('back_test_group_id', '=', $server->current_back_test_group_id)->where('start', '=', 0)->where('finish', '=', 0)->count();
 
@@ -139,7 +142,7 @@ class AutomatedBackTestController extends Controller {
 
     public function keepBackTestRunning() {
         $recordCount = 1;
-        $server = Servers::find(env('SERVER_ID'));
+        $server = Servers::find(Config::get('server_id'));
 
         $groupId = $server->current_back_test_group_id;
 
@@ -164,7 +167,7 @@ class AutomatedBackTestController extends Controller {
     }
 
     public function environmentVariableDriveProcess($processId = false) {
-        $server = Servers::find(env('SERVER_ID'));
+        $server = Servers::find(Config::get('server_id'));
 
         if ($server->current_back_test_strategy == 'HMA') {
             $fiftyOneHundredToBeProcessed = new HmaTrendTBP($processId, $server);
