@@ -39,7 +39,6 @@ class HmaSimple extends \App\Strategy\Strategy  {
     public function setEntryIndicators() {
         $hmaEvents = new HullMovingAverage();
         $hmaEvents->strategyLogger = $this->strategyLogger;
-
         $trueRange = new TrueRange();
         $trueRange->strategyLogger = $this->strategyLogger;
         $adxEvents = new AdxEvents();
@@ -57,13 +56,13 @@ class HmaSimple extends \App\Strategy\Strategy  {
     public function getEntryDecision() {
         $this->setEntryIndicators();
 
-        Log::info($this->runId.': New Position Decision Indicators: '.PHP_EOL.' '.$this->logIndicators());
+        $this->strategyLogger->logIndicators($this->decisionIndicators);
 
-        if ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'long') {
+        if ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['currentTrendingSide'] == 'long') {
             $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
             $this->newShortPosition();
         }
-        elseif ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['side'] == 'short') {
+        elseif ($this->decisionIndicators['adxAboveThreshold'] && $this->decisionIndicators['fastHmaChangeDirection']['currentTrendingSide'] == 'short') {
             $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
             $this->newLongPosition();
         }
@@ -73,33 +72,40 @@ class HmaSimple extends \App\Strategy\Strategy  {
         $hmaEvents = new HullMovingAverage();
         $hmaEvents->strategyLogger = $this->strategyLogger;
 
+        $this->strategyLogger->logIndicators($this->decisionIndicators);
+
         $this->decisionIndicators['fastHmaChangeDirection'] = $hmaEvents->hullChangeDirectionPoint($this->rates['simple'], $this->fastHma);
 
         if ($this->openPosition['side'] == 'long') {
-            if ($this->decisionIndicators['fastHmaChangeDirection']['side'] == 'short' ) {
+            if ($this->decisionIndicators['fastHmaChangeDirection']['currentTrendingSide'] == 'short' ) {
+                $this->strategyLogger->logMessage('Closing Long Position when Hma is Short. Then creating new Short Position', 1);
                 $this->closePosition();
                 $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
                 $this->newShortPosition();
             }
             else {
+                $this->strategyLogger->logMessage('Modifying Stop Loss and Creating New MIT Short', 1);
                 $this->modifyStopLoss($this->decisionIndicators['fastHmaChangeDirection']['priceTarget']);
                 $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
+                $this->quickPositionTypeTarget('short');
                 $this->newShortPosition();
             }
         }
         elseif ($this->openPosition['side'] == 'short') {
-            if ($this->decisionIndicators['fastHmaChangeDirection']['side'] == 'long' ) {
+            if ($this->decisionIndicators['fastHmaChangeDirection']['currentTrendingSide'] == 'long' ) {
+                $this->strategyLogger->logMessage('Closing Short Position when Hma is Short. Then creating new Long Position', 1);
                 $this->closePosition();
                 $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
                 $this->newLongPosition();
             }
             else {
+                $this->strategyLogger->logMessage('Modifying Stop Loss and Creating New MIT Long', 1);
                 $this->modifyStopLoss($this->decisionIndicators['fastHmaChangeDirection']['priceTarget']);
                 $this->marketIfTouchedOrderPrice = $this->decisionIndicators['fastHmaChangeDirection']['priceTarget'];
+                $this->quickPositionTypeTarget('long');
                 $this->newLongPosition();
             }
         }
-
     }
 
     public function checkForNewPosition() {

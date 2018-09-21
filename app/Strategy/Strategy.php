@@ -185,9 +185,9 @@ abstract class Strategy  {
                 }
             }
             elseif ($this->orderType == 'MARKET_IF_TOUCHED') {
-                if ($this->currentPriceData->mid >= $this->marketIfTouchedOrderPrice) {
+                if ($this->currentPriceData->ask >= $this->marketIfTouchedOrderPrice) {
                     $params['type'] = 'LIMIT';
-                    $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->mid, $this->exchange->pip);
+                    $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->ask, $this->exchange->pip);
                 }
                 else {
                     $params['type'] = 'MARKET_IF_TOUCHED';
@@ -483,9 +483,9 @@ abstract class Strategy  {
                 }
             }
             elseif ($this->orderType == 'MARKET_IF_TOUCHED') {
-                if ($this->currentPriceData->mid <= $this->marketIfTouchedOrderPrice) {
+                if ($this->currentPriceData->bid <= $this->marketIfTouchedOrderPrice) {
                     $params['type'] = 'LIMIT';
-                    $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->mid, $this->exchange->pip);
+                    $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->bid, $this->exchange->pip);
                 }
                 else {
                     $params['type'] = 'MARKET_IF_TOUCHED';
@@ -852,5 +852,13 @@ abstract class Strategy  {
 
     public function startStrategy() {
         $this->setOpenPosition();
+    }
+
+    public function quickPositionTypeTarget($side) {
+        if ($side == 'long') {
+            if ($this->currentPriceData->ask >= $this->marketIfTouchedOrderPrice) {
+
+            }
+        }
     }
 }

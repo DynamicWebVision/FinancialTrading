@@ -69,5 +69,6 @@
             loadTransactions();
         }
 
+        document.title = 'Oanda Positions';
     }
 })();

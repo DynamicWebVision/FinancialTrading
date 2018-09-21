@@ -125,5 +125,7 @@
                 $("#log-indicators-modal").modal('toggle');
             });
         }
+
+        document.title = 'Strategy Logs';
     }
 })();

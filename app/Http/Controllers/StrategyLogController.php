@@ -41,12 +41,12 @@ class StrategyLogController extends Controller {
         }
 
         if ($dateTime != 'none' || $dateTime == '') {
-            if (strlen($dateTime) <= 5 && strlen($dateTime) > 1) {
-                $dateTime = date('Y-m').'-'.$dateTime;
+            if (strlen($dateTime) <= 6 && strlen($dateTime) > 1) {
+                $dateTime = date('Y-m').'-'.$dateTime.':00:00';
                 $this->logQuery = $this->logQuery->where('start_date_time', '>=', $dateTime);
                 $this->orderDesc = false;
             }
-            elseif (strlen($dateTime) > 5 && strlen($dateTime) < 10) {
+            elseif (strlen($dateTime) > 6 && strlen($dateTime) < 10) {
                 $dateTime = date('Y').'-'.$dateTime;
                 $this->logQuery = $this->logQuery->where('start_date_time', '>=', $dateTime);
                 $this->orderDesc = false;
@@ -56,9 +56,6 @@ class StrategyLogController extends Controller {
                 $this->orderDesc = false;
             }
         }
-
-
-
 
         if ($onlyEvents == 1) {
             $this->logQuery = $this->logQuery->where('decision_made', '!=', 'none');

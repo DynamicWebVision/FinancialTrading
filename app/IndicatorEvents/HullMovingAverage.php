@@ -95,11 +95,11 @@ class HullMovingAverage {
 
         if ($lastHma > $secondToLast) {
             $targetHma = $lastHma;
-            $response['side'] = 'long';
+            $response['currentTrendingSide'] = 'long';
         }
         elseif ($lastHma < $secondToLast) {
             $targetHma = $lastHma;
-            $response['side'] = 'short';
+            $response['currentTrendingSide'] = 'short';
         }
 
         $squareRootLength = round(sqrt($length));
