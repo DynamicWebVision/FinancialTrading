@@ -18,9 +18,23 @@ class AwsService  {
 
         $response = $this->ec2Client->describeInstances(['InstanceIds'=>[$instance_id]]);
 
-        dd($response);
+        if (isset($response->Reservations)) {
+            echo 'Reservations Set';
+        }
 
-        echo json_encode($response);
+        echo '<BR><BR><BR><BR>';
+
+        if (isset($response[0])) {
+            echo '324234 Set';
+        }
+
+        echo '<BR><BR><BR><BR>';
+
+        if (isset($response['Reservations'])) {
+            echo '444444444 Set';
+        }
+
+        echo '<BR><BR><BR><BR>';
 
     }
 }
