@@ -17,6 +17,11 @@
         vm.copyToOtherPairs = copyToOtherPairs;
         vm.setUpNewBackTestGroupWithIteration = setUpNewBackTestGroupWithIteration;
         vm.openCreateStrategyNote = openCreateStrategyNote;
+        vm.lowGainLossAnalysis = lowGainLossAnalysis;
+        vm.highGainLossAnalysis = highGainLossAnalysis;
+
+        vm.gl_low = {};
+        vm.gl_high = {};
 
         vm.info = BackTest.info;
 
@@ -159,6 +164,25 @@
 
 
                 $location.path('create_backtest_group');
+            });
+        }
+
+        function lowGainLossAnalysis() {
+            $http.get('/back_test/gain_loss_analysis_low/'+BackTest.info.id).success(function(response){
+                console.log(response);
+                vm.gl_low.labels = response.labels;
+                vm.gl_low.data = response.data;
+
+                $("#gain-loss-analysis-low").modal('toggle');
+            });
+        }
+
+        function highGainLossAnalysis() {
+            $http.get('/back_test/gain_loss_analysis_high/'+BackTest.info.id).success(function(response){
+                vm.gl_high.labels = response.labels;
+                vm.gl_high.data = response.data;
+
+                $("#gain-loss-analysis-high").modal('toggle');
             });
         }
 

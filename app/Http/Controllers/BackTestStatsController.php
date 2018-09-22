@@ -803,6 +803,66 @@ class BackTestStatsController extends Controller {
                 $backTestGroup->save();
             }
         }
+    }
 
+    public function gainLossAnalysisLow($backtestId) {
+
+        $currentMax = 0;
+
+        $pip = .0001;
+        $labels = [];
+        $data = ['losses'=>[], 'gains'=>[]];
+
+        while ($currentMax < 26) {
+            $startBlock = $currentMax*$pip;
+
+            $nextMax = $currentMax + 5;
+            $endBlock = $nextMax*$pip;
+
+            $labels[] = $currentMax.'-'.$nextMax;
+
+            $countGain = BackTestPosition::where('back_test_id', '=', $backtestId)->where('gain_loss', '>=', $startBlock)->where('gain_loss', '<', $endBlock)->count();
+            $countLoss = BackTestPosition::where('back_test_id', '=', $backtestId)->where('gain_loss', '<=', $startBlock*-1)->where('gain_loss', '>', $endBlock*-1)->count();
+
+            $data['gains'][] = $countGain;
+            $data['losses'][] = $countLoss;
+
+            $currentMax = $nextMax;
+        }
+
+        return ['labels'=>$labels, 'data'=>[$data['losses'],$data['gains']]];
+    }
+
+    public function gainLossAnalysisHigh($backtestId) {
+        $gainMax = BackTestPosition::where('back_test_id', '=', $backtestId)->where('gain_loss', '>', 0)->max('gain_loss');
+        $lossMax = BackTestPosition::where('back_test_id', '=', $backtestId)->where('gain_loss', '<', 0)->min('gain_loss');
+
+        $pip = .0001;
+
+        $graphEnd = round(max([abs($lossMax), $gainMax])/$pip);
+
+        $currentMax = 25;
+
+        $labels = [];
+        $data = ['losses'=>[], 'gains'=>[]];
+
+        while ($currentMax < $graphEnd) {
+            $startBlock = $currentMax*$pip;
+
+            $nextMax = $currentMax + 25;
+            $endBlock = $nextMax*$pip;
+
+            $labels[] = $currentMax.'-'.$nextMax;
+
+            $countGain = BackTestPosition::where('back_test_id', '=', $backtestId)->where('gain_loss', '>=', $startBlock)->where('gain_loss', '<', $endBlock)->count();
+            $countLoss = BackTestPosition::where('back_test_id', '=', $backtestId)->where('gain_loss', '<=', $startBlock*-1)->where('gain_loss', '>', $endBlock*-1)->count();
+
+            $data['gains'][] = $countGain;
+            $data['losses'][] = $countLoss;
+
+            $currentMax = $nextMax;
+        }
+
+        return ['labels'=>$labels, 'data'=>[$data['losses'],$data['gains']]];
     }
 }

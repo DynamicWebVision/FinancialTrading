@@ -7,16 +7,22 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">BTG {{full.backTestFactory.id}} BT {{full.info.id}} - Process ID {{full.info.processed_id}} {{full.info.strategy_name}} {{full.info.exchange}} {{full.info.frequency}}</h3>
                         <div class="pull-right">
-                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="full.openCreateStrategyNote()">Strategy Note</button>
+                            <button class = 'btn-success btn btn-md pull-right m-r-5' ng-click="full.openCreateStrategyNote()">Strategy Note</button>
                         </div>
                         <div class="pull-right">
-                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="full.rollBackConfirm()">Roll Back Iteration</button>
+                            <button class = 'btn-success btn btn-md pull-right m-r-5' ng-click="full.rollBackConfirm()">Roll Back Iteration</button>
                         </div>
                         <div class="pull-right">
-                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="full.copyToOtherPairs()">Copy To Other Pairs</button>
+                            <button class = 'btn-success btn btn-md pull-right m-r-5' ng-click="full.copyToOtherPairs()">Copy To Other Pairs</button>
                         </div>
                         <div class="pull-right">
-                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="full.setUpNewBackTestGroupWithIteration()">Create BT Full from Iteration</button>
+                            <button class = 'btn-success btn btn-md pull-right m-r-5' ng-click="full.setUpNewBackTestGroupWithIteration()">Create BT Full from Iteration</button>
+                        </div>
+                        <div class="pull-right">
+                            <button class = 'btn-success btn btn-md pull-right m-r-5' ng-click="full.lowGainLossAnalysis()">GL Analysis Low</button>
+                        </div>
+                        <div class="pull-right">
+                            <button class = 'btn-success btn btn-md pull-right m-r-5' ng-click="full.highGainLossAnalysis()">GL Analysis Higher</button>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -350,5 +356,57 @@
     </div>
 </div>
 
+
+<div id="gain-loss-analysis-low" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Create New Menu" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close m-r-5" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Low End Gain/Loss Analysis</h4>
+            </div>
+            <div class="modal-body">
+                <canvas id="gl-analysis-low" class="chart chart-bar"
+                        chart-data="full.gl_low.data" chart-labels="full.gl_low.labels"> chart-series="series"
+                </canvas>
+            </div>
+                <div class="modal-footer">
+                    <div class="buttons-create-merchant">
+                        <div>
+                            <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<div id="gain-loss-analysis-high" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Create New Menu" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close m-r-5" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">high End Gain/Loss Analysis</h4>
+            </div>
+            <div class="modal-body">
+                <canvas id="gl-analysis-high" class="chart chart-bar"
+                        chart-data="full.gl_high.data" chart-labels="full.gl_high.labels"> chart-series="series"
+                </canvas>
+            </div>
+            <div class="modal-footer">
+                <div class="buttons-create-merchant">
+                    <div>
+                        <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <create-strategy-note></create-strategy-note>

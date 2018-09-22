@@ -282,9 +282,9 @@ class TransactionController extends Controller {
 
         $account = OandaAccounts::where('oanda_id', '=', $post['account'])->firstOrFail();
 
-        if ((time() - $account->last_transaction_pull) < (60*60*30)) {
-            $this->getOandaTransactions($account->id);
-        }
+//        if ((time() - $account->last_transaction_pull) < (60*60*30)) {
+//            $this->getOandaTransactions($account->id);
+//        }
 
         $oneMonthAgo = date('Y-m-d', strtotime('-30 day', time()));
 

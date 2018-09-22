@@ -51,6 +51,9 @@ Route::get('get_back_test_group_tests/{groupId}', 'BackTestingController@getBack
 Route::get('set_current_back_test/{backTestId}', 'BackTestingController@setBackTest');
 Route::get('full_test_stats/{backTestId}', 'BackTestingController@fullTestStats');
 Route::get('high_low_analysis/{backTestId}', 'BackTestingController@highLowAnalysis');
+Route::get('back_test/gain_loss_analysis_low/{backtestId}', 'BackTestStatsController@gainLossAnalysisLow');
+Route::get('back_test/gain_loss_analysis_high/{backtestId}', 'BackTestStatsController@gainLossAnalysisHigh');
+
 //Call Systems
 Route::get('/backtest/50_100_ema', 'BackTestingController@backTestFiftyOneHundred');
 Route::get('/backtest/cowabunga', 'BackTestingController@cowabunga');
@@ -73,8 +76,8 @@ Route::get('/ebt', 'AutomatedBackTestController@environmentVariableDriveProcess'
 Route::get('/ebt_process/{processId}', 'AutomatedBackTestController@environmentVariableDriveProcessId');
 Route::get('/auto_back_test_call', 'AutomatedBackTestController@runAutoBackTestIfFailsUpdate');
 
-Route::get('/backtest_process_stats', 'BackTestingController@backtestProcessStats');
-Route::get('/ebt_stats/{id}', 'BackTestingController@backtestProcessStatsSpecificProcess');
+Route::get('/backtest_process_stats', 'BackTestStatsController@backtestProcessStats');
+Route::get('/ebt_stats/{id}', 'BackTestStatsController@backtestProcessStatsSpecificProcess');
 Route::get('indicator_run_through', 'BackTestingController@indicatorTest');
 Route::get('manual_rollback', 'BackTestingController@manualRollback');
 Route::get('manual_rollback_process', 'BackTestingController@manualRollbackProcess');
