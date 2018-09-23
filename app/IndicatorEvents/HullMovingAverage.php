@@ -101,6 +101,10 @@ class HullMovingAverage {
             $targetHma = $lastHma;
             $response['currentTrendingSide'] = 'short';
         }
+        else {
+            $targetHma = $lastHma;
+            $response['currentTrendingSide'] = 'none';
+        }
 
         $squareRootLength = round(sqrt($length));
 
