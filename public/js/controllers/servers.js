@@ -42,6 +42,7 @@
 
         vm.editServer = {};
         var edit_server_index;
+        vm.utility = UtilityService;
 
         vm.updateServers = updateServers;
         vm.typeTaskChange = typeTaskChange;

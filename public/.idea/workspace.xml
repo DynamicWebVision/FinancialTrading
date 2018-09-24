@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fb8f474-0577-4141-988a-8e7f685fd999" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../app/Http/Controllers/BackTestStatsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../app/Http/Controllers/BackTestStatsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/controllers/back_test/full.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/controllers/back_test/full.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/modules/strategy-log/strategy-log.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/modules/strategy-log/strategy-log.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template/back_test/back_test_full.html" beforeDir="false" afterPath="$PROJECT_DIR$/template/back_test/back_test_full.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/template/test.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/../routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/Http/Controllers/LivePracticeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../app/Http/Controllers/LivePracticeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/controllers/servers.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/controllers/servers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/template/servers.html" beforeDir="false" afterPath="$PROJECT_DIR$/template/servers.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -22,19 +20,20 @@
     <session id="1227557284">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="9" />
+          <entry key="project.closed" value="10" />
           <entry key="project.open.time.0" value="3" />
-          <entry key="project.open.time.11" value="1" />
+          <entry key="project.open.time.11" value="2" />
           <entry key="project.open.time.12" value="2" />
+          <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.9" value="3" />
-          <entry key="project.opened" value="9" />
+          <entry key="project.opened" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="css" value="2" />
-          <entry key="html" value="10" />
-          <entry key="js" value="20" />
+          <entry key="html" value="11" />
+          <entry key="js" value="22" />
           <entry key="json" value="1" />
           <entry key="less" value="1" />
         </counts>
@@ -42,68 +41,53 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CSS" value="2" />
-          <entry key="HTML" value="10" />
+          <entry key="HTML" value="11" />
           <entry key="JSON" value="1" />
-          <entry key="JavaScript" value="20" />
+          <entry key="JavaScript" value="22" />
           <entry key="Less" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="31" />
-          <entry key="html" value="367" />
-          <entry key="js" value="644" />
+          <entry key="html" value="387" />
+          <entry key="js" value="662" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="31" />
-          <entry key="HTML" value="367" />
-          <entry key="JavaScript" value="644" />
+          <entry key="HTML" value="387" />
+          <entry key="JavaScript" value="662" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/modules/strategy-log/strategy-log.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="195" column="42" selection-start-line="195" selection-start-column="42" selection-end-line="195" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/template/test.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="66" lean-forward="true" selection-end-line="24" selection-end-column="6" />
-              <folding>
-                <element signature="e#403#410#1" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/js/controllers/back_test/full.js">
+        <entry file="file://$PROJECT_DIR$/template/servers.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="542">
-              <caret line="182" column="26" selection-start-line="182" selection-start-column="26" selection-end-line="182" selection-end-column="26" />
+            <state relative-caret-position="224">
+              <caret line="43" column="36" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/template/back_test/back_test_full.html">
+        <entry file="file://$PROJECT_DIR$/js/controllers/servers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="24" column="121" selection-start-line="24" selection-start-column="121" selection-end-line="24" selection-end-column="121" />
-              <folding>
-                <element signature="e#21336#21343#1" expanded="true" />
-              </folding>
+            <state relative-caret-position="660">
+              <caret line="44" column="36" selection-start-line="44" selection-start-column="36" selection-end-line="44" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/service/utility.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="554">
+              <caret line="77" column="23" selection-start-line="77" selection-start-column="12" selection-end-line="77" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -152,11 +136,12 @@
         <option value="$PROJECT_DIR$/js/modules/strategy-log/strategy-log.js" />
         <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/js/controllers/main.js" />
-        <option value="$PROJECT_DIR$/template/servers.html" />
         <option value="$PROJECT_DIR$/js/modules/strategy-log/strategy-log.html" />
         <option value="$PROJECT_DIR$/template/test.html" />
         <option value="$PROJECT_DIR$/template/back_test/back_test_full.html" />
         <option value="$PROJECT_DIR$/js/controllers/back_test/full.js" />
+        <option value="$PROJECT_DIR$/js/controllers/servers.js" />
+        <option value="$PROJECT_DIR$/template/servers.html" />
       </list>
     </option>
   </component>
@@ -175,8 +160,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1920" />
-    <option name="height" value="1080" />
+    <option name="width" value="1440" />
+    <option name="height" value="900" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -310,16 +295,19 @@
       <workItem from="1537548917652" duration="920000" />
       <workItem from="1537552891507" duration="225000" />
       <workItem from="1537553620247" duration="3913000" />
+      <workItem from="1537633090772" duration="171000" />
+      <workItem from="1537819106471" duration="227000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14199000" />
+    <option name="totallyTimeSpent" value="14597000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1864139" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18604651" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -371,13 +359,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/service/utility.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="661">
-          <caret line="153" column="5" selection-start-line="153" selection-start-column="5" selection-end-line="153" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -495,16 +476,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/template/servers.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="29" column="35" lean-forward="true" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/modules/strategy-log/strategy-log.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
+        <state relative-caret-position="2925">
           <caret line="195" column="42" selection-start-line="195" selection-start-column="42" selection-end-line="195" selection-end-column="42" />
         </state>
       </provider>
@@ -512,7 +486,7 @@
     <entry file="file://$PROJECT_DIR$/template/test.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
-          <caret line="12" column="66" lean-forward="true" selection-end-line="24" selection-end-column="6" />
+          <caret line="12" column="66" selection-end-line="24" selection-end-column="6" />
           <folding>
             <element signature="e#403#410#1" expanded="true" />
           </folding>
@@ -531,8 +505,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/controllers/back_test/full.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="542">
-          <caret line="182" column="26" selection-start-line="182" selection-start-column="26" selection-end-line="182" selection-end-column="26" />
+        <state relative-caret-position="-44">
+          <caret line="152" column="22" lean-forward="true" selection-start-line="152" selection-start-column="22" selection-end-line="152" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/controllers/servers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="44" column="36" selection-start-line="44" selection-start-column="36" selection-end-line="44" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/service/utility.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="554">
+          <caret line="77" column="23" selection-start-line="77" selection-start-column="12" selection-end-line="77" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/template/servers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="43" column="36" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
         </state>
       </provider>
     </entry>

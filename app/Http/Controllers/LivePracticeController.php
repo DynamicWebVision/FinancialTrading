@@ -906,7 +906,7 @@ class LivePracticeController extends Controller {
             $systemStrategy->maxPositions = 3;
 
             //Specific Strategy Variables
-            $systemStrategy->fastHma = 50;
+            $systemStrategy->fastHma = 125;
 
             $systemStrategy->adxLength = 14;
             $systemStrategy->adxUndersoldThreshold = 20;

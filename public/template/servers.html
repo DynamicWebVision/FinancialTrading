@@ -41,12 +41,12 @@
                                            <!--ng-model="server.current_back_test_group_id" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">-->
                                 </td>
                                 <td>
-                                    {{server.current_back_test_strategy}}
+                                    {{s.utility.shortenText(server.current_back_test_strategy, 8)}}
                                     <!--<input type="text" class="input-large form-control inline" name="current_back_test_strategy" placeholder="Back Test Strategy" ng-fade-->
                                            <!--ng-model="server.current_back_test_strategy" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">-->
                                 </td>
                                 <td>
-                                    {{server.strategy_iteration}}
+                                    {{s.utility.shortenText(server.strategy_iteration, 8)}}
                                     <!--<input type="text" class="input-med form-control inline" name="strategy_iteration" placeholder="Back Test Strategy" ng-fade-->
                                            <!--ng-model="server.strategy_iteration" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">-->
                                 </td>
