@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1fb8f474-0577-4141-988a-8e7f685fd999" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../app/Http/Controllers/LivePracticeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../app/Http/Controllers/LivePracticeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/controllers/servers.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/controllers/servers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template/servers.html" beforeDir="false" afterPath="$PROJECT_DIR$/template/servers.html" afterDir="false" />
-    </list>
+    <list default="true" id="1fb8f474-0577-4141-988a-8e7f685fd999" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -20,7 +15,7 @@
     <session id="1227557284">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="10" />
+          <entry key="project.closed" value="11" />
           <entry key="project.open.time.0" value="3" />
           <entry key="project.open.time.11" value="2" />
           <entry key="project.open.time.12" value="2" />
@@ -296,16 +291,15 @@
       <workItem from="1537552891507" duration="225000" />
       <workItem from="1537553620247" duration="3913000" />
       <workItem from="1537633090772" duration="171000" />
-      <workItem from="1537819106471" duration="227000" />
+      <workItem from="1537819106471" duration="397000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14597000" />
+    <option name="totallyTimeSpent" value="14767000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18604651" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />

@@ -51,7 +51,7 @@ class TransactionController extends Controller {
             $transactions = $broker->getTransactionHistory();
         }
 
-        Log::info('Get Transactions Response Account '.$id.' Oanda Response - '.$runId.PHP_EOL.json_encode($transactions));
+//        Log::info('Get Transactions Response Account '.$id.' Oanda Response - '.$runId.PHP_EOL);
 
         if (!isset($transactions)) {
             Log::info('No Transactions '.$id.' Oanda Response - '.$runId);
