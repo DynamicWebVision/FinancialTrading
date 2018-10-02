@@ -310,11 +310,14 @@ class BackTestStatsController extends Controller {
 
         $newBackTestStats->negative_months =  $negativeMonthCount;
 
-        $newBackTestStats->median_gain =  round($indicators->median($backTestPositionGains));
-        $newBackTestStats->median_loss =  round($indicators->median($backTestPositionLosses));
+        $newBackTestStats->median_gain =  round($indicators->median($backTestPositionGains)/$exchange['pip']);
+        $newBackTestStats->median_loss =  round($indicators->median($backTestPositionLosses)/$exchange['pip']);
 
-        $newBackTestStats->mean_gain =  round($indicators->average($backTestPositionGains));
-        $newBackTestStats->mean_loss =  round($indicators->average($backTestPositionLosses));
+        $newBackTestStats->mean_gain =  round($indicators->average($backTestPositionGains)/$exchange['pip']);
+        $newBackTestStats->mean_loss =  round($indicators->average($backTestPositionLosses)/$exchange['pip']);
+
+        $newBackTestStats->gain_sd =  round($indicators->standardDeviation($backTestPositionGains)/$exchange['pip']);
+        $newBackTestStats->loss_sd =  round($indicators->standardDeviation($backTestPositionLosses)/$exchange['pip']);
 
         $newBackTestStats->median_month_pip_gl =  round($indicators->median($allMonths));
         $newBackTestStats->mean_month_pip_gl =  round($indicators->average($allMonths));
