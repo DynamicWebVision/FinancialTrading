@@ -224,7 +224,7 @@ class ServersController extends Controller {
         $awsService = new AwsService();
         $instances = $awsService->getAllInstances();
 
-        $dbIpAddress = $this->getReservationIPWithTag($instances, 'finance_db');
+        $dbIpAddress = $awsService->getReservationIPWithTag($instances, 'finance_db');
 
         $utility->writeToLine('/var/www/FinancialTrading/.env',5,'DB_HOST='.$dbIpAddress);
     }

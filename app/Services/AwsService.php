@@ -47,6 +47,7 @@ class AwsService  {
             foreach ($firstInstance['Tags'] as $instanceTag) {
                 if ($instanceTag['Key'] == $tag) {
                     return $firstInstance['PublicIpAddress'];
+                    break;
                 }
             }
         }
