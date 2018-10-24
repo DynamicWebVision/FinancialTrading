@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\TestHistoricalDataIntegrity',
         'App\Console\Commands\AutoBackTestWithoutReRun',
         'App\Console\Commands\UpdateServers',
+        'App\Console\Commands\UpdateDBHost',
     ];
 
     public $everyFifteenMinuteEarlyInterval = '59,14,29,44 * * * * *';
