@@ -215,4 +215,9 @@ class ServersController extends Controller {
         fwrite($handle, $text);
         fclose($handle);
     }
+
+    public function debugAwsServerRequest() {
+        $awsService = new AwsService();
+        $awsService->getAllInstances();
+    }
 }

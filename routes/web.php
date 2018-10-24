@@ -122,6 +122,7 @@ Route::post('update_server', 'ServersController@updateSingleServer');
 Route::get('get_next_backtest', 'ServersController@getNextBackTestGroupForServer');
 Route::get('set_server_environment', 'ServersController@setServerEnvironment');
 
+
 Route::get('oanda_test', 'TestController@testGetRates');
 Route::get('two_rates_test', 'TestController@testGetRatesTwoTierLooping');
 Route::get('test_decision', 'TestController@testDecision');
@@ -217,5 +218,7 @@ Route::get('testrates', function() {
         echo $rate."<BR>";
     }
 });
+
+Route::get('debug_aws_servers', 'ServersController@debugAwsServerRequest');
 
 Route::auth();

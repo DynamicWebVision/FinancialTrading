@@ -22,6 +22,12 @@ class AwsService  {
         $this->currentInstance = $response['Reservations'][0]['Instances'][0];
     }
 
+    public function getAllInstances() {
+        $response = $this->ec2Client->describeInstances();
+
+        echo json_encode($response);
+    }
+
     public function getInstanceTagValue($tagKey) {
         foreach ($this->currentInstance['Tags'] as $tag) {
             if ($tag['Key'] == $tagKey) {
