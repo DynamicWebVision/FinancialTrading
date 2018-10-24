@@ -24,6 +24,7 @@ class AwsService  {
 
     public function getAllInstances() {
         $response = $this->ec2Client->describeInstances();
+        dd($response);
 
         echo json_encode($response);
     }
