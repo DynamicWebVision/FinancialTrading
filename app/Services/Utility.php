@@ -169,4 +169,12 @@ class Utility  {
         }
         return true;
     }
+
+    public function writeToLine($file, $line, $newText) {
+        $filename = $file;
+        $line_i_am_looking_for = $line - 1;
+        $lines = file( $filename , FILE_IGNORE_NEW_LINES );
+        $lines[$line_i_am_looking_for] = $newText;
+        file_put_contents( $filename , implode( "\n", $lines ) );
+    }
 }

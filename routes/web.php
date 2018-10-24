@@ -219,6 +219,6 @@ Route::get('testrates', function() {
     }
 });
 
-Route::get('debug_aws_servers', 'ServersController@debugAwsServerRequest');
+Route::get('debug_aws_servers', 'ServersController@updateEnvironmentDBHost');
 
 Route::auth();

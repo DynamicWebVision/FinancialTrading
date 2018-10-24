@@ -25,8 +25,9 @@ class AwsService  {
     public function getAllInstances() {
         $response = $this->ec2Client->describeInstances();
 
-        $db_ip_address = $this->getReservationIPWithTag($response['Reservations'], 'finance_db');
-        dd($db_ip_address);
+        return $response['Reservations'];
+
+
     }
 
     public function getInstanceTagValue($tagKey) {
@@ -50,4 +51,6 @@ class AwsService  {
             }
         }
     }
+
+
 }

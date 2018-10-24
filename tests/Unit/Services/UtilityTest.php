@@ -95,4 +95,9 @@ class UtilityTest extends TestCase
 
     }
 
+
+    public function testWriteToLine() {
+        $utility = new Utility();
+        $utility->writeToLine();
+    }
 }

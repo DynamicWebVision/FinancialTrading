@@ -5,6 +5,7 @@ use \App\Model\Servers;
 use \App\Model\Strategy;
 use \App\Model\StrategySystem;
 use App\Model\BackTestToBeProcessed;
+use App\Services\Utility;
 use \DB;
 use \Log;
 use Request;
@@ -167,6 +168,8 @@ class ServersController extends Controller {
             $this->serverId = $awsService->getInstanceTagValue('server_id');
 
             Config::set('server_id', $this->serverId);
+
+            $this->updateEnvironmentDBHost();
         }
     }
 
@@ -216,8 +219,13 @@ class ServersController extends Controller {
         fclose($handle);
     }
 
-    public function debugAwsServerRequest() {
+    public function updateEnvironmentDBHost() {
+        $utility = new Utility();
         $awsService = new AwsService();
-        $awsService->getAllInstances();
+        $instances = $awsService->getAllInstances();
+
+        $dbIpAddress = $this->getReservationIPWithTag($instances, 'finance_db');
+
+        $utility->writeToLine('/var/www/FinancialTrading/.env',5,'DB_HOST='.$dbIpAddress);
     }
 }
