@@ -25,9 +25,9 @@ class AwsService  {
     public function getAllInstances() {
         $response = $this->ec2Client->describeInstances();
 
-        foreach ($response['Reservations'] as $reservation ) {
-            echo json_encode($reservation)."<BR><BR><BR>";
-        }
+        dd(json_encode($response['Reservations']));
+
+        $db_ip_address = $this->getReservationIPWithTag($response['Reservations'], 'finance_db');
     }
 
     public function getInstanceTagValue($tagKey) {
@@ -39,7 +39,9 @@ class AwsService  {
         }
     }
 
-    public function getReservationIPWithTag($tag) {
+    public function getReservationIPWithTag($reservations, $tag) {
+        foreach ($reservations as $reservation) {
 
+        }
     }
 }
