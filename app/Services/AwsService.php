@@ -43,8 +43,8 @@ class AwsService  {
         foreach ($reservations as $reservation) {
             $firstInstance = $reservation['Instances'][0];
 
-            foreach ($firstInstance['Tags'] as $tag) {
-                if ($tag['Key'] == $tag) {
+            foreach ($firstInstance['Tags'] as $instanceTag) {
+                if ($instanceTag['Key'] == $tag) {
                     return $firstInstance['PublicIpAddress'];
                 }
             }
