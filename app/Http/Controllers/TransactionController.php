@@ -13,6 +13,7 @@ use App\Broker\OandaV20;
 class TransactionController extends Controller {
 
     public function getOandaTransactions($account = false) {
+        ini_set('memory_limit', '-1');
 
         if ($account) {
             $account = OandaAccounts::find($account);

@@ -414,6 +414,8 @@ class OandaV20 extends \App\Broker\Base  {
     }
 
     public function getTransactionHistory() {
+        ini_set('memory_limit', '-1');
+
         $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/transactions";
         $response = $this->apiGetRequest();
 
