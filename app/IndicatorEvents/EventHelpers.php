@@ -79,4 +79,9 @@ class EventHelpers {
             return 'reversedDown';
         }
     }
+
+    public function averageSlopeLastXPeriods($line, $lengthBack) {
+
+    }
 }
+

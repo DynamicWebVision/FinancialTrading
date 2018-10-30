@@ -18,6 +18,7 @@ use App\BackTest\BackTestToBeProcessed\Strategy\TwoTier\SlowOverBoughtFastMoment
 use App\BackTest\BackTestToBeProcessed\Strategy\Hlhb\HlhbTpWTrailingStop;
 use App\BackTest\BackTestToBeProcessed\Strategy\BollingerMomentum\BollingerMomentumBackTest;
 use App\BackTest\BackTestToBeProcessed\Strategy\Hma\HmaRev;
+use App\BackTest\BackTestToBeProcessed\Strategy\ThreeDucks\ThreeDucks;
 use \Log;
 
 use App\Model\BackTest;
@@ -242,6 +243,10 @@ class AutomatedBackTestController extends Controller {
             $bolingerMomentumTest->callProcess();
         }
         elseif ($server->current_back_test_strategy == 'HMA_CHANGE_DIRECTION') {
+            $hmaReverseTest = new HmaRev($processId, $server);
+            $hmaReverseTest->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'THREE_DUCKS') {
             $hmaReverseTest = new HmaRev($processId, $server);
             $hmaReverseTest->callProcess();
         }

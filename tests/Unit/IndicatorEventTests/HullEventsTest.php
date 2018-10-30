@@ -15,7 +15,7 @@ class HullEventsTest extends TestCase
 
     public function testStochIndicator() {
         $historicalRates = new \App\Model\HistoricalRates();
-        $rates = $historicalRates->getRatesSpecificTimeSimple(1,4,100,'2018-08-08 1:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,4,100,'2018-10-09 3:00:00');
 
         $hullEvents = new HullMovingAverage();
 
@@ -24,6 +24,18 @@ class HullEventsTest extends TestCase
         $rates[] = $xPoint;
 
         $endPoint = $hullEvents->endHullPoint($rates, 9);
+        $debug=1;
+    }
+
+    public function testHmaLastXPeriods() {
+        $historicalRates = new \App\Model\HistoricalRates();
+        //$rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 3:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 12:00:00');
+
+        $hullMovingAverage = new HullMovingAverage();
+
+        $hmaPoints = $hullMovingAverage->hmaLastXPeriods($rates, 50, 6);
+
         $debug=1;
     }
 }

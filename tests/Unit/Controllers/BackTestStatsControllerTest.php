@@ -20,7 +20,7 @@ class BackTestStatsControllerTest extends TestCase
     public function testBacktestProcessStatsSpecificProcess() {
         $backTestStatsController = new BackTestStatsController();
 
-        $processId = 196257;
+        $processId = 196173;
 
         $backTestStatsController->backtestProcessStatsSpecificProcess($processId);
     }

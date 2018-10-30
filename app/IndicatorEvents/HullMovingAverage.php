@@ -133,4 +133,15 @@ class HullMovingAverage {
         $response['priceTarget'] = (($fastDivisor*$slowDivisor*$necessaryDifference) + ($fastDivisor*$slowDiffValuesSumBesidesNext) - (2*$slowDivisor*$fastDiffValuesSumBesidesNext))/((-$fastDivisor*$length) + (2*$slowDivisor*$fastLength));
         return $response;
     }
+
+    public function hmaLastXPeriods($rates, $length, $periodsHmaValue) {
+        $arraySets = $this->utility->getMultipleArraySets($rates, $length*2, $periodsHmaValue);
+
+        $hmaPoints = [];
+
+        foreach ($arraySets as $arraySet) {
+            $hmaPoints[] = $this->endHullPoint($arraySet, $length);
+        }
+        return $hmaPoints;
+    }
 }

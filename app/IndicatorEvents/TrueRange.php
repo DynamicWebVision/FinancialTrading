@@ -28,12 +28,21 @@ class TrueRange {
         $this->eventHelpers = new EventHelpers();
     }
 
-    public function getTakeProfitLossPipValues($rates, $periods, $exchangePips, $profitMultiplier, $lossMultiplier) {
+    public function getTakeProfitLossPipValues($rates, $periods, $exchangePips, $profitMultiplier , $lossMultiplier) {
         $trueRange = $this->indicators->averageTrueRange($rates, $periods);
 
         $response = [];
 
         $response['profitPips'] = round(($trueRange/$exchangePips)*$profitMultiplier);
+        $response['lossPips'] = round(($trueRange/$exchangePips)*$lossMultiplier);
+        return $response;
+    }
+
+    public function getStopLossPipValue($rates, $periods, $exchangePips , $lossMultiplier) {
+        $trueRange = $this->indicators->averageTrueRange($rates, $periods);
+
+        $response = [];
+
         $response['lossPips'] = round(($trueRange/$exchangePips)*$lossMultiplier);
         return $response;
     }
