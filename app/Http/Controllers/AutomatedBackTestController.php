@@ -250,5 +250,9 @@ class AutomatedBackTestController extends Controller {
             $hmaReverseTest = new ThreeDucks($processId, $server);
             $hmaReverseTest->callProcess();
         }
+        elseif ($server->current_back_test_strategy == 'PREVIOUS_PRICE_BREAKOUT') {
+            $hmaReverseTest = new ThreeDucks($processId, $server);
+            $hmaReverseTest->callProcess();
+        }
     }
 }
