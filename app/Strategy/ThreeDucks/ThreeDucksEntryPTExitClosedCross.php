@@ -105,7 +105,8 @@ class ThreeDucksEntryPTExitClosedCross extends \App\Strategy\Strategy  {
             }
             else {
                 $this->strategyLogger->logMessage('Modifying Stop Loss', 1);
-                $this->modifyStopLoss($this->decisionIndicators['fastMAPriceTarget'] - $this->decisionIndicators['stopLossPips']);
+                $stopLossTarget = $this->decisionIndicators['fastMAPriceTarget'] - $this->decisionIndicators['stopLossPips'];
+                $this->modifyStopLoss($stopLossTarget);
             }
         }
         elseif ($this->openPosition['side'] == 'short') {
@@ -122,7 +123,8 @@ class ThreeDucksEntryPTExitClosedCross extends \App\Strategy\Strategy  {
             }
             else {
                 $this->strategyLogger->logMessage('Modifying Stop Loss', 1);
-                $this->modifyStopLoss($this->decisionIndicators['fastMAPriceTarget'] + $this->decisionIndicators['stopLossPips']);
+                $stopLossTarget = $this->decisionIndicators['fastMAPriceTarget'] + $this->decisionIndicators['stopLossPips'];
+                $this->modifyStopLoss($stopLossTarget);
             }
         }
     }

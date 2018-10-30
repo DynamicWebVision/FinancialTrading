@@ -64,7 +64,7 @@ class ThreeDucks extends \App\BackTest\BackTestToBeProcessed\Base
 
             $strategy->fastMa = intval($this->backTestToBeProcessed->variable_1);
             $strategy->mediumMa = intval($this->backTestToBeProcessed->variable_1)*$this->backTestToBeProcessed->variable_2;
-            $strategy->slowMa = intval($this->backTestToBeProcessed->variable_2)*$this->backTestToBeProcessed->variable_3;
+            $strategy->slowMa = $strategy->mediumMa*$this->backTestToBeProcessed->variable_3;
 
             $strategy->stopLossTrueRangeMultiplier = floatval($this->backTestToBeProcessed->variable_4);
 

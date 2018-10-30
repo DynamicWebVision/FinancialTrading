@@ -247,7 +247,7 @@ class AutomatedBackTestController extends Controller {
             $hmaReverseTest->callProcess();
         }
         elseif ($server->current_back_test_strategy == 'THREE_DUCKS') {
-            $hmaReverseTest = new HmaRev($processId, $server);
+            $hmaReverseTest = new ThreeDucks($processId, $server);
             $hmaReverseTest->callProcess();
         }
     }

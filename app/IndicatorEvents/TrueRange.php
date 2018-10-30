@@ -41,9 +41,6 @@ class TrueRange {
     public function getStopLossPipValue($rates, $periods, $exchangePips , $lossMultiplier) {
         $trueRange = $this->indicators->averageTrueRange($rates, $periods);
 
-        $response = [];
-
-        $response['lossPips'] = round(($trueRange/$exchangePips)*$lossMultiplier);
-        return $response;
+        return round(($trueRange/$exchangePips)*$lossMultiplier);
     }
 }
