@@ -19,6 +19,7 @@ use App\BackTest\BackTestToBeProcessed\Strategy\Hlhb\HlhbTpWTrailingStop;
 use App\BackTest\BackTestToBeProcessed\Strategy\BollingerMomentum\BollingerMomentumBackTest;
 use App\BackTest\BackTestToBeProcessed\Strategy\Hma\HmaRev;
 use App\BackTest\BackTestToBeProcessed\Strategy\ThreeDucks\ThreeDucks;
+use App\BackTest\BackTestToBeProcessed\Strategy\PreviousPeriodPriceBreakout\PreviousPeriodPriceBreakout;
 use \Log;
 
 use App\Model\BackTest;
@@ -251,7 +252,7 @@ class AutomatedBackTestController extends Controller {
             $hmaReverseTest->callProcess();
         }
         elseif ($server->current_back_test_strategy == 'PREVIOUS_PRICE_BREAKOUT') {
-            $hmaReverseTest = new ThreeDucks($processId, $server);
+            $hmaReverseTest = new PreviousPeriodPriceBreakout($processId, $server);
             $hmaReverseTest->callProcess();
         }
     }

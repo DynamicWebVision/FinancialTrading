@@ -29,22 +29,24 @@ class HighLowSuperSimpleHoldOnePeriod extends \App\Strategy\Strategy  {
     public function checkForNewPosition() {
         $this->setOpenPosition();
 
+        $previousRate = end($this->rates['full']);
+
         if (!$this->openPosition) {
-            $this->stopLossPipAmount = round(($this->currentPriceData->high - $this->currentPriceData->low)/$this->exchange->pip);
-            $this->marketIfTouchedOrderPrice = $this->currentPriceData->high + $this->exchange->pip;
+            $this->stopLossPipAmount = 25;
+            $this->marketIfTouchedOrderPrice = $previousRate->highMid + $this->exchange->pip;
             $this->newLongPosition();
 
-            $this->marketIfTouchedOrderPrice = $this->currentPriceData->low - $this->exchange->pip;
+            $this->marketIfTouchedOrderPrice = $previousRate->lowMid - $this->exchange->pip;
             $this->newShortPosition();
         }
         else {
             $this->closePosition();
 
-            $this->stopLossPipAmount = round(($this->currentPriceData->high - $this->currentPriceData->low)/$this->exchange->pip);
-            $this->marketIfTouchedOrderPrice = $this->currentPriceData->high + $this->exchange->pip;
+            $this->stopLossPipAmount = 25;
+            $this->marketIfTouchedOrderPrice = $previousRate->highMid + $this->exchange->pip;
             $this->newLongPosition();
 
-            $this->marketIfTouchedOrderPrice = $this->currentPriceData->low - $this->exchange->pip;
+            $this->marketIfTouchedOrderPrice = $previousRate->lowMid - $this->exchange->pip;
             $this->newShortPosition();
         }
     }

@@ -1,4 +1,4 @@
-<?php namespace App\BackTest\BackTestToBeProcessed\Strategy\ThreeDucks;
+<?php namespace App\BackTest\BackTestToBeProcessed\Strategy\PreviousPeriodPriceBreakout;
 
 /**
  * database.php

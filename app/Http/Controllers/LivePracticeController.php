@@ -978,4 +978,47 @@ class LivePracticeController extends Controller {
             $systemStrategy->checkForNewPosition();
         }
     }
+
+    public function dailyPreviousPriceBreakout() {
+
+        $this->utility->sleepUntilAtLeastFiveSeconds();
+
+        $strategy = new HmaSimple('101-001-7608904-004', 'initialload');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        sleep(60);
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logPrefix = "hmaHour-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new HmaSimple('101-001-7608904-004', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'hmaHour';
+            $strategyLogger->oanda_account_id = 1;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            if ($exchange->exchange == 'EUR_USD') {
+                $systemStrategy->logDbRates = true;
+            }
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'H1';
+
+            $systemStrategy->rateCount = 1000;
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+
+            \DB::insert('insert into tbd_daily_turnover (date_time, date_time_dt, pricedata ) values (?, ?, ?)', [date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), json_encode($strategyLogger->rates['full'])]);
+
+        }
+    }
 }
