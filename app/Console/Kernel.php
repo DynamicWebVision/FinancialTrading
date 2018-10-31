@@ -52,9 +52,9 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouchedHr')->hourly();
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaHour')->hourly();
 
-            //$schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('21:01');
-            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->hourly();
-
+            //
+            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakoutCheck')->hourly();
+            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('21:01');
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenAfter')->cron($this->everyFifteenMinutesInterval);
 

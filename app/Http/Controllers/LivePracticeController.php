@@ -20,6 +20,7 @@ use \App\Strategy\Stochastic\SingleHmaMomentumTpSl;
 use \App\Strategy\Stochastic\StochFastOppositeSlow;
 use \App\Strategy\EmaMomentum\EmaXAdxConfirmWithMarketIfTouched;
 use \App\Strategy\HullMovingAverage\HmaSimple;
+use \App\Strategy\PreviousCandlePriceHighLow\HighLowSuperSimpleHoldOnePeriod;
 
 class LivePracticeController extends Controller {
 
@@ -979,7 +980,7 @@ class LivePracticeController extends Controller {
         }
     }
 
-    public function dailyPreviousPriceBreakout() {
+    public function dailyPreviousPriceBreakoutCheck() {
 
         $this->utility->sleepUntilAtLeastFiveSeconds();
 
@@ -1018,7 +1019,48 @@ class LivePracticeController extends Controller {
             $systemStrategy->rates = $systemStrategy->getRates('both', true);
 
             \DB::insert('insert into tbd_daily_turnover (date_time, date_time_dt, pricedata ) values (?, ?, ?)', [date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), json_encode($systemStrategy->rates['full'])]);
+        }
+    }
 
+    public function dailyPreviousPriceBreakout() {
+
+        $this->utility->sleepUntilAtLeastFiveSeconds();
+
+        $strategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-013', 'initialload');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        sleep(60);
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logPrefix = "dailyPreviousPriceBreakout-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-013', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'hmaHour';
+            $strategyLogger->oanda_account_id = 1;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            if ($exchange->exchange == 'EUR_USD') {
+                $systemStrategy->logDbRates = true;
+            }
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'D';
+
+            $systemStrategy->rateCount = 1000;
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+
+            $systemStrategy->checkForNewPosition();
         }
     }
 }
