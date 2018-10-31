@@ -49,7 +49,7 @@ class ThreeDucksEntryOpenCloseExitClosedCross extends \App\Strategy\Strategy  {
         $this->decisionIndicators['mediumMAPriceRelation'] = $simpleMovingAverage->currentPriceRelationMA($this->rates['simple'], $this->mediumMa);
         $this->decisionIndicators['fastMAPriceRelation'] = $simpleMovingAverage->currentPriceRelationMA($this->rates['simple'], $this->fastMa);
 
-        $this->decisionIndicators['wholeCandleCrossover'] = $simpleMovingAverage->wholeCandleCross($this->rates['simple'], $this->fastMa, $this->currentPriceData);
+        $this->decisionIndicators['wholeCandleCrossover'] = $simpleMovingAverage->wholeCandleCross($this->rates['full'], $this->fastMa);
 
         $this->decisionIndicators['stopLossPips'] = $trueRange->getStopLossPipValue($this->rates['full'], $this->trueRangeLength,
             $this->exchange->pip, $this->stopLossTrueRangeMultiplier);

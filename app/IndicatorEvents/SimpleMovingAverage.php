@@ -68,15 +68,23 @@ class SimpleMovingAverage {
         }
     }
 
-    public function wholeCandleCross($rates, $length, $priceData) {
-        $arrayWithoutLast = $this->utility->removeLastValueInArray($rates);
-        $previousSma = $this->smaCurrentValue($arrayWithoutLast, $length);
-        $currentSma = $this->smaCurrentValue($rates, $length);
+    public function wholeCandleCross($rates, $length) {
+        $lastRatePriceData = end($rates);
 
-        if (end($rates) < $previousSma && $priceData->openMid > $currentSma && $priceData->closeMid > $currentSma) {
+        $secondToLastRate = $this->utility->getXFromLastValue($rates, 1);
+
+        $simpleRates = array_map(function($rate) {
+            return $rate->closeMid;
+        }, $rates);
+
+        $arrayWithoutLast = $this->utility->removeLastValueInArray($simpleRates);
+        $previousSma = $this->smaCurrentValue($arrayWithoutLast, $length);
+        $currentSma = $this->smaCurrentValue($simpleRates, $length);
+
+        if ($secondToLastRate->closeMid < $previousSma && $lastRatePriceData->openMid > $currentSma && $lastRatePriceData->closeMid > $currentSma) {
             return 'crossedAbove';
         }
-        elseif (end($rates) > $previousSma && $priceData->openMid < $currentSma && $priceData->closeMid < $currentSma) {
+        elseif ($secondToLastRate->closeMid > $previousSma && $lastRatePriceData->openMid < $currentSma && $lastRatePriceData->closeMid < $currentSma) {
             return 'crossedBelow';
         }
     }
