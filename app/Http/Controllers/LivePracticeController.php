@@ -1017,7 +1017,7 @@ class LivePracticeController extends Controller {
 
             $systemStrategy->rates = $systemStrategy->getRates('both', true);
 
-            \DB::insert('insert into tbd_daily_turnover (date_time, date_time_dt, pricedata ) values (?, ?, ?)', [date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), json_encode($strategyLogger->rates['full'])]);
+            \DB::insert('insert into tbd_daily_turnover (date_time, date_time_dt, pricedata ) values (?, ?, ?)', [date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), json_encode($systemStrategy->rates['full'])]);
 
         }
     }
