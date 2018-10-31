@@ -20,6 +20,7 @@ use App\Model\Exchange;
 use \App\BackTest\TakeProfitStopLossTest;
 use \App\Services\StrategyLogger;
 use \App\Strategy\ThreeDucks\ThreeDucksEntryPTExitClosedCross;
+use \App\Strategy\ThreeDucks\ThreeDucksEntryOpenCloseExitClosedCross;
 
 use \Log;
 
@@ -61,6 +62,25 @@ class ThreeDucks extends \App\BackTest\BackTestToBeProcessed\Base
 
             $strategy = new ThreeDucksEntryPTExitClosedCross(1,1,true);
             $strategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $strategy->fastMa = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->mediumMa = intval($this->backTestToBeProcessed->variable_1)*$this->backTestToBeProcessed->variable_2;
+            $strategy->slowMa = $strategy->mediumMa*$this->backTestToBeProcessed->variable_3;
+
+            $strategy->stopLossTrueRangeMultiplier = floatval($this->backTestToBeProcessed->variable_4);
+
+            //Strategy Will Determine Exit
+            $strategy->takeProfitPipAmount = 0;
+
+            //Values for Getting Rates
+            $backTest->rateCount = intval($strategy->slowMa)*5;
+            $backTest->rateIndicatorMin = intval($strategy->slowMa)*2;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'THREE_DUCKS_BAR_CLOSES_ENTRY') {
+            $backTest->rateLevel = 'both';
+
+            $strategy = new ThreeDucksEntryOpenCloseExitClosedCross(1,1,true);
 
             $strategy->fastMa = intval($this->backTestToBeProcessed->variable_1);
             $strategy->mediumMa = intval($this->backTestToBeProcessed->variable_1)*$this->backTestToBeProcessed->variable_2;

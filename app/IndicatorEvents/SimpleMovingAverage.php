@@ -67,4 +67,17 @@ class SimpleMovingAverage {
             return $priceBreakthrough + $pip;
         }
     }
+
+    public function wholeCandleCross($rates, $length, $priceData) {
+        $arrayWithoutLast = $this->utility->removeLastValueInArray($rates);
+        $previousSma = $this->smaCurrentValue($arrayWithoutLast, $length);
+        $currentSma = $this->smaCurrentValue($rates, $length);
+
+        if (end($rates) < $previousSma && $priceData->openMid > $currentSma && $priceData->closeMid > $currentSma) {
+            return 'crossedAbove';
+        }
+        elseif (end($rates) > $previousSma && $priceData->openMid < $currentSma && $priceData->closeMid < $currentSma) {
+            return 'crossedBelow';
+        }
+    }
 }

@@ -1018,7 +1018,9 @@ class LivePracticeController extends Controller {
 
             $systemStrategy->rates = $systemStrategy->getRates('both', true);
 
-            \DB::insert('insert into tbd_daily_turnover (date_time, date_time_dt, pricedata ) values (?, ?, ?)', [date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), json_encode($systemStrategy->rates['full'])]);
+            if ($exchange->id==1) {
+                \DB::insert('insert into tbd_daily_turnover (date_time, date_time_dt, pricedata ) values (?, ?, ?)', [date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), json_encode(end($systemStrategy->rates['full']))]);
+            }
         }
     }
 
@@ -1029,8 +1031,6 @@ class LivePracticeController extends Controller {
         $strategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-013', 'initialload');
 
         $marginAvailable = $strategy->getAvailableMargin();
-
-        sleep(60);
 
         //Need to Change
         $exchanges = \App\Model\Exchange::get();

@@ -22,4 +22,10 @@ class LivePracticeControllerTest extends TestCase
 
         $livePracticeController->hmaFifteenMinutes();
     }
+
+    public function testDailyPreviousPriceBreakoutCheck() {
+        $livePracticeController = new LivePracticeController();
+
+        $livePracticeController->dailyPreviousPriceBreakoutCheck();
+    }
 }
