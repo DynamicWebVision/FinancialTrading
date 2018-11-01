@@ -144,4 +144,18 @@ class HullMovingAverage {
         }
         return $hmaPoints;
     }
+
+    public function hmaPriceCrossover($rates, $length) {
+        $hma = $this->hmaLastXPeriods($rates, $length, 2);
+
+        $currentPrice = end($rates);
+        $previousPrice = $this->utility->getXFromLastValue($rates, 1);
+
+        if ($previousPrice < $hma[0] && $currentPrice > $hma[1]) {
+            return 'crossedAbove';
+        }
+        elseif ($previousPrice > $hma[0] && $currentPrice < $hma[1]) {
+            return 'crossedBelow';
+        }
+    }
 }
