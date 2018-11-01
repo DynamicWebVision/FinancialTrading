@@ -812,6 +812,8 @@ class BackTestingController extends Controller {
 
             BackTestModel::where('process_id', '=', $backTestProcess->id)->delete();
 
+            DB::enableQueryLog();
+
             $backTestToBeProcessed = BackTestToBeProcessed::find($backTestProcess->id);
 
             $backTestToBeProcessed->start = 0;
@@ -824,6 +826,8 @@ class BackTestingController extends Controller {
             $backTestToBeProcessed->in_process_unix_time = 0;
 
             $backTestToBeProcessed->save();
+
+            $queries = DB::getQueryLog();
 
         }
 
