@@ -33,7 +33,7 @@ class HmaPriceCrossover extends \App\Strategy\Strategy  {
 
     public $trueRangeLength = 14;
 
-    public $stopLossTrueRangeMultiplier;
+    public $stopLossTrueRangeMultiplier = 2;
     public $takeProfitTrueRangeMultiplier = 2;
 
     public function setEntryIndicators() {
@@ -47,10 +47,10 @@ class HmaPriceCrossover extends \App\Strategy\Strategy  {
         $this->decisionIndicators['hmaCrossover'] = $hmaEvents->hmaPriceCrossover($this->rates['simple'], $this->fastHma);
         $this->decisionIndicators['adxAboveThreshold'] = $adxEvents->adxAboveThreshold($this->rates['full'], $this->adxLength, $this->adxUndersoldThreshold);
 
-        $this->decisionIndicators['averageTrueRangeProfitLossValues'] = $trueRange->getTakeProfitLossPipValues($this->rates['full'], $this->trueRangeLength,
-            $this->exchange->pip, $this->takeProfitTrueRangeMultiplier, $this->stopLossTrueRangeMultiplier);
+        $this->decisionIndicators['stopLossPipValues'] = $trueRange->getStopLossPipValue($this->rates['full'], $this->trueRangeLength,
+            $this->exchange->pip, $this->stopLossTrueRangeMultiplier);
 
-        $this->stopLossPipAmount = round($this->decisionIndicators['averageTrueRangeProfitLossValues']['lossPips']);
+        $this->stopLossPipAmount = round($this->decisionIndicators['stopLossPipValues']);
     }
 
     public function getEntryDecision() {
@@ -69,10 +69,17 @@ class HmaPriceCrossover extends \App\Strategy\Strategy  {
     public function inPositionDecision() {
         $hmaEvents = new HullMovingAverage();
         $hmaEvents->strategyLogger = $this->strategyLogger;
+        $trueRange = new TrueRange();
+        $trueRange->strategyLogger = $this->strategyLogger;
 
         $this->strategyLogger->logIndicators($this->decisionIndicators);
 
         $this->decisionIndicators['hmaCrossover'] = $hmaEvents->hmaPriceCrossover($this->rates['simple'], $this->fastHma);
+
+        $this->decisionIndicators['stopLossPipValues'] = $trueRange->getStopLossPipValue($this->rates['full'], $this->trueRangeLength,
+            $this->exchange->pip, $this->stopLossTrueRangeMultiplier);
+
+        $this->stopLossPipAmount = round($this->decisionIndicators['stopLossPipValues']);
 
         if ($this->openPosition['side'] == 'long') {
             if ($this->decisionIndicators['hmaCrossover'] == 'crossedBelow') {
