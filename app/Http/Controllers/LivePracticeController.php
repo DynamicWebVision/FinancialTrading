@@ -684,6 +684,7 @@ class LivePracticeController extends Controller {
     }
 
     public function emaXAdxConfirmWithMarketIfTouched() {
+        //Back Test Group 206
         Log::info('emaXAdxConfirmWithMarketIfTouched: START LivePracticeController->emaXAdxConfirmWithMarketIfTouched');
         $this->utility->sleepUntilAtLeastFiveSeconds();
 
@@ -1044,7 +1045,7 @@ class LivePracticeController extends Controller {
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;
             $strategyLogger->method = 'hmaHour';
-            $strategyLogger->oanda_account_id = 1;
+            $strategyLogger->oanda_account_id = 13;
 
             $strategyLogger->newStrategyLog();
             $systemStrategy->setLogger($strategyLogger);
@@ -1058,7 +1059,7 @@ class LivePracticeController extends Controller {
 
             $systemStrategy->rateCount = 1000;
 
-            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+//            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
 
             $systemStrategy->rates = $systemStrategy->getRates('both', true);
 

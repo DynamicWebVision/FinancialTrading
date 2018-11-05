@@ -30,6 +30,9 @@ class StrategyController extends Controller {
 
         $newStrategy->save();
 
+        mkdir(env('APP_ROOT').'app/Strategy'.preg_replace("/[^A-Za-z0-9 ]/", '', $post['name']));
+        mkdir(env('APP_ROOT').'app/BackTest/BackTestToBeProcessed/Strategy'.preg_replace("/[^A-Za-z0-9 ]/", '', $post['name']));
+
         return $newStrategy;
     }
 }
