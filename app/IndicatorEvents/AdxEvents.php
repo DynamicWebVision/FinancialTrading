@@ -56,6 +56,4 @@ class AdxEvents {
             return false;
         }
     }
-
-
 }

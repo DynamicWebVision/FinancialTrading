@@ -204,7 +204,7 @@ abstract class Strategy  {
                 }
             }
             else {
-                $params['type'] = 'MARKET';
+                $params['type'] = 'LIMIT';
                 $this->limitOrderPrice = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->mid, $this->exchange->pip);
             }
 
@@ -503,7 +503,7 @@ abstract class Strategy  {
                 }
             }
             else {
-                $params['type'] = 'MARKET';
+                $params['type'] = 'LIMIT';
                 $this->limitOrderPrice = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->mid, $this->exchange->pip);
             }
 

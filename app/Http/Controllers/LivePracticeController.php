@@ -1062,6 +1062,7 @@ class LivePracticeController extends Controller {
 //            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
 
             $systemStrategy->rates = $systemStrategy->getRates('both', true);
+            $systemStrategy->setCurrentPrice();
 
             $systemStrategy->checkForNewPosition();
         }
