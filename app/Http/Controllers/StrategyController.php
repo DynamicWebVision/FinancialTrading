@@ -37,14 +37,17 @@ class StrategyController extends Controller {
         $fileHandler = new FileHandler();
         $fileHandler->filePath = env('APP_ROOT').'app/Http/Controllers/TestController.php';
 
+        $fileHandler->findLineOfTextInFile('END OF Backtest Declarations');
+        $fileHandler->addLineToLineGroup("use App\\BackTest\\BackTestToBeProcessed\\Strategy\\".$post['name']."\\".$post['name']."BackTestToBeProcess");
+
         $fileHandler->findLineOfTextInFile('END OF STRATEGY IFS');
 
         $fileHandler->addLineToLineGroup("elseif (\$server->current_back_test_strategy == '".$post['namespace']."') {");
-        $fileHandler->addLineToLineGroup("\$testabc = new \$post['name'](\$processId, \$server);", 1);
-        $fileHandler->addLineToLineGroup("\$testabc->callProcess();", 1);
+        $fileHandler->addLineToLineGroup("\$backTestStrategy = new ".$post['name']."(\$processId, \$server);", 1);
+        $fileHandler->addLineToLineGroup("\$backTestStrategy->callProcess();", 1);
         $fileHandler->addLineToLineGroup("}");
 
-        $fileHandler->addLinesBelowText('END OF STRATEGY IFS');
+        $fileHandler->addLinesAboveText('END OF STRATEGY IFS');
 
         return $newStrategy;
     }

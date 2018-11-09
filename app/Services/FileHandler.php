@@ -28,7 +28,7 @@ class FileHandler  {
     }
 
     public function addLine() {
-        $this->textToAdd .= '\n';
+        $this->textToAdd .= "\n";
     }
 
     public function addTab() {
@@ -42,6 +42,17 @@ class FileHandler  {
         }
     }
 
+    public function addSpace() {
+        $this->textToAdd .= ' ';
+    }
+
+    public function addSpaces($count) {
+        while ($count > 0) {
+            $this->addSpace();
+            $count = $count - 1;
+        }
+    }
+
     public function addLineToLineGroup($text, $tabCount = 0) {
         $this->linesToAdd[] = [
           'text'=>$text,
@@ -49,8 +60,29 @@ class FileHandler  {
         ];
     }
 
-    public function addLinesBelowText($text) {
+    public function createRawTextToAdd() {
+        foreach ($this->linesToAdd as $lineToAdd) {
+            $this->addLine();
+            $this->addSpaces($this->lineToWriteSpaces);
+            $this->addTabs($lineToAdd['tabCount']);
+            $this->textToAdd = $this->textToAdd.$lineToAdd['text']."\n";
+        }
+    }
+
+    public function addLinesAboveText($text) {
        $this->findLineOfTextInFile($text);
         $this->createRawTextToAdd();
+
+        $lineToEdit = $this->lineToWriteNumber - 1;
+        $lines = file( $this->filePath , FILE_IGNORE_NEW_LINES );
+        $lines[$lineToEdit] = $lines[$lineToEdit].$this->textToAdd;
+        file_put_contents( $this->filePath , implode( "\n", $lines ) );
+    }
+
+    public function writeToLine() {
+        $lineToEdit = $this->lineToWriteNumber - 1;
+        $lines = file( $this->filePath , FILE_IGNORE_NEW_LINES );
+        $lines[$lineToEdit] = $lines[$lineToEdit].$this->textToAdd;
+        file_put_contents( $this->filePath , implode( "\n", $lines ) );
     }
 }

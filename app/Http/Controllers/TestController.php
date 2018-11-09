@@ -20,6 +20,7 @@ use App\BackTest\BackTestToBeProcessed\Strategy\BollingerMomentum\BollingerMomen
 use App\BackTest\BackTestToBeProcessed\Strategy\Hma\HmaRev;
 use App\BackTest\BackTestToBeProcessed\Strategy\ThreeDucks\ThreeDucks;
 use App\BackTest\BackTestToBeProcessed\Strategy\PreviousPeriodPriceBreakout\PreviousPeriodPriceBreakout;
+//END OF Backtest Declarations
 use \Log;
 
 use App\Model\BackTest;
@@ -255,6 +256,14 @@ class AutomatedBackTestController extends Controller {
             $hmaReverseTest = new PreviousPeriodPriceBreakout($processId, $server);
             $hmaReverseTest->callProcess();
         }
+        elseif ($server->current_back_test_strategy == 'asdfasdfasdf') {
+
+            $testabc = new $post['name']($processId, $server);
+
+            $testabc->callProcess();
+
+        }
+
         //END OF STRATEGY IFS
     }
 }

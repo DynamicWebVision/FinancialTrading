@@ -205,7 +205,7 @@ abstract class Strategy  {
             }
             else {
                 $params['type'] = 'LIMIT';
-                $this->limitOrderPrice = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->mid, $this->exchange->pip);
+                $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->ask, $this->exchange->pip);
             }
 
             if (isset($this->trailingStopPipAmount)) {
@@ -504,7 +504,7 @@ abstract class Strategy  {
             }
             else {
                 $params['type'] = 'LIMIT';
-                $this->limitOrderPrice = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->mid, $this->exchange->pip);
+                $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->ask, $this->exchange->pip);
             }
 
             if (isset($this->trailingStopPipAmount)) {
