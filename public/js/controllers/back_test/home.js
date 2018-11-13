@@ -170,7 +170,12 @@
 
         function markStrategyReviewed() {
             $http.get('/back_test_group_reviewed/'+vm.backTestGroup.id).success(function(data){
+
+
+                var backTestGroupIndex = UtilityService.findIndexByKeyValue(vm.backTestGroups, 'id',vm.backTestGroup.id);
                 vm.backTestGroups[backTestGroupIndex]['reviewed'] = 1;
+
+                console.log(vm.backTestGroups[backTestGroupIndex]);
                 vm.backTestFactory.allUnReviewed = true;
                 markBackTestsEmpty();
 
@@ -192,6 +197,9 @@
             vm.backTestFactory.searchText = '';
             vm.backTestFactory.allUnReviewed = false;
             backTestGroupIndex = index;
+            console.log(backTestGroup);
+            console.log(backTestGroupIndex);
+            console.log(vm.backTestGroups[backTestGroupIndex]);
         }
 
         function loadStrategyNotes() {

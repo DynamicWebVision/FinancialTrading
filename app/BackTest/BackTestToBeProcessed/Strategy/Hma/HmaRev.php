@@ -15,15 +15,16 @@
  */
 
 use \DB;
-
+use \Log;
 use App\Model\Exchange;
 use \App\BackTest\TakeProfitStopLossTest;
 use \App\Services\StrategyLogger;
+
 use \App\Strategy\HullMovingAverage\HmaSwitchShortConfirmLongAdx;
 use \App\Strategy\HullMovingAverage\HmaSimple;
 use \App\Strategy\HullMovingAverage\HmaPriceCrossover;
 
-use \Log;
+
 
 class HmaRev extends \App\BackTest\BackTestToBeProcessed\Base
 {
@@ -57,7 +58,6 @@ class HmaRev extends \App\BackTest\BackTestToBeProcessed\Base
         /******************************
          * SET STRATEGY
          ******************************/
-        //Set Strategy
         if ($this->server->strategy_iteration == 'HMA_REV_SLOW_ADX') {
             $backTest->rateLevel = 'both';
 

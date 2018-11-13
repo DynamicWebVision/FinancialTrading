@@ -8,8 +8,16 @@ class FileHandler  {
 
     public $linesToAdd;
 
-    public function setFile($file) {
-        $this->fileHandler = fopen($file, 'w');
+    public function createFile() {
+        $this->fileHandler = fopen($this->filePath, 'w');
+        fclose($this->fileHandler);
+        shell_exec('sudo touch '.$this->filePath);
+        shell_exec('sudo chmod '.$this->filePath);
+    }
+
+    public function resetTextVariables() {
+        $this->textToAdd = '';
+        $this->linesToAdd = [];
     }
 
     public function findLineOfTextInFile($text) {
@@ -60,12 +68,19 @@ class FileHandler  {
         ];
     }
 
+    public function emptyLine() {
+        $this->linesToAdd[] = [
+          'text'=>'',
+          'tabCount'=>0
+        ];
+    }
+
     public function createRawTextToAdd() {
         foreach ($this->linesToAdd as $lineToAdd) {
             $this->addLine();
             $this->addSpaces($this->lineToWriteSpaces);
             $this->addTabs($lineToAdd['tabCount']);
-            $this->textToAdd = $this->textToAdd.$lineToAdd['text']."\n";
+            $this->textToAdd = $this->textToAdd.$lineToAdd['text'];
         }
     }
 
@@ -77,6 +92,14 @@ class FileHandler  {
         $lines = file( $this->filePath , FILE_IGNORE_NEW_LINES );
         $lines[$lineToEdit] = $lines[$lineToEdit].$this->textToAdd;
         file_put_contents( $this->filePath , implode( "\n", $lines ) );
+        $this->resetTextVariables();
+    }
+
+    public function writeToNewFile() {
+        $this->createRawTextToAdd();
+        shell_exec('sudo chmod -R 777 '.$this->filePath);
+        file_put_contents( $this->filePath , $this->textToAdd);
+        $this->resetTextVariables();
     }
 
     public function writeToLine() {

@@ -20,6 +20,7 @@ use App\BackTest\BackTestToBeProcessed\Strategy\BollingerMomentum\BollingerMomen
 use App\BackTest\BackTestToBeProcessed\Strategy\Hma\HmaRev;
 use App\BackTest\BackTestToBeProcessed\Strategy\ThreeDucks\ThreeDucks;
 use App\BackTest\BackTestToBeProcessed\Strategy\PreviousPeriodPriceBreakout\PreviousPeriodPriceBreakout;
+
 //END OF Backtest Declarations
 use \Log;
 
@@ -263,7 +264,26 @@ class AutomatedBackTestController extends Controller {
             $testabc->callProcess();
 
         }
+        elseif ($server->current_back_test_strategy == 'asdfasdf') {
 
+            $backTestStrategy = new TestABC12233($processId, $server);
+
+            $backTestStrategy->callProcess();
+
+        }
+
+        elseif ($server->current_back_test_strategy == 'basdfsadf') {
+
+            $backTestStrategy = new Test2342322($processId, $server);
+
+            $backTestStrategy->callProcess();
+
+        }
+
+        elseif ($server->current_back_test_strategy == 'aasdf') {
+            $backTestStrategy = new Test23asdfba($processId, $server);
+            $backTestStrategy->callProcess();
+        }
         //END OF STRATEGY IFS
     }
 }

@@ -128,6 +128,9 @@ app.factory('BackTest', function(UtilityService, $http, $q) {
             if (group.reviewed == 0 && group.stats_run == 1 && group.process_run == 1) {
                 return true;
             }
+            else {
+                return false;
+            }
         }
 
 

@@ -20,6 +20,41 @@ use App\BackTest\BackTestToBeProcessed\Strategy\BollingerMomentum\BollingerMomen
 use App\BackTest\BackTestToBeProcessed\Strategy\Hma\HmaRev;
 use App\BackTest\BackTestToBeProcessed\Strategy\ThreeDucks\ThreeDucks;
 use App\BackTest\BackTestToBeProcessed\Strategy\PreviousPeriodPriceBreakout\PreviousPeriodPriceBreakout;
+
+use App\BackTest\BackTestToBeProcessed\Strategy\TestRadsfs\TestRadsfsBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestBabyDog\TestBabyDogBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestBlondeGirl\TestBlondeGirlBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestBrunette\TestBrunetteBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestWeirdGuy\TestWeirdGuyBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestHairryDog\TestHairryDogBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestGreenButton\TestGreenButtonBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestBlueBar\TestBlueBarBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestSideNav\TestSideNavBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestNascar\TestNascarBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestOrangeBall\TestOrangeBallBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestAbcEight\TestAbcEightBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestAbcEE\TestAbcEEBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCowork\TestCoworkBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkWood\TestCoworkWoodBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkMouse\TestCoworkMouseBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkWindow\TestCoworkWindowBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TESTCoworkOutlet\TESTCoworkOutletBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkKey\TestCoworkKeyBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkChair\TestCoworkChairBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkLogitech\TestCoworkLogitechBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkeLogitech\TestCoworkeLogitechBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkBlue\TestCoworkBlueBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkBlue3\TestCoworkBlue3BackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkRestroom\TestCoworkRestroomBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkBladder\TestCoworkBladderBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkdBladder\TestCoworkdBladderBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkRoller\TestCoworkRollerBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCow22orkRoller\TestCow22orkRollerBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkMetal\TestCoworkMetalBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestBlackChaira\TestBlackChairaBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestNotAgain\TestNotAgainBackTestToBeProcess;
+//END OF Backtest Declarations
+
 use \Log;
 
 use App\Model\BackTest;
@@ -255,5 +290,134 @@ class AutomatedBackTestController extends Controller {
             $hmaReverseTest = new PreviousPeriodPriceBreakout($processId, $server);
             $hmaReverseTest->callProcess();
         }
+        elseif ($server->current_back_test_strategy == 'basdf') {
+            $backTestStrategy = new TestRadsfs($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_BABY_DOG') {
+            $backTestStrategy = new TestBabyDog($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_BLONDE_GIRL') {
+            $backTestStrategy = new TestBlondeGirl($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_BRUNETTE') {
+            $backTestStrategy = new TestBrunette($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_WEIRD_GUY') {
+            $backTestStrategy = new TestWeirdGuyBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_HAIRRY_DOG') {
+            $backTestStrategy = new TestHairryDogBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_GREEN_BUTTON') {
+            $backTestStrategy = new TestGreenButtonBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_BLUE_BAR') {
+            $backTestStrategy = new TestBlueBarBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_SIDE_NAV') {
+            $backTestStrategy = new TestSideNavBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_NASCAR') {
+            $backTestStrategy = new TestNascarBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_ORANGE_BALL') {
+            $backTestStrategy = new TestOrangeBallBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_ABC_EIGHT') {
+            $backTestStrategy = new TestAbcEightBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_ABC_EIGHT') {
+            $backTestStrategy = new TestAbcEEBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK') {
+            $backTestStrategy = new TestCoworkBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_WOOD') {
+            $backTestStrategy = new TestCoworkWoodBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_MOUSE') {
+            $backTestStrategy = new TestCoworkMouseBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_WINDOW') {
+            $backTestStrategy = new TestCoworkWindowBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_OUTLET') {
+            $backTestStrategy = new TESTCoworkOutletBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_KEy') {
+            $backTestStrategy = new TestCoworkKeyBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_CHAIR') {
+            $backTestStrategy = new TestCoworkChairBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_LOGITECH') {
+            $backTestStrategy = new TestCoworkLogitechBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORKE_LOGITECH') {
+            $backTestStrategy = new TestCoworkeLogitechBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_BLUE') {
+            $backTestStrategy = new TestCoworkBlueBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWOR3K_BLUE') {
+            $backTestStrategy = new TestCoworkBlue3BackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_RESTROOM') {
+            $backTestStrategy = new TestCoworkRestroomBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_BLADDER') {
+            $backTestStrategy = new TestCoworkBladderBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_CEEEOWORK_BLADDER') {
+            $backTestStrategy = new TestCoworkdBladderBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_ROLLER') {
+            $backTestStrategy = new TestCoworkRollerBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COEWORK_ROLLER') {
+            $backTestStrategy = new TestCow22orkRollerBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_COWORK_METAL') {
+            $backTestStrategy = new TestCoworkMetalBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_BLACK_CHAIR') {
+            $backTestStrategy = new TestBlackChairaBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_NOT_AGAIN') {
+            $backTestStrategy = new TestNotAgainBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        //END OF STRATEGY IFS
     }
 }
