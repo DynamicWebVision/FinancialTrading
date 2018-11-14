@@ -33,7 +33,7 @@ class LiveTradingController extends Controller {
     }
 
     public function hmaFifteenMinutes() {
-
+        //
         $this->utility->sleepUntilAtLeastFiveSeconds();
 
         $strategy = new HmaSimple('001-001-2369711-001', 'initialload');
@@ -52,7 +52,7 @@ class LiveTradingController extends Controller {
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;
             $strategyLogger->method = 'hmaFifteenMinutes';
-            $strategyLogger->oanda_account_id = 4;
+            $strategyLogger->oanda_account_id = 15;
 
             $strategyLogger->newStrategyLog();
             $systemStrategy->setLogger($strategyLogger);
