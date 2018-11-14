@@ -39,7 +39,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        if (env('APP_ENV') == 'live_practice') {
+        if (env('APP_ENV') == 'live_trading') {
+            $schedule->call('App\Http\Controllers\LiveTradingController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
+        }
+        elseif (env('APP_ENV') == 'live_practice') {
             //$schedule->call('App\Http\Controllers\LivePracticeController@twoLevelHmaDaily')->dailyAt('00:00');
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumAdx15MinutesTPSL')->cron($this->everyFifteenMinutesInterval);
