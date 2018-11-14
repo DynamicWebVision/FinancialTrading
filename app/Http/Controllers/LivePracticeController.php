@@ -688,8 +688,6 @@ class LivePracticeController extends Controller {
         Log::info('emaXAdxConfirmWithMarketIfTouched: START LivePracticeController->emaXAdxConfirmWithMarketIfTouched');
         $this->utility->sleepUntilAtLeastFiveSeconds();
 
-        $strategy = new Strategy();
-
         $strategy = new EmaXAdxConfirmWithMarketIfTouched('101-001-7608904-008', 'initialload');
 
         $marginAvailable = $strategy->getAvailableMargin();

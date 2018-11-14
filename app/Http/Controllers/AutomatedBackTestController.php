@@ -53,6 +53,7 @@ use App\BackTest\BackTestToBeProcessed\Strategy\TestCow22orkRoller\TestCow22orkR
 use App\BackTest\BackTestToBeProcessed\Strategy\TestCoworkMetal\TestCoworkMetalBackTestToBeProcess;
 use App\BackTest\BackTestToBeProcessed\Strategy\TestBlackChaira\TestBlackChairaBackTestToBeProcess;
 use App\BackTest\BackTestToBeProcessed\Strategy\TestNotAgain\TestNotAgainBackTestToBeProcess;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestIIIBBB\TestIIIBBBBackTestToBeProcess;
 //END OF Backtest Declarations
 
 use \Log;
@@ -416,6 +417,10 @@ class AutomatedBackTestController extends Controller {
         }
         elseif ($server->current_back_test_strategy == 'TEST_NOT_AGAIN') {
             $backTestStrategy = new TestNotAgainBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TEST_ABCeeDEFG') {
+            $backTestStrategy = new TestIIIBBBBackTestToBeProcessed($processId, $server);
             $backTestStrategy->callProcess();
         }
         //END OF STRATEGY IFS

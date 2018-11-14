@@ -11,8 +11,6 @@ class FileHandler  {
     public function createFile() {
         $this->fileHandler = fopen($this->filePath, 'w');
         fclose($this->fileHandler);
-        shell_exec('sudo touch '.$this->filePath);
-        shell_exec('sudo chmod '.$this->filePath);
     }
 
     public function resetTextVariables() {

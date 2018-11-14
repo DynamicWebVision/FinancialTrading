@@ -36,6 +36,8 @@
         vm.setBackTestGroup = setBackTestGroup;
         vm.loadStrategyNotes = loadStrategyNotes;
         vm.filterIterations = filterIterations;
+        vm.rollBackStatsConfirm = rollBackStatsConfirm;
+        vm.rollbackGroupStats = rollbackGroupStats;
 
         vm.pageProcessing = true;
 
@@ -73,7 +75,7 @@
                 return 'positive-green'
             }
             else {
-                return 'negative-green'
+                return 'negative-red'
             }
         }
 
@@ -141,6 +143,31 @@
 
         function rollbackGroup() {
             $http.delete('/back_test_group/'+vm.backTestGroup.id).success(function(data){
+                SweetAlert.swal({
+                        title: vm.backTestGroup.id+" - "+vm.backTestGroup.name+" has been rolled back",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#",
+                        confirmButtonText: "OK"
+                    });
+            });
+        }
+
+        function rollBackStatsConfirm() {
+            SweetAlert.swal({
+                    title: "Are you sure you want to roll back the stats for group, "+vm.backTestGroup.id+" - "+vm.backTestGroup.name+"?",
+                    type: "success",
+                    showCancelButton: true,
+                    confirmButtonColor: "#",
+                    confirmButtonText: "YES"
+                },
+                function () {
+                    rollbackGroupStats()
+                });
+        }
+
+        function rollbackGroupStats() {
+            $http.delete('/back_test_stats/roll_back_group/'+vm.backTestGroup.id).success(function(data){
                 SweetAlert.swal({
                         title: vm.backTestGroup.id+" - "+vm.backTestGroup.name+" has been rolled back",
                         type: "success",

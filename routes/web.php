@@ -53,6 +53,7 @@ Route::get('full_test_stats/{backTestId}', 'BackTestingController@fullTestStats'
 Route::get('high_low_analysis/{backTestId}', 'BackTestingController@highLowAnalysis');
 Route::get('back_test/gain_loss_analysis_low/{backtestId}', 'BackTestStatsController@gainLossAnalysisLow');
 Route::get('back_test/gain_loss_analysis_high/{backtestId}', 'BackTestStatsController@gainLossAnalysisHigh');
+Route::get('back_test_stats/roll_back_group/{backTestGroup}', 'BackTestStatsController@rollbackBackTestGroupStats');
 
 //Call Systems
 Route::get('/backtest/50_100_ema', 'BackTestingController@backTestFiftyOneHundred');
@@ -85,6 +86,8 @@ Route::get('manual_rollback_stats', 'BackTestingController@manualRollbackGroupSt
 Route::get('copy_back_test_process_to_other_exchanges/{processId}', 'BackTestManagementController@createBackTestGroupFromProcessIdToOtherExchanges');
 Route::get('back_test_group_from_iteration/{processId}', 'BackTestManagementController@backTestGroupFromIteration');
 Route::get('back_test_group_reviewed/{backTestGroupId}', 'BackTestManagementController@backTestGroupReviewed');
+
+
 
 /******************************
  * LIVE PRACTICE SYSTEMS
@@ -180,7 +183,8 @@ Route::get('strategy_logger/log_indicators/{logId}', 'StrategyLogController@getL
 Route::get('strategy_logger/log_history_subset/{pageNumber}/{account}/{exchange}/{dateTime}/{onlyEvents}', 'StrategyLogController@getLogsSubset');
 
 
-Route::resource('strategy', 'StrategyController');
+//Route::resource('strategy', 'StrategyController');
+Route::post('strategy', 'StrategyController@store');
 Route::get('strategy_systems/{strategyId}', 'StrategySystemController@strategySystems');
 Route::get('load_notes/{strategyId}', 'StrategyNotesController@loadNotes');
 Route::resource('strategy_system', 'StrategySystemController');

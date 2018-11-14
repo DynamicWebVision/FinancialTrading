@@ -115,6 +115,7 @@
 
                         <div class="pull-right">
                             <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="home.rollBackConfirm()">Roll Back Group</button>
+                            <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="home.rollBackStatsConfirm()">Roll Back Stats</button>
                             <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="home.openCreateStrategyNote()">Create Note</button>
                             <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="home.markStrategyReviewed()">Mark Reviewed</button>
                             <button class = 'btn-success btn btn-lg pull-right m-r-5' ng-click="home.loadStrategyNotes()">View Notes</button>
@@ -204,7 +205,7 @@
                                             <span class="positive-green">
                                                 {{backTest.total_gain_transactions}}
                                             </span>-
-                                            <span class="negative-green">
+                                            <span class="negative-red">
                                                 {{backTest.total_loss_transactions}}
                                             </span>
                                         </td>
@@ -215,7 +216,7 @@
                                             <span class="positive-green">
                                                 {{backTest.median_gain}}
                                             </span>
-                                            <span class="negative-green">
+                                            <span class="negative-red">
                                                 {{backTest.median_loss}}
                                             </span>
                                         </td>
@@ -226,7 +227,7 @@
                                             <span class="positive-green">
                                                 {{backTest.mean_gain}}
                                             </span>
-                                            <span class="negative-green">
+                                            <span class="negative-red">
                                                 {{backTest.mean_loss}}
                                             </span>
                                         </td>
@@ -247,7 +248,7 @@
                                         <td>Month Ratio</td>
                                         <td>{{home.getRatio(backTest.positive_months, backTest.negative_months)}}%</td>
 
-                                        <td class="negative-green" colspan="2">Losses</td>
+                                        <td class="negative-red" colspan="2">Losses</td>
                                     </tr>
                                     <tr>
                                         <td></td>
@@ -255,11 +256,11 @@
                                             <span class="positive-green">
                                                 {{backTest.positive_months}}
                                             </span> -
-                                            <span class="negative-green">
+                                            <span class="negative-red">
                                                 {{backTest.negative_months}}
                                             </span>
 
-                                            <td>
+                                            <td class="negative-red">
                                                 Median
                                             </td>
                                             <td>
@@ -269,25 +270,25 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2"></td>
-                                        <td>
+                                        <td class="negative-red">
                                             Mean
                                         </td>
-                                        <td>
+                                        <td class="negative-red">
                                             {{backTest.mean_month_losses}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">Gain Loss Together</td>
+                                        <td class="purple-text" colspan="2">Gain Loss Together</td>
                                         <td class="positive-green" colspan="2">Gains</td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td class="purple-text">
                                             Median
                                         </td>
-                                        <td>
+                                        <td >
                                             {{backTest.median_month_pip_gl}}
                                         </td>
-                                        <td>
+                                        <td class="positive-green">
                                             Median
                                         </td>
                                         <td>
@@ -295,13 +296,13 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td class="purple-text">
                                             Mean
                                         </td>
                                         <td>
                                             {{backTest.mean_month_pip_gl}}
                                         </td>
-                                        <td>
+                                        <td class="positive-green">
                                             Mean
                                         </td>
                                         <td>
@@ -355,7 +356,7 @@
                                     <tbody>
                                     <tr>
                                         <td class="positive-green" colspan="2">Gains</td>
-                                        <td class="negative-green" colspan="2">Losses</td>
+                                        <td class="negative-red" colspan="2">Losses</td>
                                     </tr>
                                     <tr>
                                         <td>

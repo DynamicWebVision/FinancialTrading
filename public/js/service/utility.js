@@ -104,7 +104,7 @@ app.service('UtilityService', function($http, $q) {
             return "positive-green";
         }
         else if (number < 0) {
-            return "negative-green";
+            return "negative-red";
         }
         else {
             return "";

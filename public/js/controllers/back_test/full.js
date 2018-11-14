@@ -59,7 +59,7 @@
                 return 'positive-green'
             }
             else {
-                return 'negative-green'
+                return 'negative-red'
             }
         }
 

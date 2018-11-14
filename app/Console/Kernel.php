@@ -69,23 +69,26 @@ class Kernel extends ConsoleKernel
 //            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('17:00');
 //            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('21:00');
 
-            $schedule->call('App\Http\Controllers\TransactionController@getOandaTransactions')->cron($this->everyFifteenMinutesInterval);
-
-
             //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyBeforeHour')->cron($this->everyHourEarlyInterval);
-            $schedule->call('App\Http\Controllers\AccountsController@createNewAccounts')->sundays();
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenEarly')->cron($this->everyFifteenMinuteEarlyInterval);
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumHourly')->hourly();
-
-            $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
         }
         elseif (env('APP_ENV') == 'historical_data') {
             $schedule->call('App\Http\Controllers\HistoricalDataController@initialLoad')->cron($this->everyFifteenMinutesInterval);
         }
         elseif (env('APP_ENV') == 'backtest') {
             $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
+        }
+        elseif (env('APP_ENV') == 'maintenance') {
+            $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->cron($this->everyFifteenMinutesInterval);
+            $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
+
+            $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->daily();
+            $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->daily();
+
+            $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
         }
 
     }

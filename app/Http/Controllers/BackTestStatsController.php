@@ -326,13 +326,13 @@ class BackTestStatsController extends Controller {
         $newBackTestStats->mean_month_gains =  round($indicators->average($positiveMonths));
 
         $newBackTestStats->median_month_losses =  round($indicators->median($negativeMonths));
-        $newBackTestStats->mean_month_losses =  round($indicators->median($negativeMonths));
+        $newBackTestStats->mean_month_losses =  round($indicators->average($negativeMonths));
 
         $newBackTestStats->median_max_gain =  round($indicators->median($maxGains));
         $newBackTestStats->mean_max_gain =  round($indicators->average($maxGains));
 
         $newBackTestStats->median_max_loss =  round($indicators->median($maxLosses));
-        $newBackTestStats->mean_max_loss =  round($indicators->median($maxLosses));
+        $newBackTestStats->mean_max_loss =  round($indicators->average($maxLosses));
 
         $newBackTestStats->total_kelly_criterion_gain_loss =  $totalGainLoss;
         $newBackTestStats->month_gain_loss_probability_sd =  $gainProbabilityStandardDeviation;
@@ -784,6 +784,7 @@ class BackTestStatsController extends Controller {
 
             $backTestToBeProcessed->stats_start = 0;
             $backTestToBeProcessed->stats_finish = 0;
+            $backTestToBeProcessed->stats_exception = 0;
 
             $backTestToBeProcessed->save();
 

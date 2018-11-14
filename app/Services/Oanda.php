@@ -24,8 +24,7 @@ class Oanda  {
     public $runId;
 
     public $positionAmount;
-    //const ROOT_URL = 'https://api-fxpractice.oanda.com/v3/';
-    const ROOT_URL = 'https://api-fxpractice.oanda.com/v1/';
+
 
     public function __construct() {
         $this->curl = curl_init();

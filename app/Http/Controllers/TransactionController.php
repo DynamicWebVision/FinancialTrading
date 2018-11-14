@@ -12,6 +12,9 @@ use App\Broker\OandaV20;
 
 class TransactionController extends Controller {
 
+    public $environment = 'practice';
+    public $liveTrading = 0;
+
     public function getOandaTransactions($account = false) {
         ini_set('memory_limit', '-1');
 
@@ -22,7 +25,7 @@ class TransactionController extends Controller {
             $lastProcessedId = $account->last_order_id;
         }
         else {
-            $nextAccount = OandaAccounts::orderBy('last_transaction_pull')
+            $nextAccount = OandaAccounts::where('live_trading', '=', $this->liveTrading)->orderBy('last_transaction_pull')
                 ->take(1)
                 ->get(['oanda_id', 'id']);
 
@@ -31,7 +34,7 @@ class TransactionController extends Controller {
             $lastProcessedId = $nextAccount[0]->last_order_id;
         }
 
-        $broker = new OandaV20();
+        $broker = new OandaV20($this->environment);
 
         $runId = uniqid();
 
@@ -127,6 +130,18 @@ class TransactionController extends Controller {
         $accountUpdate->save();
 
         Log::info('Get Transactions FINISH for Account '.$id.' - '.$runId);
+    }
+
+    public function saveLiveTransactions() {
+        $this->environment = 'practice';
+        $this->liveTrading = 0;
+        $this->getOandaTransactions();
+    }
+
+    public function savePracticeTransactions() {
+        $this->environment = 'live';
+        $this->liveTrading = 1;
+        $this->getOandaTransactions();
     }
 
 //    public function getUnsavedTransactions() {

@@ -12,8 +12,12 @@ use App\Broker\OandaV20;
 
 class AccountsController extends Controller {
 
+    public $accountLive;
+    public $environment;
+
     public function createNewAccounts() {
-        $oanda = new OandaV20();
+
+        $oanda = new OandaV20($this->environment);
         $accounts = $oanda->allAccounts();
 
         foreach ($accounts as $account) {
@@ -25,7 +29,21 @@ class AccountsController extends Controller {
 
             $savedAccount->balance = round($account->balance);
 
+            $savedAccount->live_trading = $this->accountLive;
+
             $savedAccount->save();
         }
+    }
+
+    public function createNewLiveAccounts() {
+        $this->accountLive = 1;
+        $this->environment = 'live';
+        $this->createNewAccounts();
+    }
+
+    public function createNewPracticeAccounts() {
+        $this->accountLive = 0;
+        $this->environment = 'practice';
+        $this->createNewAccounts();
     }
 }

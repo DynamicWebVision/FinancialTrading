@@ -100,7 +100,7 @@
                                             <span class="positive-green">
                                                 {{full.info.total_gain_transactions}}
                                             </span>-
-                                            <span class="negative-green">
+                                            <span class="negative-red">
                                                 {{full.info.total_loss_transactions}}
                                             </span>
                                         </td>
@@ -111,7 +111,7 @@
                                             <span class="positive-green">
                                                 {{full.info.median_gain}}
                                             </span>
-                                            <span class="negative-green">
+                                            <span class="negative-red">
                                                 {{full.info.median_loss}}
                                             </span>
                                         </td>
@@ -122,7 +122,7 @@
                                             <span class="positive-green">
                                                 {{full.info.mean_gain}}
                                             </span>
-                                            <span class="negative-green">
+                                            <span class="negative-red">
                                                 {{full.info.mean_loss}}
                                             </span>
                                         </td>
@@ -143,7 +143,7 @@
                                         <td>Month Ratio</td>
                                         <td>{{full.getRatio(full.info.positive_months, full.info.negative_months)}}%</td>
 
-                                        <td class="negative-green" colspan="2">Losses</td>
+                                        <td class="negative-red" colspan="2">Losses</td>
                                     </tr>
                                     <tr>
                                         <td></td>
@@ -151,25 +151,25 @@
                                             <span class="positive-green">
                                                 {{full.info.positive_months}}
                                             </span> -
-                                            <span class="negative-green">
+                                            <span class="negative-red">
                                                 {{full.info.negative_months}}
                                             </span>
 
-                                        <td>
+                                        <td class="negative-red">
                                             Median
                                         </td>
-                                        <td>
+                                        <td class="negative-red">
                                             {{full.info.mean_month_losses}}
                                         </td>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"></td>
-                                        <td>
+                                        <td class="negative-red">
                                             Mean
                                         </td>
                                         <td>
-                                            {{full.info.mean_month_pip_gl}}
+                                            {{full.info.mean_month_losses}}
                                         </td>
                                     </tr>
                                     <tr>
@@ -177,7 +177,7 @@
                                         <td class="positive-green" colspan="2">Gains</td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td class="purple-text">
                                             Median
                                         </td>
                                         <td>
@@ -186,18 +186,18 @@
                                         <td>
                                             Median
                                         </td>
-                                        <td>
+                                        <td class="positive-green">
                                             {{full.info.median_month_gains}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td class="purple-text">
                                             Mean
                                         </td>
                                         <td>
                                             {{full.info.mean_month_pip_gl}}
                                         </td>
-                                        <td>
+                                        <td class="positive-green">
                                             Mean
                                         </td>
                                         <td>

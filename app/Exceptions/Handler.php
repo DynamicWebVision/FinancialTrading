@@ -37,9 +37,9 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if (env('TEXT_ERROR_ALERT') == 'Y') {
-            //$this->sendTwilioErrorAlert($exception);
-        }
+//        if (env('APP_ENV') == 'LIVE_TRADING') {
+//            $this->sendTwilioErrorAlert($exception);
+//        }
 
         if (env('EMAIL_ERROR_ALERT') == 'Y') {
             //$this->sendTwilioErrorAlert($exception);

@@ -26,11 +26,32 @@ class OandaV20 extends \App\Broker\Base  {
 
     public $strategyLogger;
 
-    public function __construct() {
-        $this->curl = curl_init();
-        curl_setopt($this->curl, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.env('OANDA_AUTHORIZATION_TOKEN'),'Content-Type: application/json', 'Accept-Datetime-Format: UNIX']);
-        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
+    public $oandaApiUrl;
+
+    public function __construct($environment = false) {
+        if (!$environment) {
+            $this->curl = curl_init();
+            curl_setopt($this->curl, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.env('OANDA_AUTHORIZATION_TOKEN'),'Content-Type: application/json', 'Accept-Datetime-Format: UNIX']);
+            curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
+            $this->oandaApiUrl = env('OANDA_API_URL');
+        }
+        else {
+            if ($environment == 'live') {
+                $this->curl = curl_init();
+                curl_setopt($this->curl, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.env('OANDA_LIVE_AUTHORIZATION_TOKEN'),'Content-Type: application/json', 'Accept-Datetime-Format: UNIX']);
+                curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
+                $this->oandaApiUrl = env('OANDA_LIVE_API_URL');
+            }
+            else {
+                $this->curl = curl_init();
+                curl_setopt($this->curl, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.env('OANDA_PRACTICE_AUTHORIZATION_TOKEN'),'Content-Type: application/json', 'Accept-Datetime-Format: UNIX']);
+                curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
+                $this->oandaApiUrl = env('OANDA_PRACTICE_API_URL');
+            }
+        }
     }
 
     public function getRates() {
@@ -42,7 +63,7 @@ class OandaV20 extends \App\Broker\Base  {
             $this->getVariables['from'] = $this->startDate;
         }
 
-        $this->apiUrl = env('OANDA_API_URL')."instruments/".$this->exchange."/candles";
+        $this->apiUrl = $this->oandaApiUrl."instruments/".$this->exchange."/candles";
 
         $response = $this->apiGetRequest();
 
@@ -199,7 +220,7 @@ class OandaV20 extends \App\Broker\Base  {
             $postStructure->order->trailingStopLossOnFill = $this->trailingStop;
         }
 
-        $this->apiUrl = env('OANDA_API_URL').'accounts/'.$this->accountId.'/orders';
+        $this->apiUrl = $this->oandaApiUrl.'accounts/'.$this->accountId.'/orders';
 
         $this->strategyLogger->logApiRequestStart($this->apiUrl, $postStructure, 'new_order');
 
@@ -213,7 +234,7 @@ class OandaV20 extends \App\Broker\Base  {
     public function currentPrice() {
         $this->getVariables['instruments'] = $this->exchange;
 
-        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/pricing";
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/pricing";
 
         $response = $this->apiGetRequest();
 
@@ -230,7 +251,7 @@ class OandaV20 extends \App\Broker\Base  {
     public function checkOpenPosition() {
         $this->strategyLogger->logApiRequestStart($this->apiUrl, '', 'check_position');
 
-        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/positions/".$this->exchange;
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/positions/".$this->exchange;
         $response = $this->apiGetRequest();
 
         $this->strategyLogger->logApiRequestResponse($response);
@@ -251,7 +272,7 @@ class OandaV20 extends \App\Broker\Base  {
                 foreach ($response->position->long->tradeIDs as $tradeId) {
                     $openPosition['tradeId'] = $tradeId;
 
-                    $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/trades/".$tradeId;
+                    $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/trades/".$tradeId;
                     $tradeResponse = $this->apiGetRequest();
 
                     //Handle Stop Loss
@@ -271,7 +292,7 @@ class OandaV20 extends \App\Broker\Base  {
                 foreach ($response->position->short->tradeIDs as $tradeId) {
                     $openPosition['tradeId'] = $tradeId;
 
-                    $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/trades/".$tradeId;
+                    $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/trades/".$tradeId;
                     $tradeResponse = $this->apiGetRequest();
 
                     //Handle Stop Loss
@@ -291,14 +312,14 @@ class OandaV20 extends \App\Broker\Base  {
 
 
 //    public function addTrailingStop() {
-//        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/openPositions";
+//        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/openPositions";
 //        $response = $this->apiGetRequest();
 //        return sizeof($response->positions);
 //    }
 
 
     public function checkTotalOpenPositions() {
-        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/openPositions";
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/openPositions";
         $response = $this->apiGetRequest();
         return sizeof($response->positions);
     }
@@ -308,7 +329,7 @@ class OandaV20 extends \App\Broker\Base  {
             $this->getVariables['pageSize'] = 1000;
         }
 
-        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/transactions";
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/transactions";
 
         $response =  $this->apiGetRequest();
 
@@ -319,7 +340,7 @@ class OandaV20 extends \App\Broker\Base  {
     }
 
     public function accountInfo() {
-        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId;
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId;
         $response = $this->apiGetRequest();
         return $response->account;
     }
@@ -345,7 +366,7 @@ class OandaV20 extends \App\Broker\Base  {
     }
 
     public function modifyTrade($tradeId, $fields) {
-        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/trades/".$tradeId."/orders";
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/trades/".$tradeId."/orders";
 
         $this->strategyLogger->logApiRequestStart($this->apiUrl, $fields, 'modify_trade');
 
@@ -367,7 +388,7 @@ class OandaV20 extends \App\Broker\Base  {
             else {
                 $data->shortUnits = 'ALL';
             }
-            $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/positions/".$this->exchange."/close";
+            $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/positions/".$this->exchange."/close";
 
             $this->strategyLogger->logApiRequestStart($this->apiUrl, $data, 'close_position');
             $response = $this->apiPatchRequest($data);
@@ -377,7 +398,7 @@ class OandaV20 extends \App\Broker\Base  {
 
     public function getTransactionsFrom($date) {
         $this->getVariables['from'] = 1523010000;
-        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/transactions";
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/transactions";
 
         $response = $this->apiGetRequest();
 
@@ -396,7 +417,7 @@ class OandaV20 extends \App\Broker\Base  {
     public function getTransactionsSince($minId) {
         $this->getVariables['id'] = $minId;
 
-        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/transactions/sinceid";
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/transactions/sinceid";
         $response = $this->apiGetRequest();
 
         if (isset($response->transactions)) {
@@ -409,14 +430,14 @@ class OandaV20 extends \App\Broker\Base  {
     }
 
     public function getSpecificTransaction($id) {
-        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/transactions/".$id;
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/transactions/".$id;
         $response = $this->apiGetRequest();
     }
 
     public function getTransactionHistory() {
         ini_set('memory_limit', '-1');
 
-        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/transactions";
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/transactions";
         $response = $this->apiGetRequest();
 
         $pages = $response->pages;
@@ -432,7 +453,7 @@ class OandaV20 extends \App\Broker\Base  {
     }
 
     public function price() {
-        $this->apiUrl = env('OANDA_API_URL')."accounts/".$this->accountId."/pricing";
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/pricing";
 
         $this->getVariables['instruments'] = $this->exchange;
 
@@ -441,14 +462,14 @@ class OandaV20 extends \App\Broker\Base  {
     }
 
     public function allAccounts() {
-        $this->apiUrl = env('OANDA_API_URL')."accounts";
+        $this->apiUrl = $this->oandaApiUrl."accounts";
 
         $accounts = [];
 
         $response = $this->apiGetRequest();
 
         foreach ($response->accounts as $account) {
-            $this->apiUrl = env('OANDA_API_URL')."accounts/".$account->id."/summary";
+            $this->apiUrl = $this->oandaApiUrl."accounts/".$account->id."/summary";
 
             $accountResponse = $this->apiGetRequest();
             $accounts[] = $accountResponse->account;
