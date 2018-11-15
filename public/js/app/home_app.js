@@ -73,4 +73,19 @@ app.config(function($routeProvider) {
             controller : "StrategySystemCreateController",
             controllerAs: 'ssc'
         })
+        .when("/indicator_management", {
+            templateUrl : "js/modules/indicators/indicators-management.html",
+            controller : "IndicatorsManagementController",
+            controllerAs: 'im'
+        })
+        .when("/indicator_create", {
+            templateUrl : "js/modules/indicator-create/indicator-create.html",
+            controller : "IndicatorCreateController",
+            controllerAs: 'ic'
+        })
+        .when("/indicator_event_create", {
+            templateUrl : "js/modules/indicator-event-create/indicator-event-create.html",
+            controller : "IndicatorEventCreateController",
+            controllerAs: 'iec'
+        })
 });

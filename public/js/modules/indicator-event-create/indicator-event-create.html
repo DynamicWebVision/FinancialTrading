@@ -1,0 +1,95 @@
+<div class="panel panel-primary" ng-class="iec.utility.fiftyOpacity(iec.processing)">
+    <div class="panel-heading">
+        <h3 class="panel-title">Indicator Event Create</h3>
+    </div>
+    <div class="panel-body">
+        <form name="iec.create_form" class="form-horizontal" novalidate ng-submit="iec.create()">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Name</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-med form-control m-b-5" name="name" placeholder="Indicator Event"
+                           ng-required="true" ng-fade
+                           ng-model="iec.indicatorEvent.newIndicatorEvent.name">
+
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="iec.create_form.name.$error.required
+                                     && (iec.create_form.name.$faded || iec.submit)"
+                         role="alert">
+                        Name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Description</label>
+                <div class="col-md-9">
+                    <textarea class="form-control" rows="4" ng-required="true" ng-fade
+                              name="deicription" ng-model="iec.indicatorEvent.newIndicatorEvent.description"></textarea>
+
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="iec.create_form.deicription.$error.required
+                                     && (iec.create_form.deicription.$faded || iec.submit)"
+                         role="alert">
+                        Description is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Variable Declarations</label>
+                <div class="col-md-9">
+                    <textarea class="form-control" rows="4" ng-required="true" ng-fade
+                              name="variable_declarations" ng-model="iec.indicatorEvent.newIndicatorEvent.variable_declarations"></textarea>
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="iec.create_form.namespace.$error.required
+                                     && (iec.create_form.namespace.$faded || iec.submit)"
+                         role="alert">
+                        Variable Declarations is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Method Call</label>
+                <div class="col-md-9">
+                    <textarea class="form-control" rows="4" ng-required="true" ng-fade
+                              name="method_call" ng-model="iec.indicatorEvent.newIndicatorEvent.method_call"></textarea>
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="iec.create_form.namespace.$error.required
+                                     && (iec.create_form.namespace.$faded || iec.submit)"
+                         role="alert">
+                        Method Call is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Condition A</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-x-large form-control m-b-5" name="opposing_condition_a"
+                           ng-fade
+                           ng-model="iec.indicatorEvent.newIndicatorEvent.opposing_condition_a">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Condition B</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-x-large form-control m-b-5" name="opposing_condition_b"
+                           ng-fade
+                           ng-model="iec.indicatorEvent.newIndicatorEvent.opposing_condition_b">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div ng-show="iec.processing" class="form-loader">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+            <div class="submit-contain pull-right">
+                <button class = 'btn-success btn'>Submit</button>
+            </div>
+
+            {{cbg.create_form.$error}}
+        </form>
+    </div><!-- panel-body -->
+</div>

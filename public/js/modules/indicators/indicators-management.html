@@ -1,0 +1,120 @@
+<div class="row">
+    <div class="panel panel-primary" ng-class="im.utility.fiftyOpacity(im.processing)">
+        <div class="panel-heading">
+            <h3 class="panel-title">Indicators</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Search</label>
+                            <div class="col-md-9">
+                                <input type="text" class="input-med form-control m-b-5" name="name" placeholder="Indicator Name"
+                                       ng-model="im.indicator.searchText">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="submit-contain pull-right">
+                            <button class = 'btn-success btn' ng-click="im.createIndicator()">Create Indicator</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="im.indicator.searchText.length == 0 && im.indicator.currentSet">
+    <div class="panel panel-primary" ng-class="im.utility.fiftyOpacity(im.processing)">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{im.indicator.currentIndicator.id}} - {{im.indicator.currentIndicator.name}}</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="col-md-8">
+                        <div class="row" ng-repeat="note in im.indicatorNote.notes | filter:im.indicatorNote.filterNotes">
+                            <div class="col-md-12" >
+                                <h3 class="text-danger">{{note.title}}
+                                    <small class="text-muted">{{note.created_at}}</small>
+                                </h3>
+                                <p class="m-b-30">{{note.note}}</p>
+                                <div class="pull-right"><span class="blue-text">{{note.method}}</span> - <span class="green-text">{{note.frequency_code}}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Indicator Event</label>
+                                <div class="col-md-9">
+                                    <select name="indicator_event" class="form-control input-large margin-top-five"
+                                            ng-model="im.indicatorNote.indicatorEventId" ng-fade
+                                            ng-options="indicatorEvent.id as indicatorEvent.name for indicatorEvent in im.indicatorEvent.indicatorEvents">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Frequency</label>
+                                <div class="col-md-9">
+                                    <select name="indicator_event" class="form-control input-large margin-top-five"
+                                            ng-model="im.indicatorNote.currentFrequencyId" ng-fade
+                                            ng-options="frequency.id as frequency.frequency for frequency in im.indicatorNote.frequencies">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn' ng-click="im.createIndicatorEvent()">Create Indicator Event</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="im.indicator.searchText.length > 0">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Strategies</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover content-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>BT Variable</th>
+                            <th>Namespace</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="indicator in im.indicator.indicators | filter:im.indicator.search"
+                                ng-click="im.setIndicator(indicator)">
+                                <td>{{indicator.id}}</td>
+                                <td>{{indicator.name}}</td>
+                                <td>{{indicator.created_at}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

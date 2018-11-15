@@ -1,0 +1,82 @@
+<div class="panel panel-primary" ng-class="ic.utility.fiftyOpacity(ic.processing)">
+    <div class="panel-heading">
+        <h3 class="panel-title">Indicator Create</h3>
+    </div>
+    <div class="panel-body">
+        <form name="ic.create_form" class="form-horizontal" novalidate ng-submit="ic.create()">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Name</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-med form-control m-b-5" name="name" placeholder="Group Name"
+                           ng-required="true" ng-fade
+                           ng-model="ic.indicator.newIndicator.name">
+
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="ic.create_form.name.$error.required
+                                     && (ic.create_form.name.$faded || ic.submit)"
+                         role="alert">
+                        Name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Description</label>
+                <div class="col-md-9">
+                    <textarea class="form-control" rows="4" ng-required="true" ng-fade
+                              name="deicription" ng-model="ic.indicator.newIndicator.description"></textarea>
+
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="ic.create_form.deicription.$error.required
+                                     && (ic.create_form.deicription.$faded || ic.submit)"
+                         role="alert">
+                        Description is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Full Class Namespace</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-med form-control m-b-5" name="class"
+                           ng-required="true" ng-fade
+                           ng-model="ic.indicator.newIndicator.class">
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="ic.create_form.namespace.$error.required
+                                     && (ic.create_form.namespace.$faded || ic.submit)"
+                         role="alert">
+                        Namespace is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Class Variable Name</label>
+                <div class="col-md-9">
+                    <input type="text" class="input-med form-control m-b-5" name="class_variable_name"
+                           ng-required="true" ng-fade
+                           ng-model="ic.indicator.newIndicator.class_variable_name">
+                    <div class="alert alert-danger ng-hide alert-reg-position"
+                         ng-show="ic.create_form.class_variable_name.$error.required
+                                     && (ic.create_form.class_variable_name.$faded || ic.submit)"
+                         role="alert">
+                        Class Variable Name is required.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div ng-show="ic.processing" class="form-loader">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+            <div class="submit-contain pull-right">
+                <button class = 'btn-success btn'>Submit</button>
+            </div>
+
+            {{cbg.create_form.$error}}
+        </form>
+    </div><!-- panel-body -->
+</div>
+

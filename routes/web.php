@@ -184,7 +184,9 @@ Route::get('strategy_logger/log_history_subset/{pageNumber}/{account}/{exchange}
 
 
 //Route::resource('strategy', 'StrategyController');
-Route::post('strategy', 'StrategyController@store');
+Route::resource('indicator', 'IndicatorsController');
+Route::resource('indicator_event', 'IndicatorsEventsController');
+Route::resource('strategy', 'StrategyController');
 Route::get('strategy_systems/{strategyId}', 'StrategySystemController@strategySystems');
 Route::get('load_notes/{strategyId}', 'StrategyNotesController@loadNotes');
 Route::resource('strategy_system', 'StrategySystemController');

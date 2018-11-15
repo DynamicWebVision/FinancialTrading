@@ -22,6 +22,8 @@
     <script src="/js/factory/lookup.js"></script>
     <script src="/js/factory/back_test.js"></script>omeap
     <script src="/js/factory/strategy.js"></script>
+    <script src="/js/factory/indicator.js"></script>
+    <script src="/js/factory/indicator_event.js"></script>
     <script src="/js/factory/strategy_system.js"></script>
     <script src="/js/factory/strategy_note.js"></script>
     <script src="/js/factory/transactions.js"></script>
@@ -45,8 +47,11 @@
     <script type="text/javascript" src="js/modules/historical_rates/run-historical-rates/run-historical-rates.js"></script>
     <script type="text/javascript" src="js/modules/strategy-log/strategy-log.js"></script>
     <script type="text/javascript" src="js/modules/strategy-create/strategy-create.js"></script>
+    <script type="text/javascript" src="js/modules/indicator-create/indicator-create.js"></script>
+    <script type="text/javascript" src="js/modules/indicator-event-create/indicator-event-create.js"></script>
     <script type="text/javascript" src="js/modules/strategy-management/strategy-management.js"></script>
     <script type="text/javascript" src="js/modules/strategy-system-create/strategy-system-create.js"></script>
+    <script type="text/javascript" src="js/modules/indicators/indicators-management.js"></script>
 @stop
 
 @section('side_nav')
@@ -92,6 +97,12 @@
                 <a href="#strategy_management" class="waves-effect">
                     <i class="fas fa-align"></i>
                     <span> Strategy Management </span> <span class="pull-right"></span>
+                </a>
+            </li>
+            <li>
+                <a href="#iterations_management" class="waves-effect">
+                    <i class="fas fa-align"></i>
+                    <span> Iterations </span> <span class="pull-right"></span>
                 </a>
             </li>
         </ul>
