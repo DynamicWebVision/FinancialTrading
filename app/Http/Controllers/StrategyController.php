@@ -65,7 +65,7 @@ class StrategyController extends Controller {
 
         $fileHandler->addLineToLineGroup('/**********************');
         $fileHandler->addLineToLineGroup($strategyFileName.' Backtest Variable Definitions');
-        $fileHandler->addLineToLineGroup('Created at: '.date("m/d/y", time()));
+        $fileHandler->addLineToLineGroup('Created at: '.date("m/d/y", time()).'by Brian O\'Neill');
         $fileHandler->addLineToLineGroup('***********************/');
         $fileHandler->emptyLine();
 

@@ -57,7 +57,6 @@ class Kernel extends ConsoleKernel
 
             //
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('22:01');
-            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakoutCheck')->hourly();
 
             //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenAfter')->cron($this->everyFifteenMinutesInterval);
 

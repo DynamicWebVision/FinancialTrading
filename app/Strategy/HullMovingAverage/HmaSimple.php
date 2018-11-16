@@ -1,7 +1,6 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: diego.rodriguez
  * Date: 8/31/17
  * Time: 5:11 PM
  * Description: This is a basic strategy that uses an EMA break through with a longer (100 EMA to start) and short EMA (50 to start).

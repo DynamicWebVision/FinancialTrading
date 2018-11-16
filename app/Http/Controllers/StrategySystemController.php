@@ -5,7 +5,8 @@ use \Log;
 use Request;
 
 use \App\Model\StrategySystem;
-
+use \App\Model\Strategy;
+use \App\Services\FileHandler;
 
 class StrategySystemController extends Controller {
 
@@ -30,6 +31,31 @@ class StrategySystemController extends Controller {
         $newStrategySystem->description = $post['description'];
 
         $newStrategySystem->save();
+
+        $strategy = Strategy::find($post['strategy_id']);
+
+        $fileHandler = new FileHandler();
+        $fileHandler->filePath = env('APP_ROOT').'app/Http/Controllers/AutomatedBackTestController.php';
+
+        $fileHandler->filePath = env('APP_ROOT').'app/Strategy/'.$strategy->name.'/'.$post['method'].'.php';
+
+        $fileHandler->createFile();
+
+        $fileHandler->addLineToLineGroup('<?php');
+        $fileHandler->emptyLine();
+
+        $fileHandler->addLineToLineGroup('/**********************');
+        $fileHandler->addLineToLineGroup($post['name'].' Strategy System under '.$strategy->name.' Strategy');
+        $fileHandler->addLineToLineGroup('Created at: '.date("m/d/y", time()).'by Brian O\'Neill');
+        $fileHandler->addLineToLineGroup('Description: '.$post['description']);
+        $fileHandler->emptyLine();
+
+        $fileHandler->addLineToLineGroup('namespace App\Strategy\\'.$strategy->name.';');
+        $fileHandler->emptyLine();
+
+
+
+        $fileHandler->writeToNewFile();
 
         return $newStrategySystem;
 
