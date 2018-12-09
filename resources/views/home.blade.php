@@ -20,7 +20,7 @@
     <script src="/js/factory/merchant.js"></script>
     <script src="/js/service/sweet_alert.js"></script>
     <script src="/js/factory/lookup.js"></script>
-    <script src="/js/factory/back_test.js"></script>omeap
+    <script src="/js/factory/back_test.js"></script>
     <script src="/js/factory/strategy.js"></script>
     <script src="/js/factory/indicator.js"></script>
     <script src="/js/factory/indicator_event.js"></script>
@@ -33,6 +33,7 @@
     <script src="/bower_components/angularUtils-pagination/dirPagination.js"></script>
     <script src="/js/modules/shared/directive/strategy-note-create/strategy-note-create.js"></script>
     <script src="/js/modules/shared/directive/strategy-note-view/strategy-note-view.js"></script>
+    <script src="/js/modules/shared/directive/indicator-event-select/indicator-event-select.js"></script>
 
 
     <!– Angular Controllers ->
@@ -100,9 +101,9 @@
                 </a>
             </li>
             <li>
-                <a href="#iterations_management" class="waves-effect">
+                <a href="#indicator_management" class="waves-effect">
                     <i class="fas fa-align"></i>
-                    <span> Iterations </span> <span class="pull-right"></span>
+                    <span> Indicator Management </span> <span class="pull-right"></span>
                 </a>
             </li>
         </ul>

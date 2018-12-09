@@ -45,7 +45,7 @@ class StrategyController extends Controller {
         $fileHandler->filePath = env('APP_ROOT').'app/Http/Controllers/AutomatedBackTestController.php';
 
         $fileHandler->findLineOfTextInFile('END OF Backtest Declarations');
-        $fileHandler->addLineToLineGroup("use App\\BackTest\\BackTestToBeProcessed\\Strategy\\".$strategyFileName."\\".$strategyFileName."BackTestToBeProcess;");
+        $fileHandler->addLineToLineGroup("use App\\BackTest\\BackTestToBeProcessed\\Strategy\\".$strategyFileName."\\".$strategyFileName."BackTestToBeProcessed;");
 
         $fileHandler->addLinesAboveText('END OF Backtest Declarations');
 
@@ -60,7 +60,7 @@ class StrategyController extends Controller {
 
         $fileHandler->createFile();
 
-        $fileHandler->addLineToLineGroup('<?php namespace App\BackTest\BackTestToBeProcessed\Strategy\\'.$strategyFileName.'BackTestToBeProcessed;');
+        $fileHandler->addLineToLineGroup('<?php namespace App\BackTest\BackTestToBeProcessed\Strategy\\'.$strategyFileName.';');
         $fileHandler->emptyLine();
 
         $fileHandler->addLineToLineGroup('/**********************');
@@ -74,7 +74,6 @@ class StrategyController extends Controller {
         $fileHandler->addLineToLineGroup('use \App\BackTest\TakeProfitStopLossTest;');
         $fileHandler->addLineToLineGroup('use \App\Services\StrategyLogger;');
 
-        $fileHandler->emptyLine();
         $fileHandler->emptyLine();
         $fileHandler->addLineToLineGroup('//END STRATEGY DECLARATIONS');
 

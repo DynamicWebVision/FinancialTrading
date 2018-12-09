@@ -16,6 +16,7 @@ class FileHandler  {
     public function resetTextVariables() {
         $this->textToAdd = '';
         $this->linesToAdd = [];
+        $this->lineToWriteSpaces = 0;
     }
 
     public function findLineOfTextInFile($text) {
@@ -73,9 +74,12 @@ class FileHandler  {
         ];
     }
 
-    public function createRawTextToAdd() {
-        foreach ($this->linesToAdd as $lineToAdd) {
-            $this->addLine();
+    public function createRawTextToAdd($newFile = false) {
+        foreach ($this->linesToAdd as $index=>$lineToAdd) {
+            if ($index != 0 || !$newFile) {
+                $this->addLine();
+            }
+
             $this->addSpaces($this->lineToWriteSpaces);
             $this->addTabs($lineToAdd['tabCount']);
             $this->textToAdd = $this->textToAdd.$lineToAdd['text'];
@@ -94,7 +98,7 @@ class FileHandler  {
     }
 
     public function writeToNewFile() {
-        $this->createRawTextToAdd();
+        $this->createRawTextToAdd(true);
         shell_exec('sudo chmod -R 777 '.$this->filePath);
         file_put_contents( $this->filePath , $this->textToAdd);
         $this->resetTextVariables();

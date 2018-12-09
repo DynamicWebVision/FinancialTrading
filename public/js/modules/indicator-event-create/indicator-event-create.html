@@ -60,6 +60,15 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-md-3 control-label">Indicator Event Types</label>
+                <div class="col-md-9">
+                    <select name="indicator_event_type" class="form-control input-large margin-top-five"
+                            ng-model="iec.indicatorEvent.newIndicatorEvent.event_type" ng-fade
+                            ng-options="indicatorEventType.event_type_id as indicatorEventType.event_type_name for indicatorEventType in iec.indicatorEvent.indicatorEventTypes">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-md-3 control-label">Condition A</label>
                 <div class="col-md-9">
                     <input type="text" class="input-x-large form-control m-b-5" name="opposing_condition_a"
@@ -88,8 +97,6 @@
             <div class="submit-contain pull-right">
                 <button class = 'btn-success btn'>Submit</button>
             </div>
-
-            {{cbg.create_form.$error}}
         </form>
     </div><!-- panel-body -->
 </div>

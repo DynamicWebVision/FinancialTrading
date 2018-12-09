@@ -90,6 +90,4 @@ class LiveTradingController extends Controller {
             $systemStrategy->checkForNewPosition();
         }
     }
-
-
 }

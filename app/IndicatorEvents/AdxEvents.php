@@ -38,7 +38,7 @@ class AdxEvents {
         if ($adx <= $threshold) {
             $this->strategyLogger->logMessage('adxBelowThreshold: BELOW', 1);
             return true;
-        }else {
+        } else {
             $this->strategyLogger->logMessage('adxBelowThreshold: NOT BELOW', 1);
             return false;
         }
@@ -51,7 +51,7 @@ class AdxEvents {
         if ($adx >= $threshold) {
             $this->strategyLogger->logMessage('adxBelowThreshold: ABOVE', 1);
             return true;
-        }else {
+        } else {
             $this->strategyLogger->logMessage('adxBelowThreshold: NOT ABOVE', 1);
             return false;
         }

@@ -394,6 +394,10 @@ label {
 	color: #01ba9a;
 }
 
+.orange-text {
+	color: #cc8400;
+}
+
 .pretty-son-pre {
 	overflow: visible !important;
 	overflow-x: visible !important;

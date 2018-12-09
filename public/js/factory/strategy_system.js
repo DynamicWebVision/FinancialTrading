@@ -11,6 +11,14 @@ app.factory('StrategySystem', function($http, $q) {
 
     service.searchText = '';
 
+    service.resetNewStrategySystem = function() {
+        service.newStrategySystem = {};
+        service.newStrategySystem.newPositionConditions = [];
+        service.newStrategySystem.newPositionPriceTargets = [];
+        service.newStrategySystem.openPositionConditions = [];
+        service.newStrategySystem.openPositionPriceTargets = [];
+    }
+
     service.create = function() {
         service.newStrategySystem.strategy_id = service.strategy_id;
         return $http.post('strategy_system', service.newStrategySystem);
@@ -30,7 +38,6 @@ app.factory('StrategySystem', function($http, $q) {
     service.setStrategySystem = function(StrategySystem) {
         service.currentStrategySystem = StrategySystem;
         service.searchText = '';
-
     }
 
     return service;

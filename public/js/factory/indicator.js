@@ -11,6 +11,8 @@ app.factory('Indicator', function($http, $q, IndicatorEvent) {
 
     service.searchText = '';
 
+    service.selectedIndicator = {};
+
     service.create = function() {
         return $http.post('indicator', service.newIndicator);
     }
@@ -18,6 +20,7 @@ app.factory('Indicator', function($http, $q, IndicatorEvent) {
     service.index = function() {
         return $http.get('indicator').success(function(response) {
             service.indicators = response;
+            console.log(response);
         });
     }
 

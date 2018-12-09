@@ -17,6 +17,7 @@
         vm.create = create;
 
 
+
         function create() {
             vm.submit = true;
             if (vm.create_form.$valid) {
@@ -39,5 +40,9 @@
                 });
             }
         }
+
+
+
+        IndicatorEvent.setIndicatorEventTypes();
     }
 })();

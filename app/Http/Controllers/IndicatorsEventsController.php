@@ -5,6 +5,7 @@ use \Log;
 use Request;
 
 use \App\Model\IndicatorEvent;
+use \App\Model\IndicatorEventTypes;
 
 
 class IndicatorsEventsController extends Controller {
@@ -25,6 +26,7 @@ class IndicatorsEventsController extends Controller {
         $newIndicatorEvent->indicator_id = $post['indicator_id'];
         $newIndicatorEvent->name = $post['name'];
         $newIndicatorEvent->description = $post['description'];
+        $newIndicatorEvent->event_type = $post['event_type'];
         $newIndicatorEvent->variable_declarations = $post['variable_declarations'];
         $newIndicatorEvent->method_call = $post['method_call'];
 
@@ -39,5 +41,13 @@ class IndicatorsEventsController extends Controller {
         $newIndicatorEvent->save();
 
         return $newIndicatorEvent;
+    }
+
+    public function getIndicatorEventTypes() {
+        return IndicatorEventTypes::all()->toArray();
+    }
+
+    public function allIndicatorEventsForIndicator($indicatorId) {
+        return IndicatorEvent::where('indicator_id', '=', $indicatorId)->get()->toArray();
     }
 }
