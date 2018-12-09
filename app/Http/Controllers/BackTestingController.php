@@ -904,20 +904,7 @@ class BackTestingController extends Controller {
 
             BackTestModel::where('process_id', '=', $backTestProcess->id)->delete();
 
-            DB::enableQueryLog();
-
-            $backTestToBeProcessed = BackTestToBeProcessed::find($backTestProcess->id);
-
-            $backTestToBeProcessed->start = 0;
-            $backTestToBeProcessed->finish = 0;
-            $backTestToBeProcessed->stats_start = 0;
-            $backTestToBeProcessed->stats_finish = 0;
-            $backTestToBeProcessed->hung_up = 0;
-            $backTestToBeProcessed->run_exception = 0;
-            $backTestToBeProcessed->stats_exception = 0;
-            $backTestToBeProcessed->in_process_unix_time = 0;
-
-            $backTestToBeProcessed->save();
+            BackTestToBeProcessed::where('id', '=', $backTestProcess->id)->delete();
         }
         BackTestGroup::where('id', '=', $backTestGroup)->delete();
     }
