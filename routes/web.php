@@ -86,6 +86,7 @@ Route::get('manual_rollback_stats', 'BackTestingController@manualRollbackGroupSt
 Route::get('copy_back_test_process_to_other_exchanges/{processId}', 'BackTestManagementController@createBackTestGroupFromProcessIdToOtherExchanges');
 Route::get('back_test_group_from_iteration/{processId}', 'BackTestManagementController@backTestGroupFromIteration');
 Route::get('back_test_group_reviewed/{backTestGroupId}', 'BackTestManagementController@backTestGroupReviewed');
+Route::get('delete_dev_test_back_tests', 'BackTestingController@getBackTests');
 
 
 

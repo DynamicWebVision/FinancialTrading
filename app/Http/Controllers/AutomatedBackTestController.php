@@ -42,6 +42,7 @@ class AutomatedBackTestController extends Controller {
         ini_set('memory_limit', '-1');
 
         $serverController = new ServersController();
+
         $serverController->setServerId();
     }
 

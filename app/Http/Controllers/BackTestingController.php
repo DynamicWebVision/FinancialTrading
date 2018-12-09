@@ -826,9 +826,6 @@ class BackTestingController extends Controller {
             $backTestToBeProcessed->in_process_unix_time = 0;
 
             $backTestToBeProcessed->save();
-
-            $queries = DB::getQueryLog();
-
         }
 
         $rolledBackGroup = BackTestGroup::find($backTestGroup);
@@ -890,6 +887,46 @@ class BackTestingController extends Controller {
                 $backTestGroup->save();
             }
         }
+    }
 
+    public function deleteBackTestGroup($backTestGroup) {
+        $backTestToBeProcessed = BackTestToBeProcessed::where('back_test_group_id', '=', $backTestGroup)->get();
+
+        foreach ($backTestToBeProcessed as $backTestProcess) {
+            try {
+                $backTest = BackTestModel::where('process_id', '=', $backTestProcess->id)->first();
+                BackTestPosition::where('back_test_id', '=', $backTest->id)->delete();
+                BackTestStats::where('back_test_id', '=', $backTest->id)->delete();
+            }
+            catch (\Exception $e) {
+
+            }
+
+            BackTestModel::where('process_id', '=', $backTestProcess->id)->delete();
+
+            DB::enableQueryLog();
+
+            $backTestToBeProcessed = BackTestToBeProcessed::find($backTestProcess->id);
+
+            $backTestToBeProcessed->start = 0;
+            $backTestToBeProcessed->finish = 0;
+            $backTestToBeProcessed->stats_start = 0;
+            $backTestToBeProcessed->stats_finish = 0;
+            $backTestToBeProcessed->hung_up = 0;
+            $backTestToBeProcessed->run_exception = 0;
+            $backTestToBeProcessed->stats_exception = 0;
+            $backTestToBeProcessed->in_process_unix_time = 0;
+
+            $backTestToBeProcessed->save();
+        }
+        BackTestGroup::where('id', '=', $backTestGroup)->delete();
+    }
+
+    public function deleteDevTestOnlyBackTestGroups() {
+        $devTestBackTestGroups = BackTestGroup::where('dev_testing_only', '=', 1)->get();
+
+        foreach ($devTestBackTestGroups as $devTestBackTestGroup) {
+            $this->deleteBackTestGroup($devTestBackTestGroup->id);
+        }
     }
 }

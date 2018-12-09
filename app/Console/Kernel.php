@@ -84,6 +84,8 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
         }
         elseif (env('APP_ENV') == 'maintenance') {
+            $schedule->call('App\Http\Controllers\BackTestingController@deleteDevTestOnlyBackTestGroups')->tuesdays();
+
             $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
 
@@ -92,7 +94,6 @@ class Kernel extends ConsoleKernel
 
             $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
         }
-
     }
 
     /**

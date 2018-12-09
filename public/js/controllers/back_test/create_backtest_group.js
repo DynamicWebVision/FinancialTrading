@@ -66,6 +66,7 @@
                 vm.newBacktestGroup.stop_loss = '';
                 vm.newBacktestGroup.trailing_stop = '';
                 vm.newBacktestGroup.pair_variables_1_2 = false;
+                vm.newBacktestGroup.dev_testing_only = false;
 
                 vm.newBacktestGroup.variable_1_values = '';
                 vm.newBacktestGroup.variable_2_values = '';
