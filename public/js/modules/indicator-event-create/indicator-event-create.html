@@ -45,6 +45,7 @@
                         Variable Declarations is required.
                     </div>
                 </div>
+                adxLength, adxUndersoldThreshold
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label">Method Call</label>
@@ -58,6 +59,7 @@
                         Method Call is required.
                     </div>
                 </div>
+                $this->decisionIndicators['adxAboveThreshold'] = $adxEvents->adxAboveThreshold($this->rates['full'], $this->adxLength, $this->adxUndersoldThreshold);
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label">Indicator Event Types</label>

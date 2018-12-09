@@ -105,7 +105,10 @@ class StrategySystemController extends Controller {
         $fileHandler->emptyLine();
 
         foreach ($allIndicatorEvents as $indicatorEvent) {
-            $fileHandler->addLineToLineGroup('public $'.$indicatorEvent['variable_declarations'].';', 1);
+            $variableDeclarations = trim(implode(',',$indicatorEvent['variable_declarations']));
+            foreach ($variableDeclarations as $variableDeclaration) {
+                $fileHandler->addLineToLineGroup('public $'.$variableDeclaration.';', 1);
+            }
         }
         $fileHandler->emptyLine();
 

@@ -48,7 +48,7 @@ class HlhbAdx extends \App\Strategy\Strategy  {
 
         $this->decisionIndicators['rsiCrossedLevel'] = $rsiEvents->crossedLevel($this->rates['simple'], $this->rsiLength, $this->rsiBreakthroughLevel);
 
-        $this->decisionIndicators['adxBelowThreshold'] = $adxEvents->adxAboveThreshold($this->rates['full'], $this->adxLength, $this->adxUndersoldThreshold);
+        $this->decisionIndicators['adxAboveThreshold'] = $adxEvents->adxAboveThreshold($this->rates['full'], $this->adxLength, $this->adxUndersoldThreshold);
     }
 
     public function getEntryDecision() {
@@ -57,12 +57,12 @@ class HlhbAdx extends \App\Strategy\Strategy  {
         Log::info($this->runId.': New Position Decision Indicators: '.PHP_EOL.' '.$this->logIndicators());
 
         if ($this->decisionIndicators['emaCrossover'] == 'crossedAbove' && $this->decisionIndicators['rsiCrossedLevel'] == 'crossedAbove'
-            && $this->decisionIndicators['adxBelowThreshold']) {
+            && $this->decisionIndicators['adxAboveThreshold']) {
             Log::warning($this->runId.': NEW LONG POSITION');
             return "long";
         }
         elseif ($this->decisionIndicators['emaCrossover'] == 'crossedBelow' && $this->decisionIndicators['rsiCrossedLevel'] == 'crossedBelow'
-            && $this->decisionIndicators['adxBelowThreshold']) {
+            && $this->decisionIndicators['adxAboveThreshold']) {
             Log::warning($this->runId.': NEW SHORT POSITION');
             return "short";
         }

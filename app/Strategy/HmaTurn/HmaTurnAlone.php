@@ -52,11 +52,13 @@ class HmaTurnAlone extends \App\Strategy\Strategy  {
 
         if ($this->openPosition['side'] == 'long') {
             if ( $this->decisionIndicators['hmaChangeDirection'] == 'reversedDown' ) {
+                $this->closePosition();
                 $this->newShortPosition();
             }
         }
         elseif ($this->openPosition['side'] == 'short') {
             if ( $this->decisionIndicators['hmaChangeDirection'] == 'reversedUp' ) {
+                $this->closePosition();
                 $this->newLongPosition();
             }
         }

@@ -78,6 +78,9 @@ class EventHelpers {
         elseif ($lastThreeElements[0] <= $lastThreeElements[1] && $lastThreeElements[1] > $lastThreeElements[2]) {
             return 'reversedDown';
         }
+        else {
+            return 'none';
+        }
     }
 
     public function averageSlopeLastXPeriods($line, $lengthBack) {
