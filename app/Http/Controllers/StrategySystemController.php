@@ -105,7 +105,7 @@ class StrategySystemController extends Controller {
         $fileHandler->emptyLine();
 
         foreach ($allIndicatorEvents as $indicatorEvent) {
-            $variableDeclarations = trim(implode(',',$indicatorEvent['variable_declarations']));
+            $variableDeclarations = explode(',',str_replace(' ', '',$indicatorEvent['variable_declarations']));
             foreach ($variableDeclarations as $variableDeclaration) {
                 $fileHandler->addLineToLineGroup('public $'.$variableDeclaration.';', 1);
             }
@@ -122,7 +122,7 @@ class StrategySystemController extends Controller {
         $fileHandler->emptyLine();
 
         foreach ($post['newPositionConditions'] as $newPositionIndicator) {
-            $fileHandler->addLineToLineGroup('$'.$newPositionIndicator->class_variable_name.'->'.$newPositionIndicator['method_call'], 2);
+            $fileHandler->addLineToLineGroup($newPositionIndicator['method_call'], 2);
             $fileHandler->emptyLine();
         }
 
@@ -137,6 +137,7 @@ class StrategySystemController extends Controller {
         $fileHandler->addLineToLineGroup('if (', 2);
 
         $count = 0;
+        $newPositionPriceTargetsLong = [];
         foreach ($post['newPositionConditions'] as $newPositionIndicator) {
             if ($count > 0) {
                 $fileHandler->addLineToLineGroup(" && ".$newPositionIndicator['opposing_condition_a'], 2);
@@ -144,16 +145,28 @@ class StrategySystemController extends Controller {
             else {
                 $fileHandler->addLineToLineGroup($newPositionIndicator['opposing_condition_a'], 2);
             }
+
+            if ($newPositionIndicator['event_type'] == 3) {
+                $newPositionPriceTargetsLong[] = $newPositionIndicator['opposing_condition_a_price_target'];
+            }
+
+            $count++;
         }
         $fileHandler->addLineToLineGroup(') {', 2);
 
+        if (sizeof($newPositionPriceTargetsLong) > 0) {
+            $fileHandler->addLineToLineGroup("\$this->marketIfTouchedOrderPrice = max([".implode(",",$newPositionPriceTargetsLong)."]);", 3);
+        }
+
         $fileHandler->addLineToLineGroup("\$this->newLongPosition();", 3);
-        $fileHandler->addLineToLineGroup("//\$this->marketIfTouchedOrderPrice = ;", 3);
+
         $fileHandler->addLineToLineGroup('}', 2);
 
         $fileHandler->addLineToLineGroup('elseif (', 2);
 
         $count = 0;
+        $newPositionPriceTargetsShort = [];
+
         foreach ($post['newPositionConditions'] as $newPositionIndicator) {
 
             if (strlen($newPositionIndicator['opposing_condition_b']) > 0) {
@@ -169,12 +182,21 @@ class StrategySystemController extends Controller {
             else {
                 $fileHandler->addLineToLineGroup($condition, 2);
             }
+
+            if ($newPositionIndicator['event_type'] == 3) {
+                $newPositionPriceTargetsShort[] = $newPositionIndicator['opposing_condition_b_price_target'];
+            }
+
+            $count++;
         }
 
         $fileHandler->addLineToLineGroup(') {', 2);
 
+        if (sizeof($newPositionPriceTargetsShort) > 0) {
+            $fileHandler->addLineToLineGroup("\$this->marketIfTouchedOrderPrice = min([".implode(",",$newPositionPriceTargetsShort)."]);", 3);
+        }
+
         $fileHandler->addLineToLineGroup("\$this->newShortPosition();", 3);
-        $fileHandler->addLineToLineGroup("//\$this->marketIfTouchedOrderPrice = ;", 3);
 
         $fileHandler->addLineToLineGroup('}', 2);
 
@@ -193,10 +215,9 @@ class StrategySystemController extends Controller {
         $fileHandler->emptyLine();
 
         foreach ($post['openPositionConditions'] as $openPositionIndicator) {
-            $fileHandler->addLineToLineGroup('$'.$openPositionIndicator->class_variable_name.'->'.$openPositionIndicator['method_call'], 2);
+            $fileHandler->addLineToLineGroup($openPositionIndicator['method_call'], 2);
             $fileHandler->emptyLine();
         }
-
 
         $fileHandler->addLineToLineGroup('if ($this->openPosition[\'side\'] == \'long\') {', 2);
 
@@ -205,15 +226,22 @@ class StrategySystemController extends Controller {
         $aConditions = [];
         $bConditions = [];
         $bothConditions = [];
+        $aConditionPriceTargets = [];
+        $bConditionPriceTargets = [];
 
         foreach ($post['openPositionConditions'] as $openPositionIndicator) {
 
-            if (strlen($newPositionIndicator['opposing_condition_b']) > 0) {
+            if (strlen($openPositionIndicator['opposing_condition_b']) > 0) {
                 $aConditions[] = $openPositionIndicator['opposing_condition_a'];
                 $bConditions[] = $openPositionIndicator['opposing_condition_b'];
             }
             else {
                 $bothConditions[] = $openPositionIndicator['opposing_condition_a'];
+            }
+
+            if ($openPositionIndicator['event_type'] == 3) {
+                $aConditionPriceTargets[] = $openPositionIndicator['opposing_condition_a_price_target'];
+                $bConditionPriceTargets[] = $openPositionIndicator['opposing_condition_b_price_target'];
             }
         }
 
@@ -222,6 +250,12 @@ class StrategySystemController extends Controller {
         foreach ($aConditions as $aCondition) {
             $fileHandler->addLineToLineGroup('// '.$aCondition, 3);
         }
+
+        foreach ($bothConditions as $bothCondition) {
+            $fileHandler->addLineToLineGroup('// '.$bothCondition, 3);
+        }
+
+        $fileHandler->addLineToLineGroup('//B Conditions', 3);
 
         foreach ($bConditions as $bCondition) {
             $fileHandler->addLineToLineGroup('// '.$bCondition, 3);
@@ -236,12 +270,18 @@ class StrategySystemController extends Controller {
         $fileHandler->addLineToLineGroup('//if ( CONDITIONS THAT CONTRADICT LONG ) {', 3);
         $fileHandler->addLineToLineGroup('//$this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);', 4);
         $fileHandler->addLineToLineGroup('//$this->closePosition();', 4);
-        $fileHandler->addLineToLineGroup('//$this->marketIfTouchedOrderPrice = ;', 4);
+
+        if (sizeof($aConditionPriceTargets) > 0) {
+            $fileHandler->addLineToLineGroup("//\$this->marketIfTouchedOrderPrice = max([".implode(",",$aConditionPriceTargets)."]);", 4);
+        }
         $fileHandler->addLineToLineGroup('//$this->newLongPosition();', 4);
         $fileHandler->addLineToLineGroup('//}', 3);
 
         $fileHandler->addLineToLineGroup('//else {', 3);
-        $fileHandler->addLineToLineGroup('//$this->marketIfTouchedOrderPrice = ;', 4);
+        $fileHandler->addLineToLineGroup('//$this->modifyStopLoss();', 4);
+        if (sizeof($aConditionPriceTargets) > 0) {
+            $fileHandler->addLineToLineGroup("//\$this->marketIfTouchedOrderPrice = max([".implode(",",$aConditionPriceTargets)."]);", 4);
+        }
         $fileHandler->addLineToLineGroup('//$this->newShortPosition();', 4);
         $fileHandler->addLineToLineGroup('//}', 3);
 
@@ -252,12 +292,17 @@ class StrategySystemController extends Controller {
         $fileHandler->addLineToLineGroup('//if ( CONDITIONS THAT CONTRADICT SHORT ) {', 3);
         $fileHandler->addLineToLineGroup('//$this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);', 4);
         $fileHandler->addLineToLineGroup('//$this->closePosition();', 4);
-        $fileHandler->addLineToLineGroup('//$this->marketIfTouchedOrderPrice = ;', 4);
+        if (sizeof($bConditionPriceTargets) > 0) {
+            $fileHandler->addLineToLineGroup("//\$this->marketIfTouchedOrderPrice = min([".implode(",",$bConditionPriceTargets)."]);", 4);
+        }
         $fileHandler->addLineToLineGroup('//$this->newShortPosition();', 4);
         $fileHandler->addLineToLineGroup('//}', 3);
 
         $fileHandler->addLineToLineGroup('//else {', 3);
-        $fileHandler->addLineToLineGroup('//$this->marketIfTouchedOrderPrice = ;', 4);
+        $fileHandler->addLineToLineGroup('//$this->modifyStopLoss();', 4);
+        if (sizeof($aConditionPriceTargets) > 0) {
+            $fileHandler->addLineToLineGroup("//\$this->marketIfTouchedOrderPrice = max([".implode(",",$aConditionPriceTargets)."]);", 4);
+        }
         $fileHandler->addLineToLineGroup('//$this->newLongPosition();', 4);
         $fileHandler->addLineToLineGroup('//}', 3);
 
@@ -292,8 +337,13 @@ class StrategySystemController extends Controller {
         $fileHandler->emptyLine();
         $fileHandler->addLineToLineGroup("//\$strategy->orderType = 'MARKET_IF_TOUCHED';", 1);
 
+        $variableCount = 1;
         foreach ($allIndicatorEvents as $indicatorEvent) {
-            $fileHandler->addLineToLineGroup('$strategy->'.$indicatorEvent['variable_declarations'].' = intval($this->backTestToBeProcessed->variable_1);', 1);
+            $variableDeclarations = explode(',',str_replace(' ', '',$indicatorEvent['variable_declarations']));
+            foreach ($variableDeclarations as $variableDeclaration) {
+                $fileHandler->addLineToLineGroup('$strategy->'.$variableDeclaration.' = intval($this->backTestToBeProcessed->variable_'.$variableCount.');', 1);
+                $variableCount++;
+            }
         }
         $fileHandler->emptyLine();
 

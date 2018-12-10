@@ -11,6 +11,7 @@ use \App\BackTest\TakeProfitStopLossTest;
 use \App\Services\StrategyLogger;
 
 use \App\Strategy\HmaTurn\HmaTurnAlone;
+use \App\Strategy\HmaTurn\HmaTurnAdxAbove;
 //END STRATEGY DECLARATIONS
 
 class HmaTurnBackTestToBeProcessed extends \App\BackTest\BackTestToBeProcessed\Base
@@ -47,13 +48,15 @@ class HmaTurnBackTestToBeProcessed extends \App\BackTest\BackTestToBeProcessed\B
         if (1==2) {
 
         }
-        elseif ($this->server->strategy_iteration == 'HMA_TURN_ALONE') {
+        elseif ($this->server->strategy_iteration == 'HMA_TURN_ADX_ABOVE') {
             $backTest->rateLevel = 'both';
         
-            $strategy = new HmaTurnAlone(1,1,true);
+            $strategy = new HmaTurnAdxAbove(1,1,true);
         
             //$strategy->orderType = 'MARKET_IF_TOUCHED';
             $strategy->hmaLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->adxLength = intval($this->backTestToBeProcessed->variable_2);
+            $strategy->adxUndersoldThreshold = intval($this->backTestToBeProcessed->variable_3);
         
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 

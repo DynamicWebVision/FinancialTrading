@@ -21,6 +21,7 @@ use App\Services\Utility;
 use \Log;
 use \App\Services\CurrencyIndicators;
 
+
 class AdxEvents {
     public $utility;
     public $indicators;
@@ -31,6 +32,7 @@ class AdxEvents {
         $this->indicators = new CurrencyIndicators();
     }
 
+    //Working Indicator
     public function adxBelowThreshold($ratesFull, $adxLength, $threshold) {
         $adx = $this->indicators->adx($ratesFull, $adxLength);
         $adx = end($adx);
@@ -44,6 +46,7 @@ class AdxEvents {
         }
     }
 
+    //Working Indicator
     public function adxAboveThreshold($ratesFull, $adxLength, $threshold) {
         $adx = $this->indicators->adx($ratesFull, $adxLength);
         $adx = end($adx);

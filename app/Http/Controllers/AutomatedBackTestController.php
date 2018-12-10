@@ -23,6 +23,7 @@ use App\BackTest\BackTestToBeProcessed\Strategy\PreviousPeriodPriceBreakout\Prev
 use App\BackTest\BackTestToBeProcessed\Strategy\TestStuffedNose\TestStuffedNoseBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\HmaQuickTest\HmaQuickTestBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\HmaTurn\HmaTurnBackTestToBeProcessed;
+use App\BackTest\BackTestToBeProcessed\Strategy\NewIndicatorTesting\NewIndicatorTestingBackTestToBeProcessed;
 //END OF Backtest Declarations
 
 use \Log;
@@ -271,6 +272,10 @@ class AutomatedBackTestController extends Controller {
         }
         elseif ($server->current_back_test_strategy == 'HMA_TURN') {
             $backTestStrategy = new HmaTurnBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'NEW_INDICATOR_TESTING') {
+            $backTestStrategy = new NewIndicatorTestingBackTestToBeProcessed($processId, $server);
             $backTestStrategy->callProcess();
         }
         //END OF STRATEGY IFS

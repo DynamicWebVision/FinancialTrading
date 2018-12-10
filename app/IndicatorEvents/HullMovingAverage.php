@@ -66,11 +66,13 @@ class HullMovingAverage {
         return $hmaPoints;
     }
 
+    //Working Indicator
     public function hullChangeDirectionCheck($rates, $length) {
         $lastThree = $this->hullLineLastThree($rates, $length);
         return $this->eventHelpers->lineChangeDirection($lastThree);
     }
 
+    //Confirm whether Current Slope of Hma meets minimum amount
     public function hmaSlope($rates, $length, $pip, $minSlope) {
         $lastThree = $this->hullLineLastThree($rates, $length);
         $slope = round(($lastThree[2] - $lastThree[1])/$pip);

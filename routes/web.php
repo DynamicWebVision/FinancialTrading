@@ -200,8 +200,13 @@ Route::get('php', function () {
 
 
 //TBD Test
-Route::get('test_textblowup', function() {
+Route::get('td_ameritrade_auth_code', function() {
 
+});
+//TBD Test
+Route::get('testdec', function() {
+    $test = urldecode('NWbR79Q6dWAkENS7ReXBP173jqzvpb1kuwJaPATvV7he5zWFZ%2FDRulaQQFznDlRH3pxRKVT%2BGJf5IWFvp1wrfU4DBv8QSDFT0%2FZEe7UdlQocpazHYnqL4SI0smwe0eMH3rrYpNnPnkI%2FkwEF%2F1TM3FLEX6JpX52fCOUpT0kzEv7mFN9K2GIlvf%2FKsNt%2BEQE1ca8EVZd0Q%2BP%2BuZoT%2BGnEjr04g0LBAuYrP%2BzcH6P%2BcJK0fb99wnoX32GOgxueDYV0HoRQ0NnwBpJDAREiFxQOB1cm4knILK6UXaQRw1GcY1rCsGT3yRvg6xvWtPhYCqled1PQtujjdAqB%2Fjf8NCrEhazQQBM6UcIMm6h6iB23YopfZECmvpq6v75w8Q19pqohNgGvF%2F3azZQHF%2BOBs8ukm6OqFeVIaeS4%2B7HKiNSaQPxouEfFG285vu%2FSZaq100MQuG4LYrgoVi%2FJHHvlRnWxepdVBiXkqKKBs%2FL0bWnvxDca%2FaVtKPKJJ5Ygtsw%2FzsPSmDyBPqfuQtMzztn8bpJ%2Bht%2BuIAwIAKLxOHEXngURIoah32P2YBhWhoLC2Vt1sIOX97On4G%2BiHCtRjooehj9MJ%2FCRYu3Cff1UoKKkupSzVYEx8zDTf5JlG8w%2BH7qmZqdBoh3s%2FCeO9ffvt%2FCy7p3Mt5K8%2BM7Tt1by7q41oJUIRfO6bQQ73aI3slqNNsS5mpnFtGerUZbzga5S7WjHss6M0PD7CSlDY8GLuNK4sdOTJwDaiDMl9AhuN97PXtI330NzE8pQMxltmMvzMkUZjM1Bq9GQFMh2EZp538TQpVhQbHDdueecUbkIgQrIfLlbi%2FrxTIOt8kQpf2LVNBvTgzr9t4omHTvL%2BFB20DFi2vc%2F1jo37flL0hr5Vzv9H%2FmlyBlXNfktJueXqEg%3D212FD3x19z9sWBHDJACbC00B75E');
+        echo $test;
 });
 
 

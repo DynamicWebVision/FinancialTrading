@@ -13,29 +13,44 @@ use App\Model\TmpTestRates;
 class HullEventsTest extends TestCase
 {
 
-    public function testStochIndicator() {
-        $historicalRates = new \App\Model\HistoricalRates();
-        $rates = $historicalRates->getRatesSpecificTimeSimple(1,4,100,'2018-10-09 3:00:00');
-
-        $hullEvents = new HullMovingAverage();
-
-        $xPoint = $hullEvents->hullChangeDirectionPoint($rates, 9, .0001);
-
-        $rates[] = $xPoint;
-
-        $endPoint = $hullEvents->endHullPoint($rates, 9);
-        $debug=1;
-    }
-
-    public function testHmaLastXPeriods() {
+    public function testHullChangeDirectionCheck() {
         $historicalRates = new \App\Model\HistoricalRates();
         //$rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 3:00:00');
-        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 12:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-11-28 17:00:00');
 
         $hullMovingAverage = new HullMovingAverage();
 
-        $hmaPoints = $hullMovingAverage->hmaLastXPeriods($rates, 50, 6);
+        $changeDirection = $hullMovingAverage->hullChangeDirectionCheck($rates, 9);
 
-        $debug=1;
+        $this->assertEquals($changeDirection, 'reversedUp');
+        //$rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 3:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-11-28 22:00:00');
+
+        $hullMovingAverage = new HullMovingAverage();
+
+        $changeDirection = $hullMovingAverage->hullChangeDirectionCheck($rates, 9);
+
+        $this->assertEquals($changeDirection, 'reversedDown');
+    }
+
+    public function testHmaSlope() {
+        $historicalRates = new \App\Model\HistoricalRates();
+        //$rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 3:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-11-29 12:00:00');
+
+        $hullMovingAverage = new HullMovingAverage();
+
+        $minSlope = $hullMovingAverage->hmaSlope($rates, 200, .0001, 1);
+
+        $this->assertEquals($minSlope, 'long');
+
+        //$rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 3:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-11-27 9:00:00');
+
+        $hullMovingAverage = new HullMovingAverage();
+
+        $minSlope = $hullMovingAverage->hmaSlope($rates, 200, .0001, 1);
+
+        $this->assertEquals($minSlope, 'short');
     }
 }

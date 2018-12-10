@@ -17,8 +17,6 @@ class HmaTurnAlone extends \App\Strategy\Strategy  {
     public function setEntryIndicators() {
         $hmaEvents = new \App\IndicatorEvents\HullMovingAverage;
         $hmaEvents->strategyLogger = $this->strategyLogger;
-
-
         $this->decisionIndicators['hmaChangeDirection'] = $hmaEvents->hullChangeDirectionCheck($this->rates['simple'], $this->hmaLength);
 
     }

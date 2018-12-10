@@ -6,44 +6,47 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\CurrencyIndicators;
+use App\IndicatorEvents\AdxEvents;
+use \App\Services\StrategyLogger;
 use App\Model\HistoricalRates;
 use App\Model\TmpTestRates;
 
 class AdxEventsTest extends TestCase
 {
 
-    public function testAdx() {
-        $currencyIndicators = new CurrencyIndicators();
+    public function testAdxBelowThreshold() {
+        $adxEvents = new AdxEvents();
+        $adxEvents->strategyLogger = new StrategyLogger();
 
         $historicalRates = new \App\Model\HistoricalRates();
-        $rates = $historicalRates->getRatesSpecificTimeFull(1,3,100,'2018-06-27 9:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeFull(1,3,100,'2018-10-30 5:00:00');
 
-        $response = $currencyIndicators->adx($rates, 14);
+        $response = $adxEvents->adxBelowThreshold($rates, 14, 15);
 
-        $this->assertEquals(round(end($response), 1), 29.8);
+        $this->assertTrue($response);
+
+        $rates = $historicalRates->getRatesSpecificTimeFull(1,3,100,'2018-11-1 9:00:00');
+
+        $response = $adxEvents->adxBelowThreshold($rates, 14, 20);
+
+        $this->assertFalse($response);
     }
 
-    //Test from
-    public function testSimpleAdx() {
-        $currencyIndicators = new CurrencyIndicators();
+    public function testAdxAboveThreshold() {
+        $adxEvents = new AdxEvents();
+        $adxEvents->strategyLogger = new StrategyLogger();
 
-        $tmpTestRates = TmpTestRates::where('test', '=', 'adx')->orderBy('id')->get()->toArray();
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeFull(1,3,100,'2018-11-8 13:00:00');
 
-        $rates = $fullRates = array_map(function($rate) {
+        $response = $adxEvents->adxAboveThreshold($rates, 14, 20);
 
-            $stdRate = new \StdClass();
+        $this->assertTrue($response);
 
-            $stdRate->highMid = (float) $rate['high_mid'];
-            $stdRate->closeMid = (float) $rate['close_mid'];
-            $stdRate->lowMid = (float) $rate['low_mid'];
-            $stdRate->openMid = (float) $rate['open_mid'];
-            //$stdRate->volume = (float) $rate['volume'];
+        $rates = $historicalRates->getRatesSpecificTimeFull(1,3,100,'2018-10-23 19:00:00');
 
-            return $stdRate;
-        }, $tmpTestRates);
+        $response = $adxEvents->adxAboveThreshold($rates, 14, 20);
 
-        $adx = $currencyIndicators->adx($rates, 14);
-
-        $this->assertEquals(round(end($adx), 1), 16.7);
+        $this->assertFalse($response);
     }
 }

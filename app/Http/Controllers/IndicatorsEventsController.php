@@ -38,6 +38,14 @@ class IndicatorsEventsController extends Controller {
             $newIndicatorEvent->opposing_condition_b = $post['opposing_condition_b'];
         }
 
+        if (isset($post['opposing_condition_a_price_target'])) {
+            $newIndicatorEvent->opposing_condition_a_price_target = $post['opposing_condition_a_price_target'];
+        }
+
+        if (isset($post['opposing_condition_b_price_target'])) {
+            $newIndicatorEvent->opposing_condition_b_price_target = $post['opposing_condition_b_price_target'];
+        }
+
         $newIndicatorEvent->save();
 
         return $newIndicatorEvent;
