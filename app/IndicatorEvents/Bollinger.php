@@ -51,6 +51,7 @@ class Bollinger {
         ];
     }
 
+    //Done
     public function getOuterBandCrossEvent($array, $length, $standardDeviationMultiplier) {
         $currentClose = end($array);
         $bollingerBandsCurrent = $this->bollingerBands($array, $length, $standardDeviationMultiplier);

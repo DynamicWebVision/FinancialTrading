@@ -29,42 +29,80 @@ class RsiEvents  {
 
     public $strategyLogger;
 
+    public $currentAverageGain;
+    public $currentAverageLoss;
+    public $rsi;
+
     public function __construct() {
         $this->indicators = new CurrencyIndicators();
         $this->utility = new Utility();
         $this->eventHelpers = new EventHelpers();
     }
 
-    public function rsi($rates, $period) {
-        $endRates = $this->utility->getLastXElementsInArray($rates, $period + 1);
+    public function averageGainLoss($rates, $length) {
 
+    }
+
+    public function initialAverageGainLoss($rates, $length) {
         $gains = [];
         $losses = [];
 
-        foreach ($endRates as $index=>$rate) {
+        foreach ($rates as $index=>$rate) {
             if (isset($endRates[$index+1])) {
 
                 $diff = $endRates[$index+1] - $rate;
 
                 if ($diff > 0) {
-                    $gains[] = $diff;
+                    $gains[] = (($diff/$rate)*100);
                 }
                 elseif ($diff < 0) {
-                    $losses[] = abs($diff);
+                    $losses[] = abs((($diff/$rate)*100));
                 }
             }
         }
+        $this->currentAverageGain = array_sum($gains)/$length;
+        $this->currentAverageLoss = array_sum($losses)/$length;
+    }
 
-        if (array_sum($losses) == 0) {
-            $rsi = 100;
+    public function rsi($rates, $period) {
+        $endRates = $this->utility->getFirstXElementsInArray($rates, $period + 1);
+
+        foreach ($rates as $index=>$rate) {
+            if ($index >= $period) {
+                $currentRates = array_slice($rates,$index-$period,$period + 1);
+
+                if ($this->currentAverageGain) {
+                    $currentGainLoss = $rate - $rates[$index-1];
+
+                    $averageGains = $this->currentAverageGain*($period-1);
+                    $averageLosses = $this->currentAverageLoss*($period-1);
+
+                    if ($currentGainLoss >= 0) {
+                        $percentGain = ($currentGainLoss/$rates[$index-1])*100;
+                        $this->currentAverageGain = ($averageGains + $percentGain)/$period;
+                        $this->currentAverageLoss = ($averageLosses)/$period;
+                    }
+                    else {
+                        $percentLoss = abs(($currentGainLoss/$rates[$index-1])*100);
+                        $this->currentAverageGain = ($averageGains)/$period;
+                        $this->currentAverageLoss = ($averageLosses + $percentLoss)/$period;
+                    }
+                }
+                else {
+                    $this->initialAverageGainLoss($currentRates, $period);
+                }
+
+                if ($this->currentAverageLoss == 0) {
+                    $this->rsi[] = 100;
+                }
+                else {
+                    $rs = $this->currentAverageGain/$this->currentAverageLoss;
+
+                    $this->rsi[] = 100 - (100/(1+$rs));
+                }
+            }
         }
-        else {
-            $rs = (array_sum($gains)/$period)/(array_sum($losses)/$period);
-
-            $rsi = 100 - (100/(1+$rs));
-        }
-
-        return $rsi;
+        return end($this->rsi);
     }
 
     public function getLastTwoRsi($rates, $periods) {
@@ -110,7 +148,6 @@ class RsiEvents  {
                 }
             }
         }
-
         return ['gains'=>$gains, 'losses'=>$losses];
     }
 
@@ -118,7 +155,7 @@ class RsiEvents  {
         return (-$targetRsi)/($targetRsi - 100);
     }
 
-    public function getCrossLevelPricePoint($rates, $length, $rsiCrossLevel) {
+    public function getCrossLevelPricePointFromOuter($rates, $length, $rsiCrossLevel) {
         $ratesBesidesNext = $this->utility->getLastXElementsInArray($rates, $length);
         $currentRSIWithoutNextRate = $this->rsi($ratesBesidesNext, $length-1);
 
@@ -151,5 +188,19 @@ class RsiEvents  {
             $response['side'] = 'long';
         }
         return $response;
+    }
+
+    public function outsideLevel($rates, $period, $outerLimit) {
+        $rsi = $this->rsi($rates, $period);
+
+        if ($rsi < $outerLimit) {
+            return 'overBoughtShort';
+        }
+        elseif ($rsi > (100 - $outerLimit)) {
+            return 'overBoughtLong';
+        }
+        else {
+            return 'none';
+        }
     }
 }

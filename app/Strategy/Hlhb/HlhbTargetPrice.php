@@ -52,7 +52,7 @@ class HlhbTargetPrice extends \App\Strategy\Strategy  {
         $rsiEvents->strategyLogger = $this->strategyLogger;
 
         $this->decisionIndicators['emaCrossInfo'] = $emaEvents->calculateEmaNextPeriodCrossoverRate($this->rates['simple'], $this->fastEma, $this->slowEma);
-        $this->decisionIndicators['rsiCrossInfo'] = $rsiEvents->getCrossLevelPricePoint($this->rates['simple'], $this->rsiLength, $this->rsiLevel);
+        $this->decisionIndicators['rsiCrossOuter'] = $rsiEvents->getCrossLevelPricePointFromOuter($this->rates['simple'], $this->rsiLength, $this->rsiLevel);
 
         $this->decisionIndicators['adxAboveThreshold'] = $adxEvents->adxAboveThreshold($this->rates['full'], $this->adxLength, $this->adxUndersoldThreshold);
 
@@ -69,12 +69,12 @@ class HlhbTargetPrice extends \App\Strategy\Strategy  {
         $this->strategyLogger->logIndicators($this->decisionIndicators);
 
         if ($this->decisionIndicators['adxAboveThreshold']) {
-            if ($this->decisionIndicators['emaCrossInfo']['side'] == 'long' && $this->decisionIndicators['rsiCrossInfo']['side'] == 'long') {
-                $this->marketIfTouchedOrderPrice = max([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossInfo']['targetPrice']]);
+            if ($this->decisionIndicators['emaCrossInfo']['side'] == 'long' && $this->decisionIndicators['rsiCrossOuter']['side'] == 'long') {
+                $this->marketIfTouchedOrderPrice = max([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossOuter']['targetPrice']]);
                 $this->newLongPosition();
             }
-            elseif ($this->decisionIndicators['emaCrossInfo']['side'] == 'short' && $this->decisionIndicators['rsiCrossInfo']['side'] == 'short') {
-                $this->marketIfTouchedOrderPrice = min([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossInfo']['targetPrice']]);
+            elseif ($this->decisionIndicators['emaCrossInfo']['side'] == 'short' && $this->decisionIndicators['rsiCrossOuter']['side'] == 'short') {
+                $this->marketIfTouchedOrderPrice = min([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossOuter']['targetPrice']]);
                 $this->newShortPosition();
             }
         }
@@ -95,7 +95,7 @@ class HlhbTargetPrice extends \App\Strategy\Strategy  {
 
         $this->decisionIndicators['emaCrossInfo'] = $emaEvents->calculateEmaNextPeriodCrossoverRate($this->rates['simple'], $this->fastEma, $this->slowEma);
 
-        $this->decisionIndicators['rsiCrossInfo'] = $rsiEvents->getCrossLevelPricePoint($this->rates['simple'], $this->rsiLength, $this->rsiLevel);
+        $this->decisionIndicators['rsiCrossOuter'] = $rsiEvents->getCrossLevelPricePointFromOuter($this->rates['simple'], $this->rsiLength, $this->rsiLevel);
 
         $this->decisionIndicators['adxAboveThreshold'] = $adxEvents->adxAboveThreshold($this->rates['full'], $this->adxLength, $this->adxUndersoldThreshold);
 
@@ -108,8 +108,8 @@ class HlhbTargetPrice extends \App\Strategy\Strategy  {
             if ($this->decisionIndicators['emaCrossInfo']['side'] == 'long') {
                 $this->closePosition();
                 if ($this->decisionIndicators['adxAboveThreshold']) {
-                    if ($this->decisionIndicators['emaCrossInfo']['side'] == 'long' && $this->decisionIndicators['rsiCrossInfo']['side'] == 'long') {
-                        $this->marketIfTouchedOrderPrice = max([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossInfo']['targetPrice']]);
+                    if ($this->decisionIndicators['emaCrossInfo']['side'] == 'long' && $this->decisionIndicators['rsiCrossOuter']['side'] == 'long') {
+                        $this->marketIfTouchedOrderPrice = max([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossOuter']['targetPrice']]);
                         $this->newLongPosition();
                     }
                 }
@@ -117,8 +117,8 @@ class HlhbTargetPrice extends \App\Strategy\Strategy  {
             else {
                 $this->modifyStopLoss($this->decisionIndicators['emaCrossInfo']['crossRate']);
                 if ($this->decisionIndicators['adxAboveThreshold']) {
-                    if ($this->decisionIndicators['emaCrossInfo']['side'] == 'short' && $this->decisionIndicators['rsiCrossInfo']['side'] == 'short') {
-                        $this->marketIfTouchedOrderPrice = min([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossInfo']['targetPrice']]);
+                    if ($this->decisionIndicators['emaCrossInfo']['side'] == 'short' && $this->decisionIndicators['rsiCrossOuter']['side'] == 'short') {
+                        $this->marketIfTouchedOrderPrice = min([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossOuter']['targetPrice']]);
                         $this->newShortPosition();
                     }
                 }
@@ -128,8 +128,8 @@ class HlhbTargetPrice extends \App\Strategy\Strategy  {
             if ($this->decisionIndicators['emaCrossInfo']['side'] == 'short') {
                 $this->closePosition();
                 if ($this->decisionIndicators['adxAboveThreshold']) {
-                    if ($this->decisionIndicators['emaCrossInfo']['side'] == 'short' && $this->decisionIndicators['rsiCrossInfo']['side'] == 'short') {
-                        $this->marketIfTouchedOrderPrice = min([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossInfo']['targetPrice']]);
+                    if ($this->decisionIndicators['emaCrossInfo']['side'] == 'short' && $this->decisionIndicators['rsiCrossOuter']['side'] == 'short') {
+                        $this->marketIfTouchedOrderPrice = min([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossOuter']['targetPrice']]);
                         $this->newShortPosition();
                     }
                 }
@@ -138,8 +138,8 @@ class HlhbTargetPrice extends \App\Strategy\Strategy  {
                 $this->modifyStopLoss($this->decisionIndicators['emaCrossInfo']['crossRate']);
 
                 if ($this->decisionIndicators['adxAboveThreshold']) {
-                    if ($this->decisionIndicators['emaCrossInfo']['side'] == 'long' && $this->decisionIndicators['rsiCrossInfo']['side'] == 'long') {
-                        $this->marketIfTouchedOrderPrice = max([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossInfo']['targetPrice']]);
+                    if ($this->decisionIndicators['emaCrossInfo']['side'] == 'long' && $this->decisionIndicators['rsiCrossOuter']['side'] == 'long') {
+                        $this->marketIfTouchedOrderPrice = max([$this->decisionIndicators['emaCrossInfo']['crossRate'], $this->decisionIndicators['rsiCrossOuter']['targetPrice']]);
                         $this->newLongPosition();
                     }
                 }

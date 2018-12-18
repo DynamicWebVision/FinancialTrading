@@ -20,7 +20,7 @@ class StochasticEventsTest extends TestCase
         $stochasticEvents = new StochasticEvents();
 
         $stoch = $stochasticEvents->stochastics($rates, 14, 1, 3);
-        $debug=1;
+
         $this->assertEquals(94, round(end($stoch['fast']['k'])));
     }
 
@@ -54,7 +54,6 @@ class StochasticEventsTest extends TestCase
         $stochasticEvents = new StochasticEvents();
 
         //Low Check
-
         $response = $stochasticEvents->getReturnFromOverBoughtPrice($rates, 14, 20);
 
         $stdRate = new \StdClass();

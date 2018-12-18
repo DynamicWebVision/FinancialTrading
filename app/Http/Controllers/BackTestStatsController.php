@@ -262,7 +262,6 @@ class BackTestStatsController extends Controller {
             else {
                 $totalGainLossByMonth = round($totalGainLoss/sizeof($monthPositiveNegative));
             }
-
         }
 
         $backTestPositions = BackTestPosition::where('position_type', '=', 1)->where('back_test_id', '=', $backTestId)->get()->toArray();

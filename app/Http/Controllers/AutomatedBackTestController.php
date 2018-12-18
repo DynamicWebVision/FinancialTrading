@@ -24,6 +24,8 @@ use App\BackTest\BackTestToBeProcessed\Strategy\TestStuffedNose\TestStuffedNoseB
 use App\BackTest\BackTestToBeProcessed\Strategy\HmaQuickTest\HmaQuickTestBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\HmaTurn\HmaTurnBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\NewIndicatorTesting\NewIndicatorTestingBackTestToBeProcessed;
+use App\BackTest\BackTestToBeProcessed\Strategy\HmaReversal\HmaReversalBackTestToBeProcessed;
+use App\BackTest\BackTestToBeProcessed\Strategy\TestingSystems\TestingSystemsBackTestToBeProcessed;
 //END OF Backtest Declarations
 
 use \Log;
@@ -276,6 +278,14 @@ class AutomatedBackTestController extends Controller {
         }
         elseif ($server->current_back_test_strategy == 'NEW_INDICATOR_TESTING') {
             $backTestStrategy = new NewIndicatorTestingBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'HMA_REV') {
+            $backTestStrategy = new HmaReversalBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'TESTING_SYSTEMS') {
+            $backTestStrategy = new TestingSystemsBackTestToBeProcessed($processId, $server);
             $backTestStrategy->callProcess();
         }
         //END OF STRATEGY IFS

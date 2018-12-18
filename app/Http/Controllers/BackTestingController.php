@@ -653,7 +653,11 @@ class BackTestingController extends Controller {
         $newBackTestGroup->name = $post['back_test_name'];
         $newBackTestGroup->description = $post['group_desc'];
         $newBackTestGroup->rate_unix_time_start = $post['rate_unix_time_start'];
-        $newBackTestGroup->priority = $post['priority'];
+
+        if (isset($post['priority'])) {
+            $newBackTestGroup->priority = $post['priority'];
+        }
+
 
         $newBackTestGroup->variable_1_desc = $post['variable_1_name'];
         $newBackTestGroup->variable_2_desc = $post['variable_2_name'];

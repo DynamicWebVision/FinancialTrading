@@ -73,13 +73,11 @@ class BollingerPriceTouchCloseAdx extends \App\Strategy\Strategy  {
     public function setExitIndicators() {
         $bollinger = new Bollinger();
         $bollinger->strategyLogger = $this->strategyLogger;
-
         $this->decisionIndicators['bollingerCrossClose'] = $bollinger->closeAcrossCenterLine($this->rates['simple'], $this->bollingerLength, $this->bollingerSdMultiplier, $this->openPosition['side']);
     }
 
     public function getNewStopLoss() {
         $emaEvents = new EmaEvents();
-
         return $emaEvents->priceCrossEmaRate($this->rates['simple'], $this->bollingerLength);
     }
 

@@ -85,6 +85,10 @@ class Utility  {
         return array_slice($array, $startIndex, $elementCount);
     }
 
+    public function getFirstXElementsInArray($array, $elementCount) {
+        return array_slice($array, 0, $elementCount);
+    }
+
     public function shortenComplexArray($array, $size = 5) {
         $returnArray = [];
 

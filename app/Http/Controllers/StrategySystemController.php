@@ -168,7 +168,6 @@ class StrategySystemController extends Controller {
         $newPositionPriceTargetsShort = [];
 
         foreach ($post['newPositionConditions'] as $newPositionIndicator) {
-
             if (strlen($newPositionIndicator['opposing_condition_b']) > 0) {
                 $condition = $newPositionIndicator['opposing_condition_b'];
             }

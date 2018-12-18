@@ -13,6 +13,10 @@ use \App\Services\StrategyLogger;
 use \App\Strategy\NewIndicatorTesting\HmaTurnAdxBelow;
 use \App\Strategy\NewIndicatorTesting\TestHmaSlopeMin;
 use \App\Strategy\NewIndicatorTesting\HmaPriceTargetTest;
+use \App\Strategy\NewIndicatorTesting\BollingerGetOuterCrossTest;
+use \App\Strategy\NewIndicatorTesting\TestCenterCross;
+use \App\Strategy\NewIndicatorTesting\TestEmaCrossPoint;
+use \App\Strategy\NewIndicatorTesting\TestRsiTarget;
 //END STRATEGY DECLARATIONS
 
 class NewIndicatorTestingBackTestToBeProcessed extends \App\BackTest\BackTestToBeProcessed\Base
@@ -116,6 +120,86 @@ class NewIndicatorTestingBackTestToBeProcessed extends \App\BackTest\BackTestToB
             $strategy->hmaLength = intval($this->backTestToBeProcessed->variable_1);
             $strategy->adxLength = intval($this->backTestToBeProcessed->variable_2);
             $strategy->adxUndersoldThreshold = intval($this->backTestToBeProcessed->variable_3);
+        
+            $strategy->takeProfitPipAmount = 0;
+            $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
+        intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
+        
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'BOLLINGER_OUTER_CROSS') {
+            $backTest->rateLevel = 'both';
+        
+            $strategy = new BollingerGetOuterCrossTest(1,1,true);
+        
+            //$strategy->orderType = 'MARKET_IF_TOUCHED';
+            $strategy->bollingerLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->bollingerSdMultiplier = intval($this->backTestToBeProcessed->variable_2);
+            $strategy->adxLength = intval($this->backTestToBeProcessed->variable_3);
+            $strategy->adxUndersoldThreshold = intval($this->backTestToBeProcessed->variable_4);
+        
+            $strategy->takeProfitPipAmount = 0;
+            $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
+        intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
+        
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'TEST_CENTER_CROSS') {
+            $backTest->rateLevel = 'both';
+        
+            $strategy = new TestCenterCross(1,1,true);
+        
+            //$strategy->orderType = 'MARKET_IF_TOUCHED';
+            $strategy->bollingerLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->bollingerSdMultiplier = intval($this->backTestToBeProcessed->variable_2);
+            $strategy->bollingerLength = intval($this->backTestToBeProcessed->variable_3);
+            $strategy->bollingerSdMultiplier = intval($this->backTestToBeProcessed->variable_4);
+        
+            $strategy->takeProfitPipAmount = 0;
+            $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
+        intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
+        
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'TEST_EMA_CROSS_POINT') {
+            $backTest->rateLevel = 'both';
+        
+            $strategy = new TestEmaCrossPoint(1,1,true);
+        
+            //$strategy->orderType = 'MARKET_IF_TOUCHED';
+            $strategy->fastEma = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->slowEma = intval($this->backTestToBeProcessed->variable_2);
+            $strategy->adxLength = intval($this->backTestToBeProcessed->variable_3);
+            $strategy->adxUndersoldThreshold = intval($this->backTestToBeProcessed->variable_4);
+        
+            $strategy->takeProfitPipAmount = 0;
+            $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
+        intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
+        
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'TEST_RSI_TARGET') {
+            $backTest->rateLevel = 'both';
+        
+            $strategy = new TestRsiTarget(1,1,true);
+        
+            //$strategy->orderType = 'MARKET_IF_TOUCHED';
+            $strategy->rsiLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->rsiLevel = intval($this->backTestToBeProcessed->variable_2);
+            $strategy->adxLength = intval($this->backTestToBeProcessed->variable_3);
+            $strategy->adxUndersoldThreshold = intval($this->backTestToBeProcessed->variable_4);
         
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
