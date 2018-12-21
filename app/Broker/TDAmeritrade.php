@@ -1,10 +1,9 @@
 <?php namespace App\Broker;
 use \Log;
+use App\Model\TdAmeritradeAccount;
+
 
 class TDAmeritrade extends \App\Broker\Base  {
-    public $frequency;
-    public $exchange;
-
     public $takeProfit;
     public $takeProfitPipAmount;
 
@@ -26,17 +25,22 @@ class TDAmeritrade extends \App\Broker\Base  {
 
     public $strategyLogger;
 
+    public $accessToken;
+
 
     public function __construct() {
-        $this->tdAmeritradeBaseUrl = env('TD_AMERITRADE_API_URL');
-        $this->curl = curl_init();
-        //curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.env('TD_AMERITRADE_ACCESS_TOKEN') ));
-        //curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.env('TD_AMERITRADE_REFRESH_TOKEN') ));
-        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
-        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+
 //        curl_setopt( $this->curl, CURLOPT_FOLLOWLOCATION, 1);
 //        curl_setopt( $this->curl, CURLOPT_VERBOSE, 1);
         //curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
+        $this->validateAccessToken();
+
+        $this->tdAmeritradeBaseUrl = env('TD_AMERITRADE_API_URL');
+        $this->curl = curl_init();
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$this->accessToken ));
+        //curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.env('TD_AMERITRADE_REFRESH_TOKEN') ));
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
     }
 
     public function getAuthorizationToken() {
@@ -60,7 +64,18 @@ class TDAmeritrade extends \App\Broker\Base  {
         $response = $this->apiGetRequest();
     }
 
-    public function authorizationToken() {
+    public function validateAccessToken() {
+        $tdAmeritradeAccount = TdAmeritradeAccount::find(1);
+
+        if ($tdAmeritradeAccount->access_token_expiration < time()) {
+            $this->refreshAuthorizationToken();
+        }
+        else {
+            $this->accessToken = $tdAmeritradeAccount->access_token;
+        }
+    }
+
+    public function refreshAuthorizationToken() {
         $this->apiUrl = $this->tdAmeritradeBaseUrl."oauth2/token";
 
         $data = [
@@ -71,10 +86,15 @@ class TDAmeritrade extends \App\Broker\Base  {
             'refresh_token'=> 'eHIaKltsColhAJjnpDEnUWCgxyUv81aUo40/vucjhBvavSd2Fbp/1xu0dpc3AdrXSZZ/jZ5/n1l0K+h5RY696C7kiYzd56khF3EYD9T0em6yHyiMBkHPXfmHpCNkZnkqugLOfHRpR3wMMxuhQ6/Z9SYB4ggjquiLmkqGJSivrMss9a/NSmPE7Dm3y7aqb5tEkmTd/QttVQJx8svbLqsXQRjS3dJu1lECs2yMXIB3jBOmBMut6GteozfeLfyoVb3r9NpxphuvrSKBMfaCezuTsn9L//TeAEHEpxjMJP6dag/SSnOTeutzeVlqtnb5n9UDrujNPIGCH7K8cmHgSITzLJMoAiAi+mbX+bKkY29UPs3wI1GV/zsaWq8aS7JdFlNhcR4hpGjbgEhJecGAk2AvWshmkVcqnZWmBdgF5lefZRivWbJOCORg9rSJ1hZ100MQuG4LYrgoVi/JHHvlUOBtQVREuKKP8viYENyf0/It6PuQgDhL0GWlKDZiEdWkVwHTv1z8kh8yb5hFEqi0pFP+CuGoOySIbNavX3UKWL/eJueRHpGsE9z9NwpjGMBkRdX2uNlTuOCGzrpv0Ar+LVoyzmy8Xo6pDZhofkSxH5ktXaoDgj8aJVoJyVx1t80ZtFTo+Mv8Nb+E/syPokJgzYCG8VHaBqa1medZOgimGGfbQK6Gm9Nu0hTACe78a9oV7TGlfTQqSO93xnDVlUi2EwBIPX5/9GkoypHNEInpakZtUsqnxX0ChAJsGvMMKPzj2KEZOBYUbHtCQo0g+JRm989d8a7GZeHf3uWE3vgvURAYsHyxkMEW/eoLE4qtBkVg/WdfMjwhu1+OH8/Bher8SEEioOuXXbsV1HCYouMdBpW5uQ4nmlZqqHu2BBK/N6guSy3OPOn9D3CkuQs=212FD3x19z9sWBHDJACbC00B75E'
         ];
 
-        $data = http_build_query($data);
+        $response = $this->apiPostRequestHttpFields($data);
 
-        $response = $this->apiPostRequest($data);
+        $tdAmeritradeAccount = TdAmeritradeAccount::find(1);
 
-        $test = 1;
+        $tdAmeritradeAccount->access_token_expiration = time() + $response->expires_in - 60;
+        $tdAmeritradeAccount->access_token = $response->access_token;
+
+        $tdAmeritradeAccount->save();
+
+        $this->accessToken = $response->access_token;
     }
 }

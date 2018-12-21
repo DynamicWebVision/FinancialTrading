@@ -26,6 +26,7 @@ use App\BackTest\BackTestToBeProcessed\Strategy\HmaTurn\HmaTurnBackTestToBeProce
 use App\BackTest\BackTestToBeProcessed\Strategy\NewIndicatorTesting\NewIndicatorTestingBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\HmaReversal\HmaReversalBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\TestingSystems\TestingSystemsBackTestToBeProcessed;
+use App\BackTest\BackTestToBeProcessed\Strategy\HmaReversal\HmaReversalBackTestToBeProcessed;
 //END OF Backtest Declarations
 
 use \Log;
@@ -286,6 +287,10 @@ class AutomatedBackTestController extends Controller {
         }
         elseif ($server->current_back_test_strategy == 'TESTING_SYSTEMS') {
             $backTestStrategy = new TestingSystemsBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'HMA_REVERSAL') {
+            $backTestStrategy = new HmaReversalBackTestToBeProcessed($processId, $server);
             $backTestStrategy->callProcess();
         }
         //END OF STRATEGY IFS

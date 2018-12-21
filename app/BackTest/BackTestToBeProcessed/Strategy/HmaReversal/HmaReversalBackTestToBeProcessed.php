@@ -2,7 +2,7 @@
 
 /**********************
 HmaReversal Backtest Variable Definitions
-Created at: 12/16/18by Brian O'Neill
+Created at: 12/19/18by Brian O'Neill
 ***********************/
 
 use \DB;
@@ -10,7 +10,7 @@ use App\Model\Exchange;
 use \App\BackTest\TakeProfitStopLossTest;
 use \App\Services\StrategyLogger;
 
-use \App\Strategy\HmaReversal\HmaRevRsiPoint;
+use \App\Strategy\HmaReversal\HmaRevAlone;
 //END STRATEGY DECLARATIONS
 
 class HmaReversalBackTestToBeProcessed extends \App\BackTest\BackTestToBeProcessed\Base
@@ -47,17 +47,14 @@ class HmaReversalBackTestToBeProcessed extends \App\BackTest\BackTestToBeProcess
         if (1==2) {
 
         }
-        elseif ($this->server->strategy_iteration == 'HMA_REV_RSI_POINT') {
+        elseif ($this->server->strategy_iteration == 'HMA_REV_ALONE') {
             $backTest->rateLevel = 'both';
         
-            $strategy = new HmaRevRsiPoint(1,1,true);
+            $strategy = new HmaRevAlone(1,1,true);
         
             //$strategy->orderType = 'MARKET_IF_TOUCHED';
             $strategy->hmaLength = intval($this->backTestToBeProcessed->variable_1);
-            $strategy->rsiLength = intval($this->backTestToBeProcessed->variable_2);
-            $strategy->rsiOuterLimit = intval($this->backTestToBeProcessed->variable_3);
-            $strategy->rsiOpenPositionOuterLimit = intval($this->backTestToBeProcessed->variable_4);
-
+        
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
         intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);

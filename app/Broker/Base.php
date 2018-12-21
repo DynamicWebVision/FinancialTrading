@@ -38,6 +38,22 @@ abstract class Base  {
         return json_decode($resp);
     }
 
+    public function apiPostRequestHttpFields($fields) {
+        curl_setopt($this->curl, CURLOPT_URL, $this->apiUrl);
+        curl_setopt($this->curl,CURLOPT_POST, 1);
+        curl_setopt($this->curl,CURLOPT_POSTFIELDS, http_build_query($fields));
+
+        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, NULL);
+
+        //Added to Get Curl Info
+        //curl_setopt($this->curl, CURLINFO_HEADER_OUT, true);
+
+        $resp = curl_exec($this->curl);
+
+        // $headers = curl_getinfo($this->curl, CURLINFO_HEADER_OUT);
+        return json_decode($resp);
+    }
+
     public function apiDeleteRequest() {
         curl_setopt($this->curl, CURLOPT_URL, $this->apiUrl);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "DELETE");

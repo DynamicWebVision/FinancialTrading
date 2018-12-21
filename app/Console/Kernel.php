@@ -86,13 +86,13 @@ class Kernel extends ConsoleKernel
         elseif (env('APP_ENV') == 'maintenance') {
             $schedule->call('App\Http\Controllers\BackTestingController@deleteDevTestOnlyBackTestGroups')->tuesdays();
 
+            $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
+
             $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
 
             $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->daily();
             $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->daily();
-
-            $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
         }
     }
 

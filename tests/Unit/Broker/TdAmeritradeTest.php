@@ -32,7 +32,12 @@ class TdAmeritradeTest extends TestCase
     public function testGetNewAuthToken()
     {
         $tdAmeritrade = new TDAmeritrade();
+        $tdAmeritrade->refreshAuthorizationToken();
+    }
 
-        $tdAmeritrade->authorizationToken();
+    public function testValidateAccessToken()
+    {
+        $tdAmeritrade = new TDAmeritrade();
+        $tdAmeritrade->validateAccessToken();
     }
 }
