@@ -27,6 +27,6 @@ class ServersControllerTest extends TestCase
     public function testGetLastGitPull() {
         $serversController = new ServersController();
         $lastGitPullTime = $serversController->getLastGitPullTime();
-        $this->assertEquals(1, $lastGitPullTime->pull_time);
+        $this->assertEquals(1, $lastGitPullTime['pull_time']);
     }
 }
