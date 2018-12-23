@@ -24,7 +24,6 @@ use App\BackTest\BackTestToBeProcessed\Strategy\TestStuffedNose\TestStuffedNoseB
 use App\BackTest\BackTestToBeProcessed\Strategy\HmaQuickTest\HmaQuickTestBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\HmaTurn\HmaTurnBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\NewIndicatorTesting\NewIndicatorTestingBackTestToBeProcessed;
-use App\BackTest\BackTestToBeProcessed\Strategy\HmaReversal\HmaReversalBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\TestingSystems\TestingSystemsBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\HmaReversal\HmaReversalBackTestToBeProcessed;
 //END OF Backtest Declarations
@@ -217,10 +216,6 @@ class AutomatedBackTestController extends Controller {
             $emaMomentumProcess = new HmaCrossTPSL($processId, $server);
             $emaMomentumProcess->callProcess();
         }
-//        elseif ($server->current_back_test_strategy == 'BOLLINGER_PULLBACK') {
-//            $emaMomentumProcess = new BollingerSlTp($processId, $server);
-//            $emaMomentumProcess->callProcess();
-//        }
         elseif ($server->current_back_test_strategy == 'THREE_STAY_IN') {
             $emaMomentumProcess = new StayIn($processId, $server);
             $emaMomentumProcess->callProcess();
@@ -279,10 +274,6 @@ class AutomatedBackTestController extends Controller {
         }
         elseif ($server->current_back_test_strategy == 'NEW_INDICATOR_TESTING') {
             $backTestStrategy = new NewIndicatorTestingBackTestToBeProcessed($processId, $server);
-            $backTestStrategy->callProcess();
-        }
-        elseif ($server->current_back_test_strategy == 'HMA_REV') {
-            $backTestStrategy = new HmaReversalBackTestToBeProcessed($processId, $server);
             $backTestStrategy->callProcess();
         }
         elseif ($server->current_back_test_strategy == 'TESTING_SYSTEMS') {

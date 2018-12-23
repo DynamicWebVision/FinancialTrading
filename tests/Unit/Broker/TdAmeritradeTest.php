@@ -20,7 +20,7 @@ class TdAmeritradeTest extends TestCase
     {
         $tdAmeritrade = new TDAmeritrade();
 
-        $symbol = 'HD';
+        $symbol = 'XOM';
         $params = [
             'periodType'=>'day',
             'period'=> '2'

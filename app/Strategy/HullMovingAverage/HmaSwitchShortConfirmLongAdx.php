@@ -96,7 +96,6 @@ class HmaSwitchShortConfirmLongAdx extends \App\Strategy\Strategy  {
                 $this->modifyStopLoss($this->decisionIndicators['fastHmaChangeDirection']['priceTarget']);
             }
         }
-
     }
 
     public function checkForNewPosition() {

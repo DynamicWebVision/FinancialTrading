@@ -387,12 +387,6 @@ abstract class BackTest  {
             $backTestToBeProcessed->save();
         }
 
-        if (env('APP_ENV') == 'local') {
-            DB::table('tbd_debug_bt_rate_time')
-                ->where('id', 1)
-                ->update(['rate_time' => $this->currentPriceData->dateTime]);
-        }
-
         $this->savePositions();
     }
 

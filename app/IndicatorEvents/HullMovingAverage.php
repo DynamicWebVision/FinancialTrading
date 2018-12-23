@@ -75,7 +75,7 @@ class HullMovingAverage {
     //Confirm whether Current Slope of Hma meets minimum amount
     public function hmaSlope($rates, $length, $pip, $minSlope) {
         $lastThree = $this->hullLineLastThree($rates, $length);
-        $slope = round(($lastThree[2] - $lastThree[1])/$pip);
+        $slope = round(($lastThree[2] - $lastThree[1]));
 
         if ($slope >= $minSlope) {
             return 'long';

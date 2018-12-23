@@ -27,7 +27,7 @@ class TransactionController extends Controller {
         else {
             $nextAccount = OandaAccounts::where('live_trading', '=', $this->liveTrading)->orderBy('last_transaction_pull')
                 ->take(1)
-                ->get(['oanda_id', 'id']);
+                ->get();
 
             $id = $nextAccount[0]->oanda_id;
             $dbAccountId = $nextAccount[0]->id;
@@ -133,14 +133,14 @@ class TransactionController extends Controller {
     }
 
     public function saveLiveTransactions() {
-        $this->environment = 'practice';
-        $this->liveTrading = 0;
+        $this->environment = 'live';
+        $this->liveTrading = 1;
         $this->getOandaTransactions();
     }
 
     public function savePracticeTransactions() {
-        $this->environment = 'live';
-        $this->liveTrading = 1;
+        $this->environment = 'practice';
+        $this->liveTrading = 0;
         $this->getOandaTransactions();
     }
 

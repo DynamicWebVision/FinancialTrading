@@ -33,14 +33,15 @@ class TDAmeritrade extends \App\Broker\Base  {
 //        curl_setopt( $this->curl, CURLOPT_FOLLOWLOCATION, 1);
 //        curl_setopt( $this->curl, CURLOPT_VERBOSE, 1);
         //curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
-        $this->validateAccessToken();
 
         $this->tdAmeritradeBaseUrl = env('TD_AMERITRADE_API_URL');
+
         $this->curl = curl_init();
-        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$this->accessToken ));
         //curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.env('TD_AMERITRADE_REFRESH_TOKEN') ));
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+
+        $this->validateAccessToken();
     }
 
     public function getAuthorizationToken() {
@@ -69,9 +70,11 @@ class TDAmeritrade extends \App\Broker\Base  {
 
         if ($tdAmeritradeAccount->access_token_expiration < time()) {
             $this->refreshAuthorizationToken();
+            curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$this->accessToken ));
         }
         else {
             $this->accessToken = $tdAmeritradeAccount->access_token;
+            curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$this->accessToken ));
         }
     }
 
