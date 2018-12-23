@@ -920,4 +920,24 @@ class BackTestingController extends Controller {
             $this->deleteBackTestGroup($devTestBackTestGroup->id);
         }
     }
+
+    public function rollBackServerGroup() {
+        $server = Servers::find(env('SERVER_ID'));
+
+        $groupId = $server->current_back_test_group_id;
+
+        $this->rollbackBackTestGroup($groupId);
+    }
+
+    public function rollbackLastRunServerProcess() {
+        $server = Servers::find(env('SERVER_ID'));
+
+        $groupId = $server->current_back_test_group_id;
+
+        $lastBackTestToBeProcessedRecord = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)
+            ->order_by('updated_at', 'desc')
+            ->first();
+
+        $this->rollbackSingleProcess($lastBackTestToBeProcessedRecord->id);
+    }
 }

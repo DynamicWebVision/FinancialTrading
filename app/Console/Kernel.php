@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Model\Servers;
 
 class Kernel extends ConsoleKernel
 {
@@ -12,6 +13,15 @@ class Kernel extends ConsoleKernel
      *
      * @var array
      */
+
+    //Four Hour Interval
+//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('1:00');
+//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('5:00');
+//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('9:00');
+//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('13:00');
+//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('17:00');
+//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('21:00');
+
     protected $commands = [
 //        Commands\Inspire::class,
         'App\Console\Commands\Inspire',
@@ -25,6 +35,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\AutoBackTestWithoutReRun',
         'App\Console\Commands\UpdateServers',
         'App\Console\Commands\UpdateDBHost',
+        'App\Console\Commands\UpdateGitPullTime',
     ];
 
     public $everyFifteenMinuteEarlyInterval = '59,14,29,44 * * * * *';
@@ -43,12 +54,8 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LiveTradingController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
         }
         elseif (env('APP_ENV') == 'live_practice') {
-            //$schedule->call('App\Http\Controllers\LivePracticeController@twoLevelHmaDaily')->dailyAt('00:00');
-
-            //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumAdx15MinutesTPSL')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
-            //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenMinuteStochPullback')->cron($this->everyFifteenMinutesInterval);
 
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaThirty')->everyThirtyMinutes();
 
@@ -57,42 +64,26 @@ class Kernel extends ConsoleKernel
 
             //
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('22:01');
-
-            //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenEmaFiveTenAfter')->cron($this->everyFifteenMinutesInterval);
-
-            //$schedule->call('App\Http\Controllers\LivePracticeController@hourStochFastOppositeSlow')->hourly();
-            //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyAfterHour')->hourly();
-
-            //Four Hour Interval
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('1:00');
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('5:00');
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('9:00');
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('13:00');
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('17:00');
-//            $schedule->call('App\Http\Controllers\LivePracticeController@HmaAdxStayInFourHour')->dailyAt('21:00');
-
-            //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourlyBeforeHour')->cron($this->everyHourEarlyInterval);
-
-            //$schedule->call('App\Http\Controllers\LivePracticeController@fifteenEarly')->cron($this->everyFifteenMinuteEarlyInterval);
-
-            //$schedule->call('App\Http\Controllers\LivePracticeController@emaMomentumHourly')->hourly();
         }
-        elseif (env('APP_ENV') == 'historical_data') {
+        elseif (env('APP_ENV') == 'utility') {
+            $server = Servers::find(Config::get('server_id'));
+
             $schedule->call('App\Http\Controllers\HistoricalDataController@initialLoad')->cron($this->everyFifteenMinutesInterval);
-        }
-        elseif (env('APP_ENV') == 'backtest') {
-            $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
-        }
-        elseif (env('APP_ENV') == 'maintenance') {
-            $schedule->call('App\Http\Controllers\BackTestingController@deleteDevTestOnlyBackTestGroups')->tuesdays();
 
-            $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
+            if ($server->task_code == 'fx_backtest') {
+                $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
+            }
+            elseif ($server->task_code == 'fx_maintenance') {
+                $schedule->call('App\Http\Controllers\BackTestingController@deleteDevTestOnlyBackTestGroups')->tuesdays();
 
-            $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->cron($this->everyFifteenMinutesInterval);
-            $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
+                $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
 
-            $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->daily();
-            $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->daily();
+                $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->cron($this->everyFifteenMinutesInterval);
+                $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
+
+                $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->daily();
+                $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->daily();
+            }
         }
     }
 

@@ -228,4 +228,12 @@ class ServersController extends Controller {
 
         $utility->writeToLine('/var/www/FinancialTrading/.env',5,'DB_HOST='.$dbIpAddress);
     }
+
+    public function updateGitPullTime() {
+        $file = '/home/ec2-user/event_times/last_git_pull.json';
+        unlink($file);
+        $handle = fopen($file, 'w');
+        fwrite($handle, '{ "pull_time":"'.time().'"}');
+        fclose($handle);
+    }
 }
