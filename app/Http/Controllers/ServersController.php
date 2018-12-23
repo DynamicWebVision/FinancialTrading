@@ -238,6 +238,7 @@ class ServersController extends Controller {
 
     public function getLastGitPullTime() {
         $gitPullData = file_get_contents('/home/ec2-user/event_times/last_git_pull.json');
-        dd(json_decode($gitPullData));
+        $gitPullData = json_decode($gitPullData);
+        return $gitPullData->pull_time;
     }
 }
