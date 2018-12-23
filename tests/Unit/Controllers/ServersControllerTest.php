@@ -29,7 +29,7 @@ class ServersControllerTest extends TestCase
 //        $this->assertEquals(1545597821, $lastGitPullTime);
 //    }
 
-    public function setServerEnvironmentTest() {
+    public function testSetServerEnvironmentTest() {
         $serversController = new ServersController();
         $serversController->setServerEnvironment();
     }
