@@ -56,13 +56,16 @@ class AwsService  {
     public function modifyInstanceName($name) {
         $instanceId = file_get_contents("http://instance-data/latest/meta-data/instance-id");
 
-        $modify_instance = $this->ec2Client->modifyInstanceAttribute(
-            [
-                'Attribute'=> 'rootDeviceName',
-                'InstanceId'=> $instanceId,
-                'Value'=>$name
-            ]
-        );
-        dd($modify_instance);
+        $test = $this->ec2Client->describeInstances(['InstanceIds'=>[$instanceId]]);
+
+        dd($test);
+
+//        $modify_instance = $this->ec2Client->modifyInstanceAttribute(
+//            [
+//                'Attribute'=> 'rootDeviceName',
+//                'InstanceId'=> $instanceId,
+//                'Value'=>$name
+//            ]
+//        );
     }
 }
