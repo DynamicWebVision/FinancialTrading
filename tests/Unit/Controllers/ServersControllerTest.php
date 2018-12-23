@@ -18,9 +18,10 @@ class ServersControllerTest extends TestCase
     public $oanda;
 
     public function testUpdateIpAddresses() {
-        $serversController = new ServersController();
-
-        $serversController->reWriteServerIpLocal();
+//        $serversController = new ServersController();
+//
+//        $serversController->reWriteServerIpLocal();
+        echo 'lasdjkflkasjdfasdf';
     }
 
     public function testGetLastGitPull() {
