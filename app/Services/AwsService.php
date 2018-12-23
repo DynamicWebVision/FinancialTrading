@@ -53,5 +53,14 @@ class AwsService  {
         }
     }
 
+    public function modifyInstanceName($name) {
 
+        $modify_instance = $this->ec2Client->modifyInstanceAttribute(
+            [
+                'Attribute'=> 'rootDeviceName',
+                'Value'=>$name
+            ]
+        );
+        dd($modify_instance);
+    }
 }

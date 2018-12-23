@@ -26,7 +26,6 @@ class Kernel extends ConsoleKernel
 //        Commands\Inspire::class,
         'App\Console\Commands\Inspire',
         'App\Console\Commands\CallRoute',
-        'App\Console\Commands\ProcessEmaMomentum',
         'App\Console\Commands\ProcessBackTestStats',
         'App\Console\Commands\PopulateHistoricalData',
         'App\Console\Commands\EnvironmentVariableBackTest',

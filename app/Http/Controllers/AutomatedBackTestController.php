@@ -56,6 +56,11 @@ class AutomatedBackTestController extends Controller {
     public function runAutoBackTestIfFailsUpdate() {
         Log::info('runAutoBackTestIfFailsUpdate starting');
 
+        //Set Last Git Pull Time To Check Later
+        $serverController = new ServersController();
+        $lastGitPullTime = $serverController->getLastGitPullTime();
+        Config::set('last_git_pull_time', $lastGitPullTime);
+
         $server = Servers::find(Config::get('server_id'));
 
         $firstCount = BackTestToBeProcessed::where('back_test_group_id', '=', $server->current_back_test_group_id)->where('start', '=', 0)->where('finish', '=', 0)->count();
@@ -156,13 +161,24 @@ class AutomatedBackTestController extends Controller {
             catch (\Exception $e) {
                 Log::critical('BT Exception '.$e);
             }
-
             $recordCount = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)
                 ->where('finish', '=', 0)
                 ->where('start', '=', 0)
                 ->where('hung_up', '=', 0)
                 ->count();
+
+            //Set Last Git Pull Time To Check Later
+            $serverController = new ServersController();
+            $lastGitPullTime = $serverController->getLastGitPullTime();
+            $configLastGitPullTime = Config::get('last_git_pull_time');
+
+            $server = Servers::find(Config::get('server_id'));
+
+            if ($lastGitPullTime != $configLastGitPullTime || $server->current_back_test_group_id != $groupId) {
+                $recordCount = 0;
+            }
         }
+        return true;
     }
 
     public function environmentVariableDriveProcessId($processId) {

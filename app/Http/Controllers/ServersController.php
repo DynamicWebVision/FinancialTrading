@@ -111,7 +111,7 @@ class ServersController extends Controller {
             $backTestGroup = BackTestGroup::where((function ($query) {
                 $query->where('server', '=', 0)
                     ->orWhere('server', '=', 6);
-            }))->where('strategy_system_id', '!=', 0)->orderBy('priority', 'desc')->first();
+            }))->where('strategy_system_id', '!=', 0)->where('dev_testing_only', '!=', 1)->orderBy('priority', 'desc')->first();
         }
 
         $strategy = Strategy::find($backTestGroup->strategy_id);
@@ -178,10 +178,11 @@ class ServersController extends Controller {
         $awsService->setCurrentServerAttributes();
         $this->serverId = $awsService->getInstanceTagValue('server_id');
 
-
         $server = Servers::find($this->serverId);
         $server->ip_address = $awsService->currentInstance['PublicIpAddress'];
         $server->save();
+
+        $awsService->modifyInstanceName($server->name);
     }
 
     public function reWriteServerIpLocal() {

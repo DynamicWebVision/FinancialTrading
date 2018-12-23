@@ -17,16 +17,20 @@ class ServersControllerTest extends TestCase
     public $transactionController;
     public $oanda;
 
-    public function testUpdateIpAddresses() {
+//    public function testUpdateIpAddresses() {
 //        $serversController = new ServersController();
 //
 //        $serversController->reWriteServerIpLocal();
-        echo 'lasdjkflkasjdfasdf';
-    }
+//    }
+//
+//    public function testGetLastGitPull() {
+//        $serversController = new ServersController();
+//        $lastGitPullTime = $serversController->getLastGitPullTime();
+//        $this->assertEquals(1545597821, $lastGitPullTime);
+//    }
 
-    public function testGetLastGitPull() {
+    public function setServerEnvironmentTest() {
         $serversController = new ServersController();
-        $lastGitPullTime = $serversController->getLastGitPullTime();
-        $this->assertEquals(1, $lastGitPullTime);
+        $serversController->setServerEnvironment();
     }
 }
