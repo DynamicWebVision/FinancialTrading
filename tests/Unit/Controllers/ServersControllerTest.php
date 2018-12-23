@@ -22,4 +22,10 @@ class ServersControllerTest extends TestCase
 
         $serversController->reWriteServerIpLocal();
     }
+
+    public function testGetLastGitPull() {
+        $serversController = new ServersController();
+        $lastGitPullTime = $serversController->getLastGitPullTime();
+        $this->assertEquals(1);
+    }
 }

@@ -189,7 +189,6 @@ class ServersController extends Controller {
         unlink($file);
         $handle = fopen($file, 'w');
 
-
         $server = Servers::find(1);
         $text = "jordan_ip='".$server->ip_address."'\n";
         $text .= 'alias open_jordan=\'/usr/bin/open -a "/Applications/Google Chrome.app" "http://'.$server->ip_address.'"\'';
@@ -235,5 +234,10 @@ class ServersController extends Controller {
         $handle = fopen($file, 'w');
         fwrite($handle, '{ "pull_time":"'.time().'"}');
         fclose($handle);
+    }
+
+    public function getLastGitPullTime() {
+        $gitPullData = file_get_contents('/home/ec2-user/event_times/last_git_pull.json');
+        return $gitPullData;
     }
 }
