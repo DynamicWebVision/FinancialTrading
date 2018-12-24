@@ -37,6 +37,10 @@ class ServersControllerTest extends TestCase
 //    }
 
     public function testTaskCode() {
+        $server_id  = Config::get('server_id');
+
+        dd($server_id);
+
         $server = Servers::find(Config::get('server_id'));
 
         $this->assertEquals('fx_maintenance', $server->task_code);
