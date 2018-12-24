@@ -182,7 +182,7 @@ class ServersController extends Controller {
         $server->ip_address = $awsService->currentInstance['PublicIpAddress'];
         $server->save();
 
-        $awsService->modifyInstanceName($server->name);
+       // $awsService->modifyInstanceName($server->name);
     }
 
     public function reWriteServerIpLocal() {

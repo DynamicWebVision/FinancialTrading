@@ -26,12 +26,12 @@ class ExchangeDataController extends Controller {
                 $stockDump->symbol = $data[0];
                 $stockDump->name = $data[1];
 
-                if (is_float($data[2])) {
+                if (is_numeric($data[2])) {
                     $stockDump->last_sale = $data[2];
                 }
 
-                if (is_float($data[3])) {
-                    $stockDump->market_cap = $data[3];
+                if (is_numeric($data[3])) {
+                    $stockDump->market_cap = round($data[3]);
                 }
 
                 $stockDump->ipo_year = $data[5];
@@ -55,11 +55,11 @@ class ExchangeDataController extends Controller {
                 $stockDump->symbol = $data[0];
                 $stockDump->name = $data[1];
 
-                if (is_float($data[2])) {
+                if (is_numeric($data[2])) {
                     $stockDump->last_sale = $data[2];
                 }
 
-                if (is_float($data[3])) {
+                if (is_numeric($data[3])) {
                     $stockDump->market_cap = $data[3];
                 }
 

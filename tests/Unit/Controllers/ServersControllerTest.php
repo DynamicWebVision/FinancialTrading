@@ -9,6 +9,7 @@ use App\Services\CurrencyIndicators;
 use App\Model\HistoricalRates;
 use App\Model\TmpTestRates;
 use App\Http\Controllers\ServersController;
+use App\Model\Servers;
 use App\Broker\OandaV20;
 
 class ServersControllerTest extends TestCase
@@ -29,8 +30,14 @@ class ServersControllerTest extends TestCase
 //        $this->assertEquals(1545597821, $lastGitPullTime);
 //    }
 
-    public function testSetServerEnvironmentTest() {
-        $serversController = new ServersController();
-        $serversController->setServerEnvironment();
+//    public function testSetServerEnvironmentTest() {
+//        $serversController = new ServersController();
+//        $serversController->setServerEnvironment();
+//    }
+
+    public function testTaskCode() {
+        $server = Servers::find(Config::get('server_id'));
+
+        $this->assertEquals('fx_maintenance', $server->task_code);
     }
 }

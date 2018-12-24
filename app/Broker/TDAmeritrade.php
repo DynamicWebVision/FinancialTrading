@@ -63,6 +63,7 @@ class TDAmeritrade extends \App\Broker\Base  {
         $this->getVariables = $parameters;
 
         $response = $this->apiGetRequest();
+        return $response;
     }
 
     public function validateAccessToken() {

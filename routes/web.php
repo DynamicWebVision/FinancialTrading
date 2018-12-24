@@ -172,6 +172,17 @@ Route::get('h_d_test', 'HistoricalDataController@test');
 Route::get('historical_rates/run_specific/{frequencyId}/{currencyId}', 'HistoricalDataController@populateHistoricalDataSpecific');
 Route::get('historical_rates_test_specific_time', 'TestController@testSpecificTimeFrameFromOanda');
 
+
+/******************************
+ * STOCKS HISTORICAL RATES
+ ******************************/
+Route::get('stocks_historical_data', 'Equity\StocksHistoricalDataController@getStockData');
+Route::get('test_historical_volume', 'HistoricalDataController@initialLoad');
+Route::get('test_most_recent', 'HistoricalDataController@historicalDataPull');
+Route::get('h_d_test', 'HistoricalDataController@test');
+Route::get('historical_rates/run_specific/{frequencyId}/{currencyId}', 'HistoricalDataController@populateHistoricalDataSpecific');
+Route::get('historical_rates_test_specific_time', 'TestController@testSpecificTimeFrameFromOanda');
+
 /******************************
  * STRATEGY LOGGS
  ******************************/
