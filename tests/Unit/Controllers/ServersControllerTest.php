@@ -9,6 +9,7 @@ use App\Services\CurrencyIndicators;
 use App\Model\HistoricalRates;
 use App\Model\TmpTestRates;
 use App\Http\Controllers\ServersController;
+use Illuminate\Support\Facades\Config;
 use App\Model\Servers;
 use App\Broker\OandaV20;
 
@@ -18,11 +19,11 @@ class ServersControllerTest extends TestCase
     public $transactionController;
     public $oanda;
 
-//    public function testUpdateIpAddresses() {
-//        $serversController = new ServersController();
-//
-//        $serversController->reWriteServerIpLocal();
-//    }
+    public function testUpdateIpAddresses() {
+        $serversController = new ServersController();
+
+        $serversController->reWriteServerIpLocal();
+    }
 //
 //    public function testGetLastGitPull() {
 //        $serversController = new ServersController();
