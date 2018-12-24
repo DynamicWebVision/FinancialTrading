@@ -13,7 +13,6 @@ use App\Broker\OandaV20;
 
 class StocksHistoricalDataTest extends TestCase
 {
-
     public $transactionController;
     public $oanda;
 

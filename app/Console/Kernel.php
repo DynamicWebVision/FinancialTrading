@@ -83,6 +83,9 @@ class Kernel extends ConsoleKernel
                 $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->daily();
                 $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->daily();
             }
+            elseif ($server->task_code == 'stock_hist_data') {
+                $schedule->call('App\Http\Controllers\Equity\StocksHistoricalDataController@keepRunning')->hourly();
+            }
         }
     }
 

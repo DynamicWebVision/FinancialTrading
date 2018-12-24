@@ -52,5 +52,14 @@ class HullEventsTest extends TestCase
         $minSlope = $hullMovingAverage->hmaSlope($rates, 200, .0001, 1);
 
         $this->assertEquals($minSlope, 'short');
+
+        //$rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 3:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,150,'2018-12-12 7:00:00');
+
+        $hullMovingAverage = new HullMovingAverage();
+
+        $minSlope = $hullMovingAverage->hmaSlope($rates, 50, .0001, 0);
+
+        $this->assertEquals($minSlope, 'short');
     }
 }

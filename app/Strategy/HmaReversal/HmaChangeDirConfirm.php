@@ -47,7 +47,7 @@ class HmaChangeDirConfirm extends \App\Strategy\Strategy  {
 
         $this->decisionIndicators['hmaChangeDirection'] = $hmaEvents->hullChangeDirectionCheck($this->rates['simple'], $this->hmaLength);
 
-        $this->decisionIndicators['hmaSlope'] = $hmaEvents->hmaSlope($this->rates['simple'], $this->hmaLength, $this->exchange->pip, $this->hmaSlopeMin);
+        $this->decisionIndicators['hmaSlope'] = $hmaEvents->hmaSlope($this->getRatesInPips($this->rates['simple']), $this->hmaLength, $this->exchange->pip, $this->hmaSlopeMin);
 
         if ($this->openPosition['side'] == 'long') {
             //A Conditions
