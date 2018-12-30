@@ -4,6 +4,7 @@ use App\Model\BackTestGroup;
 use \App\Model\Servers;
 use \App\Model\Strategy;
 use \App\Model\StrategySystem;
+use \App\Model\ServerTasks;
 use App\Model\BackTestToBeProcessed;
 use App\Services\Utility;
 use \DB;
@@ -17,7 +18,7 @@ class ServersController extends Controller {
     public $serverId;
 
     public function index() {
-        $servers = Servers::get()->toArray();
+        $servers = Servers::with('task')->get()->toArray();
 
         foreach ($servers as $index=>$server) {
             $servers[$index]['updated_at'] = date( 'm/d H:i', strtotime($server['updated_at']));
@@ -31,11 +32,13 @@ class ServersController extends Controller {
             else {
                 $servers[$index]['start_count'] = 0;
                 $servers[$index]['finish_count'] = 0;
-
                 $servers[$index]['stats_left'] = 0;
             }
         }
-        return $servers;
+
+        $serverTasks = ServerTasks::get()->toArray();
+
+        return ['servers'=>$servers, 'serverTasks'=>$serverTasks];
     }
 
     public function updateServers() {
@@ -44,14 +47,18 @@ class ServersController extends Controller {
         foreach ($post as $server) {
             $dbServer = Servers::find($server['id']);
 
+            $task = ServerTasks::find($server['task']['id']);
+
             $dbServer->name = $server['name'];
             $dbServer->current_task = $server['current_task'];
-            $dbServer->task_id = $server['task_id'];
+            $dbServer->task_id = $server['task']['id'];
+            $dbServer->task_code = $task->task_code;
             $dbServer->ip_address = $server['ip_address'];
             $dbServer->command_start = $server['command_start'];
 
             $dbServer->current_back_test_group_id = $server['current_back_test_group_id'];
             $dbServer->current_back_test_strategy = $server['current_back_test_strategy'];
+            $dbServer->stock_id = $server['stock_id'];
             $dbServer->strategy_iteration = $server['strategy_iteration'];
             $dbServer->rate_unix_time_start = $server['rate_unix_time_start'];
 
@@ -181,8 +188,6 @@ class ServersController extends Controller {
         $server = Servers::find($this->serverId);
         $server->ip_address = $awsService->currentInstance['PublicIpAddress'];
         $server->save();
-
-       // $awsService->modifyInstanceName($server->name);
     }
 
     public function reWriteServerIpLocal() {

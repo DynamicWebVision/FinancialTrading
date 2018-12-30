@@ -12,14 +12,12 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
+                                <th>Task</th>
                                 <th>BTG</th>
-                                <th>Strategy</th>
-                                <th>Iteration</th>
-                                <th>Unix</th>
+                                <th>Strgy - System</th>
                                 <th>Start</th>
                                 <th>Finish</th>
                                 <th>Stats</th>
-                                <th>Address</th>
 
                                 <th></th>
                                 <th></th>
@@ -36,27 +34,19 @@
                                            <!--ng-model="server.current_task" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">-->
                                 <!--</td>-->
                                 <td>
+                                    {{server.task.task_code}}
+                                    <!--<input type="number" class="input-micro form-control inline" name="current_back_test_group_id" placeholder="Back Test Group ID" ng-fade-->
+                                           <!--ng-model="server.current_back_test_group_id" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">-->
+                                </td>
+                                <td>
                                     {{server.current_back_test_group_id}}
                                     <!--<input type="number" class="input-micro form-control inline" name="current_back_test_group_id" placeholder="Back Test Group ID" ng-fade-->
                                            <!--ng-model="server.current_back_test_group_id" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">-->
                                 </td>
                                 <td>
-                                    {{s.utility.shortenText(server.current_back_test_strategy, 8)}}
+                                    {{s.utility.shortenText(server.current_back_test_strategy, 8)}} - {{s.utility.shortenText(server.strategy_iteration, 8)}}
                                     <!--<input type="text" class="input-large form-control inline" name="current_back_test_strategy" placeholder="Back Test Strategy" ng-fade-->
                                            <!--ng-model="server.current_back_test_strategy" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">-->
-                                </td>
-                                <td>
-                                    {{s.utility.shortenText(server.strategy_iteration, 8)}}
-                                    <!--<input type="text" class="input-med form-control inline" name="strategy_iteration" placeholder="Back Test Strategy" ng-fade-->
-                                           <!--ng-model="server.strategy_iteration" ng-keyup="s.typeTaskChange(server)" ng-model-options="{debounce: 750}">-->
-                                </td>
-                                <td>
-                                    <select name="cmb_promo_type" class="form-control input-small margin-top-five" ng-required="true"
-                                            ng-change="s.updateServers()"
-                                            ng-model="server.rate_unix_time_start" ng-fade
-                                            ng-options="unix_date.unix_time as unix_date.readable_date for unix_date in s.rate_unix_options">
-                                        <option class="placeholder-color" value="" selected disabled>Start</option>
-                                    </select>
                                 </td>
                                 <td>
                                     {{server.start_count}}
@@ -150,10 +140,27 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
+                        <label class="col-md-4 control-label">Task</label>
+                        <div class="col-md-8">
+                            <select name="cmb_promo_type" class="form-control input-large margin-top-five" ng-required="true"
+                            ng-model="s.editServer.task.id" ng-fade
+                            ng-options="task.id as task.name for task in s.tasks">
+                            <option class="placeholder-color" value="" selected disabled>Task</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="s.editServer.task.id == 1">
                         <label class="col-md-4 control-label">Group ID</label>
                         <div class="col-md-8">
                             <input type="number" class="input-micro form-control inline" name="current_back_test_group_id" placeholder="Back Test Group ID" ng-fade
                                    ng-model="s.editServer.current_back_test_group_id">
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="s.editServer.task.id == 5">
+                        <label class="col-md-4 control-label">Stock ID</label>
+                        <div class="col-md-8">
+                            <input type="number" class="input-micro form-control inline" name="stock_id" placeholder="Stock ID" ng-fade
+                                   ng-model="s.editServer.stock_id">
                         </div>
                     </div>
                     <!--<div class="form-group">-->
@@ -165,7 +172,11 @@
                     <!--</div>-->
                     <!--<div class="form-group">-->
                         <!--<label class="col-md-4 control-label">Iteration</label>-->
-                        <!--<div class="col-md-8">-->
+
+                </div>
+                <!--<div class="form-group">-->
+                <!--<label class="col-md-4 control-label">Strategy</label>-->
+                <!--<div c--<div class="col-md-8">-->
                             <!--<input type="text" class="input-large form-control inline" name="strategy_iteration" placeholder="Iteration" ng-fade-->
                                    <!--ng-model="s.editServer.strategy_iteration">-->
                         <!--</div>-->

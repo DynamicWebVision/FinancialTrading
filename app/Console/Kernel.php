@@ -69,6 +69,8 @@ class Kernel extends ConsoleKernel
 
             $schedule->call('App\Http\Controllers\HistoricalDataController@initialLoad')->cron($this->everyFifteenMinutesInterval);
 
+            if (!isset($server->task_code)) { return false; }
+
             if ($server->task_code == 'fx_backtest') {
                 $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
             }

@@ -104,19 +104,22 @@ class StocksHistoricalDataController extends Controller {
         $serverId = Config::get('server_id');
         $server = Servers::find($serverId);
 
-        if ($server->task_id == -1) {
+        $maxRateUnixTime = StocksDailyPrice::where('stock_id', '=', $server->stock_id)->max('date_time_unix');
+
+        $serverStockYear = date('Y', $maxRateUnixTime);
+
+        if ($serverStockYear == date("Y")) {
             $this->getNextServerStock();
 
-            $server->task_id = $this->stockId;
+            $server->stock_id = $this->stockId;
             $server->save();
         }
         else {
-            $stock = Stocks::find($server->task_id);
+            $stock = Stocks::find($server->stock_id);
 
             $this->symbol = $stock->symbol;
             $this->stockId = $stock->id;
         }
-
     }
 
     public function getNextServerStock() {
@@ -124,6 +127,13 @@ class StocksHistoricalDataController extends Controller {
             ->where('market_cap', '>', 0)
             ->where('ipo_year', '!=', 'n/a')
             ->first();
+
+//        if (!is_null($nextStock)) {
+//            $nextStock = Stocks::where('price_populate_year', '=', 0)
+//                ->where('market_cap', '>', 0)
+//                ->where('ipo_year', '!=', 'n/a')
+//                ->first();
+//        }
 
         $this->symbol = $nextStock->symbol;
         $this->stockId = $nextStock->id;

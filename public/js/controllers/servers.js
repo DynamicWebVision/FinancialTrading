@@ -9,6 +9,7 @@
         var vm = this;
 
         vm.servers = [];
+        vm.tasks = [];
         vm.monthData = [];
         var inputChangedPromise = false;
         vm.updateSuccess = false;
@@ -55,11 +56,11 @@
 
         function loadServers() {
             $http.get('/servers').success(function(response){
-                vm.servers = response;
+                vm.servers = response.servers;
+                vm.tasks = response.serverTasks;
+
             });
         }
-
-
 
         function updateServers() {
             $http.post('/servers', vm.servers).success(function(response){
@@ -135,7 +136,6 @@
 
 
         }
-
         loadServers();
     }
 })();
