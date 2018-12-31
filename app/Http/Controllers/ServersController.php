@@ -160,6 +160,15 @@ class ServersController extends Controller {
 
         $server->rate_unix_time_start = $backTestInfo->rate_unix_time_start;
 
+        //
+        $task = ServerTasks::find($server['task']['id']);
+
+        $server->current_task = $post['current_task'];
+        $server->task_id = $post['task']['id'];
+
+        $server->task_code = $task->task_code;
+        $server->stock_id = $post['stock_id'];
+
         $server->save();
 
         return $server;

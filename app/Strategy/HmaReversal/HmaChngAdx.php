@@ -1,24 +1,34 @@
 <?php
 
 /********************************************
-HmaChangeDirConfirm Strategy System under HmaReversal Strategy
-Created at: 12/21/18by Brian O'Neill
-Description: This is the HMA change direction.
+HmaChngAdx Strategy System under HmaReversal Strategy
+Created at: 12/30/18by Brian O'Neill
+Description: This is an Hma reversal where it waits for the change to occur rather than entering on the price point. It also has an ADX minimum confirmation.
 ********************************************/
 
 namespace App\Strategy\HmaReversal;
 use \Log;
 use \App\IndicatorEvents\HullMovingAverage;
+use \App\IndicatorEvents\AdxEvents;
 
-class HmaChangeDirConfirm extends \App\Strategy\Strategy  {
+class HmaChngAdx extends \App\Strategy\Strategy  {
 
     public $hmaLength;
+    public $adxLength;
+    public $adxUndersoldThreshold;
     public $hmaSlopeMin;
 
     public function setEntryIndicators() {
         $hmaEvents = new \App\IndicatorEvents\HullMovingAverage;
         $hmaEvents->strategyLogger = $this->strategyLogger;
-       $this->decisionIndicators['hmaChangeDirection'] = $hmaEvents->hullChangeDirectionCheck($this->rates['simple'], $this->hmaLength);
+
+        $adxEvents = new \App\IndicatorEvents\AdxEvents;
+        $adxEvents->strategyLogger = $this->strategyLogger;
+
+
+        $this->decisionIndicators['hmaChangeDirection'] = $hmaEvents->hullChangeDirectionCheck($this->rates['simple'], $this->hmaLength);
+
+        $this->decisionIndicators['adxAboveThreshold'] = $adxEvents->adxAboveThreshold($this->rates['full'], $this->adxLength, $this->adxUndersoldThreshold);
 
     }
 
@@ -28,11 +38,13 @@ class HmaChangeDirConfirm extends \App\Strategy\Strategy  {
 
         if (
         $this->decisionIndicators['hmaChangeDirection'] == 'reversedUp'
+         && $this->decisionIndicators['adxAboveThreshold']
         ) {
             $this->newLongPosition();
         }
         elseif (
         $this->decisionIndicators['hmaChangeDirection'] == 'reversedDown'
+         && $this->decisionIndicators['adxAboveThreshold']
         ) {
             $this->newShortPosition();
         }
@@ -78,6 +90,7 @@ class HmaChangeDirConfirm extends \App\Strategy\Strategy  {
 
     public function checkForNewPosition() {
         $this->setOpenPosition();
+
         if (!$this->openPosition) {
             $this->decision = $this->getEntryDecision();
         }
