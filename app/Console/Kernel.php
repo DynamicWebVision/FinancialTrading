@@ -67,9 +67,14 @@ class Kernel extends ConsoleKernel
         elseif (env('APP_ENV') == 'utility') {
             $server = Servers::find(Config::get('server_id'));
 
-            $schedule->call('App\Http\Controllers\HistoricalDataController@initialLoad')->cron($this->everyFifteenMinutesInterval);
+            //$schedule->call('App\Http\Controllers\HistoricalDataController@initialLoad')->cron($this->everyFifteenMinutesInterval);
 
-            if (!isset($server->task_code)) { return false; }
+            if (!isset($server->task_code)) {
+                \Log::emergency('Server Task Code Not Set');
+                \Log::emergency('Server Id: '.Config::get('server_id'));
+                \Log::emergency(json_encode($server));
+                return false;
+            }
 
             if ($server->task_code == 'fx_backtest') {
                 $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
@@ -86,6 +91,7 @@ class Kernel extends ConsoleKernel
                 $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->daily();
             }
             elseif ($server->task_code == 'stock_hist_data') {
+
                 $schedule->call('App\Http\Controllers\Equity\StocksHistoricalDataController@keepRunning')->hourly();
             }
         }
