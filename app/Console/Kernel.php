@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Model\Servers;
+use App\Http\Controllers\ServersController;
 
 class Kernel extends ConsoleKernel
 {
@@ -65,6 +66,9 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('22:01');
         }
         elseif (env('APP_ENV') == 'utility') {
+            $serverController = new ServersController();
+            $serverController->setServerId();
+
             $server = Servers::find(Config::get('server_id'));
 
             //$schedule->call('App\Http\Controllers\HistoricalDataController@initialLoad')->cron($this->everyFifteenMinutesInterval);
