@@ -34,7 +34,7 @@ class TDAmeritrade extends \App\Broker\Base  {
 //        curl_setopt( $this->curl, CURLOPT_VERBOSE, 1);
         //curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
 
-        $this->tdAmeritradeBaseUrl = env('TD_AMERITRADE_API_URL');
+        $this->tdAmeritradeBaseUrl = 'https://api.tdameritrade.com/v1/';
 
         $this->curl = curl_init();
         //curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.env('TD_AMERITRADE_REFRESH_TOKEN') ));
@@ -82,17 +82,25 @@ class TDAmeritrade extends \App\Broker\Base  {
     public function refreshAuthorizationToken() {
         $this->apiUrl = $this->tdAmeritradeBaseUrl."oauth2/token";
 
+        $tdAmeritradeAccount = TdAmeritradeAccount::find(1);
+
         $data = [
             'grant_type'=>'refresh_token',
-            'client_id'=> 'BRIANO2684@AMER.OAUTHAP',
+            'client_id'=> $tdAmeritradeAccount->client_id,
             //'redirect_uri'=>'http://127.0.0.1',
             //'access_type'=>'offline',
-            'refresh_token'=> 'eHIaKltsColhAJjnpDEnUWCgxyUv81aUo40/vucjhBvavSd2Fbp/1xu0dpc3AdrXSZZ/jZ5/n1l0K+h5RY696C7kiYzd56khF3EYD9T0em6yHyiMBkHPXfmHpCNkZnkqugLOfHRpR3wMMxuhQ6/Z9SYB4ggjquiLmkqGJSivrMss9a/NSmPE7Dm3y7aqb5tEkmTd/QttVQJx8svbLqsXQRjS3dJu1lECs2yMXIB3jBOmBMut6GteozfeLfyoVb3r9NpxphuvrSKBMfaCezuTsn9L//TeAEHEpxjMJP6dag/SSnOTeutzeVlqtnb5n9UDrujNPIGCH7K8cmHgSITzLJMoAiAi+mbX+bKkY29UPs3wI1GV/zsaWq8aS7JdFlNhcR4hpGjbgEhJecGAk2AvWshmkVcqnZWmBdgF5lefZRivWbJOCORg9rSJ1hZ100MQuG4LYrgoVi/JHHvlUOBtQVREuKKP8viYENyf0/It6PuQgDhL0GWlKDZiEdWkVwHTv1z8kh8yb5hFEqi0pFP+CuGoOySIbNavX3UKWL/eJueRHpGsE9z9NwpjGMBkRdX2uNlTuOCGzrpv0Ar+LVoyzmy8Xo6pDZhofkSxH5ktXaoDgj8aJVoJyVx1t80ZtFTo+Mv8Nb+E/syPokJgzYCG8VHaBqa1medZOgimGGfbQK6Gm9Nu0hTACe78a9oV7TGlfTQqSO93xnDVlUi2EwBIPX5/9GkoypHNEInpakZtUsqnxX0ChAJsGvMMKPzj2KEZOBYUbHtCQo0g+JRm989d8a7GZeHf3uWE3vgvURAYsHyxkMEW/eoLE4qtBkVg/WdfMjwhu1+OH8/Bher8SEEioOuXXbsV1HCYouMdBpW5uQ4nmlZqqHu2BBK/N6guSy3OPOn9D3CkuQs=212FD3x19z9sWBHDJACbC00B75E'
+            'refresh_token'=> $tdAmeritradeAccount->refresh_token
         ];
 
-        $response = $this->apiPostRequestHttpFields($data);
+//        $data = [
+//            'grant_type'=>'refresh_token',
+//            'client_id'=> 'BRIANO2684@AMER.OAUTHAP',
+//            //'redirect_uri'=>'http://127.0.0.1',
+//            //'access_type'=>'offline',
+//            'refresh_token'=> 'eHIaKltsColhAJjnpDEnUWCgxyUv81aUo40/vucjhBvavSd2Fbp/1xu0dpc3AdrXSZZ/jZ5/n1l0K+h5RY696C7kiYzd56khF3EYD9T0em6yHyiMBkHPXfmHpCNkZnkqugLOfHRpR3wMMxuhQ6/Z9SYB4ggjquiLmkqGJSivrMss9a/NSmPE7Dm3y7aqb5tEkmTd/QttVQJx8svbLqsXQRjS3dJu1lECs2yMXIB3jBOmBMut6GteozfeLfyoVb3r9NpxphuvrSKBMfaCezuTsn9L//TeAEHEpxjMJP6dag/SSnOTeutzeVlqtnb5n9UDrujNPIGCH7K8cmHgSITzLJMoAiAi+mbX+bKkY29UPs3wI1GV/zsaWq8aS7JdFlNhcR4hpGjbgEhJecGAk2AvWshmkVcqnZWmBdgF5lefZRivWbJOCORg9rSJ1hZ100MQuG4LYrgoVi/JHHvlUOBtQVREuKKP8viYENyf0/It6PuQgDhL0GWlKDZiEdWkVwHTv1z8kh8yb5hFEqi0pFP+CuGoOySIbNavX3UKWL/eJueRHpGsE9z9NwpjGMBkRdX2uNlTuOCGzrpv0Ar+LVoyzmy8Xo6pDZhofkSxH5ktXaoDgj8aJVoJyVx1t80ZtFTo+Mv8Nb+E/syPokJgzYCG8VHaBqa1medZOgimGGfbQK6Gm9Nu0hTACe78a9oV7TGlfTQqSO93xnDVlUi2EwBIPX5/9GkoypHNEInpakZtUsqnxX0ChAJsGvMMKPzj2KEZOBYUbHtCQo0g+JRm989d8a7GZeHf3uWE3vgvURAYsHyxkMEW/eoLE4qtBkVg/WdfMjwhu1+OH8/Bher8SEEioOuXXbsV1HCYouMdBpW5uQ4nmlZqqHu2BBK/N6guSy3OPOn9D3CkuQs=212FD3x19z9sWBHDJACbC00B75E'
+//        ];
 
-        $tdAmeritradeAccount = TdAmeritradeAccount::find(1);
+        $response = $this->apiPostRequestHttpFields($data);
 
         $tdAmeritradeAccount->access_token_expiration = time() + $response->expires_in - 60;
         $tdAmeritradeAccount->access_token = $response->access_token;
