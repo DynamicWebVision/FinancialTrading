@@ -39,6 +39,7 @@ class StocksHistoricalDataController extends Controller {
         $lastGitPullTime = $serverController->getLastGitPullTime();
         Config::set('last_git_pull_time', $lastGitPullTime);
         $this->keepRunningStartTime = time();
+        Log::emergency('Keep Running Start Time '.$this->keepRunningStartTime);
 
         while ($this->keepRunningCheck) {
             if ($this->lastGitPullTime == time()) {
