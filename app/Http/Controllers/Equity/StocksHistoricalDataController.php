@@ -142,7 +142,7 @@ class StocksHistoricalDataController extends Controller {
 
         $serverId = Config::get('server_id');
         $server = Servers::find($serverId);
-        $server->task_id = $nextStock->id;
+        $server->stock_id = $nextStock->id;
         $server->save();
     }
 
