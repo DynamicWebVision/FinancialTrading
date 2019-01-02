@@ -11,6 +11,7 @@ use App\Model\TmpTestRates;
 use App\Http\Controllers\Equity\StocksHistoricalDataController;
 use App\Http\Controllers\ServersController;
 use App\Model\Servers;
+use Illuminate\Support\Facades\Config;
 use App\Broker\OandaV20;
 
 class StocksHistoricalDataTest extends TestCase
