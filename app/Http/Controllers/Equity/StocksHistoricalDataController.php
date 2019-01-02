@@ -164,7 +164,7 @@ class StocksHistoricalDataController extends Controller {
 
                 $this->getNextServerStock();
 
-                $server->task_id = $this->stockId;
+                $server->stock_id = $this->stockId;
                 $server->save();
 
                 $stock = Stocks::find($this->stockId);
