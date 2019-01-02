@@ -10,6 +10,7 @@ use App\Model\HistoricalRates;
 use App\Model\TmpTestRates;
 use App\Http\Controllers\Equity\StocksHistoricalDataController;
 use App\Http\Controllers\ServersController;
+use App\Model\Servers;
 use App\Broker\OandaV20;
 
 class StocksHistoricalDataTest extends TestCase
