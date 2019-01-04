@@ -160,4 +160,17 @@ class HullMovingAverage {
             return 'crossedBelow';
         }
     }
+
+    public function hmaPriceAboveBelowHma($rates, $length) {
+        $hma = $this->hmaLastXPeriods($rates, $length, 2);
+
+        $currentPrice = end($rates);
+
+        if ($currentPrice > $hma[1]) {
+            return 'above';
+        }
+        elseif ($currentPrice < $hma[1]) {
+            return 'below';
+        }
+    }
 }

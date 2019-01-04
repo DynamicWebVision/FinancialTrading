@@ -71,4 +71,26 @@ class HullEventsTest extends TestCase
 
         $this->assertEquals($minSlope, 'short');
     }
+
+    public function testHmaPriceAboveBelowHma() {
+        $historicalRates = new \App\Model\HistoricalRates();
+
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-12-20 9:00:00');
+
+        $hullMovingAverage = new HullMovingAverage();
+
+        $hmaAboveBelow = $hullMovingAverage->hmaPriceAboveBelowHma($rates, 9);
+
+        $this->assertEquals($hmaAboveBelow, 'above');
+
+        $historicalRates = new \App\Model\HistoricalRates();
+
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-12-21 9:00:00');
+
+        $hullMovingAverage = new HullMovingAverage();
+
+        $hmaAboveBelow = $hullMovingAverage->hmaPriceAboveBelowHma($rates, 9);
+
+        $this->assertEquals($hmaAboveBelow, 'below');
+    }
 }

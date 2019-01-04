@@ -13,6 +13,7 @@ use \App\Services\StrategyLogger;
 use \App\Strategy\HmaReversal\HmaRevAlone;
 use \App\Strategy\HmaReversal\HmaChangeDirConfirm;
 use \App\Strategy\HmaReversal\HmaChngAdx;
+use \App\Strategy\HmaReversal\HmaRevPriceClose;
 //END STRATEGY DECLARATIONS
 
 class HmaReversalBackTestToBeProcessed extends \App\BackTest\BackTestToBeProcessed\Base
@@ -94,6 +95,24 @@ class HmaReversalBackTestToBeProcessed extends \App\BackTest\BackTestToBeProcess
             $strategy->adxLength = intval($this->backTestToBeProcessed->variable_2);
             $strategy->adxUndersoldThreshold = intval($this->backTestToBeProcessed->variable_3);
             $strategy->hmaSlopeMin = intval($this->backTestToBeProcessed->variable_4);
+        
+            $strategy->takeProfitPipAmount = 0;
+            $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
+        intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
+        
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'HMA_REV_PRICE_CLOSE') {
+            $backTest->rateLevel = 'both';
+        
+            $strategy = new HmaRevPriceClose(1,1,true);
+        
+            //$strategy->orderType = 'MARKET_IF_TOUCHED';
+            $strategy->hmaLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->hmaSlopeMin = intval($this->backTestToBeProcessed->variable_2);
         
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
