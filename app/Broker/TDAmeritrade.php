@@ -66,6 +66,13 @@ class TDAmeritrade extends \App\Broker\Base  {
         return $response;
     }
 
+    public function getStockFundamentalData($symbol) {
+        $this->apiUrl = $this->tdAmeritradeBaseUrl."instruments/".$symbol;
+
+        $response = $this->apiGetRequest();
+        return $response;
+    }
+
     public function validateAccessToken() {
         $tdAmeritradeAccount = TdAmeritradeAccount::find(1);
 

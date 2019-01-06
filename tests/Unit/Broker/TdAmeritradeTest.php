@@ -29,6 +29,15 @@ class TdAmeritradeTest extends TestCase
         $tdAmeritrade->getStockPriceHistory($symbol, $params);
     }
 
+    public function testFundamentalData()
+    {
+        $tdAmeritrade = new TDAmeritrade();
+
+        $symbol = 'XOM';
+
+        $tdAmeritrade->getStockFundamentalData($symbol);
+    }
+
     public function testGetNewAuthToken()
     {
         $tdAmeritrade = new TDAmeritrade();

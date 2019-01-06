@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Config;
+use Twilio;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\DB;
 
@@ -37,12 +38,8 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-//        if (env('APP_ENV') == 'LIVE_TRADING') {
-//            $this->sendTwilioErrorAlert($exception);
-//        }
-
-        if (env('EMAIL_ERROR_ALERT') == 'Y') {
-            //$this->sendTwilioErrorAlert($exception);
+        if (env('APP_ENV') == 'live_trading') {
+            $this->sendTwilioErrorAlert($exception);
         }
 
         if (env('APP_ENV') == 'backtest' || env('APP_ENV') == 'backtest_temp_offline') {
@@ -96,5 +93,9 @@ class Handler extends ExceptionHandler
         }
 
         return redirect()->guest(route('login'));
+    }
+
+    public function sendEmailErrorAlert($e) {
+        Twilio::message('2817967601', 'Error on '.env('APP_ENV').' environment. '.substr($e,0,100));
     }
 }

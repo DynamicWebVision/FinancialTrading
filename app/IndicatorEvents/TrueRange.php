@@ -23,9 +23,56 @@ use \App\IndicatorEvents\EventHelpers;
 
 class TrueRange {
 
+    public $trueRangeValues = [];
+    public $averageTrueRangeValues;
+
     public function __construct() {
         $this->indicators = new CurrencyIndicators();
         $this->eventHelpers = new EventHelpers();
+    }
+
+    public function trueRange($currentRate, $previousRate) {
+        $trueRangeOptions = [];
+        $trueRangeOptions[] = $currentRate->highMid - $currentRate->lowMid;
+        $trueRangeOptions[] = abs($currentRate->highMid - $previousRate->closeMid);
+        $trueRangeOptions[] = abs($currentRate->lowMid - $previousRate->closeMid);
+        return max($trueRangeOptions);
+    }
+
+    public function averageTrueRange($rates, $length) {
+        //Get All True Range Values
+        foreach ($rates as $index=>$rate) {
+            if ($index > 0) {
+                $this->trueRangeValues[] = $this->trueRange($rate, $rates[$index-1]);
+            }
+            else {
+                $this->trueRangeValues[] = $rate->highMid - $rate->lowMid;
+            }
+        }
+
+        //Average True Range
+        $atrIndex = 0;
+        $initialTrSum = 0;
+        foreach ($this->trueRangeValues as $index=>$trueRangeValue) {
+            if (($index + 1) > $length) {
+                $this->averageTrueRangeValues[] = (($this->averageTrueRangeValues[$atrIndex-1]*($length-1)) + $trueRangeValue)/$length;
+                $atrIndex++;
+            }
+            elseif (($index + 1) == $length) {
+                $initialTrSum = $initialTrSum + $trueRangeValue;
+                $this->averageTrueRangeValues[] = $initialTrSum/$length;
+                $atrIndex++;
+            }
+            else {
+                $initialTrSum = $initialTrSum + $trueRangeValue;
+            }
+        }
+        return $this->averageTrueRangeValues;
+    }
+
+    public function currentAverageTrueRange($rates, $length) {
+        $atr = $this->averageTrueRange($rates, $length);
+        return end($atr);
     }
 
     public function getTakeProfitLossPipValues($rates, $periods, $exchangePips, $profitMultiplier , $lossMultiplier) {
@@ -39,8 +86,7 @@ class TrueRange {
     }
 
     public function getStopLossPipValue($rates, $periods, $exchangePips , $lossMultiplier) {
-        $trueRange = $this->indicators->averageTrueRange($rates, $periods);
-
+        $trueRange = $this->currentAverageTrueRange($rates, $periods);
         return round(($trueRange/$exchangePips)*$lossMultiplier);
     }
 }
