@@ -209,10 +209,7 @@ Route::get('php', function () {
     echo phpinfo();
 });
 
-Route::get('bac', function () {
-    x
-});
-
+Route::get('test_text', 'StrategySystemController@strategySystems');
 
 //TBD Test
 Route::get('td_ameritrade_auth_code', function() {
