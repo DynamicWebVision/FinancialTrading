@@ -48,9 +48,9 @@ class RsiEvents  {
         $losses = [];
 
         foreach ($rates as $index=>$rate) {
-            if (isset($endRates[$index+1])) {
+            if (isset($rates[$index+1])) {
 
-                $diff = $endRates[$index+1] - $rate;
+                $diff = $rates[$index+1] - $rate;
 
                 if ($diff > 0) {
                     $gains[] = (($diff/$rate)*100);
@@ -65,7 +65,6 @@ class RsiEvents  {
     }
 
     public function rsi($rates, $period) {
-        $endRates = $this->utility->getFirstXElementsInArray($rates, $period + 1);
 
         foreach ($rates as $index=>$rate) {
             if ($index >= $period) {
@@ -156,8 +155,8 @@ class RsiEvents  {
     }
 
     public function getCrossLevelPricePointFromOuter($rates, $length, $rsiCrossLevel) {
-        $ratesBesidesNext = $this->utility->getLastXElementsInArray($rates, $length);
-        $currentRSIWithoutNextRate = $this->rsi($ratesBesidesNext, $length-1);
+        $ratesBesidesNext = $this->utility->getLastXElementsInArray($rates, $length-1);
+        $currentRSIWithoutNextRate = $this->rsi($rates, $length);
 
         $currentGainsLosses = $this->getGainLossSums($ratesBesidesNext);
 

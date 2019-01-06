@@ -80,12 +80,20 @@ class RsiEventsTest extends TestCase
 
     public function testRsiCalculation() {
         $historicalRates = new \App\Model\HistoricalRates();
-        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-11 17:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-17 11:00:00');
 
         $rsiEvents = new RsiEvents();
 
         $response = $rsiEvents->rsi($rates, 14);
 
-        $debug=1;
+        $this->assertEquals(round($response), 72);
+
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-11-28 16:00:00');
+
+        $rsiEvents = new RsiEvents();
+
+        $response = $rsiEvents->rsi($rates, 14);
+
+        $this->assertEquals(round($response), 45);
     }
 }
