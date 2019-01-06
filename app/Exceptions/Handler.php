@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Twilio;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\DB;
+use App\Services\TextMessage;
 
 use \Log;
 use App\Model\BackTestToBeProcessed;
@@ -39,7 +40,8 @@ class Handler extends ExceptionHandler
     public function report(Exception $exception)
     {
         if (env('APP_ENV') == 'live_trading') {
-            $this->sendTwilioErrorAlert($exception);
+            $textMessage = new TextMessage();
+            $textMessage->sendTextMessage('Error on Live Trading: '.substr($exception,0,100));
         }
 
         if (env('APP_ENV') == 'backtest' || env('APP_ENV') == 'backtest_temp_offline') {
@@ -93,9 +95,5 @@ class Handler extends ExceptionHandler
         }
 
         return redirect()->guest(route('login'));
-    }
-
-    public function sendEmailErrorAlert($e) {
-        Twilio::message('2817967601', 'Error on '.env('APP_ENV').' environment. '.substr($e,0,100));
     }
 }
