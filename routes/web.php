@@ -209,6 +209,10 @@ Route::get('php', function () {
     echo phpinfo();
 });
 
+Route::get('bac', function () {
+    x
+});
+
 
 //TBD Test
 Route::get('td_ameritrade_auth_code', function() {
