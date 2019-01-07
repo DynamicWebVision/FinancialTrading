@@ -24,6 +24,8 @@ class HmaPpTrSl extends \App\Strategy\Strategy  {
 
         $this->decisionIndicators['hmaChangeDirection'] = $hmaEvents->hullChangeDirectionCheck($this->rates['simple'], $this->hmaLength);
 
+        $this->decisionIndicators['priceAboveBelowHma'] = $hmaEvents->hmaPriceAboveBelowHma($this->rates['simple'], $this->hmaLength);
+
     }
 
     public function getEntryDecision() {
@@ -31,12 +33,12 @@ class HmaPpTrSl extends \App\Strategy\Strategy  {
         $this->strategyLogger->logIndicators($this->decisionIndicators);
 
         if (
-        $this->decisionIndicators['hmaChangeDirection'] == 'reversedUp'
+        $this->decisionIndicators['hmaChangeDirection'] == 'reversedUp' && $this->decisionIndicators['priceAboveBelowHma'] == 'above'
         ) {
             $this->newLongPosition();
         }
         elseif (
-        $this->decisionIndicators['hmaChangeDirection'] == 'reversedDown'
+        $this->decisionIndicators['hmaChangeDirection'] == 'reversedDown' && $this->decisionIndicators['priceAboveBelowHma'] == 'below'
         ) {
             $this->newShortPosition();
         }
