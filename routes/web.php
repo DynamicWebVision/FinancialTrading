@@ -217,7 +217,7 @@ Route::get('td_ameritrade_auth_code', function() {
 });
 //TBD Test
 Route::get('testdec', function() {
-    echo env('APP_ENV');
+    xecho x;
 });
 
 
