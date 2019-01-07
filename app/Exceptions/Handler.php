@@ -39,6 +39,8 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        $reportException = parent::report($exception);
+
         if (env('APP_ENV') == 'utility') {
             $back_test_id = Config::get('back_test_process_id');
             $back_test_job = Config::get('back_test_job');
@@ -67,7 +69,7 @@ class Handler extends ExceptionHandler
             $textMessage->sendTextMessage('Error on Live Trading: '.substr($exception,0,100));
         }
 
-        return parent::report($exception);
+        return $reportException;
     }
 
     /**
