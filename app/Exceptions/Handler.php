@@ -39,7 +39,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if (env('APP_ENV') == 'backtest' || env('APP_ENV') == 'utility') {
+        if (env('APP_ENV') == 'utility') {
             $back_test_id = Config::get('back_test_process_id');
             $back_test_job = Config::get('back_test_job');
 

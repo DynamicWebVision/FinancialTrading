@@ -34,8 +34,24 @@ class EmaEvents {
         $this->eventHelpers = new EventHelpers();
     }
 
-    public function ema($rates, $fastLength) {
-        return $this->indicators->ema($rates, $fastLength);
+    //Exponential Moving Average
+    public function ema($rates, $numberOfPeriods){
+        $emaValues = [];
+
+        //calculate K
+        $k = 2 / ($numberOfPeriods + 1);
+
+        $smaValues = array_slice($rates,0,$numberOfPeriods);
+
+        $yesterdayEma = $this->indicators->average($smaValues);
+
+        $emaRates = array_slice($rates, $numberOfPeriods);
+
+        foreach($emaRates as $rate) {
+            $yesterdayEma = (($rate * $k) + $yesterdayEma * (1 - $k));
+            $emaValues[] = $yesterdayEma;
+        }
+        return $emaValues;
     }
 
     public function k($numberOfPeriods) {
@@ -78,14 +94,14 @@ class EmaEvents {
         return -($currentEmaValue*(1-$k)/($k-1));
     }
 
-    public function emaSide($rates, $length) {
+    public function priceAboveBelowEma($rates, $length) {
         $ema = $this->indicators->ema($rates, $length);
 
         if (end($rates) > end($ema)) {
-            return 'long';
+            return 'above';
         }
         elseif (end($rates) < end($ema)) {
-            return 'short';
+            return 'below';
         }
     }
 }

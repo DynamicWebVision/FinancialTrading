@@ -21,36 +21,55 @@ class EmaEventsTest extends TestCase
 
         $rate = $emaEvents->calculateEmaNextPeriodCrossoverRate($rates, 50, 100);
     }
+    public function testPriceAboveBelowEma() {
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-21 10:00');
 
-//    public function testPriceCrossEmaRate() {
-//        $historicalRates = new \App\Model\HistoricalRates();
-//        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-07-11 13:00:00');
-//
-//        $emaEvents = new EmaEvents();
-//
-//        $rate = $emaEvents->priceCrossEmaRate($rates, 20);
-//
-//        $rates[] = $rate;
-//
-//        $newEma = $emaEvents->ema($rates, 20);
-//
-//        $this->assertEquals(end($newEma), $rate);
-//
-//    }
-//
-//    public function testCalculateEmaNextPeriodCrossoverRate2() {
-//        $historicalRates = new \App\Model\HistoricalRates();
-//        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-07-02 23:00:00');
-//
-//        $emaEvents = new EmaEvents();
-//
-//        $rate = $emaEvents->calculateEmaNextPeriodCrossoverRate($rates, 5, 10);
-//
-//        $rates[] = $rate;
-//
-//        $newEma = $emaEvents->ema($rates, 20);
-//
-//        $this->assertEquals(end($newEma), $rate);
-//
-//    }
+        $emaEvents = new EmaEvents();
+
+        $pricePosition = $emaEvents->priceAboveBelowEma($rates, 9);
+
+        $this->assertEquals('below', $pricePosition);
+
+
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-20 9:00');
+
+        $emaEvents = new EmaEvents();
+
+        $pricePosition = $emaEvents->priceAboveBelowEma($rates, 9);
+
+        $this->assertEquals('above', $pricePosition);
+
+
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-10 1:00');
+
+        $emaEvents = new EmaEvents();
+
+        $pricePosition = $emaEvents->priceAboveBelowEma($rates, 9);
+
+        $this->assertEquals('above', $pricePosition);
+
+
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-14 9:00');
+
+        $emaEvents = new EmaEvents();
+
+        $pricePosition = $emaEvents->priceAboveBelowEma($rates, 9);
+
+        $this->assertEquals('below', $pricePosition);
+    }
+
+    public function testEmaValue() {
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-10 19:00');
+
+        $emaEvents = new EmaEvents();
+
+        $ema = $emaEvents->ema($rates, 9);
+
+        $this->assertEquals(1.13784, round(end($ema), 5));
+    }
 }
