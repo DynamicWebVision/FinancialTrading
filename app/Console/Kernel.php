@@ -83,6 +83,7 @@ class Kernel extends ConsoleKernel
             \Log::emergency($server->task_code);
 
             if ($server->task_code == 'fx_backtest') {
+                \Log::emergency('Starting Back Test Run');
                 $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
             }
             elseif ($server->task_code == 'fx_maintenance') {
