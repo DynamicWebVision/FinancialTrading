@@ -275,6 +275,9 @@ class OandaV20 extends \App\Broker\Base  {
                     $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/trades/".$tradeId;
                     $tradeResponse = $this->apiGetRequest();
 
+                    $openPosition['openUnixTime'] = $tradeResponse->trade->openTime;
+                    $openPosition['secondsSinceOpenPosition'] = time() - round($tradeResponse->trade->openTime);
+
                     //Handle Stop Loss
                     if (isset($tradeResponse->trade->stopLossOrder)) {
                         $openPosition['stopLossPrice'] = $tradeResponse->trade->stopLossOrder->price;
@@ -294,6 +297,9 @@ class OandaV20 extends \App\Broker\Base  {
 
                     $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/trades/".$tradeId;
                     $tradeResponse = $this->apiGetRequest();
+
+                    $openPosition['openUnixTime'] = $tradeResponse->trade->openTime;
+                    $openPosition['secondsSinceOpenPosition'] = time() - round($tradeResponse->trade->openTime);
 
                     //Handle Stop Loss
                     if (isset($tradeResponse->trade->stopLossOrder)) {

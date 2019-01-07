@@ -33,7 +33,17 @@ class TrueRangeTest extends TestCase
         $atr = round($averageTrueRange, 4);
 
         $this->assertEquals(.0014, $atr);
+    }
 
+    public function testAverageTrueRangePips() {
+        $historicalRates = new \App\Model\HistoricalRates();
+        //$rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 3:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeFull(1,3,1000,'2018-12-27 18:00:00');
+
+        $trueRange = new TrueRange();
+
+        $averageTrueRange = $trueRange->averageTrueRangePips($rates, 14, .0001);
+        dd($averageTrueRange);
     }
 
     public function testGoogleSpreadsheet() {

@@ -186,6 +186,7 @@ abstract class BackTest  {
         $frequencyClass = new DecodeFrequency();
         $frequency = DecodeFrequency::find($this->frequencyId);
         $this->strategy->backTestOpenPositionSecondCutoff = $frequencyClass->secondFrequencyCutoffs[$frequency->oanda_code];
+        $this->strategy->frequency = $frequency;
     }
 
     //Has Test Written

@@ -116,4 +116,22 @@ class MySqlObjectCreate  {
 
         dd($this->createTableText);
     }
+
+    public function createDbSaveStatement($json, $recordName, $jsonObjectName) {
+        $jsonObject = json_decode($json);
+        $columnSaves = "";
+        $recordName = '$'.$recordName;
+        $jsonObjectName = '$'.$jsonObjectName;
+
+        foreach ($jsonObject as $label => $value) {
+            $columnName = $this->convertCamelCaseToSnakeCase($label);
+
+            $columnSaves = $columnSaves.'if (isset('.$jsonObjectName.'->'.$label.')) { <BR>';
+            $columnSaves = $columnSaves.$recordName.'->'.$columnName.' = '.$jsonObjectName.'->'.$label.';<br>';
+            $columnSaves = $columnSaves.' } <BR><BR>';
+        }
+        $columnSaves = $columnSaves."<BR><BR>".$recordName."->save();";
+        dd($columnSaves);
+
+    }
 }

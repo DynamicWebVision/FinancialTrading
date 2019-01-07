@@ -397,7 +397,8 @@ abstract class Strategy  {
                 end($this->backTestPositions);
                 $lastIndex = key($this->backTestPositions);
                 $possibleOpenPosition = $this->backTestPositions[$lastIndex];
-                return $this->backTestHelpers->checkOpenPosition($possibleOpenPosition, $this->currentPriceData, $this->backTestTrailingStop);
+                return $this->backTestHelpers->checkOpenPosition($possibleOpenPosition, $this->currentPriceData, $this->backTestTrailingStop, $this->currentPriceData->rateUnixTime);
+
             }
             else {
                 return false;
@@ -848,6 +849,10 @@ abstract class Strategy  {
 
     public function setOpenPosition() {
         $this->openPosition = $this->checkOpenPosition();
+
+        if (isset($this->frequency->frequency_seconds) && $this->openPosition) {
+            $this->openPosition['periodsOpen'] = round($this->openPosition['secondsSinceOpenPosition']/$this->frequency->frequency_seconds);
+        }
     }
 
     public function startStrategy() {

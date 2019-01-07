@@ -17,6 +17,7 @@
 
 
 namespace App\IndicatorEvents;
+use App\Services\Utility;
 use \Log;
 use \App\Services\CurrencyIndicators;
 use \App\IndicatorEvents\EventHelpers;
@@ -75,6 +76,15 @@ class TrueRange {
         return end($atr);
     }
 
+    public function averageTrueRangePips($rates, $length, $pipValue) {
+        $atr = $this->averageTrueRange($rates, $length);
+
+        $averageTrueRangePips = array_map(function($atr) use ($pipValue) {
+            return $atr/$pipValue;
+        }, $atr);
+        return $averageTrueRangePips;
+    }
+
     public function getTakeProfitLossPipValues($rates, $periods, $exchangePips, $profitMultiplier , $lossMultiplier) {
         $trueRange = $this->indicators->averageTrueRange($rates, $periods);
 
@@ -88,5 +98,53 @@ class TrueRange {
     public function getStopLossPipValue($rates, $periods, $exchangePips , $lossMultiplier) {
         $trueRange = $this->currentAverageTrueRange($rates, $periods);
         return round(($trueRange/$exchangePips)*$lossMultiplier);
+    }
+
+    public function getStopLossTrueRangeOrBreakEven($rates, $length, $trueRangeCutoff, $exchangePips , $openPosition) {
+        $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
+
+        $utility = new Utility();
+
+        $relevantAtr = $utility->getLastXElementsInArray($averageTrueRangePips, $openPosition['periodsOpen']);
+        $relevantRates = $utility->getLastXElementsInArray($rates, $openPosition['periodsOpen']);
+
+        $gainLossInPips = array_map(function($rate) use ($exchangePips, $openPosition) {
+            if ($openPosition['side'] == 'long') {
+                return ($rate->closeMid - $openPosition['openPrice'])/$exchangePips;
+            }
+            elseif ($openPosition['side'] == 'short') {
+                return ($openPosition['openPrice'] - $rate->closeMid)/$exchangePips;
+            }
+        }, $relevantRates);
+
+        $index = 0;
+        $pricePassedAtrProfit = false;
+
+        while (isset($relevantAtr[$index]) && $pricePassedAtrProfit) {
+            $atrCutoffPipAmount = $averageTrueRangePips[$index] * $trueRangeCutoff;
+
+            if ($gainLossInPips[$index] >= $atrCutoffPipAmount) {
+                $pricePassedAtrProfit = true;
+            }
+            $index++;
+        }
+
+        if ($pricePassedAtrProfit) {
+            if ($openPosition['side'] == 'long') {
+                return $openPosition['openPrice'] + ($exchangePips*2);
+            }
+            elseif ($openPosition['side'] == 'short') {
+                return $openPosition['openPrice'] - ($exchangePips*2);
+            }
+        }
+        else {
+            $currentPrice = end($rates);
+            if ($openPosition['side'] == 'long') {
+                return $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeCutoff);
+            }
+            elseif ($openPosition['side'] == 'short') {
+                return (end($averageTrueRangePips)*$trueRangeCutoff) - $currentPrice->closeMid;
+            }
+        }
     }
 }

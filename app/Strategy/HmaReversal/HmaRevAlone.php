@@ -55,7 +55,7 @@ class HmaRevAlone extends \App\Strategy\Strategy  {
             //B Conditions
             // $this->decisionIndicators['hmaChangeDirection'] == 'reversedDown'
 
-            if ( CONDITIONS THAT CONTRADICT LONG ) {
+            if ( true ) {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
                 $this->newLongPosition();

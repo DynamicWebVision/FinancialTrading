@@ -111,6 +111,13 @@ class StocksHistoricalDataController extends Controller {
         $serverStockYear = date('Y', $maxRateUnixTime);
 
         if ($serverStockYear == date("Y")) {
+
+            $updatePullStock = Stocks::find($this->stockId);
+
+            $updatePullStock->last_price_pull = time();
+
+            $updatePullStock->save();
+
             $this->getNextServerStock();
 
             $server->stock_id = $this->stockId;
@@ -130,12 +137,6 @@ class StocksHistoricalDataController extends Controller {
             ->where('ipo_year', '!=', 'n/a')
             ->first();
 
-//        if (!is_null($nextStock)) {
-//            $nextStock = Stocks::where('price_populate_year', '=', 0)
-//                ->where('market_cap', '>', 0)
-//                ->where('ipo_year', '!=', 'n/a')
-//                ->first();
-//        }
 
         $this->symbol = $nextStock->symbol;
         $this->stockId = $nextStock->id;

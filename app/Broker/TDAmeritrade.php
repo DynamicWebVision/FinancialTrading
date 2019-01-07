@@ -67,7 +67,13 @@ class TDAmeritrade extends \App\Broker\Base  {
     }
 
     public function getStockFundamentalData($symbol) {
-        $this->apiUrl = $this->tdAmeritradeBaseUrl."instruments/".$symbol;
+        $this->apiUrl = $this->tdAmeritradeBaseUrl."instruments";
+
+        $parameters = [
+          'symbol'=>$symbol,
+           'projection'=>'fundamental'
+        ];
+        $this->getVariables = $parameters;
 
         $response = $this->apiGetRequest();
         return $response;

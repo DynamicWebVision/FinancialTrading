@@ -63,7 +63,8 @@ class MySqlObjectCreateTest extends TestCase
           "vol3MonthAvg": 324.54222
     }';
 
-        $mysqlObjectCreate->createTableFromJson('stocks_fundamental', $jsonObject);
+        //$mysqlObjectCreate->createTableFromJson('stocks_fundamental', $jsonObject);
+        $mysqlObjectCreate->createDbSaveStatement($jsonObject, 'newStockFundamentalData', 'response');
     }
 
 }
