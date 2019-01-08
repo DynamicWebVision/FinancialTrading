@@ -54,7 +54,7 @@ class AutomatedBackTestController extends Controller {
     }
 
     public function runAutoBackTestIfFailsUpdate() {
-        Log::info('runAutoBackTestIfFailsUpdate starting');
+        Log::emergency('runAutoBackTestIfFailsUpdate starting');
 
         //Set Last Git Pull Time To Check Later
         $serverController = new ServersController();
@@ -65,7 +65,7 @@ class AutomatedBackTestController extends Controller {
 
         $firstCount = BackTestToBeProcessed::where('back_test_group_id', '=', $server->current_back_test_group_id)->where('start', '=', 0)->where('finish', '=', 0)->count();
 
-        Log::info('runAutoBackTestIfFailsUpdate first count '.$firstCount);
+        Log::emergency('runAutoBackTestIfFailsUpdate first count '.$firstCount);
 
         if ($firstCount == 0) {
             $backTestGroup = BackTestGroup::find($server->current_back_test_group_id);
@@ -93,6 +93,8 @@ class AutomatedBackTestController extends Controller {
         else {
 
             $inProcessCount = BackTestToBeProcessed::where('back_test_group_id', '=', $server->current_back_test_group_id)->where('start', '=', 1)->where('finish', '=', 0)->where('hung_up', '=', 0)->count();
+
+            Log::emergency('In Process Count '.$inProcessCount);
 
             if ($inProcessCount == 0) {
                 //No Tests In Process, Start Running

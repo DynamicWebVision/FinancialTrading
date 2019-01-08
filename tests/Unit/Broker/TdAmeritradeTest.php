@@ -33,7 +33,7 @@ class TdAmeritradeTest extends TestCase
     {
         $tdAmeritrade = new TDAmeritrade();
 
-        $symbol = 'XOM';
+        $symbol = 'TWOU';
 
         $tdAmeritrade->getStockFundamentalData($symbol);
     }

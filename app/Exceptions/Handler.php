@@ -66,7 +66,10 @@ class Handler extends ExceptionHandler
 
         if (env('APP_ENV') == 'live_trading') {
             $textMessage = new TextMessage();
-            $textMessage->sendTextMessage('Error on Live Trading: '.substr($exception,0,100));
+
+            date('m/d H:m');
+
+            $textMessage->sendTextMessage('Error on '.env('APP_ENV').substr($exception,0,100));
         }
 
         return $reportException;
