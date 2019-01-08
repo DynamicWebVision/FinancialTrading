@@ -13,13 +13,11 @@ use App\Broker\OandaV20;
 
 class AutomatedBackTestControllerTest extends TestCase
 {
-
     public $transactionController;
     public $oanda;
 
     public function testRunAutoBackTestIfFailsUpdate() {
         $automatedBackTestController = new AutomatedBackTestController();
-
         $automatedBackTestController->runAutoBackTestIfFailsUpdate();
     }
 }
