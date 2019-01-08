@@ -67,7 +67,8 @@ class Kernel extends ConsoleKernel
         }
         elseif (env('APP_ENV') == 'utility') {
             $filePath = '/home/ec2-user/cron_output/cron_output.log';
-            $schedule->call('App\Http\Controllers\TestController@testLog')->everyMinute()->appendOutputTo($filePath);;
+            $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->everyMinute()->appendOutputTo($filePath);
+            $schedule->call('App\Http\Controllers\TestController@testLog')->everyMinute()->appendOutputTo($filePath);
 
             $serverController = new ServersController();
             $serverController->setServerId();
