@@ -54,7 +54,7 @@ class AutomatedBackTestController extends Controller {
     }
 
     public function runAutoBackTestIfFailsUpdate() {
-        die();
+        xasdf
         Log::emergency('runAutoBackTestIfFailsUpdate starting');
 
         //Set Last Git Pull Time To Check Later
