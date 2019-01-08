@@ -12,6 +12,7 @@ use App\Services\TextMessage;
 
 use \Log;
 use App\Model\BackTestToBeProcessed;
+use App\Model\ProdException;
 
 class Handler extends ExceptionHandler
 {
@@ -65,6 +66,12 @@ class Handler extends ExceptionHandler
         }
 
         if (env('APP_ENV') == 'live_trading') {
+
+            $prodException = new ProdException();
+            $prodException->exception = $exception;
+            $prodException->save();
+
+
             $textMessage = new TextMessage();
 
             date('m/d H:m');
