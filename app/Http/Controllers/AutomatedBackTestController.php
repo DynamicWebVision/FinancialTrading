@@ -33,6 +33,7 @@ use App\Model\Servers;
 class AutomatedBackTestController extends Controller {
 
     public function __construct() {
+        \Log::emergency('AutomatedBTController Construct Start');
         set_time_limit(0);
         ini_set('memory_limit', '-1');
 
