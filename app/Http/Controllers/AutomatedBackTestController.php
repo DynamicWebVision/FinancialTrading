@@ -39,6 +39,7 @@ class AutomatedBackTestController extends Controller {
         $serverController = new ServersController();
 
         $serverController->setServerId();
+        \Log::emergency('Got to End of AutomatedBackTestController Construct');
     }
 
     public function sleepThirty() {
@@ -54,7 +55,7 @@ class AutomatedBackTestController extends Controller {
     }
 
     public function runAutoBackTestIfFailsUpdate() {
-        
+
         Log::emergency('runAutoBackTestIfFailsUpdate starting');
 
         //Set Last Git Pull Time To Check Later
