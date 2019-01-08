@@ -179,9 +179,11 @@ class ServersController extends Controller {
             Config::set('server_id', 6);
         }
         else {
+            \Log::emergency("Attempting to Update AWS Host");
             $awsService = new AwsService();
             $awsService->setCurrentServerAttributes();
             $this->serverId = $awsService->getInstanceTagValue('server_id');
+            \Log::emergency("Got Server Id ".$this->serverId);
 
             Config::set('server_id', $this->serverId);
 
@@ -234,13 +236,19 @@ class ServersController extends Controller {
     }
 
     public function updateEnvironmentDBHost() {
+        \Log::emergency("updateEnvironmentDBHost");
+
         $utility = new Utility();
         $awsService = new AwsService();
         $instances = $awsService->getAllInstances();
 
         $dbIpAddress = $awsService->getReservationIPWithTag($instances, 'finance_db');
 
+        \Log::emergency("Got DB IP Address ".$dbIpAddress);
+
         $utility->writeToLine('/var/www/FinancialTrading/.env',5,'DB_HOST='.$dbIpAddress);
+
+        \Log::emergency("Wrote Line");
     }
 
     public function updateGitPullTime() {
