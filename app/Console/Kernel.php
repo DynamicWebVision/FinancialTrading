@@ -66,6 +66,8 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('22:01');
         }
         elseif (env('APP_ENV') == 'utility') {
+            $schedule->call('App\Http\Controllers\TestController@TestController')->everyMinute();
+
             $serverController = new ServersController();
             $serverController->setServerId();
 
