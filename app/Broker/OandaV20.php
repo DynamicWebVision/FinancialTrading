@@ -240,12 +240,19 @@ class OandaV20 extends \App\Broker\Base  {
 
         $bidAskObject = new \StdClass();
 
-        $bidAskObject->bid =  (float) $response->prices[0]->bids[0]->price;
-        $bidAskObject->ask =  (float) $response->prices[0]->asks[0]->price;
+        try {
+            $bidAskObject->bid =  (float) $response->prices[0]->bids[0]->price;
+            $bidAskObject->ask =  (float) $response->prices[0]->asks[0]->price;
+            $bidAskObject->mid =  ($bidAskObject->bid + $bidAskObject->ask)/2;
 
-        $bidAskObject->mid =  ($bidAskObject->bid + $bidAskObject->ask)/2;
+            return $bidAskObject;
+        }
+        catch (\Exception $e) {
+            \Log::error('Current Price API Response '.$response);
+            \Log::error('Current Price Exception '.$e);
+            $this->strategyLogger->logApiRequestResponse($e);
+        }
 
-        return $bidAskObject;
     }
 
     public function checkOpenPosition() {
