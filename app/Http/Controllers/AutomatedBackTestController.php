@@ -91,16 +91,20 @@ class AutomatedBackTestController extends Controller {
             }
         }
         else {
+            Log::emergency('Else we have more to process');
 
             $inProcessCount = BackTestToBeProcessed::where('back_test_group_id', '=', $server->current_back_test_group_id)->where('start', '=', 1)->where('finish', '=', 0)->where('hung_up', '=', 0)->count();
 
             Log::emergency('In Process Count '.$inProcessCount);
 
             if ($inProcessCount == 0) {
+                Log::emergency('Starting Keep Backtest Running');
                 //No Tests In Process, Start Running
                 $this->keepBackTestRunning();
                 }
             else {
+                Log::emergency('In Process Count');
+
                 //Check Test That's In Process
                 $runningProcess = BackTestToBeProcessed::where('back_test_group_id', '=', $server->current_back_test_group_id)->where('start', '=', 1)->where('finish', '=', 0)->where('hung_up', '=', 0)->first();
                 $last_update_time = $runningProcess->in_process_unix_time;
@@ -158,6 +162,7 @@ class AutomatedBackTestController extends Controller {
 
         while ($recordCount > 0) {
             try {
+                Log::emergency('Starting environmentVariableDriveProcess');
                 $this->environmentVariableDriveProcess();
             }
             catch (\Exception $e) {

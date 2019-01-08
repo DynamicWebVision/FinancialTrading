@@ -66,7 +66,6 @@ class Handler extends ExceptionHandler
         }
 
         if (env('APP_ENV') == 'live_trading') {
-
             $prodException = new ProdException();
             $prodException->exception = $exception;
             $prodException->save();
