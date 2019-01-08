@@ -18,6 +18,6 @@ class AutomatedBackTestControllerTest extends TestCase
 
     public function testRunAutoBackTestIfFailsUpdate() {
         $automatedBackTestController = new AutomatedBackTestController();
-        $automatedBackTestController->runAutoBackTestIfFailsUpdate();
+        //$automatedBackTestController->runAutoBackTestIfFailsUpdate();
     }
 }
