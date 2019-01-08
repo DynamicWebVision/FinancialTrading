@@ -38,7 +38,8 @@ class AutomatedBackTestController extends Controller {
 
         $serverController = new ServersController();
 
-        $serverController->setServerId();
+        $test = $serverController->setServerId();
+        \Log::emergency($test);
         \Log::emergency('Got to End of AutomatedBackTestController Construct');
     }
 

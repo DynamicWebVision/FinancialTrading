@@ -190,6 +190,7 @@ class ServersController extends Controller {
             $this->updateEnvironmentDBHost();
         }
         \Log::emergency("End setServerId");
+        return 'abc';
     }
 
     public function setServerEnvironment() {
