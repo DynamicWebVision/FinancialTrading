@@ -66,7 +66,8 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('22:01');
         }
         elseif (env('APP_ENV') == 'utility') {
-            $schedule->call('App\Http\Controllers\TestController@TestController')->everyMinute();
+            $filePath = '/home/ec2-user/cron_output/cron_output.log';
+            $schedule->call('App\Http\Controllers\TestController@TestController')->everyMinute()->appendOutputTo($filePath);;
 
             $serverController = new ServersController();
             $serverController->setServerId();
