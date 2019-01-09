@@ -21,4 +21,11 @@ class IexTrading extends \App\Broker\Base  {
         return $response;
     }
 
+    public function getCompanyFinancials($symbol, $period) {
+
+        $this->apiUrl = $this->baseUrl.'stock/'.$symbol.'/company';
+        $response = $this->apiGetRequest();
+        return $response;
+    }
+
 }

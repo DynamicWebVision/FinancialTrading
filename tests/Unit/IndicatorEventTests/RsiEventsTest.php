@@ -69,7 +69,7 @@ class RsiEventsTest extends TestCase
 
         $this->assertEquals('none', $response);
 
-        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-12 7:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-12 12:00:00');
 
         $rsiEvents = new RsiEvents();
 

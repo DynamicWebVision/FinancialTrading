@@ -146,4 +146,17 @@ class MySqlObjectCreate  {
 
         dd($this->createTableText);
     }
+
+    public function createIndexes($tableName, $indexAbreviation,$json) {
+
+        $jsonObject = json_decode($json);
+        $indexesCreate = '';
+
+        foreach ($jsonObject as $label => $value) {
+            $columnName = $this->convertCamelCaseToSnakeCase($label);
+
+            $indexesCreate = $indexesCreate.'ALTER TABLE '.$tableName.' ADD INDEX '.$indexAbreviation.'_'.substr($columnName,0,10).' ('.$columnName.');<BR>';
+        }
+        dd($indexesCreate);
+    }
 }
