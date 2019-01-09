@@ -143,7 +143,7 @@ class TrueRange {
                 return $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeCutoff);
             }
             elseif ($openPosition['side'] == 'short') {
-                return (end($averageTrueRangePips)*$trueRangeCutoff) - $currentPrice->closeMid;
+                return $currentPrice->closeMid + (end($averageTrueRangePips)*$trueRangeCutoff);
             }
         }
     }
