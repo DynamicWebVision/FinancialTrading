@@ -25,7 +25,6 @@ use \Log;
 use App\Model\BackTest;
 use App\Model\BackTestToBeProcessed;
 use App\Model\BackTestGroup;
-use App\Http\Controllers\ServersController;
 use Illuminate\Support\Facades\Config;
 use App\Model\Servers;
 

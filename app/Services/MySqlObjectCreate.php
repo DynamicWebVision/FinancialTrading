@@ -134,4 +134,16 @@ class MySqlObjectCreate  {
         dd($columnSaves);
 
     }
+
+    public function createDecodeTable($tableName) {
+
+        $this->addTextToCreateTable('create table '.$tableName.' (');
+        $this->addTextToCreateTable('`id` int(10) NOT NULL AUTO_INCREMENT,');
+        $this->addTextToCreateTable('`name` varchar(50),');
+        $this->addDatesToTable();
+        $this->addTextToCreateTable('PRIMARY KEY (`id`)');
+        $this->addTextToCreateTable(');');
+
+        dd($this->createTableText);
+    }
 }

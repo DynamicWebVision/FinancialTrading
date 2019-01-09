@@ -1,0 +1,25 @@
+<?php
+
+namespace Tests\Unit\Broker;
+
+use Tests\TestCase;
+
+use \App\Model\Exchange;
+use \App\Broker\IexTrading;
+use \App\Http\Controllers\Equity\StocksCompanyProfileController;
+
+class IexTradingTest extends TestCase
+{
+
+    public function testGetCompanyProfile()
+    {
+        $iexTrading = new IexTrading();
+        $iexTrading->getCompanyProfile('XOM');
+    }
+
+    public function testGetCompanyProfileGetOne()
+    {
+        $iexTrading = new StocksCompanyProfileController();
+        $iexTrading->pullOneStock();
+    }
+}

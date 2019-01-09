@@ -66,10 +66,6 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('22:01');
         }
         elseif (env('APP_ENV') == 'utility') {
-            $filePath = '/home/ec2-user/cron_output/cron_output.log';
-            $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->everyMinute()->appendOutputTo($filePath);
-            $schedule->call('App\Http\Controllers\TestController@testLog')->everyMinute()->appendOutputTo($filePath);
-
             $serverController = new ServersController();
             $serverController->setServerId();
 
@@ -83,13 +79,8 @@ class Kernel extends ConsoleKernel
                 \Log::emergency(json_encode($server));
                 return false;
             }
-            else {
-                \Log::emergency('task_code'.$server->task_code);
-            }
 
             if ($server->task_code == 'fx_backtest') {
-                \Log::emergency('fx_backtest in');
-                $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->everyFiveMinutes();
                 $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
             }
             elseif ($server->task_code == 'fx_maintenance') {
