@@ -46,6 +46,11 @@ class BackTestDebugTest extends TestCase
         $backTestingController->rollBackServerGroup();
     }
 
+    public function testDeleteTestGroup() {
+        $backTestingController = new BackTestingController();
+        $backTestingController->deleteServerGroup();
+    }
+
     /*******************************************************
      SINGLE SPECIFIC PROCESS
      *******************************************************/

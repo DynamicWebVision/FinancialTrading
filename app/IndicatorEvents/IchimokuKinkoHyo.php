@@ -24,82 +24,16 @@ use \App\IndicatorEvents\EventHelpers;
 
 class IchimokuKinkoHyo {
 
-    public $utility;
-    public $indicators;
+    public $tenkanConversionLine;
+    public $tenkanConversionLineLength = 9;
+    public $kijunBaseLine = 29;
+    public $kijunBaseLineLength;
+
     public $strategyLogger;
 
     public function __construct() {
         $this->utility = new Utility();
         $this->indicators = new CurrencyIndicators();
         $this->eventHelpers = new EventHelpers();
-    }
-
-    public function bollingerBands($array, $length, $standardDeviationMultiplier) {
-        $arrayValuesNeeded = $this->utility->getLastXElementsInArray($array, $length);
-
-        $average = array_sum($arrayValuesNeeded)/$length;
-
-        $standardDeviation = $this->eventHelpers->standardDeviation($arrayValuesNeeded);
-
-        $high = $average + ($standardDeviation*$standardDeviationMultiplier);
-        $low = $average - ($standardDeviation*$standardDeviationMultiplier);
-
-        return [
-            'average'=> $average,
-            'high'=> $high,
-            'low'=> $low
-        ];
-    }
-
-    //Done
-    public function getOuterBandCrossEvent($array, $length, $standardDeviationMultiplier) {
-        $currentClose = end($array);
-        $bollingerBandsCurrent = $this->bollingerBands($array, $length, $standardDeviationMultiplier);
-
-        $secondToLastClose = $this->utility->getXFromLastValue($array, 1);
-        $previousRates = $this->utility->removeLastValueInArray($array);
-        $bollingerBandsPrevious = $this->bollingerBands($previousRates, $length, $standardDeviationMultiplier);
-
-        if ($secondToLastClose < $bollingerBandsPrevious['high'] && $currentClose > $bollingerBandsCurrent['high']) {
-            return 'crossedAbove';
-        }
-        elseif ($secondToLastClose > $bollingerBandsPrevious['low'] && $currentClose < $bollingerBandsCurrent['low']) {
-            return 'crossedBelow';
-        }
-        else {
-            return 'none';
-        }
-    }
-
-    public function closeAcrossCenterLine($array, $length, $standardDeviationMultiplier, $openSide) {
-        $currentClose = end($array);
-        $bollingerBands = $this->bollingerBands($array, $length, $standardDeviationMultiplier);
-
-        if ($openSide == 'long') {
-            if ($currentClose <= $bollingerBands['average']) {
-                return 'close';
-            }
-        }
-        elseif ($openSide == 'short') {
-            if ($currentClose >= $bollingerBands['average']) {
-                return 'close';
-            }
-        }
-        return 'none';
-    }
-
-    public function bollingerPriceMaxOutClosesInside($array, $length, $standardDeviationMultiplier, $fullRates) {
-        $currentFullRate = end($fullRates);
-        $bollingerBands = $this->bollingerBands($array, $length, $standardDeviationMultiplier);
-
-        if ($bollingerBands['high'] < $currentFullRate->highMid && $currentFullRate->closeMid < $bollingerBands['high'] && $currentFullRate->openMid < $bollingerBands['high']) {
-            return 'short';
-        }
-        elseif ($bollingerBands['low'] > $currentFullRate->lowMid && $currentFullRate->closeMid > $bollingerBands['low'] && $currentFullRate->openMid > $bollingerBands['low']) {
-            return 'long';
-        }
-        else {
-            return 'none';
-        }
     }
 }

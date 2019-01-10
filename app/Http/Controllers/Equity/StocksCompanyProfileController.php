@@ -37,7 +37,7 @@ class StocksCompanyProfileController extends Controller {
     }
 
     public function keepRunning() {
-        Log::emergency('Keep Running Stock Fundamental Data Start');
+        Log::emergency('Keep Running Stock Company Profile Data Start');
         $serverController = new ServersController();
         $lastGitPullTime = $serverController->getLastGitPullTime();
         Config::set('last_git_pull_time', $lastGitPullTime);
@@ -62,6 +62,7 @@ class StocksCompanyProfileController extends Controller {
                 $this->keepRunningCheck = false;
             }
         }
+        Log::emergency('Keep Running Stock Company Profile Data End');
     }
 
     public function pullOneStock() {

@@ -59,6 +59,7 @@ class StockFundamentalDataController extends Controller {
                 $this->keepRunningCheck = false;
             }
         }
+        Log::emergency('Keep Running Stock Fundamental Data End');
     }
 
     public function pullOneStock() {

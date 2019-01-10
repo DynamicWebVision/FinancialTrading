@@ -35,7 +35,7 @@ class StocksFinancialsController extends Controller {
     }
 
     public function keepRunning() {
-        Log::emergency('Keep Running Stock Fundamental Data  Start');
+        Log::emergency('Keep Running Stock Financials Start');
         $serverController = new ServersController();
         $lastGitPullTime = $serverController->getLastGitPullTime();
         Config::set('last_git_pull_time', $lastGitPullTime);
@@ -57,6 +57,7 @@ class StocksFinancialsController extends Controller {
                 $this->keepRunningCheck = false;
             }
         }
+        Log::emergency('Keep Running Stock Financials End');
     }
 
     public function pullOneStockAnnual() {
