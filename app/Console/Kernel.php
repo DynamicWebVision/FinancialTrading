@@ -98,7 +98,9 @@ class Kernel extends ConsoleKernel
                 $schedule->call('App\Http\Controllers\Equity\StocksHistoricalDataController@keepRunning')->hourly();
             }
             elseif ($server->task_code == 'stock_fund_data') {
-                $schedule->call('App\Http\Controllers\Equity\StockFundamentalDataController@keepRunning')->hourly();
+                $schedule->call('App\Http\Controllers\Equity\StockFundamentalDataController@keepRunning')->hourlyAt(0);
+                $schedule->call('App\Http\Controllers\Equity\StocksCompanyProfileController@keepRunning')->hourlyAt(20);
+                $schedule->call('App\Http\Controllers\Equity\StocksFinancialsController@keepRunning')->hourlyAt(40);
             }
         }
     }
