@@ -11,6 +11,7 @@ use \App\BackTest\TakeProfitStopLossTest;
 use \App\Services\StrategyLogger;
 
 use \App\Strategy\RsiPullback\RsiPullbackEmaPriceAction;
+use \App\Strategy\RsiPullback\RsiPbPriceActionHma;
 //END STRATEGY DECLARATIONS
 
 class RsiPullbackBackTestToBeProcessed extends \App\BackTest\BackTestToBeProcessed\Base
@@ -58,6 +59,26 @@ class RsiPullbackBackTestToBeProcessed extends \App\BackTest\BackTestToBeProcess
             $strategy->rsiCutoff = intval($this->backTestToBeProcessed->variable_3);
             $strategy->emaLengthFast = intval($this->backTestToBeProcessed->variable_4);
 
+            $strategy->takeProfitPipAmount = 0;
+            $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
+        intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
+        
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'RSI_PB_PA_HMA') {
+            $backTest->rateLevel = 'both';
+        
+            $strategy = new RsiPbPriceActionHma(1,1,true);
+        
+            //$strategy->orderType = 'MARKET_IF_TOUCHED';
+            $strategy->hmaLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->rsiLength = intval($this->backTestToBeProcessed->variable_2);
+            $strategy->rsiCutoff = intval($this->backTestToBeProcessed->variable_3);
+            $strategy->emaLength = intval($this->backTestToBeProcessed->variable_4);
+        
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
         intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);

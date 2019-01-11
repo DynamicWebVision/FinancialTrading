@@ -182,5 +182,14 @@ class Utility  {
         file_put_contents( $filename , implode( "\n", $lines ) );
     }
 
+    public function getRelevantArraySubsetWhileIterating($array, $currentIndex, $count) {
+        return array_slice($array, ($currentIndex + 1) - $count, $count);
+    }
+
+    public function getArrayValueXPeriodsAgo($array, $currentIndex, $periodsInPast) {
+        $array = array_slice($array, $currentIndex - $periodsInPast, 1);
+        return $array[0];
+    }
+
 
 }
