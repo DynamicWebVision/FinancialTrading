@@ -58,7 +58,7 @@ class StocksCompanyProfileController extends Controller {
                 $this->keepRunningCheck = false;
             }
 
-            if (($this->keepRunningStartTime + (15*60)) < time()) {
+            if (($this->keepRunningStartTime + (45*60)) < time()) {
                 $this->keepRunningCheck = false;
             }
         }
