@@ -19,11 +19,6 @@ class StocksCompanyProfileControllerTest extends TestCase
     public $transactionController;
     public $oanda;
 
-//    public function testGetSymbolData() {
-//        $stocksHistoricalDataTest = new StocksHistoricalDataController();
-//        $stocksHistoricalDataTest->getStockData();
-//    }
-
     public function testPullOneStock() {
         $stocksHistoricalDataTest = new StocksCompanyProfileController();
         $stocksHistoricalDataTest->keepRunning();
