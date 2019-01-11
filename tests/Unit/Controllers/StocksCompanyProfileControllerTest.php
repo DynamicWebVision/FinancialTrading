@@ -14,7 +14,7 @@ use App\Model\Servers;
 use Illuminate\Support\Facades\Config;
 use App\Broker\OandaV20;
 
-class StocksFundamentalDataControllerTest extends TestCase
+class StocksCompanyProfileControllerTest extends TestCase
 {
     public $transactionController;
     public $oanda;
