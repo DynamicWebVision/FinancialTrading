@@ -190,7 +190,7 @@ class ServersController extends Controller {
             $this->updateEnvironmentDBHost();
         }
         \Log::emergency("End setServerId");
-        return 'abc';
+        return true;
     }
 
     public function setServerEnvironment() {
@@ -231,6 +231,16 @@ class ServersController extends Controller {
         $server = Servers::find(5);
         $text .= "tywin_ip='".$server->ip_address."'\n";
         $text .= 'alias open_tywin=\'/usr/bin/open -a "/Applications/Google Chrome.app" "http://'.$server->ip_address.'"\'';
+        $text .= "\n";
+
+        $server = Servers::find(100);
+        $text .= "live_trading_ip='".$server->ip_address."'\n";
+        $text .= 'alias open_live_trading=\'/usr/bin/open -a "/Applications/Google Chrome.app" "http://'.$server->ip_address.'"\'';
+        $text .= "\n";
+
+        $server = Servers::find(150);
+        $text .= "practice_ip='".$server->ip_address."'\n";
+        $text .= 'alias open_practice=\'/usr/bin/open -a "/Applications/Google Chrome.app" "http://'.$server->ip_address.'"\'';
         $text .= "\n";
 
         fwrite($handle, $text);
