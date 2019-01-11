@@ -85,7 +85,7 @@ abstract class Base  {
         return json_decode($resp);
     }
 
-    public function createApiErrorLogRecord($api, $method) {
+    public function createApiErrorLogRecord($api, $method, $relevantVariable) {
         $apiErrorLog = new ApiErrorLog();
 
         $apiErrorLog->api = $api;
@@ -93,6 +93,7 @@ abstract class Base  {
         $apiErrorLog->post_variables = json_encode($this->postVariables);
         $apiErrorLog->url = $this->apiUrl;
         $apiErrorLog->method = $method;
+        $apiErrorLog->relevant_variable = $relevantVariable;
         $apiErrorLog->response = $this->rawResponse;
 
         $apiErrorLog->save();

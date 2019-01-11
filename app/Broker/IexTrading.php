@@ -21,7 +21,7 @@ class IexTrading extends \App\Broker\Base  {
         $response = $this->apiGetRequest();
 
         if (!isset($response->companyName)) {
-            $this->createApiErrorLogRecord('IexTrading', 'getCompanyProfile');
+            $this->createApiErrorLogRecord('IexTrading', 'getCompanyProfile', $symbol);
             return false;
         }
         else {
@@ -34,7 +34,7 @@ class IexTrading extends \App\Broker\Base  {
         $response = $this->apiGetRequest();
 
         if (!isset($response->financials)) {
-            $this->createApiErrorLogRecord('IexTrading', 'getCompanyFinancials');
+            $this->createApiErrorLogRecord('IexTrading', 'getCompanyFinancials', $symbol);
             return false;
         }
         else {
