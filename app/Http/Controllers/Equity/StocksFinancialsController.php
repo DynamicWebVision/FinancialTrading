@@ -60,7 +60,7 @@ class StocksFinancialsController extends Controller {
         Log::emergency('Keep Running Stock Financials End');
     }
 
-    public function pullOneStockAnnual() {
+    public function pullOneStock() {
         $stock = Stocks::orderBy('last_fin_pull')->first();
         $this->updateFinancialDataAnnual($stock);
         $this->updateFinancialDataQuarter($stock);
