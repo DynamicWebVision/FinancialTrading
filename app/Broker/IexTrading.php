@@ -1,6 +1,7 @@
 <?php namespace App\Broker;
 use \Log;
 use App\Model\TdAmeritradeAccount;
+use App\Model\ApiErrorLog;
 
 
 class IexTrading extends \App\Broker\Base  {
@@ -18,13 +19,27 @@ class IexTrading extends \App\Broker\Base  {
     public function getCompanyProfile($symbol) {
         $this->apiUrl = $this->baseUrl.'stock/'.$symbol.'/company';
         $response = $this->apiGetRequest();
-        return $response;
+
+        if (!isset($response->companyName)) {
+            $this->createApiErrorLogRecord('IexTrading', 'getCompanyProfile');
+            return false;
+        }
+        else {
+            return $response;
+        }
     }
 
     public function getCompanyFinancials($symbol, $period) {
         $this->apiUrl = $this->baseUrl.'stock/'.$symbol.'/financials?period='.$period;
         $response = $this->apiGetRequest();
-        return $response->financials;
+
+        if (!isset($response->financials)) {
+            $this->createApiErrorLogRecord('IexTrading', 'getCompanyFinancials');
+            return false;
+        }
+        else {
+            return $response->financials;
+        }
     }
 
 }

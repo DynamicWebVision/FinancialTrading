@@ -71,7 +71,12 @@ class StocksFinancialsController extends Controller {
     public function updateFinancialDataAnnual($stock) {
         $ieTrading = new IexTrading();
 
+
         $response = $ieTrading->getCompanyFinancials($stock->symbol, 'annual');
+
+        if (!$response) {
+            return false;
+        }
 
         foreach ($response as $financial) {
             $newStockFinancialsAnnual = StocksCompanyFinancialsAnnual::firstOrNew(['stock_id'=> $stock->id, 'report_date'=> $financial->reportDate]);
@@ -163,6 +168,10 @@ class StocksFinancialsController extends Controller {
         $ieTrading = new IexTrading();
 
         $response = $ieTrading->getCompanyFinancials($stock->symbol, 'quarter');
+
+        if (!$response) {
+            return false;
+        }
 
         foreach ($response as $financial) {
                 $newStockFinancialsQuarter = StocksCompanyFinancialsQuarter::firstOrNew(['stock_id'=> $stock->id, 'report_date'=> $financial->reportDate]);

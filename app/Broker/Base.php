@@ -1,12 +1,15 @@
 <?php namespace App\Broker;
 
 use \Log;
+use \App\Model\ApiErrorLog;
 
 abstract class Base  {
 
     public $apiUrl;
     public $getVariables = [];
+    public $postVariables = [];
     public $unitAmount;
+    public $rawResponse;
 
     public function apiGetRequest($setGet = true) {
         if ($setGet) {
@@ -19,10 +22,13 @@ abstract class Base  {
         $resp = curl_exec($this->curl);
 
         $this->getVariables = [];
+        $this->rawResponse = $resp;
         return json_decode($resp);
     }
 
     public function apiPostRequest($fields) {
+        $this->postVariables = $fields;
+
         curl_setopt($this->curl, CURLOPT_URL, $this->apiUrl);
         curl_setopt($this->curl,CURLOPT_POST, 1);
         curl_setopt($this->curl,CURLOPT_POSTFIELDS, json_encode($fields));
@@ -35,10 +41,13 @@ abstract class Base  {
         $resp = curl_exec($this->curl);
 
         // $headers = curl_getinfo($this->curl, CURLINFO_HEADER_OUT);
+        $this->rawResponse = $resp;
         return json_decode($resp);
     }
 
     public function apiPostRequestHttpFields($fields) {
+        $this->postVariables = $fields;
+
         curl_setopt($this->curl, CURLOPT_URL, $this->apiUrl);
         curl_setopt($this->curl,CURLOPT_POST, 1);
         curl_setopt($this->curl,CURLOPT_POSTFIELDS, http_build_query($fields));
@@ -51,6 +60,7 @@ abstract class Base  {
         $resp = curl_exec($this->curl);
 
         // $headers = curl_getinfo($this->curl, CURLINFO_HEADER_OUT);
+        $this->rawResponse = $resp;
         return json_decode($resp);
     }
 
@@ -59,7 +69,8 @@ abstract class Base  {
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "DELETE");
         $resp = curl_exec($this->curl);
 
-        return $resp;
+        $this->rawResponse = $resp;
+        return json_decode($resp);
     }
 
     public function apiPatchRequest($data) {
@@ -70,6 +81,20 @@ abstract class Base  {
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PUT");
         $resp = curl_exec($this->curl);
 
+        $this->rawResponse = $resp;
         return json_decode($resp);
+    }
+
+    public function createApiErrorLogRecord($api, $method) {
+        $apiErrorLog = new ApiErrorLog();
+
+        $apiErrorLog->api = $api;
+        $apiErrorLog->get_variables = json_encode($this->getVariables);
+        $apiErrorLog->post_variables = json_encode($this->postVariables);
+        $apiErrorLog->url = $this->apiUrl;
+        $apiErrorLog->method = $method;
+        $apiErrorLog->response = $this->rawResponse;
+
+        $apiErrorLog->save();
     }
 }
