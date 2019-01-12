@@ -95,10 +95,11 @@ class Kernel extends ConsoleKernel
                 $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->daily();
             }
             elseif ($server->task_code == 'stock_hist_data') {
-                $schedule->call('App\Http\Controllers\Equity\StocksHistoricalDataController@keepRunning')->hourly();
+                //$schedule->call('App\Http\Controllers\Equity\StocksHistoricalDataController@keepRunning')->hourly();
+                $schedule->call('App\Http\Controllers\Equity\StocksIexRatesController@keepRunning')->hourly();
             }
             elseif ($server->task_code == 'stock_fund_data') {
-                $schedule->call('App\Http\Controllers\Equity\StocksInformationController@keepRunning')->hourly();
+                $schedule->call('App\Http\Controllers\Equity\StocksInformationController@runNextTask')->hourly();
             }
         }
     }

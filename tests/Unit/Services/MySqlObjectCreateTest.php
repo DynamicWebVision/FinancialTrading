@@ -25,7 +25,7 @@ class MySqlObjectCreateTest extends TestCase
         $jsonObject = '{"date":"2019-01-10","open":152.5,"high":153.97,"low":150.86,"close":153.8,"volume":35780670,"unadjustedVolume":35780670,"change":0.49,"changePercent":0.32,"vwap":152.7021,"changeOverTime":1.1896417700505981}';
 
         //$mysqlObjectCreate->createTableFromJson('stocks_', $jsonObject);
-        $mysqlObjectCreate->createDbSaveStatement($jsonObject, 'new5yDailyRate', 'dailyRate');
+        $mysqlObjectCreate->createDbSaveStatement($jsonObject, 'newIexDailyRate', 'rate');
     }
 
     public function testCreateIndexesFromJson() {

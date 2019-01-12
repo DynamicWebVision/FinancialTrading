@@ -42,4 +42,16 @@ class IexTrading extends \App\Broker\Base  {
         }
     }
 
+    public function getFiveYearRates($symbol) {
+        $this->apiUrl = $this->baseUrl.'stock/'.$symbol.'/chart/5y';
+        $response = $this->apiGetRequest();
+
+        if (!is_array($response)) {
+            $this->createApiErrorLogRecord('IexTrading', 'getFiveYearRates', $symbol);
+            return false;
+        }
+        else {
+            return $response;
+        }
+    }
 }
