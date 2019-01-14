@@ -29,4 +29,10 @@ class StocksIexRatesControllerTest extends TestCase
         $stocksIexRatesController = new StocksIexRatesController();
         $stocksIexRatesController->pullOneStock();
     }
+
+    public function testKeepRunning()
+    {
+        $stocksIexRatesController = new StocksIexRatesController();
+        $stocksIexRatesController->keepRunning();
+    }
 }

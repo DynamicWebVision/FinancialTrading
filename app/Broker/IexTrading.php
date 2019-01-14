@@ -17,7 +17,7 @@ class IexTrading extends \App\Broker\Base  {
     }
 
     public function getCompanyProfile($symbol) {
-        $this->apiUrl = $this->baseUrl.'stock/'.$symbol.'/company';
+        $this->apiUrl = $this->baseUrl.'stock/'.trim($symbol).'/company';
         $response = $this->apiGetRequest();
 
         if (!isset($response->companyName)) {
@@ -30,7 +30,7 @@ class IexTrading extends \App\Broker\Base  {
     }
 
     public function getCompanyFinancials($symbol, $period) {
-        $this->apiUrl = $this->baseUrl.'stock/'.$symbol.'/financials?period='.$period;
+        $this->apiUrl = $this->baseUrl.'stock/'.trim($symbol).'/financials?period='.$period;
         $response = $this->apiGetRequest();
 
         if (!isset($response->financials)) {
@@ -43,7 +43,7 @@ class IexTrading extends \App\Broker\Base  {
     }
 
     public function getFiveYearRates($symbol) {
-        $this->apiUrl = $this->baseUrl.'stock/'.$symbol.'/chart/5y';
+        $this->apiUrl = $this->baseUrl.'stock/'.trim($symbol).'/chart/5y';
         $response = $this->apiGetRequest();
 
         if (!is_array($response)) {
