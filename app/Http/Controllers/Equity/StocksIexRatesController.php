@@ -105,11 +105,11 @@ class StocksIexRatesController extends Controller {
             }
 
             if (isset($rate->change)) {
-                $newIexDailyRate->change_price = $rate->change;
+                $newIexDailyRate->change_price = round($rate->change, 2);
             }
 
             if (isset($rate->changePercent)) {
-                $newIexDailyRate->change_percent = $rate->changePercent;
+                $newIexDailyRate->change_percent = round($rate->changePercent, 2);
             }
 
             if (isset($rate->vwap)) {
