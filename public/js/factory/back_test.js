@@ -1,4 +1,4 @@
-app.factory('BackTest', function(UtilityService, $http, $q) {
+app.factory('BackTest', function(UtilityService, $http, $q, SweetAlert) {
 
     var service = {};
 
@@ -134,6 +134,18 @@ app.factory('BackTest', function(UtilityService, $http, $q) {
         }
 
 
+    }
+
+    service.markProfitable = function(btgId) {
+        $http.get('/back_test_group_profitable/' + btgId).success(function (data) {
+            SweetAlert.swal({
+                title: "Back Test Group has been marked Profitable!",
+                type: "success",
+                showCancelButton: false,
+                confirmButtonColor: "#",
+                confirmButtonText: "OK"
+            });
+        });
     }
 
 

@@ -87,6 +87,7 @@ Route::get('copy_back_test_process_to_other_exchanges/{processId}', 'BackTestMan
 Route::get('back_test_group_from_iteration/{processId}', 'BackTestManagementController@backTestGroupFromIteration');
 Route::get('back_test_group_reviewed/{backTestGroupId}', 'BackTestManagementController@backTestGroupReviewed');
 Route::get('delete_dev_test_back_tests', 'BackTestingController@deleteDevTestOnlyBackTestGroups');
+Route::get('back_test_group_profitable/{backTestGroup}', 'BackTestingController@markBackTestGroupProfitable');
 
 
 /******************************
@@ -184,7 +185,7 @@ Route::get('historical_rates/run_specific/{frequencyId}/{currencyId}', 'Historic
 Route::get('historical_rates_test_specific_time', 'TestController@testSpecificTimeFrameFromOanda');
 
 /******************************
- * STRATEGY LOGGS
+ * STRATEGY LOGS
  ******************************/
 Route::get('strategy_logger', 'StrategyLogController@index');
 Route::get('strategy_logger/log_history/{account}/{exchange}/{dateTime}/{onlyEvents}', 'StrategyLogController@getLogs');

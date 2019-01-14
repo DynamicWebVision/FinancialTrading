@@ -38,6 +38,7 @@
         vm.filterIterations = filterIterations;
         vm.rollBackStatsConfirm = rollBackStatsConfirm;
         vm.rollbackGroupStats = rollbackGroupStats;
+        vm.markProfitable = markProfitable;
 
         vm.pageProcessing = true;
 
@@ -276,6 +277,10 @@
             }
 
             return !passValues.includes(false);
+        }
+
+        function markProfitable() {
+            BackTest.markProfitable(vm.backTestGroup.id);
         }
     }
 })();

@@ -654,6 +654,13 @@ class BackTestingController extends Controller {
         $newBackTestGroup->description = $post['group_desc'];
         $newBackTestGroup->rate_unix_time_start = $post['rate_unix_time_start'];
 
+        if ($post['dev_testing_only']) {
+            $newBackTestGroup->dev_testing_only = 1;
+        }
+        else {
+            $newBackTestGroup->dev_testing_only = 0;
+        }
+
         if (isset($post['priority'])) {
             $newBackTestGroup->priority = $post['priority'];
         }
@@ -947,5 +954,12 @@ class BackTestingController extends Controller {
             ->first();
 
         $this->rollbackSingleProcess($lastBackTestToBeProcessedRecord->id);
+    }
+
+    public function markBackTestGroupProfitable($backTestGroup) {
+        $backTestGroup = BackTestGroup::find($backTestGroup);
+        $backTestGroup->profitable = 1;
+        $backTestGroup->save();
+        return 1;
     }
 }

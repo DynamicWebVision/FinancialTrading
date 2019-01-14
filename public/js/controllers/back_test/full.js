@@ -19,6 +19,7 @@
         vm.openCreateStrategyNote = openCreateStrategyNote;
         vm.lowGainLossAnalysis = lowGainLossAnalysis;
         vm.highGainLossAnalysis = highGainLossAnalysis;
+        vm.markProfitable = markProfitable;
 
         vm.gl_low = {};
         vm.gl_high = {};
@@ -169,7 +170,6 @@
 
         function lowGainLossAnalysis() {
             $http.get('/back_test/gain_loss_analysis_low/'+BackTest.info.id).success(function(response){
-                console.log(response);
                 vm.gl_low.labels = response.labels;
                 vm.gl_low.data = response.data;
 
@@ -197,6 +197,10 @@
             StrategyNote.newStrategyNote.bt_feedback = true;
             StrategyNote.newStrategyNote.for_future = false;
             StrategyNote.newStrategyNote.live_feedback = false;
+        }
+
+        function markProfitable() {
+            BackTest.markProfitable(BackTest.info.id);
         }
     }
 })();

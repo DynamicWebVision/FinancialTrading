@@ -114,7 +114,7 @@ class StocksCompanyProfileController extends Controller {
         }
 
         if (isset($response->sector)) {
-            $sector = StocksSector::firstOrNew(['name'=>trim($response->industry)]);
+            $sector = StocksSector::firstOrNew(['name'=>trim($response->sector)]);
             $sector->save();
             $newStockCompanyProfile->sector_id = $sector->id;
         }
