@@ -69,7 +69,7 @@ class StocksIexRatesController extends Controller {
 
         $response = $ieTrading->getFiveYearRates($stock->symbol);
 
-        $this->saveRates($response, $stock->stock_id);
+        $this->saveRates($response, $stock->id);
     }
 
     public function saveRates($rates, $stockId) {

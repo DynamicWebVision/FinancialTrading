@@ -24,11 +24,11 @@ class StocksIexRatesControllerTest extends TestCase
 //        $stocksHistoricalDataTest->getStockData();
 //    }
 
-//    public function testOneRateStock()
-//    {
-//        $stocksIexRatesController = new StocksIexRatesController();
-//        $stocksIexRatesController->pullOneStock();
-//    }
+    public function testOneRateStock()
+{
+    $stocksIexRatesController = new StocksIexRatesController();
+    $stocksIexRatesController->pullOneStock();
+}
 
     public function testKeepRunning()
     {
