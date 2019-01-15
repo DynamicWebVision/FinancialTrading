@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Controllers;
 
-use App\Http\Controllers\Equity\StocksIexRatesController;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -31,7 +30,7 @@ class StocksHistoricalDataTest extends TestCase
 
         $server = Servers::find(Config::get('server_id'));
 
-        $stocksHistoricalDataTest = new StocksIexRatesController();
+        $stocksHistoricalDataTest = new StocksHistoricalDataController();
         $stocksHistoricalDataTest->keepRunning();
     }
 }
