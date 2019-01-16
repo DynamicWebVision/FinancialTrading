@@ -75,12 +75,12 @@ class Handler extends ExceptionHandler
 
             date('m/d H:m');
 
-            try {
-                $textMessage->sendTextMessage('Error on '.env('APP_ENV').substr($exception,0,100));
-            }
-            catch (\Exception $e) {
-                \Log::emergency('Twilio Exception'.$e);
-            }
+//            try {
+//                $textMessage->sendTextMessage('Error on '.env('APP_ENV').substr($exception,0,100));
+//            }
+//            catch (\Exception $e) {
+//                \Log::emergency('Twilio Exception'.$e);
+//            }
 
         }
 
