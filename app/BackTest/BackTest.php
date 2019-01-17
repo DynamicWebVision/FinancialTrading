@@ -112,7 +112,7 @@ abstract class BackTest  {
             $this->getMoreOneTierRates();
         }
 
-        if ($this->rates[$this->rateIndex]['rate_unix_time'] == 1545256800) {
+        if ($this->rates[$this->rateIndex]['rate_unix_time'] == 1546912800) {
             $debug = 1;
         }
 
@@ -314,6 +314,8 @@ abstract class BackTest  {
                 $stdRate->closeMid = (float) $rate['close_mid'];
                 $stdRate->lowMid = (float) $rate['low_mid'];
                 $stdRate->openMid = (float) $rate['open_mid'];
+                $stdRate->dateTime = date("Y-m-d H:i:s",(int) $rate['rate_unix_time']);
+                $stdRate->dateUnixTime = $rate['rate_unix_time'];
                 $stdRate->volume = (float) $rate['volume'];
 
                 return $stdRate;
@@ -336,6 +338,8 @@ abstract class BackTest  {
                 $stdRate->closeMid = (float) $rate['close_mid'];
                 $stdRate->lowMid = (float) $rate['low_mid'];
                 $stdRate->openMid = (float) $rate['open_mid'];
+                $stdRate->dateTime = date("Y-m-d H:i:s",(int) $rate['rate_unix_time']);
+                $stdRate->dateUnixTime = $rate['rate_unix_time'];
                 $stdRate->volume = (float) $rate['volume'];
 
                 return $stdRate;

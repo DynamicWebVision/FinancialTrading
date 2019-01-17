@@ -210,13 +210,14 @@ class StrategySystemController extends Controller {
             $fileHandler->emptyLine();
         }
         $fileHandler->emptyLine();
-        $fileHandler->addLineToLineGroup('$this->strategyLogger->logIndicators($this->decisionIndicators);', 2);
-        $fileHandler->emptyLine();
 
         foreach ($post['openPositionConditions'] as $openPositionIndicator) {
             $fileHandler->addLineToLineGroup($openPositionIndicator['method_call'], 2);
             $fileHandler->emptyLine();
         }
+
+        $fileHandler->addLineToLineGroup('$this->strategyLogger->logIndicators($this->decisionIndicators);', 2);
+        $fileHandler->emptyLine();
 
         $fileHandler->addLineToLineGroup('if ($this->openPosition[\'side\'] == \'long\') {', 2);
 

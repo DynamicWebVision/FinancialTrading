@@ -59,15 +59,67 @@ class TrueRangeTest extends TestCase
         dd($test);
     }
 
-    public function testGetStopLossPipValue() {
+    public function testGetStopLossTrueRangeOrBreakEvenMostProfitable()
+    {
         $historicalRates = new \App\Model\HistoricalRates();
-        //$rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 3:00:00');
-        $rates = $historicalRates->getRatesSpecificTimeFull(1,3,1000,'2018-12-27 18:00:00');
+
+        $rates = $historicalRates->getRatesSpecificTimeFull(1, 3, 1000, '2018-12-28 2:00:00');
+
+        $openPosition = [];
+
+        $openPosition['side'] = 'long';
+        $openPosition['openPrice'] = 1.13673;
+        $openPosition['periodsOpen'] = 10;
 
         $trueRange = new TrueRange();
 
-        $averageTrueRange = $trueRange->getStopLossPipValue($rates, 14, .0001, 1);
+        $averageTrueRange = $trueRange->getStopLossTrueRangeOrBreakEvenMostProfitable($rates, 14, .5, .0001, $openPosition);
 
-        dd($averageTrueRange);
+        $rates = $historicalRates->getRatesSpecificTimeFull(1, 3, 1000, '2019-1-2 14:00:00');
+
+        $openPosition = [];
+
+        $openPosition['side'] = 'short';
+        $openPosition['openPrice'] = 1.14779;
+        $openPosition['periodsOpen'] = 10;
+
+        $trueRange = new TrueRange();
+
+        $test = $trueRange->getStopLossTrueRangeOrBreakEvenMostProfitable($rates, 14, .5, .0001, $openPosition);
+
+        dd($test);
+    }
+
+    public function testGetStopLossTrueRangeOrBreakEven()
+    {
+        $historicalRates = new \App\Model\HistoricalRates();
+
+        $rates = $historicalRates->getRatesSpecificTimeFull(1, 3, 1000, '2018-12-28 2:00:00');
+
+        $openPosition = [];
+
+        $openPosition['side'] = 'long';
+        $openPosition['openPrice'] = 1.13673;
+        $openPosition['periodsOpen'] = 10;
+
+        $trueRange = new TrueRange();
+
+        $averageTrueRange = $trueRange->getStopLossTrueRangeOrBreakEven($rates, 14, .5, .0001, $openPosition);
+
+        //dd($averageTrueRange);
+
+        $rates = $historicalRates->getRatesSpecificTimeFull(1, 3, 1000, '2019-1-2 14:00:00');
+
+        $openPosition = [];
+
+        $openPosition['side'] = 'short';
+        $openPosition['openPrice'] = 1.14779;
+        $openPosition['periodsOpen'] = 10;
+
+        $trueRange = new TrueRange();
+
+        $test = $trueRange->getStopLossTrueRangeOrBreakEven($rates, 14, .5, .0001, $openPosition);
+
+        dd($test);
     }
 }

@@ -64,19 +64,19 @@ class HmaChngAdx extends \App\Strategy\Strategy  {
 
         $this->decisionIndicators['hmaChangeDirection'] = $hmaEvents->hullChangeDirectionCheck($this->rates['simple'], $this->hmaLength);
 
-        $this->decisionIndicators['hmaSlope'] = $hmaEvents->hmaSlope($this->getRatesInPips($this->rates['simple']), $this->hmaLength, $this->exchange->pip, $this->hmaSlopeMin);
+        $this->decisionIndicators['hmaMeetsSlopeMin'] = $hmaEvents->hmaSlopeMeetsMin($this->getRatesInPips($this->rates['simple']), $this->hmaLength, $this->exchange->pip, $this->hmaSlopeMin);
 
         $this->decisionIndicators['trueRanageBreakevenSL'] = $trueRange->getStopLossTrueRangeOrBreakEven($this->rates['full'], $this->trueRangeLength, $this->trueRangeMultiplier, $this->exchange->pip , $this->openPosition);
 
         if ($this->openPosition['side'] == 'long') {
             //A Conditions
             // $this->decisionIndicators['hmaChangeDirection'] == 'reversedUp'
-            // $this->decisionIndicators['hmaSlope'] == 'long'
+            // $this->decisionIndicators['hmaMeetsSlopeMin'] == 'long'
             //B Conditions
             // $this->decisionIndicators['hmaChangeDirection'] == 'reversedDown'
-            // $this->decisionIndicators['hmaSlope'] == 'short'
+            // $this->decisionIndicators['hmaMeetsSlopeMin'] == 'short'
 
-            if ( $this->decisionIndicators['hmaSlope'] == 'short' ) {
+            if ( $this->decisionIndicators['hmaMeetsSlopeMin'] == 'short' ) {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
                 if ($this->decisionIndicators['hmaChangeDirection'] == 'reversedDown') {
@@ -88,7 +88,7 @@ class HmaChngAdx extends \App\Strategy\Strategy  {
             }
         }
         elseif ($this->openPosition['side'] == 'short') {
-            if ( $this->decisionIndicators['hmaSlope'] == 'long' ) {
+            if ( $this->decisionIndicators['hmaMeetsSlopeMin'] == 'long' ) {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
                 if ($this->decisionIndicators['hmaChangeDirection'] == 'reversedUp') {

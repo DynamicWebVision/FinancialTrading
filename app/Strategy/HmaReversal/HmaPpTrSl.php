@@ -54,7 +54,7 @@ class HmaPpTrSl extends \App\Strategy\Strategy  {
 
         $this->strategyLogger->logIndicators($this->decisionIndicators);
 
-        $this->decisionIndicators['hmaSlope'] = $hmaEvents->hmaSlope($this->rates['simple'], $this->hmaLength, $this->exchange->pip, $this->hmaSlopeMin);
+        $this->decisionIndicators['hmaMeetsSlopeMin'] = $hmaEvents->hmaSlopeMeetsMin($this->rates['simple'], $this->hmaLength, $this->exchange->pip, $this->hmaSlopeMin);
 
         $this->decisionIndicators['priceAboveBelowHma'] = $hmaEvents->hmaPriceAboveBelowHma($this->rates['simple'], $this->hmaLength);
 
@@ -65,15 +65,15 @@ class HmaPpTrSl extends \App\Strategy\Strategy  {
         if ($this->openPosition['side'] == 'long') {
 
             //A Conditions
-            // $this->decisionIndicators['hmaSlope'] == 'long'
+            // $this->decisionIndicators['hmaMeetsSlopeMin'] == 'long'
             // $this->decisionIndicators['priceAboveBelowHma'] == 'above'
             // $this->modifyStopLoss($this->decisionIndicators['trueRanageBreakevenSL']);
             //B Conditions
-            // $this->decisionIndicators['hmaSlope'] == 'short'
+            // $this->decisionIndicators['hmaMeetsSlopeMin'] == 'short'
             // $this->decisionIndicators['priceAboveBelowHma'] == 'below'
             // $this->modifyStopLoss($this->decisionIndicators['trueRanageBreakevenSL']);
 
-            if ( $this->decisionIndicators['hmaSlope'] == 'short' ||  $this->decisionIndicators['priceAboveBelowHma'] == 'below') {
+            if ( $this->decisionIndicators['hmaMeetsSlopeMin'] == 'short' ||  $this->decisionIndicators['priceAboveBelowHma'] == 'below') {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
 
@@ -86,7 +86,7 @@ class HmaPpTrSl extends \App\Strategy\Strategy  {
             }
         }
         elseif ($this->openPosition['side'] == 'short') {
-            if ( $this->decisionIndicators['hmaSlope'] == 'long' ||  $this->decisionIndicators['priceAboveBelowHma'] == 'above' ) {
+            if ( $this->decisionIndicators['hmaMeetsSlopeMin'] == 'long' ||  $this->decisionIndicators['priceAboveBelowHma'] == 'above' ) {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
 

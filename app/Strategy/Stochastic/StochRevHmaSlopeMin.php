@@ -57,7 +57,7 @@ class StochRevHmaSlopeMin extends \App\Strategy\Strategy  {
         $this->decisionIndicators['averageTrueRangeProfitLossValues'] = $trueRange->getTakeProfitLossPipValues($this->rates['full'], $this->trueRangeLength,
             $this->exchange->pip, $this->takeProfitTrueRangeMultiplier, $this->stopLossTrueRangeMultiplier);
 
-        $this->decisionIndicators['slowHmaSlope'] = $hmaEvents->hmaSlope($this->rates['simple'], $this->slowHma, $this->exchange->pip, $this->slowHmaSlopeMin);
+        $this->decisionIndicators['slowHmaSlope'] = $hmaEvents->hmaSlopeMeetsMin($this->rates['simple'], $this->slowHma, $this->exchange->pip, $this->slowHmaSlopeMin);
 
         $this->stopLossPipAmount = round($this->decisionIndicators['averageTrueRangeProfitLossValues']['lossPips']);
     }

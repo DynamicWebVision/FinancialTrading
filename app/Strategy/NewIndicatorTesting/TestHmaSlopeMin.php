@@ -25,7 +25,7 @@ class TestHmaSlopeMin extends \App\Strategy\Strategy  {
         $adxEvents = new \App\IndicatorEvents\AdxEvents;
         $adxEvents->strategyLogger = $this->strategyLogger;
 
-        $this->decisionIndicators['hmaSlopeCutoff'] = $hmaEvents->hmaSlope($this->rates['simple'], $this->hmaLength, $this->exchange->pip, $this->hmaSlopeCutoff);
+        $this->decisionIndicators['hmaSlopeCutoff'] = $hmaEvents->hmaSlopeMeetsMin($this->rates['simple'], $this->hmaLength, $this->exchange->pip, $this->hmaSlopeCutoff);
 
         $this->decisionIndicators['adxAboveThreshold'] = $adxEvents->adxAboveThreshold($this->rates['full'], $this->adxLength, $this->adxUndersoldThreshold);
 
@@ -61,7 +61,7 @@ class TestHmaSlopeMin extends \App\Strategy\Strategy  {
 
         $this->strategyLogger->logIndicators($this->decisionIndicators);
 
-        $this->decisionIndicators['hmaSlopeCutoff'] = $hmaEvents->hmaSlope($this->rates['simple'], $this->hmaLength, $this->exchange->pip, $this->hmaSlopeCutoff);
+        $this->decisionIndicators['hmaSlopeCutoff'] = $hmaEvents->hmaSlopeMeetsMin($this->rates['simple'], $this->hmaLength, $this->exchange->pip, $this->hmaSlopeCutoff);
 
         $this->decisionIndicators['adxAboveThreshold'] = $adxEvents->adxAboveThreshold($this->rates['full'], $this->adxLength, $this->adxUndersoldThreshold);
 

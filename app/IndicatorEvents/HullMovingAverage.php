@@ -73,9 +73,9 @@ class HullMovingAverage {
     }
 
     //Confirm whether Current Slope of Hma meets minimum amount
-    public function hmaSlope($rates, $length, $pip, $minSlope) {
-        $lastThree = $this->hullLineLastThree($rates, $length);
-        $slope = ($lastThree[2] - $lastThree[1]);
+    public function hmaSlopeMeetsMin($rates, $length, $pip, $minSlope) {
+        $slope = $this->hmaSlope($rates, $length);
+        $slope = $slope/$pip;
 
         if ($slope >= $minSlope) {
             return 'long';
@@ -86,6 +86,12 @@ class HullMovingAverage {
         else {
             return false;
         }
+    }
+
+    public function hmaSlope($rates, $length) {
+        $lastThree = $this->hullLineLastThree($rates, $length);
+        $slope = ($lastThree[2] - $lastThree[1]);
+        return $slope;
     }
 
     public function hullChangeDirectionPoint($rates, $length) {
@@ -172,5 +178,9 @@ class HullMovingAverage {
         elseif ($currentPrice < $hma[1]) {
             return 'below';
         }
+    }
+
+    public function absSlopeLastXPeriods() {
+
     }
 }

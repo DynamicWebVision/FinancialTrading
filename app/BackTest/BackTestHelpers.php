@@ -51,7 +51,7 @@ class BackTestHelpers  {
         }
     }
 
-    public function checkOpenPosition($possibleOpenPosition, $currentPriceData, $backTestTrailingStop, $currentUnixTime) {
+    public function checkOpenPosition($possibleOpenPosition, $currentPriceData, $backTestTrailingStop) {
         if (!isset($possibleOpenPosition['closeDateTime'])) {
             if ($possibleOpenPosition['positionType'] == 'long') {
                 $pl = ($currentPriceData->high - $possibleOpenPosition['amount'])/$this->exchange->pip;
@@ -65,8 +65,7 @@ class BackTestHelpers  {
               'openPrice' => $possibleOpenPosition['amount'],
               'gl' => $pl,
               'trailingStop' => $backTestTrailingStop,
-              'openUnixTime'=>strtotime($possibleOpenPosition['dateTime']),
-              'secondsSinceOpenPosition' => $currentUnixTime - strtotime($possibleOpenPosition['dateTime'])
+              'openUnixTime'=>strtotime($possibleOpenPosition['dateTime'])
             ];
         }
         else {

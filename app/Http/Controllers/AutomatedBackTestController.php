@@ -19,6 +19,7 @@ use App\BackTest\BackTestToBeProcessed\Strategy\NewIndicatorTesting\NewIndicator
 use App\BackTest\BackTestToBeProcessed\Strategy\TestingSystems\TestingSystemsBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\HmaReversal\HmaReversalBackTestToBeProcessed;
 use App\BackTest\BackTestToBeProcessed\Strategy\RsiPullback\RsiPullbackBackTestToBeProcessed;
+use App\BackTest\BackTestToBeProcessed\Strategy\HmaPricePoint\HmaPricePointBackTestToBeProcessed;
 //END OF Backtest Declarations
 
 use \Log;
@@ -305,6 +306,10 @@ class AutomatedBackTestController extends Controller {
         }
         elseif ($server->current_back_test_strategy == 'RSI_PULLBACK') {
             $backTestStrategy = new RsiPullbackBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'HMA_PRICE_POINT') {
+            $backTestStrategy = new HmaPricePointBackTestToBeProcessed($processId, $server);
             $backTestStrategy->callProcess();
         }
         //END OF STRATEGY IFS

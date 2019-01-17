@@ -117,6 +117,7 @@ class OandaV20 extends \App\Broker\Base  {
                 $stdRate->lowMid = (float) $rate->mid->l;
                 $stdRate->openMid = (float) $rate->mid->o;
                 $stdRate->dateTime = date("Y-m-d H:i:s",(int) $rate->time);
+                $stdRate->dateUnixTime = $rate->time;
                 $stdRate->volume = (float) $rate->volume;
 
                 return $stdRate;
@@ -149,6 +150,7 @@ class OandaV20 extends \App\Broker\Base  {
                 $stdRate->lowMid = (float) $rate->mid->l;
                 $stdRate->openMid = (float) $rate->mid->o;
                 $stdRate->dateTime = date("Y-m-d H:i:s",(int) $rate->time);
+                $stdRate->dateUnixTime = $rate->time;
                 $stdRate->volume = (float) $rate->volume;
                 return $stdRate;
             }, $rates);
@@ -283,7 +285,6 @@ class OandaV20 extends \App\Broker\Base  {
                     $tradeResponse = $this->apiGetRequest();
 
                     $openPosition['openUnixTime'] = $tradeResponse->trade->openTime;
-                    $openPosition['secondsSinceOpenPosition'] = time() - round($tradeResponse->trade->openTime);
 
                     //Handle Stop Loss
                     if (isset($tradeResponse->trade->stopLossOrder)) {
@@ -306,7 +307,6 @@ class OandaV20 extends \App\Broker\Base  {
                     $tradeResponse = $this->apiGetRequest();
 
                     $openPosition['openUnixTime'] = $tradeResponse->trade->openTime;
-                    $openPosition['secondsSinceOpenPosition'] = time() - round($tradeResponse->trade->openTime);
 
                     //Handle Stop Loss
                     if (isset($tradeResponse->trade->stopLossOrder)) {

@@ -106,7 +106,7 @@ class TrueRange {
         $utility = new Utility();
 
         $relevantAtr = $utility->getLastXElementsInArray($averageTrueRangePips, $openPosition['periodsOpen']);
-        $relevantRates = $utility->getLastXElementsInArray($rates, $openPosition['periodsOpen']);
+        $relevantRates = $utility->getLastXElementsInArray($rates, $openPosition['periodsOpen'] + 1);
 
         $gainLossInPips = array_map(function($rate) use ($exchangePips, $openPosition) {
             if ($openPosition['side'] == 'long') {
@@ -120,7 +120,7 @@ class TrueRange {
         $index = 0;
         $pricePassedAtrProfit = false;
 
-        while (isset($relevantAtr[$index]) && $pricePassedAtrProfit) {
+        while (isset($relevantAtr[$index]) && !$pricePassedAtrProfit) {
             $atrCutoffPipAmount = $averageTrueRangePips[$index] * $trueRangeCutoff;
 
             if ($gainLossInPips[$index] >= $atrCutoffPipAmount) {
@@ -140,10 +140,71 @@ class TrueRange {
         else {
             $currentPrice = end($rates);
             if ($openPosition['side'] == 'long') {
-                return $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeCutoff);
+                return $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
             }
             elseif ($openPosition['side'] == 'short') {
-                return $currentPrice->closeMid + (end($averageTrueRangePips)*$trueRangeCutoff);
+                return $currentPrice->closeMid + (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
+            }
+        }
+    }
+
+    public function getStopLossTrueRangeOrBreakEvenMostProfitable($rates, $length, $trueRangeCutoff, $exchangePips , $openPosition) {
+        $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
+
+        $utility = new Utility();
+
+        if ($openPosition['periodsOpen'] > 5) {
+            $test=1;
+        }
+
+        $relevantAtr = $utility->getLastXElementsInArray($averageTrueRangePips, $openPosition['periodsOpen']);
+        $relevantRates = $utility->getLastXElementsInArray($rates, $openPosition['periodsOpen'] + 1);
+
+        $gainLossInPips = array_map(function($rate) use ($exchangePips, $openPosition) {
+            if ($openPosition['side'] == 'long') {
+                return ($rate->closeMid - $openPosition['openPrice'])/$exchangePips;
+            }
+            elseif ($openPosition['side'] == 'short') {
+                return ($openPosition['openPrice'] - $rate->closeMid)/$exchangePips;
+            }
+        }, $relevantRates);
+
+        $index = 0;
+        $pricePassedAtrProfit = false;
+
+        while (isset($relevantAtr[$index]) && !$pricePassedAtrProfit) {
+            $atrCutoffPipAmount = $averageTrueRangePips[$index] * $trueRangeCutoff;
+
+            if (!isset($gainLossInPips[$index])) {
+                $degug=1;
+            }
+
+            if ($gainLossInPips[$index] >= $atrCutoffPipAmount) {
+                $pricePassedAtrProfit = true;
+            }
+            $index++;
+        }
+        $currentPrice = end($rates);
+
+        if ($pricePassedAtrProfit) {
+            if ($openPosition['side'] == 'long') {
+                $breakEven = $openPosition['openPrice'] + ($exchangePips*2);
+                $trueRangeStopLoss = $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
+                return max([$breakEven, $trueRangeStopLoss]);
+            }
+            elseif ($openPosition['side'] == 'short') {
+                $breakEven = $openPosition['openPrice'] - ($exchangePips*2);
+                $trueRangeStopLoss = $currentPrice->closeMid + (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
+                return min([$breakEven, $trueRangeStopLoss]);
+            }
+        }
+        else {
+
+            if ($openPosition['side'] == 'long') {
+                return $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
+            }
+            elseif ($openPosition['side'] == 'short') {
+                return $currentPrice->closeMid + (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
             }
         }
     }
