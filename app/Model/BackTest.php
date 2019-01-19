@@ -4,5 +4,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class BackTest extends Model {
 
-	protected $table = 'back_test';
+    protected $table = 'back_test';
 }

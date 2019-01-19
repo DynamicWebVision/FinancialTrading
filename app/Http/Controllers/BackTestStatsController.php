@@ -1,13 +1,13 @@
 <?php namespace App\Http\Controllers;
 
-use App\BackTest\BackTest;
-use \App\BackTest\CowabungaBackTest;
+use App\ForexBackTest\BackTest;
+use \App\ForexBackTest\CowabungaBackTest;
 use App\Services\Utility;
 use View;
 use \App\Model\BackTestPosition;
 use Illuminate\Support\Facades\DB;
-use \App\BackTest\StopLossWithTrailingStopTest;
-use \App\BackTest\EmaMomentumTPSLTest;
+use \App\ForexBackTest\StopLossWithTrailingStopTest;
+use \App\ForexBackTest\EmaMomentumTPSLTest;
 use App\Model\BackTestToBeProcessed;
 use App\Model\Exchange;
 use App\Model\DecodeFrequency;
@@ -19,8 +19,8 @@ use App\Services\CurrencyIndicators;
 use App\Services\TransactionAmountHelpers;
 use App\Model\Servers;
 
-use \App\BackTest\IndicatorRunThroughTest;
-use \App\Strategy\HullMovingAverage\HmaIndicatorRunThrough;
+use \App\ForexBackTest\IndicatorRunThroughTest;
+use \App\ForexStrategy\HullMovingAverage\HmaIndicatorRunThrough;
 use Illuminate\Support\Facades\Config;
 
 
@@ -29,6 +29,10 @@ class BackTestStatsController extends Controller {
     public function __construct() {
         set_time_limit(0);
         ini_set('memory_limit', '-1');
+
+        $serverController = new ServersController();
+
+        $serverController->setServerId();
     }
 
     public function index() {
@@ -58,6 +62,7 @@ class BackTestStatsController extends Controller {
                     back_test_stats.total_gain_loss_pips, 
                     back_test_stats.total_gain_transactions, 
                     back_test_stats.total_loss_transactions, 
+                    back_test_stats.gl_ratio, 
                     back_test_stats.positive_months, 
                     back_test_stats.negative_months, 
                     back_test_stats.median_gain, 
@@ -131,12 +136,13 @@ class BackTestStatsController extends Controller {
     }
 
     public function backtestProcessStats($processId = false) {
+        $utility = new Utility();
 
         if ($processId) {
             $processedBackTest = BackTestToBeProcessed::where('id', '=', $processId)->first();
         }
         else {
-            $server = Servers::find(env('SERVER_ID'));
+            $server = Servers::find(Config::get('server_id'));
 
             $statCount = BackTestToBeProcessed::where('stats_finish', '=', 0)->where('stats_start', '=', 0)
                 ->where('hung_up', '=', 0)
@@ -304,6 +310,8 @@ class BackTestStatsController extends Controller {
         $newBackTestStats->total_gain_transactions =  $gainCount[0]->gain_count;
 
         $newBackTestStats->total_loss_transactions =  $lossCount[0]->loss_count;
+
+        $newBackTestStats->gl_ratio =  $utility->getRatio($gainCount[0]->gain_count, $lossCount[0]->loss_count);
 
         $newBackTestStats->positive_months =  $positiveMonthCount;
 
@@ -788,6 +796,14 @@ class BackTestStatsController extends Controller {
             $backTestToBeProcessed->save();
 
         }
+    }
+
+    public function rollBackTestStatsServerId() {
+        $server = Servers::find(Config::get('server_id'));
+
+        $groupId = $server->current_back_test_group_id;
+
+        $this->rollbackBackTestGroupStats($groupId);
     }
 
     public function populateBTGExchangeFrequency() {

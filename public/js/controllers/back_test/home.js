@@ -91,7 +91,7 @@
                 return -getRatio(back_test.positive_months, back_test.negative_months);
             }
             else if (vm.currentSortBy == 'total_gl_ratio') {
-                return -getRatio(back_test.total_gain_transactions, back_test.total_loss_transactions);
+                return - parseInt(back_test.gl_ratio);
             }
             else if (vm.currentSortBy == 'high_low_ratio') {
                 return (back_test.median_max_gain - back_test.median_max_loss)*-1;

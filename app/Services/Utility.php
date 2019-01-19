@@ -191,5 +191,13 @@ class Utility  {
         return $array[0];
     }
 
+    public function getRatio($var1, $var2, $round = false) {
+        if ($var1 == 0) {
+            return 0;
+        }
+        else {
+            return round((($var1/($var1 + $var2))*100));
+        }
+    }
 
 }

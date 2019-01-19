@@ -1,25 +1,25 @@
 <?php namespace App\Http\Controllers;
 
-use App\BackTest\BackTestToBeProcessed\FiftyOneHundredEmaTBP;
-use App\BackTest\BackTestToBeProcessed\HmaTrendTBP;
-use App\BackTest\BackTestToBeProcessed\HighLowBreakoutTBP;
-use App\BackTest\BackTestToBeProcessed\Strategy\EmaMomentum\EmaMomentumBackTest;
-use App\BackTest\BackTestToBeProcessed\Strategy\TwoTier\EmaFastHmaSlowBT;
-use App\BackTest\BackTestToBeProcessed\Strategy\Bollinger\BollingerSlTp;
-use App\BackTest\BackTestToBeProcessed\Strategy\TwoTier\ThreeMaSystem\StayIn;
-use App\BackTest\BackTestToBeProcessed\Strategy\TwoTier\PivotPoint\PivotPointTestTPSl;
-use App\BackTest\BackTestToBeProcessed\Strategy\MacdMomentum\MacdStayInOrClose;
-use App\BackTest\BackTestToBeProcessed\Strategy\Stochastic\StochasticTPSl;
-use App\BackTest\BackTestToBeProcessed\Strategy\TwoTier\SlowOverBoughtFastMomentum\SlowOverboughtFastMomentumTpSL;
-use App\BackTest\BackTestToBeProcessed\Strategy\Hlhb\HlhbTpWTrailingStop;
-use App\BackTest\BackTestToBeProcessed\Strategy\BollingerMomentum\BollingerMomentumBackTest;
-use App\BackTest\BackTestToBeProcessed\Strategy\ThreeDucks\ThreeDucks;
-use App\BackTest\BackTestToBeProcessed\Strategy\PreviousPeriodPriceBreakout\PreviousPeriodPriceBreakout;
-use App\BackTest\BackTestToBeProcessed\Strategy\NewIndicatorTesting\NewIndicatorTestingBackTestToBeProcessed;
-use App\BackTest\BackTestToBeProcessed\Strategy\TestingSystems\TestingSystemsBackTestToBeProcessed;
-use App\BackTest\BackTestToBeProcessed\Strategy\HmaReversal\HmaReversalBackTestToBeProcessed;
-use App\BackTest\BackTestToBeProcessed\Strategy\RsiPullback\RsiPullbackBackTestToBeProcessed;
-use App\BackTest\BackTestToBeProcessed\Strategy\HmaPricePoint\HmaPricePointBackTestToBeProcessed;
+use App\ForexBackTest\BackTestToBeProcessed\FiftyOneHundredEmaTBP;
+use App\ForexBackTest\BackTestToBeProcessed\HmaTrendTBP;
+use App\ForexBackTest\BackTestToBeProcessed\HighLowBreakoutTBP;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\EmaMomentum\EmaMomentumBackTest;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\TwoTier\EmaFastHmaSlowBT;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\Bollinger\BollingerSlTp;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\TwoTier\ThreeMaSystem\StayIn;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\TwoTier\PivotPoint\PivotPointTestTPSl;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\MacdMomentum\MacdStayInOrClose;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\Stochastic\StochasticTPSl;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\TwoTier\SlowOverBoughtFastMomentum\SlowOverboughtFastMomentumTpSL;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\Hlhb\HlhbTpWTrailingStop;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\BollingerMomentum\BollingerMomentumBackTest;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\ThreeDucks\ThreeDucks;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\PreviousPeriodPriceBreakout\PreviousPeriodPriceBreakout;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\NewIndicatorTesting\NewIndicatorTestingBackTestToBeProcessed;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\TestingSystems\TestingSystemsBackTestToBeProcessed;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\HmaReversal\HmaReversalBackTestToBeProcessed;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\RsiPullback\RsiPullbackBackTestToBeProcessed;
+use App\ForexBackTest\BackTestToBeProcessed\Strategy\HmaPricePoint\HmaPricePointBackTestToBeProcessed;
 //END OF Backtest Declarations
 
 use \Log;
@@ -139,7 +139,10 @@ class AutomatedBackTestController extends Controller {
     }
 
     public function processBackTestStats() {
+        $server = Servers::find(Config::get('server_id'));
+
         $recordCount = BackTestToBeProcessed::where('stats_finish', '=', 0)->where('stats_start', '=', 0)->where('finish', '=', 1)->where('start', '=', 1)
+            ->where('back_test_group_id', '=', $server->current_back_test_group_id)
             ->count();
 
         if ($recordCount > 0) {
@@ -148,6 +151,7 @@ class AutomatedBackTestController extends Controller {
                 $autoController->backtestProcessStats();
 
                 $recordCount = BackTestToBeProcessed::where('stats_finish', '=', 0)->where('stats_start', '=', 0)->where('finish', '=', 1)->where('start', '=', 1)
+                    ->where('back_test_group_id', '=', $server->current_back_test_group_id)
                     ->count();
             }
         }

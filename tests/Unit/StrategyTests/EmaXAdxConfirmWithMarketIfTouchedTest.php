@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\IndicatorEvents\Bollinger;
 use App\Model\HistoricalRates;
-use App\Strategy\Bollinger\BollingerBreakBandRetreatPullback;
+use App\ForexStrategy\Bollinger\BollingerBreakBandRetreatPullback;
 use App\Services\StrategyLogger;
 
 class EmaXAdxConfirmWithMarketIfTouched extends TestCase

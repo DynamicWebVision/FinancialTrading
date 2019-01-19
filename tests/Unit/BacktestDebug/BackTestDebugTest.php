@@ -37,8 +37,12 @@ class BackTestDebugTest extends TestCase
     }
 
     public function testBackTestStats() {
+
         $backTestStatsController = new BackTestStatsController();
-        $backTestStatsController->backtestProcessStats();
+        $backTestStatsController->rollBackTestStatsServerId();
+
+        $automatedBackTestController = new AutomatedBackTestController();
+        $automatedBackTestController->processBackTestStats();
     }
 
     public function testRollBackBackTestGroup() {
@@ -57,7 +61,7 @@ class BackTestDebugTest extends TestCase
 
     //Re-Run Full Process
     public function testFullSpecificProcess() {
-        $processId = 197813;
+        $processId = 197975;
 
         $backTestingController = new BackTestingController();
         $backTestingController->rollbackSingleProcess($processId);

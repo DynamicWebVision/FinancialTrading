@@ -27,7 +27,7 @@ class StrategyController extends Controller {
         $newStrategy->name = $post['name'];
         $newStrategy->description = $post['description'];
         $newStrategy->back_test_strategy_variable = $post['back_test_strategy_variable'];
-        $newStrategy->namespace = 'App\Strategy\\'.$post['name'];
+        $newStrategy->namespace = 'App\ForexStrategy\\'.$post['name'];
 
         $newStrategy->save();
 
@@ -60,7 +60,7 @@ class StrategyController extends Controller {
 
         $fileHandler->createFile();
 
-        $fileHandler->addLineToLineGroup('<?php namespace App\BackTest\BackTestToBeProcessed\Strategy\\'.$strategyFileName.';');
+        $fileHandler->addLineToLineGroup('<?php namespace App\ForexBackTest\BackTestToBeProcessed\Strategy\\'.$strategyFileName.';');
         $fileHandler->emptyLine();
 
         $fileHandler->addLineToLineGroup('/**********************');
@@ -71,7 +71,7 @@ class StrategyController extends Controller {
 
         $fileHandler->addLineToLineGroup('use \DB;');
         $fileHandler->addLineToLineGroup('use App\Model\Exchange;');
-        $fileHandler->addLineToLineGroup('use \App\BackTest\TakeProfitStopLossTest;');
+        $fileHandler->addLineToLineGroup('use \App\ForexBackTest\TakeProfitStopLossTest;');
         $fileHandler->addLineToLineGroup('use \App\Services\StrategyLogger;');
 
         $fileHandler->emptyLine();
@@ -79,7 +79,7 @@ class StrategyController extends Controller {
 
         $fileHandler->emptyLine();
 
-        $fileHandler->addLineToLineGroup('class '.$strategyFileName.'BackTestToBeProcessed extends \App\BackTest\BackTestToBeProcessed\Base');
+        $fileHandler->addLineToLineGroup('class '.$strategyFileName.'BackTestToBeProcessed extends \App\ForexBackTest\BackTestToBeProcessed\Base');
         $fileHandler->addLineToLineGroup('{');
 
         $fileHandler->emptyLine();

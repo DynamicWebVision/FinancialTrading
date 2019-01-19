@@ -1,13 +1,13 @@
 <?php namespace App\Http\Controllers;
 
-use App\BackTest\BackTest;
-use \App\BackTest\CowabungaBackTest;
+use App\ForexBackTest\BackTest;
+use \App\ForexBackTest\CowabungaBackTest;
 use App\Services\Utility;
 use View;
 use \App\Model\BackTestPosition;
 use Illuminate\Support\Facades\DB;
-use \App\BackTest\StopLossWithTrailingStopTest;
-use \App\BackTest\EmaMomentumTPSLTest;
+use \App\ForexBackTest\StopLossWithTrailingStopTest;
+use \App\ForexBackTest\EmaMomentumTPSLTest;
 use App\Model\BackTestToBeProcessed;
 use App\Model\Exchange;
 use App\Model\DecodeFrequency;

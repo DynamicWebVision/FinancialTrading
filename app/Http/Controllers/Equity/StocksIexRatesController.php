@@ -59,9 +59,10 @@ class StocksIexRatesController extends Controller {
 
     public function pullOneStock() {
         $stock = Stocks::orderBy('last_iex_rates_pull')->first();
-        $this->updateFiverYearRates($stock);
         $stock->last_iex_rates_pull = time();
         $stock->save();
+
+        $this->updateFiverYearRates($stock);
     }
 
     public function updateFiverYearRates($stock) {

@@ -5,17 +5,18 @@
 //END OF Backtest Declarations
 use \Log;
 
-use App\Model\BackTest;
+
 use App\Model\BackTestToBeProcessed;
 use App\Model\BackTestGroup;
 use App\Http\Controllers\ServersController;
 use Illuminate\Support\Facades\Config;
-use App\Model\Servers;
+use App\Model\Forex\BackTest;
 
 
 class TestController extends Controller {
 
     public function testLog() {
-        \Log::emergency('test log abc');
+        $model = \App\Model\Forex\BackTest::find(1);
+        dd($model);
     }
 }

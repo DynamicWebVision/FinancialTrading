@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\IndicatorEvents\Bollinger;
 use App\Model\HistoricalRates;
-use App\Strategy\Bollinger\BollingerPriceAction;
+use App\ForexStrategy\Bollinger\BollingerPriceAction;
 use App\Services\StrategyLogger;
 
 class BollingerPriceActionStrategyTest extends TestCase

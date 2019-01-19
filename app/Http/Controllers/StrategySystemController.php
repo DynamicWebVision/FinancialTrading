@@ -89,7 +89,7 @@ class StrategySystemController extends Controller {
         $fileHandler->addLineToLineGroup('********************************************/');
         $fileHandler->emptyLine();
 
-        $fileHandler->addLineToLineGroup('namespace App\Strategy\\'.$strategy->name.';');
+        $fileHandler->addLineToLineGroup('namespace App\ForexStrategy\\'.$strategy->name.';');
 
 
         $fileHandler->addLineToLineGroup('use \\Log;');

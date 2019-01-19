@@ -1,13 +1,13 @@
 <?php namespace App\Http\Controllers;
 
-use App\BackTest\BackTest;
-use \App\BackTest\CowabungaBackTest;
+use App\ForexBackTest\BackTest;
+use \App\ForexBackTest\CowabungaBackTest;
 use App\Services\Utility;
 use View;
 use \App\Model\BackTestPosition;
 use Illuminate\Support\Facades\DB;
-use \App\BackTest\StopLossWithTrailingStopTest;
-use \App\BackTest\EmaMomentumTPSLTest;
+use \App\ForexBackTest\StopLossWithTrailingStopTest;
+use \App\ForexBackTest\EmaMomentumTPSLTest;
 use App\Model\BackTestToBeProcessed;
 use App\Model\Exchange;
 use App\Model\DecodeFrequency;
@@ -19,8 +19,8 @@ use App\Services\CurrencyIndicators;
 use App\Services\TransactionAmountHelpers;
 use App\Model\Servers;
 
-use \App\BackTest\IndicatorRunThroughTest;
-use \App\Strategy\HullMovingAverage\HmaIndicatorRunThrough;
+use \App\ForexBackTest\IndicatorRunThroughTest;
+use \App\ForexStrategy\HullMovingAverage\HmaIndicatorRunThrough;
 use Illuminate\Support\Facades\Config;
 
 
@@ -173,6 +173,7 @@ class BackTestingController extends Controller {
                     back_test_stats.position_amount_ten_k,
                     back_test_stats.expected_gain_loss,
                     back_test_stats.mean_max_gain,
+                    back_test_stats.gl_ratio,
                     back_test_stats.mean_max_loss
                 from back_test join strategy on back_test.strategy_id = strategy.id
                 join decode_frequency on back_test.frequency_id = decode_frequency.id
@@ -218,216 +219,6 @@ class BackTestingController extends Controller {
     public function setBackTest($backTestId) {
         session(['current_back_test_id'=> $backTestId]);
         return 1;
-    }
-
-    public function backtestProcessStatsSpecificProcess($id) {
-        $this->backtestProcessStats($id);
-    }
-
-    public function backtestProcessStats($processId = false) {
-
-        if ($processId) {
-            $processedBackTest = BackTestToBeProcessed::where('id', '=', $processId)->first();
-        }
-        else {
-            $server = Servers::find(env('SERVER_ID'));
-
-            $statCount = BackTestToBeProcessed::where('stats_finish', '=', 0)->where('stats_start', '=', 0)
-                ->where('hung_up', '=', 0)
-                ->where('finish', '=', 1)->where('start', '=', 1)->where('back_test_group_id', '=', $server->current_back_test_group_id)->count();
-
-            if ($statCount > 0) {
-                $processedBackTest = BackTestToBeProcessed::where('stats_finish', '=', 0)->where('stats_start', '=', 0)->where('hung_up', '=', 0)
-                    ->where('finish', '=', 1)->where('start', '=', 1)->where('back_test_group_id', '=', $server->current_back_test_group_id)
-                                        ->orderBy('back_test_group_id', 'desc')->first();
-            }
-            else {
-                $processedBackTest = BackTestToBeProcessed::where('stats_finish', '=', 0)->where('stats_start', '=', 0)->where('hung_up', '=', 0)
-                    ->where('finish', '=', 1)->where('start', '=', 1)->orderBy('back_test_group_id', 'desc')->first();
-            }
-        }
-
-        $processedBackTest->stats_start = 1;
-
-        $processedBackTest->save();
-
-        $processedBackTest = $processedBackTest->toArray();
-
-        Config::set('back_test_process_id', $processedBackTest['id']);
-        Config::set('back_test_job', 'stats');
-
-        try {
-            $backTest = \App\Model\BackTest::where('process_id', '=', $processedBackTest['id'])->first()->toArray();
-        }
-        catch (\Exception $e) {
-            Log::emergency($e);
-            Log::emergency(json_encode($processedBackTest));
-        }
-
-        $exchange = Exchange::find($processedBackTest['exchange_id'])->toArray();
-        $exchangePips = $exchange['pip'];
-
-        $indicators = new CurrencyIndicators();
-
-        $backTestId = $backTest['id'];
-
-        //Gain Count
-        $gainCount = DB::select("select count(*) as gain_count, AVG(gain_loss) as mean_gain from back_test_positions where back_test_id = ? and gain_loss > 0", [$backTestId]);
-
-        //Loss Count
-        $lossCount = DB::select("select count(*) as loss_count, AVG(gain_loss) as mean_loss from back_test_positions where back_test_id = ? and gain_loss < 0", [$backTestId]);
-
-        //Total Gain Loss Count
-        $gainLossOffset = DB::select("select sum(gain_loss) as gain_count from back_test_positions where back_test_id = ?", [$backTestId]);
-
-        $backTestPositionGains = BackTestPosition::where('gain_loss', '>', 0)->where('back_test_id', '=', $backTestId)->get()->toArray();
-        $backTestPositionGains = array_column($backTestPositionGains, 'gain_loss');
-
-        $backTestPositionLosses = BackTestPosition::where('gain_loss', '<', 0)->where('back_test_id', '=', $backTestId)->get()->toArray();
-        $backTestPositionLosses = array_column($backTestPositionLosses, 'gain_loss');
-
-        $positiveMonthCount = 0;
-        $negativeMonthCount = 0;
-
-        $positiveMonths = [];
-        $negativeMonths = [];
-
-        $allMonths = [];
-
-        $transactionHelpers = new TransactionAmountHelpers();
-
-        if ($processedBackTest['take_profit_pips'] < 1) {
-            $processedBackTest['take_profit_pips'] = $indicators->median($backTestPositionGains)/$exchangePips;
-        }
-
-
-        $monthPositiveNegative = DB::select("SELECT  DATE_FORMAT(open_date_date, '%m/%Y') as transaction_month,
-                                                SUM(if(gain_loss > 0, 1, 0)) AS positive_count,
-                                                SUM(if(gain_loss < 0, 1, 0)) AS negative_count
-                                        FROM    back_test_positions
-                                        where back_test_id = ? 
-                                        GROUP   BY transaction_month;", [$backTestId]);
-
-        $gainProbabilities = [];
-
-
-        foreach ($monthPositiveNegative as $index=>$month) {
-            $gainProbabilities[] = $month->positive_count/($month->positive_count + $month->negative_count);
-        }
-
-        $gainProbabilityStandardDeviation = $indicators->standardDeviation($gainProbabilities);
-
-        $gainProbability = $gainCount[0]->gain_count/($gainCount[0]->gain_count + $lossCount[0]->loss_count);
-
-        $percentageToRisk = $transactionHelpers->kellyCriterion($processedBackTest['take_profit_pips'], $processedBackTest['stop_loss_pips'] + 2, $gainProbability);
-
-        if ($percentageToRisk < 0) {
-
-            $positionAmount = 0;
-
-            $expectedGanLoss = 0;
-
-            $totalGainLoss = 0;
-
-            $totalGainLossByMonth = 0;
-        }
-        else {
-            $pip = .0001;
-            $currentPrice = 1.25;
-            $riskAmount = round($percentageToRisk*10000);
-
-            $positionAmount = $transactionHelpers->calculatePositionAmount($currentPrice, $pip, $processedBackTest['stop_loss_pips'], $riskAmount);
-
-            $potentialGain = ($positionAmount*($currentPrice + ($pip * $processedBackTest['take_profit_pips']))) - ($positionAmount*$currentPrice);
-            $potentialLoss = ($positionAmount*($currentPrice - ($pip * $processedBackTest['stop_loss_pips']))) - ($positionAmount*$currentPrice);
-
-            $expectedGanLoss = ($potentialGain*$gainProbability) + ($potentialLoss*(1-$gainProbability));
-
-            $totalGainLoss = round(($gainCount[0]->gain_count + $lossCount[0]->loss_count)*$expectedGanLoss);
-
-            $totalGainLossByMonth = round($totalGainLoss/sizeof($monthPositiveNegative));
-        }
-
-        $backTestPositions = BackTestPosition::where('position_type', '=', 1)->where('back_test_id', '=', $backTestId)->get()->toArray();
-
-        $maxGains = [];
-        $maxLosses = [];
-
-        foreach ($backTestPositions as $position) {
-            if ($position['position_type'] == 1) {
-                $maxGains[] = ($position['highest_price']/$exchangePips) - ($position['open_price']/$exchangePips);
-                $maxLosses[] = ($position['open_price']/$exchangePips) - ($position['lowest_price']/$exchangePips);
-            }
-            else {
-                $maxLosses[] = ($position['highest_price']/$exchangePips) - ($position['open_price']/$exchangePips);
-                $maxGains[] = ($position['open_price']/$exchangePips) - ($position['lowest_price']/$exchangePips);
-            }
-        }
-
-        $monthData = DB::select("select distinct DATE_FORMAT(open_date_date, '%m/%Y') as transaction_month, sum(gain_loss) as sum_gain_loss  
-                              from back_test_positions where back_test_id = ? group by transaction_month order by transaction_month;", [$backTestId]);
-
-        foreach ($monthData as $index=>$month) {
-            if ($month->sum_gain_loss > 0) {
-                $positiveMonthCount++;
-                $positiveMonths[] = ($month->sum_gain_loss/$exchange['pip']);
-            }
-            else {
-                $negativeMonthCount++;
-                $negativeMonths[] = ($month->sum_gain_loss/$exchange['pip']);
-            }
-            $allMonths[] = ($month->sum_gain_loss/$exchange['pip']);
-        }
-
-        $newBackTestStats = new BackTestStats();
-
-        $newBackTestStats->back_test_id =  $backTestId;
-
-        $newBackTestStats->total_gain_loss_pips =  round($gainLossOffset[0]->gain_count/$exchange['pip']);
-
-        $newBackTestStats->total_gain_transactions =  $gainCount[0]->gain_count;
-
-        $newBackTestStats->total_loss_transactions =  $lossCount[0]->loss_count;
-
-        $newBackTestStats->positive_months =  $positiveMonthCount;
-
-        $newBackTestStats->negative_months =  $negativeMonthCount;
-
-        $newBackTestStats->median_gain =  round($indicators->median($backTestPositionGains));
-        $newBackTestStats->median_loss =  round($indicators->median($backTestPositionLosses));
-
-        $newBackTestStats->mean_gain =  round($indicators->average($backTestPositionGains));
-        $newBackTestStats->mean_loss =  round($indicators->average($backTestPositionLosses));
-
-        $newBackTestStats->median_month_pip_gl =  round($indicators->median($allMonths));
-        $newBackTestStats->mean_month_pip_gl =  round($indicators->average($allMonths));
-
-        $newBackTestStats->median_month_gains =  round($indicators->median($positiveMonths));
-        $newBackTestStats->mean_month_gains =  round($indicators->average($positiveMonths));
-
-        $newBackTestStats->median_month_losses =  round($indicators->median($negativeMonths));
-        $newBackTestStats->mean_month_losses =  round($indicators->median($negativeMonths));
-
-        $newBackTestStats->median_max_gain =  round($indicators->median($maxGains));
-        $newBackTestStats->mean_max_gain =  round($indicators->average($maxGains));
-
-        $newBackTestStats->median_max_loss =  round($indicators->median($maxLosses));
-        $newBackTestStats->mean_max_loss =  round($indicators->median($maxLosses));
-
-        $newBackTestStats->total_kelly_criterion_gain_loss =  $totalGainLoss;
-        $newBackTestStats->month_gain_loss_probability_sd =  $gainProbabilityStandardDeviation;
-        $newBackTestStats->total_kelly_by_month =  $totalGainLossByMonth;
-        $newBackTestStats->percent_to_risk =  $percentageToRisk;
-        $newBackTestStats->position_amount_ten_k =  round($positionAmount);
-        $newBackTestStats->expected_gain_loss =  round($expectedGanLoss);
-
-        $newBackTestStats->save();
-
-        $backTestToBeProcessed = BackTestToBeProcessed::find($processedBackTest['id']);
-
-        $backTestToBeProcessed->stats_finish = 1;
-
-        $backTestToBeProcessed->save();
     }
 
     public function fullTestStats($backTestId) {
@@ -843,6 +634,7 @@ class BackTestingController extends Controller {
 
         $rolledBackGroup->process_run = 0;
         $rolledBackGroup->stats_run = 0;
+        $rolledBackGroup->reviewed = 0;
 
         $rolledBackGroup->save();
     }

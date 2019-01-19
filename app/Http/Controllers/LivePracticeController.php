@@ -9,18 +9,18 @@ use \Log;
 
 
 //Strategies
-use \App\Strategy\HullMovingAverage\TwoTier;
-use \App\Strategy\HullMovingAverage\HmaAdxStayIn;
-use \App\Strategy\EmaMomentum\EmaMomentumAdxConfirm;
-use \App\Strategy\HmaCrossover\HmaXAdxPointConfirm;
-use \App\Strategy\HullMovingAverage\HmaStayInDifferentEntryExitAdx;
-use \App\Strategy\TwoTier\EmaFastHmaSlow;
-use \App\Strategy\EmaMomentum\EmaMomentumDifferenceSlope;
-use \App\Strategy\Stochastic\SingleHmaMomentumTpSl;
-use \App\Strategy\Stochastic\StochFastOppositeSlow;
-use \App\Strategy\EmaMomentum\EmaXAdxConfirmWithMarketIfTouched;
-use \App\Strategy\HullMovingAverage\HmaSimple;
-use \App\Strategy\PreviousCandlePriceHighLow\HighLowSuperSimpleHoldOnePeriod;
+use \App\ForexStrategy\HullMovingAverage\TwoTier;
+use \App\ForexStrategy\HullMovingAverage\HmaAdxStayIn;
+use \App\ForexStrategy\EmaMomentum\EmaMomentumAdxConfirm;
+use \App\ForexStrategy\HmaCrossover\HmaXAdxPointConfirm;
+use \App\ForexStrategy\HullMovingAverage\HmaStayInDifferentEntryExitAdx;
+use \App\ForexStrategy\TwoTier\EmaFastHmaSlow;
+use \App\ForexStrategy\EmaMomentum\EmaMomentumDifferenceSlope;
+use \App\ForexStrategy\Stochastic\SingleHmaMomentumTpSl;
+use \App\ForexStrategy\Stochastic\StochFastOppositeSlow;
+use \App\ForexStrategy\EmaMomentum\EmaXAdxConfirmWithMarketIfTouched;
+use \App\ForexStrategy\HullMovingAverage\HmaSimple;
+use \App\ForexStrategy\PreviousCandlePriceHighLow\HighLowSuperSimpleHoldOnePeriod;
 
 class LivePracticeController extends Controller {
 

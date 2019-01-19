@@ -7,11 +7,11 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use \App\Model\Exchange;
 use \App\Services\BackTest;
-use \App\BackTest\TakeProfitStopLossTest;
-use \App\BackTest\IndicatorRunThroughTest;
+use \App\ForexBackTest\TakeProfitStopLossTest;
+use \App\ForexBackTest\IndicatorRunThroughTest;
 use \App\Model\HistoricalRates;
 use \App\Model\TmpTestRates;
-use \App\Strategy\EmaMomentum\EmaXAdxConfirmWithMarketIfTouched;
+use \App\ForexStrategy\EmaMomentum\EmaXAdxConfirmWithMarketIfTouched;
 use \App\Http\Controllers\AutomatedBackTestController;
 use \App\Services\StrategyLogger;
 

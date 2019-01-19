@@ -227,7 +227,7 @@ class CurrencyController extends Controller {
 
                 $rates[] = $currentPriceData->ask;
 
-                $cowabunga = new \App\Strategy\Cowabunga(548695);
+                $cowabunga = new \App\ForexStrategy\Cowabunga(548695);
                 $cowabunga->exchange = $exchange;
                 $cowabunga->strategyId = 2;
                 $cowabunga->strategyDesc = 'Cowabunga';
@@ -240,7 +240,7 @@ class CurrencyController extends Controller {
                 $cowabunga->runStrategy($dailyRates, $rates);
 
                 //Go Back to Phantom, Research This!!!
-//                $phantom = new \App\Strategy\Phantom(3577742);
+//                $phantom = new \App\ForexStrategy\Phantom(3577742);
 //                $phantom->exchange = $exchange;
 //                $phantom->strategyId = 1;
 //                $phantom->strategyDesc = 'Phantom';
@@ -288,7 +288,7 @@ class CurrencyController extends Controller {
 
                 $fifteenMinuteRates[] = $currentPriceData->ask;
 
-                $cowabunga = new \App\Strategy\Cowabunga(7827172);
+                $cowabunga = new \App\ForexStrategy\Cowabunga(7827172);
                 $cowabunga->exchange = $exchange;
                 $cowabunga->strategyId = 2;
                 $cowabunga->strategyDesc = 'Cowabunga';
@@ -340,7 +340,7 @@ class CurrencyController extends Controller {
                     return $rate->closeMid;
                 }, $fifteenMinuteRates);
 
-                $cowabunga = new \App\Strategy\Cowabunga(3257917);
+                $cowabunga = new \App\ForexStrategy\Cowabunga(3257917);
                 $cowabunga->exchange = $exchange;
                 $cowabunga->strategyId = 2;
                 $cowabunga->strategyDesc = 'Cowabunga';
@@ -355,7 +355,7 @@ class CurrencyController extends Controller {
 
 
                 //Try 30 Take Profit
-                $cowabunga = new \App\Strategy\Cowabunga(3577742);
+                $cowabunga = new \App\ForexStrategy\Cowabunga(3577742);
                 $cowabunga->exchange = $exchange;
                 $cowabunga->strategyId = 2;
                 $cowabunga->strategyDesc = 'Cowabunga';

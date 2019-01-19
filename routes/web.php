@@ -171,7 +171,7 @@ Route::get('test_historical_volume', 'HistoricalDataController@initialLoad');
 Route::get('test_most_recent', 'HistoricalDataController@historicalDataPull');
 Route::get('h_d_test', 'HistoricalDataController@test');
 Route::get('historical_rates/run_specific/{frequencyId}/{currencyId}', 'HistoricalDataController@populateHistoricalDataSpecific');
-Route::get('historical_rates_test_specific_time', 'TestController@testSpecificTimeFrameFromOanda');
+Route::get('test_log', 'TestController@testLog');
 
 
 /******************************
