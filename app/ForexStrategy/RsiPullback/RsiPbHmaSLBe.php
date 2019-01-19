@@ -1,33 +1,34 @@
 <?php
 
 /********************************************
-RsiPbHmaTrSl Strategy System under RsiPullback Strategy
-Created at: 01/14/19by Brian O'Neill
-Description: This is is the Rsi pullback strategy with better stop loss rules from the beginning.
+RsiPbHmaSLBe Strategy System under RsiPullback Strategy
+Created at: 01/19/19by Brian O'Neill
+Description: RsiPbHmaSLBe
 ********************************************/
 
 namespace App\ForexStrategy\RsiPullback;
 use \Log;
-use \App\IndicatorEvents\HullMovingAverage;
 use \App\IndicatorEvents\RsiEvents;
+use \App\IndicatorEvents\HullMovingAverage;
 use \App\IndicatorEvents\TrueRange;
 use \App\IndicatorEvents\EmaEvents;
 
-class RsiPbHmaTrSl extends \App\ForexStrategy\Strategy  {
+class RsiPbHmaSLBe extends \App\ForexStrategy\Strategy  {
 
-    public $hmaLength;
     public $rsiLength;
     public $rsiCutoff;
+    public $hmaLength;
     public $trueRangeLength = 14;
-    public $trueRangeMultiplier;
+    public $trueRangeMultiplierNew;
+    public $trueRangeMultiplierOpen;
     public $emaLength;
 
     public function setEntryIndicators() {
-        $hmaEvents = new \App\IndicatorEvents\HullMovingAverage;
-        $hmaEvents->strategyLogger = $this->strategyLogger;
-
         $rsiEvents = new \App\IndicatorEvents\RsiEvents;
         $rsiEvents->strategyLogger = $this->strategyLogger;
+
+        $hmaEvents = new \App\IndicatorEvents\HullMovingAverage;
+        $hmaEvents->strategyLogger = $this->strategyLogger;
 
         $trueRange = new \App\IndicatorEvents\TrueRange;
         $trueRange->strategyLogger = $this->strategyLogger;
@@ -36,12 +37,12 @@ class RsiPbHmaTrSl extends \App\ForexStrategy\Strategy  {
         $emaEvents->strategyLogger = $this->strategyLogger;
 
 
-        $this->decisionIndicators['priceAboveBelowHma'] = $hmaEvents->hmaPriceAboveBelowHma($this->rates['simple'], $this->hmaLength);
-
         $this->decisionIndicators['rsiOutsideLevel'] = $rsiEvents->outsideLevel(
             $this->rates['simple'], $this->rsiLength, $this->rsiCutoff);
 
-        $this->stopLossPipAmount = $trueRange->getStopLossPipValue($this->rates['full'], $this->trueRangeLength, $this->exchange->pip, $this->trueRangeMultiplier);
+        $this->decisionIndicators['priceAboveBelowHma'] = $hmaEvents->hmaPriceAboveBelowHma($this->rates['simple'], $this->hmaLength);
+
+        $this->stopLossPipAmount = $trueRange->getStopLossPipValue($this->rates['full'], $this->trueRangeLength, $this->exchange->pip, $this->trueRangeMultiplierNew);
 
         $this->decisionIndicators['emaPriceAboveBelow'] = $emaEvents->priceAboveBelowEma($this->rates['simple'], $this->emaLength);
 
@@ -52,15 +53,15 @@ class RsiPbHmaTrSl extends \App\ForexStrategy\Strategy  {
         $this->strategyLogger->logIndicators($this->decisionIndicators);
 
         if (
-        $this->decisionIndicators['priceAboveBelowHma'] == 'above'
-         && $this->decisionIndicators['rsiOutsideLevel'] == 'overBoughtShort'
+        $this->decisionIndicators['rsiOutsideLevel'] == 'overBoughtShort'
+         && $this->decisionIndicators['priceAboveBelowHma'] == 'above'
          && $this->decisionIndicators['emaPriceAboveBelow'] == 'below'
         ) {
             $this->newLongPosition();
         }
         elseif (
-        $this->decisionIndicators['priceAboveBelowHma'] == 'below'
-         && $this->decisionIndicators['rsiOutsideLevel'] == 'overBoughtLong'
+        $this->decisionIndicators['rsiOutsideLevel'] == 'overBoughtLong'
+         && $this->decisionIndicators['priceAboveBelowHma'] == 'below'
          && $this->decisionIndicators['emaPriceAboveBelow'] == 'above'
         ) {
             $this->newShortPosition();
@@ -71,24 +72,41 @@ class RsiPbHmaTrSl extends \App\ForexStrategy\Strategy  {
         $emaEvents = new \App\IndicatorEvents\EmaEvents;
         $emaEvents->strategyLogger = $this->strategyLogger;
 
-        $this->strategyLogger->logIndicators($this->decisionIndicators);
+        $trueRange = new \App\IndicatorEvents\TrueRange;
+        $trueRange->strategyLogger = $this->strategyLogger;
+
 
         $this->decisionIndicators['emaPriceAboveBelow'] = $emaEvents->priceAboveBelowEma($this->rates['simple'], $this->emaLength);
 
+        $this->decisionIndicators['trueRangeBreakevenSLMP'] = $trueRange->getStopLossTrueRangeOrBreakEvenMostProfitable($this->rates['full'], $this->trueRangeLength,
+            $this->trueRangeMultiplierOpen, $this->exchange->pip , $this->openPosition);
+
+        $this->strategyLogger->logIndicators($this->decisionIndicators);
+
         if ($this->openPosition['side'] == 'long') {
-            if ( $this->decisionIndicators['emaPriceAboveBelow'] == 'above' ) {
+
+            //A Conditions
+            // $this->decisionIndicators['emaPriceAboveBelow'] == 'above'
+            //B Conditions
+            // $this->decisionIndicators['emaPriceAboveBelow'] == 'below'
+            if ( $this->decisionIndicators['emaPriceAboveBelowFast'] == 'above' ) {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
+            }
+            else {
+                $this->modifyStopLoss($this->decisionIndicators['trueRangeBreakevenSLMP']);
             }
         }
         elseif ($this->openPosition['side'] == 'short') {
-            if ( $this->decisionIndicators['emaPriceAboveBelow'] == 'below' ) {
+            if ( $this->decisionIndicators['emaPriceAboveBelowFast'] == 'below' ) {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
             }
+            else {
+                $this->modifyStopLoss($this->decisionIndicators['trueRangeBreakevenSLMP']);
+            }
         }
     }
-
     public function checkForNewPosition() {
         $this->setOpenPosition();
 

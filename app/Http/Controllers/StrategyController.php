@@ -60,7 +60,7 @@ class StrategyController extends Controller {
 
         $fileHandler->createFile();
 
-        $fileHandler->addLineToLineGroup('<?php namespace App\ForexBackTest\BackTestToBeProcessed\Strategy\\'.$strategyFileName.';');
+        $fileHandler->addLineToLineGroup('<?php namespace App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\\'.$strategyFileName.';');
         $fileHandler->emptyLine();
 
         $fileHandler->addLineToLineGroup('/**********************');

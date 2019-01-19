@@ -153,10 +153,6 @@ class TrueRange {
 
         $utility = new Utility();
 
-        if ($openPosition['periodsOpen'] > 5) {
-            $test=1;
-        }
-
         $relevantAtr = $utility->getLastXElementsInArray($averageTrueRangePips, $openPosition['periodsOpen']);
         $relevantRates = $utility->getLastXElementsInArray($rates, $openPosition['periodsOpen'] + 1);
 

@@ -75,7 +75,7 @@ class StrategySystemController extends Controller {
         $strategy = Strategy::find($post['strategy_id']);
 
         $fileHandler = new FileHandler();
-        $fileHandler->filePath = env('APP_ROOT').'app/Strategy/'.$strategy->name.'/'.$post['name'].'.php';
+        $fileHandler->filePath = env('APP_ROOT').'app/ForexStrategy/'.$strategy->name.'/'.$post['name'].'.php';
 
         $fileHandler->createFile();
 
@@ -100,7 +100,7 @@ class StrategySystemController extends Controller {
 
         $fileHandler->emptyLine();
 
-        $fileHandler->addLineToLineGroup('class '.$post['name'].' extends \\App\\Strategy\\Strategy  {');
+        $fileHandler->addLineToLineGroup('class '.$post['name'].' extends \\App\\ForexStrategy\\Strategy  {');
 
         $fileHandler->emptyLine();
 
@@ -324,9 +324,9 @@ class StrategySystemController extends Controller {
 
         $fileHandler->writeToNewFile();
 
-        $fileHandler->filePath = env('APP_ROOT').'app/BackTest/BackTestToBeProcessed/Strategy/'.$strategy->name.'/'.$strategy->name.'BackTestToBeProcessed.php';
+        $fileHandler->filePath = env('APP_ROOT').'app/ForexBackTest/BackTestToBeProcessed/ForexStrategy/'.$strategy->name.'/'.$strategy->name.'BackTestToBeProcessed.php';
 
-        $fileHandler->addLineToLineGroup("use \\App\\Strategy\\".$strategy->name."\\".$post['name'].";");
+        $fileHandler->addLineToLineGroup("use \\App\\ForexStrategy\\".$strategy->name."\\".$post['name'].";");
 
         $fileHandler->addLinesAboveText('END STRATEGY DECLARATIONS');
 
