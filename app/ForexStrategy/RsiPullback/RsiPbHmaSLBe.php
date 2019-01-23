@@ -89,7 +89,7 @@ class RsiPbHmaSLBe extends \App\ForexStrategy\Strategy  {
             // $this->decisionIndicators['emaPriceAboveBelow'] == 'above'
             //B Conditions
             // $this->decisionIndicators['emaPriceAboveBelow'] == 'below'
-            if ( $this->decisionIndicators['emaPriceAboveBelowFast'] == 'above' ) {
+            if ( $this->decisionIndicators['emaPriceAboveBelow'] == 'above' ) {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
             }
@@ -98,7 +98,7 @@ class RsiPbHmaSLBe extends \App\ForexStrategy\Strategy  {
             }
         }
         elseif ($this->openPosition['side'] == 'short') {
-            if ( $this->decisionIndicators['emaPriceAboveBelowFast'] == 'below' ) {
+            if ( $this->decisionIndicators['emaPriceAboveBelow'] == 'below' ) {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
             }

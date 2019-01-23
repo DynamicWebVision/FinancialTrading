@@ -83,7 +83,7 @@ class EventHelpers {
         }
     }
 
-    public function averageSlopeLastXPeriods($line, $lengthBack) {
+    public function priceCrossoverLine($line, $rateCloses) {
 
     }
 }

@@ -24,14 +24,9 @@ use \App\IndicatorEvents\EventHelpers;
 
 class IchimokuKinkoHyo {
 
-    public $tenkanConversionLine;
     public $tenkanConversionLineLength = 9;
-    public $kijunBaseLine = 29;
-    public $kijunBaseLineLength;
-    public $senkouLeadingSpanA;
-    public $senkouLeadingSpanB;
+    public $kijunBaseLineLength = 29;
     public $senkouLeadingSpanBLength = 52;
-    public $chikouLaggingSpan;
     public $chikouLaggingSpanPeriodsPast = 26;
 
     public $strategyLogger;
@@ -85,6 +80,32 @@ class IchimokuKinkoHyo {
                     'chikouLaggingSpan'=> $chikouLaggingSpanValue,
                 ];
             }
+        }
+    }
+
+    public function leadingSpanAAboveSpanB($rates) {
+        $this->calculateLines($rates);
+
+        $lastLineValues = end($this->line);
+
+        if ($lastLineValues['senkouLeadingSpanA'] > $lastLineValues['senkouLeadingSpanB']) {
+            return 'above';
+        }
+        elseif ($lastLineValues['senkouLeadingSpanA'] < $lastLineValues['senkouLeadingSpanB']) {
+            return 'below';
+        }
+    }
+
+    public function priceCrossesConversionLine($rates) {
+        $this->calculateLines($rates);
+
+        $lastLineValues = end($this->line);
+
+        if ($lastLineValues['senkouLeadingSpanA'] > $lastLineValues['senkouLeadingSpanB']) {
+            return 'above';
+        }
+        elseif ($lastLineValues['senkouLeadingSpanA'] < $lastLineValues['senkouLeadingSpanB']) {
+            return 'below';
         }
     }
 }

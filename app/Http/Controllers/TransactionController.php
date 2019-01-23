@@ -133,15 +133,19 @@ class TransactionController extends Controller {
     }
 
     public function saveLiveTransactions() {
+        Log::emergency('Started Live Transactions');
         $this->environment = 'live';
         $this->liveTrading = 1;
         $this->getOandaTransactions();
+        Log::emergency('Finished Live Transactions');
     }
 
     public function savePracticeTransactions() {
+        Log::emergency('Started Practice Transactions');
         $this->environment = 'practice';
         $this->liveTrading = 0;
         $this->getOandaTransactions();
+        Log::emergency('Finished Practice Transactions');
     }
 
 //    public function getUnsavedTransactions() {
@@ -333,7 +337,6 @@ class TransactionController extends Controller {
     }
 
     public function playWithOandaJsonData() {
-        $test = 1;
         $data = json_decode(file_get_contents('/Users/boneill/ReferenceWorkspaces/CurrencyTrading/Tmp/test.json'));
 
         foreach ($data as $index=>$transaction) {

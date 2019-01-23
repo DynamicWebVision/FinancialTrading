@@ -113,4 +113,12 @@ abstract class EquityBaseStrategy  {
     public function addTrailingStopToPosition($tsPipAmount) {
 
     }
+
+    public function getCurrentAccountInfo() {
+
+    }
+
+    public function calculateAmountOfSharesToBuy($moneyToSpend, $sharePrice) {
+        return floor($moneyToSpend/$sharePrice);
+    }
 }

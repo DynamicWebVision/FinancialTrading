@@ -84,12 +84,12 @@ class Kernel extends ConsoleKernel
                 $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
             }
             elseif ($server->task_code == 'fx_maintenance') {
+                $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->hourly();
+                $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
+
                 $schedule->call('App\Http\Controllers\BackTestingController@deleteDevTestOnlyBackTestGroups')->tuesdays();
 
                 $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
-
-                $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->cron($this->everyFifteenMinutesInterval);
-                $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
 
                 $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->daily();
                 $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->daily();
