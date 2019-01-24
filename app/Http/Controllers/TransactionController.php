@@ -25,7 +25,9 @@ class TransactionController extends Controller {
             $lastProcessedId = $account->last_order_id;
         }
         else {
-            $nextAccount = OandaAccounts::where('live_trading', '=', $this->liveTrading)->orderBy('last_transaction_pull')
+            $nextAccount = OandaAccounts::where('live_trading', '=', $this->liveTrading)
+                ->where('active', '=', 1)
+                ->orderBy('last_transaction_pull')
                 ->take(1)
                 ->get();
 

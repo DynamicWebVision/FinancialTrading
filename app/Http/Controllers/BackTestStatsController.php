@@ -224,7 +224,7 @@ class BackTestStatsController extends Controller {
 
 
         foreach ($monthPositiveNegative as $index=>$month) {
-            $gainProbabilities[] = $month->positive_count/($month->positive_count + $month->negative_count);
+            $gainProbabilities[] = $utility->getRatio($month->positive_count, $month->negative_count);
         }
 
         $gainProbabilityStandardDeviation = $indicators->standardDeviation($gainProbabilities);
@@ -233,7 +233,7 @@ class BackTestStatsController extends Controller {
             $gainProbability = 1;
         }
         else {
-            $gainProbability = $gainCount[0]->gain_count/($gainCount[0]->gain_count + $lossCount[0]->loss_count);
+            $gainProbability = $utility->getRatioDecimal($gainCount[0]->gain_count, $lossCount[0]->loss_count);
         }
 
         $percentageToRisk = $transactionHelpers->kellyCriterion($processedBackTest['take_profit_pips'], $processedBackTest['stop_loss_pips'] + 2, $gainProbability);

@@ -200,4 +200,13 @@ class Utility  {
         }
     }
 
+    public function getRatioDecimal($var1, $var2, $round = false) {
+        if ($var1 == 0) {
+            return 0;
+        }
+        else {
+            return round((($var1/($var1 + $var2))), 2);
+        }
+    }
+
 }
