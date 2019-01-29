@@ -87,6 +87,7 @@ class Kernel extends ConsoleKernel
                 $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->hourly();
                 $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
 
+                $schedule->call('App\Http\Controllers\BackTestStatsController@rollBackReviewedNonProfitableProcesses')->hourly();
                 $schedule->call('App\Http\Controllers\BackTestingController@deleteDevTestOnlyBackTestGroups')->tuesdays();
 
                 $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();

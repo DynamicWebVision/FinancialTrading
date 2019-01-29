@@ -2,6 +2,7 @@
 
 use App\ForexBackTest\BackTest;
 use \App\ForexBackTest\CowabungaBackTest;
+use \App\Http\Controllers\BackTestingController;
 use App\Services\Utility;
 use View;
 use \App\Model\BackTestPosition;
@@ -236,39 +237,7 @@ class BackTestStatsController extends Controller {
             $gainProbability = $utility->getRatioDecimal($gainCount[0]->gain_count, $lossCount[0]->loss_count);
         }
 
-        $percentageToRisk = $transactionHelpers->kellyCriterion($processedBackTest['take_profit_pips'], $processedBackTest['stop_loss_pips'] + 2, $gainProbability);
 
-        if ($percentageToRisk < 0) {
-
-            $positionAmount = 0;
-
-            $expectedGanLoss = 0;
-
-            $totalGainLoss = 0;
-
-            $totalGainLossByMonth = 0;
-        }
-        else {
-            $pip = .0001;
-            $currentPrice = 1.25;
-            $riskAmount = round($percentageToRisk*10000);
-
-            $positionAmount = $transactionHelpers->calculatePositionAmount($currentPrice, $pip, $processedBackTest['stop_loss_pips'], $riskAmount);
-
-            $potentialGain = ($positionAmount*($currentPrice + ($pip * $processedBackTest['take_profit_pips']))) - ($positionAmount*$currentPrice);
-            $potentialLoss = ($positionAmount*($currentPrice - ($pip * $processedBackTest['stop_loss_pips']))) - ($positionAmount*$currentPrice);
-
-            $expectedGanLoss = ($potentialGain*$gainProbability) + ($potentialLoss*(1-$gainProbability));
-
-            $totalGainLoss = round(($gainCount[0]->gain_count + $lossCount[0]->loss_count)*$expectedGanLoss);
-
-            if (sizeof($monthPositiveNegative) == 0) {
-                $totalGainLossByMonth = 0;
-            }
-            else {
-                $totalGainLossByMonth = round($totalGainLoss/sizeof($monthPositiveNegative));
-            }
-        }
 
         $backTestPositions = BackTestPosition::where('position_type', '=', 1)->where('back_test_id', '=', $backTestId)->get()->toArray();
 
@@ -300,6 +269,9 @@ class BackTestStatsController extends Controller {
             }
             $allMonths[] = ($month->sum_gain_loss/$exchange['pip']);
         }
+
+        $percentageToRisk = $transactionHelpers->kellyCriterion(round($indicators->median($backTestPositionGains)/$exchange['pip']),
+            round($indicators->median($backTestPositionLosses)/$exchange['pip']), $gainProbability);
 
         $newBackTestStats = new BackTestStats();
 
@@ -341,9 +313,8 @@ class BackTestStatsController extends Controller {
         $newBackTestStats->median_max_loss =  round($indicators->median($maxLosses));
         $newBackTestStats->mean_max_loss =  round($indicators->average($maxLosses));
 
-        $newBackTestStats->total_kelly_criterion_gain_loss =  $totalGainLoss;
         $newBackTestStats->month_gain_loss_probability_sd =  $gainProbabilityStandardDeviation;
-        $newBackTestStats->total_kelly_by_month =  $totalGainLossByMonth;
+        //$newBackTestStats->total_kelly_by_month =  $totalGainLossByMonth;
         $newBackTestStats->percent_to_risk =  $percentageToRisk;
         $newBackTestStats->position_amount_ten_k =  round($positionAmount);
         $newBackTestStats->expected_gain_loss =  round($expectedGanLoss);
@@ -698,30 +669,6 @@ class BackTestStatsController extends Controller {
         $backTest = BackTestModel::where('process_id', '=', $processId)->first();
     }
 
-    public function rollbackSingleProcess($processId) {
-        $bts = BackTestModel::where('process_id', '=', $processId)->get();
-
-        foreach ($bts as $bt) {
-            BackTestStats::where('back_test_id', '=', $bt->id)->delete();
-
-            BackTestPosition::where('back_test_id', '=', $bt->id)->delete();
-        }
-
-        BackTestModel::where('process_id', '=', $processId)->delete();
-
-        $backTestToBeProcessed = BackTestToBeProcessed::find($processId);
-
-        $backTestToBeProcessed->start = 0;
-        $backTestToBeProcessed->finish = 0;
-        $backTestToBeProcessed->stats_start = 0;
-        $backTestToBeProcessed->stats_finish = 0;
-        $backTestToBeProcessed->hung_up = 0;
-        $backTestToBeProcessed->run_exception = 0;
-        $backTestToBeProcessed->stats_exception = 0;
-        $backTestToBeProcessed->in_process_unix_time = 0;
-
-        $backTestToBeProcessed->save();
-    }
 
     public function rollbackBackTestGroup($backTestGroup) {
         $backTestToBeProcessed = BackTestToBeProcessed::where('back_test_group_id', '=', $backTestGroup)->get();
@@ -762,8 +709,8 @@ class BackTestStatsController extends Controller {
         $rolledBackGroup->save();
     }
 
-    public function manualRollbackProcess() {
-        $this->rollbackSingleProcess(22795);
+    public function rollBackStatsProcess($processId) {
+        $this->rollbackSingleProcess($processId);
     }
 
     public function manualRollbackGroup() {
@@ -883,5 +830,34 @@ class BackTestStatsController extends Controller {
         }
 
         return ['labels'=>$labels, 'data'=>[$data['losses'],$data['gains']]];
+    }
+
+    public function rollBackReviewedNonProfitableProcesses() {
+        $backTestingController = new BackTestingController();
+        $backTestsGroup = BackTestGroup::where('reviewed', '=', 1)->where('delete_negative_process', '=', 0)->first();
+
+        $backTestsToBeProcessed = BackTestToBeProcessed::where('back_test_group_id', '=', $backTestsGroup->id)->get()->toArray();
+
+        foreach ($backTestsToBeProcessed as $process) {
+            $backTest = BackTestModel::where('process_id', '=', $process['id'])->first();
+
+            if (!isset($backTest)) {
+                $backTestingController->rollbackSingleProcess($process['id']);
+            }
+            else {
+                $backTestStats = BackTestStats::where('back_test_id', '=', $backTest->id)->first();
+
+                if (!isset($backTestStats)) {
+                    $backTestingController->rollbackSingleProcess($process['id']);
+                }
+                else {
+                    if ($backTestStats->total_gain_loss_pips <= 0) {
+                        $backTestingController->rollbackSingleProcess($process['id']);
+                    }
+                }
+            }
+        }
+        $backTestsGroup->delete_negative_process = 1;
+        $backTestsGroup->save();
     }
 }

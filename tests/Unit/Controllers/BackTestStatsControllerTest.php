@@ -20,8 +20,17 @@ class BackTestStatsControllerTest extends TestCase
     public function testBacktestProcessStatsSpecificProcess() {
         $backTestStatsController = new BackTestStatsController();
 
-        $processId = 203741;
+        $backTestGroupId = 254;
+        $processId = 203742;
+        $backTestStatsController->rollbackBackTestGroupStats($backTestGroupId);
+
 
         $backTestStatsController->backtestProcessStatsSpecificProcess($processId);
+    }
+
+    public function testRollBackReviewedNonProfitableProcesses() {
+        $backTestStatsController = new BackTestStatsController();
+
+        $backTestStatsController->rollBackReviewedNonProfitableProcesses();
     }
 }
