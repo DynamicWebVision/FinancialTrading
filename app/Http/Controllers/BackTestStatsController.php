@@ -40,98 +40,6 @@ class BackTestStatsController extends Controller {
         return view('back_test');
     }
 
-    public function getBackTestsByGroupId($groupId) {
-        $utility = new Utility();
-        $back_tests = DB::select('select strategy.name as strategy_name, strategy.description  as strategy_desc, decode_frequency.frequency,
-                exchange.exchange, exchange.pip, back_test.created_at , back_test.id , back_test_to_be_processed.take_profit_pips, exchange.pip, back_test_to_be_processed.id as processed_id , 
-                    back_test_to_be_processed.stop_loss_pips, 
-                    back_test_to_be_processed.trailing_stop_pips, 
-                    back_test_to_be_processed.variable_1, 
-                    back_test_to_be_processed.variable_2, 
-                    back_test_to_be_processed.variable_3, 
-                    back_test_to_be_processed.variable_4, 
-                    back_test_to_be_processed.variable_5, 
-                    back_test_to_be_processed.exchange_id, 
-                    back_test_to_be_processed.frequency_id, 
-                    back_test_group.variable_1_desc, 
-                    back_test_group.variable_2_desc, 
-                    back_test_group.variable_3_desc, 
-                    back_test_group.variable_4_desc, 
-                    back_test_group.variable_5_desc, 
-                    back_test_group.name, 
-                    back_test_group.description,
-                    back_test_stats.total_gain_loss_pips, 
-                    back_test_stats.total_gain_transactions, 
-                    back_test_stats.total_loss_transactions, 
-                    back_test_stats.gl_ratio, 
-                    back_test_stats.positive_months, 
-                    back_test_stats.negative_months, 
-                    back_test_stats.median_gain, 
-                    back_test_stats.median_loss, 
-                    back_test_stats.mean_gain, 
-                    back_test_stats.mean_loss, 
-                    back_test_stats.median_month_pip_gl, 
-                    back_test_stats.mean_month_pip_gl, 
-                    back_test_stats.median_month_gains, 
-                    back_test_stats.mean_month_gains, 
-                    back_test_stats.median_month_losses, 
-                    back_test_stats.mean_month_losses,
-                    back_test_stats.median_max_gain,
-                    back_test_stats.median_max_loss,
-                    back_test_stats.total_kelly_criterion_gain_loss,
-                    back_test_stats.month_gain_loss_probability_sd,
-                    back_test_stats.total_kelly_by_month,
-                    back_test_stats.percent_to_risk,
-                    back_test_stats.position_amount_ten_k,
-                    back_test_stats.expected_gain_loss,
-                    back_test_stats.mean_max_gain,
-                    back_test_stats.mean_max_loss
-                from back_test join strategy on back_test.strategy_id = strategy.id
-                join decode_frequency on back_test.frequency_id = decode_frequency.id
-                join back_test_stats on back_test.id = back_test_stats.back_test_id 
-                join exchange on back_test.exchange_id = exchange.id
-                left join back_test_to_be_processed on back_test.process_id = back_test_to_be_processed.id
-                left join back_test_group on back_test_to_be_processed.back_test_group_id = back_test_group.id 
-                where back_test.finish = 1 and back_test_group.id = ?
-                order by processed_id, strategy.id, decode_frequency.id, exchange.id
-                ;', [$groupId]);
-
-        $variable_1_values = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)->distinct()->get(['variable_1'])->toArray();
-        $variable_1_values = $utility->arrayAttributeToSimpleArray($variable_1_values, 'variable_1');
-
-        $variable_2_values = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)->distinct()->get(['variable_2'])->toArray();
-        $variable_2_values = $utility->arrayAttributeToSimpleArray($variable_2_values, 'variable_2');
-
-        $variable_3_values = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)->distinct()->get(['variable_3'])->toArray();
-        $variable_3_values = $utility->arrayAttributeToSimpleArray($variable_3_values, 'variable_3');
-
-        $variable_4_values = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)->distinct()->get(['variable_4'])->toArray();
-        $variable_4_values = $utility->arrayAttributeToSimpleArray($variable_4_values, 'variable_4');
-
-        $variable_5_values = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)->distinct()->get(['variable_5'])->toArray();
-        $variable_5_values = $utility->arrayAttributeToSimpleArray($variable_5_values, 'variable_5');
-
-        $take_profits = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)->distinct()->get(['take_profit_pips'])->toArray();
-        $take_profits = $utility->arrayAttributeToSimpleArray($take_profits, 'take_profit_pips');
-
-        $stop_losses = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)->distinct()->get(['stop_loss_pips'])->toArray();
-        $stop_losses = $utility->arrayAttributeToSimpleArray($stop_losses, 'stop_loss_pips');
-
-        $trailing_stops = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)->distinct()->get(['trailing_stop_pips'])->toArray();
-        $trailing_stops = $utility->arrayAttributeToSimpleArray($trailing_stops, 'trailing_stop_pips');
-
-        return ['back_tests'=>$back_tests, 'variable_1_values'=>$variable_1_values, 'variable_2_values'=>$variable_2_values,
-            'variable_3_values'=>$variable_3_values, 'variable_4_values'=>$variable_4_values, 'variable_5_values'=>$variable_5_values,
-            'take_profits'=>$take_profits,'stop_losses'=>$stop_losses,'trailing_stops'=>$trailing_stops];
-    }
-
-
-
-    public function setBackTest($backTestId) {
-        session(['current_back_test_id'=> $backTestId]);
-        return 1;
-    }
-
     public function backtestProcessStatsSpecificProcess($id) {
         $this->backtestProcessStats($id);
     }
@@ -188,7 +96,7 @@ class BackTestStatsController extends Controller {
         $gainCount = DB::select("select count(*) as gain_count, AVG(gain_loss) as mean_gain from back_test_positions where back_test_id = ? and gain_loss > 0", [$backTestId]);
 
         //Loss Count
-        $lossCount = DB::select("select count(*) as loss_count, AVG(gain_loss) as mean_loss from back_test_positions where back_test_id = ? and gain_loss < 0", [$backTestId]);
+        $lossCount = DB::select("select count(*) as loss_count, AVG(gain_loss) as mean_loss from back_test_positions where back_test_id = ? and gain_loss <= 0", [$backTestId]);
 
         //Total Gain Loss Count
         $gainLossOffset = DB::select("select sum(gain_loss) as gain_count from back_test_positions where back_test_id = ?", [$backTestId]);
@@ -196,7 +104,7 @@ class BackTestStatsController extends Controller {
         $backTestPositionGains = BackTestPosition::where('gain_loss', '>', 0)->where('back_test_id', '=', $backTestId)->get()->toArray();
         $backTestPositionGains = array_column($backTestPositionGains, 'gain_loss');
 
-        $backTestPositionLosses = BackTestPosition::where('gain_loss', '<', 0)->where('back_test_id', '=', $backTestId)->get()->toArray();
+        $backTestPositionLosses = BackTestPosition::where('gain_loss', '<=', 0)->where('back_test_id', '=', $backTestId)->get()->toArray();
         $backTestPositionLosses = array_column($backTestPositionLosses, 'gain_loss');
 
         $positiveMonthCount = 0;
@@ -212,7 +120,6 @@ class BackTestStatsController extends Controller {
         if ($processedBackTest['take_profit_pips'] < 1) {
             $processedBackTest['take_profit_pips'] = $indicators->median($backTestPositionGains)/$exchangePips;
         }
-
 
         $monthPositiveNegative = DB::select("SELECT  DATE_FORMAT(open_date_date, '%m/%Y') as transaction_month,
                                                 SUM(if(gain_loss > 0, 1, 0)) AS positive_count,
@@ -237,24 +144,6 @@ class BackTestStatsController extends Controller {
             $gainProbability = $utility->getRatioDecimal($gainCount[0]->gain_count, $lossCount[0]->loss_count);
         }
 
-
-
-        $backTestPositions = BackTestPosition::where('position_type', '=', 1)->where('back_test_id', '=', $backTestId)->get()->toArray();
-
-        $maxGains = [];
-        $maxLosses = [];
-
-        foreach ($backTestPositions as $position) {
-            if ($position['position_type'] == 1) {
-                $maxGains[] = ($position['highest_price']/$exchangePips) - ($position['open_price']/$exchangePips);
-                $maxLosses[] = ($position['open_price']/$exchangePips) - ($position['lowest_price']/$exchangePips);
-            }
-            else {
-                $maxLosses[] = ($position['highest_price']/$exchangePips) - ($position['open_price']/$exchangePips);
-                $maxGains[] = ($position['open_price']/$exchangePips) - ($position['lowest_price']/$exchangePips);
-            }
-        }
-
         $monthData = DB::select("select distinct DATE_FORMAT(open_date_date, '%m/%Y') as transaction_month, sum(gain_loss) as sum_gain_loss  
                               from back_test_positions where back_test_id = ? group by transaction_month order by transaction_month;", [$backTestId]);
 
@@ -270,8 +159,16 @@ class BackTestStatsController extends Controller {
             $allMonths[] = ($month->sum_gain_loss/$exchange['pip']);
         }
 
-        $percentageToRisk = $transactionHelpers->kellyCriterion(round($indicators->median($backTestPositionGains)/$exchange['pip']),
-            round($indicators->median($backTestPositionLosses)/$exchange['pip']), $gainProbability);
+        $expectedGainInPips = round($indicators->median($backTestPositionGains)/$exchange['pip']);
+        $expectedLossInPips = round($indicators->median($backTestPositionLosses)/$exchange['pip']);
+
+        $percentageToRisk = $transactionHelpers->kellyCriterion($expectedGainInPips,
+            $expectedLossInPips, $gainProbability);
+
+        $expectedTenKGain = round($transactionHelpers->expectedGainFromOneTransactionTenK($percentageToRisk, $expectedGainInPips, $expectedLossInPips,$gainProbability), 2);
+        $monthCount = sizeof($monthData);
+        $totalBackTestPositions = BackTestPosition::where('back_test_id', '=', $backTestId)->count();
+        $expectedMonthlyIncomeTenK = round($expectedTenKGain*(round($totalBackTestPositions/$monthCount)), 2);
 
         $newBackTestStats = new BackTestStats();
 
@@ -307,17 +204,16 @@ class BackTestStatsController extends Controller {
         $newBackTestStats->median_month_losses =  round($indicators->median($negativeMonths));
         $newBackTestStats->mean_month_losses =  round($indicators->average($negativeMonths));
 
-        $newBackTestStats->median_max_gain =  round($indicators->median($maxGains));
-        $newBackTestStats->mean_max_gain =  round($indicators->average($maxGains));
-
-        $newBackTestStats->median_max_loss =  round($indicators->median($maxLosses));
-        $newBackTestStats->mean_max_loss =  round($indicators->average($maxLosses));
+//        $newBackTestStats->median_max_gain =  round($indicators->median($maxGains));
+//        $newBackTestStats->mean_max_gain =  round($indicators->average($maxGains));
+//
+//        $newBackTestStats->median_max_loss =  round($indicators->median($maxLosses));
+//        $newBackTestStats->mean_max_loss =  round($indicators->average($maxLosses));
 
         $newBackTestStats->month_gain_loss_probability_sd =  $gainProbabilityStandardDeviation;
-        //$newBackTestStats->total_kelly_by_month =  $totalGainLossByMonth;
+        $newBackTestStats->expected_gl_kelly_10k =  $expectedTenKGain;
+        $newBackTestStats->expected_month_gl_kelly_10k =  $expectedMonthlyIncomeTenK;
         $newBackTestStats->percent_to_risk =  $percentageToRisk;
-        $newBackTestStats->position_amount_ten_k =  round($positionAmount);
-        $newBackTestStats->expected_gain_loss =  round($expectedGanLoss);
 
         $newBackTestStats->save();
 
@@ -412,249 +308,6 @@ class BackTestStatsController extends Controller {
                 and currency_id = ? and rate_unix_time = ?', [$dupe->frequency_id, $dupe->currency_id, $dupe->rate_unix_time]);
         }
         echo "<BR><BR>".time();
-    }
-
-    public function createGroup() {
-        $post = Request::all();
-
-        $strategy_id = $post['strategy'];
-
-        //Currency Pairs
-        if ($post['all_currency_pairs']) {
-            $exchanges = Exchange::get()->toArray();
-            $exchanges = array_column($exchanges, 'id');
-            $groupExchange = 1;
-        }
-        else {
-            $exchanges = [$post['exchange']];
-            $groupExchange = $post['exchange'];
-        }
-
-        //Frequencies
-        if ($post['all_frequencies']) {
-            $frequencies = DecodeFrequency::get()->toArray();
-            $frequencies = array_column($frequencies, 'id');
-            $groupFrequency = 1;
-        }
-        else {
-            $frequencies = [$post['frequency']];
-            $groupFrequency = $post['frequency'];
-        }
-
-        //Frequencies
-        if (isset($post['twoTier'])) {
-            if ($post['twoTier']) {
-                $slowFrequency = $post['slowFrequency'];
-                $groupSlowFrequency = $post['slowFrequency'];
-            }
-        }
-        else {
-            $slowFrequency = 0;
-            $groupSlowFrequency = 0;
-        }
-
-        //Take Profit
-        if (strlen($post['take_profit']) > 0) {
-            $takeProfits = explode(",",$post['take_profit']);
-            $takeProfits = array_map('trim', $takeProfits);
-        }
-        else {
-            $takeProfits = [0];
-        }
-
-        //Stop Loss
-        if (strlen($post['stop_loss']) > 0) {
-            $stopLosses = explode(",",$post['stop_loss']);
-            $stopLosses = array_map('trim', $stopLosses);
-        }
-        else {
-            $stopLosses = [0];
-        }
-
-        //Trailing Stop
-        if (strlen($post['trailing_stop']) > 0) {
-            $trailingStops = explode(",",$post['trailing_stop']);
-            $trailingStops = array_map('trim', $trailingStops);
-        }
-        else {
-            $trailingStops = [0];
-        }
-
-        //Variable 1 Values
-        if (strlen($post['variable_1_values']) > 0) {
-            $variable1Values = explode(",",$post['variable_1_values']);
-            $variable1Values = array_map('trim', $variable1Values);
-        }
-        else {
-            $variable1Values = [0];
-        }
-
-        //Variable 2 Values
-        if (strlen($post['variable_2_values']) > 0) {
-            $variable2Values = explode(",",$post['variable_2_values']);
-            $variable2Values = array_map('trim', $variable2Values);
-        }
-        else {
-            $variable2Values = [0];
-        }
-
-        //Variable 1 and 2 Pairs
-        if ($post['pair_variables_1_2']) {
-
-            $variableOneTwoPairs = [];
-
-            $arrayLevelOne = explode("|",str_replace(' ', '', $post['variable_1_2_pairs']));
-
-            foreach ($arrayLevelOne as $levelOne)
-            {
-                $variableOneTwoPairs[] = explode(",",$levelOne);
-            }
-        }
-
-        //Variable 3 Values
-        if (strlen($post['variable_3_values']) > 0) {
-            $variable3Values = explode(",",$post['variable_3_values']);
-            $variable3Values = array_map('trim', $variable3Values);
-        }
-        else {
-            $variable3Values = [0];
-        }
-
-        //Variable 4 Values
-        if (strlen($post['variable_4_values']) > 0) {
-            $variable4Values = explode(",",$post['variable_4_values']);
-            $variable4Values = array_map('trim', $variable4Values);
-        }
-        else {
-            $variable4Values = [0];
-        }
-
-        //Variable 5 Values
-        if (strlen($post['variable_5_values']) > 0) {
-            $variable5Values = explode(",",$post['variable_5_values']);
-            $variable5Values = array_map('trim', $variable5Values);
-        }
-        else {
-            $variable5Values = [0];
-        }
-
-        $newBackTestGroup = new BackTestGroup();
-
-        $newBackTestGroup->strategy_id = $strategy_id;
-
-        $newBackTestGroup->exchange_id = $groupExchange;
-        $newBackTestGroup->frequency_id = $groupFrequency;
-        $newBackTestGroup->slow_frequency_id = $groupSlowFrequency;
-
-        $newBackTestGroup->strategy_system_id = $post['strategySystem'];
-
-        $newBackTestGroup->name = $post['back_test_name'];
-        $newBackTestGroup->description = $post['group_desc'];
-        $newBackTestGroup->rate_unix_time_start = $post['rate_unix_time_start'];
-        $newBackTestGroup->priority = $post['priority'];
-
-        $newBackTestGroup->variable_1_desc = $post['variable_1_name'];
-        $newBackTestGroup->variable_2_desc = $post['variable_2_name'];
-        $newBackTestGroup->variable_3_desc = $post['variable_3_name'];
-        $newBackTestGroup->variable_4_desc = $post['variable_4_name'];
-        $newBackTestGroup->variable_5_desc = $post['variable_5_name'];
-
-        $newBackTestGroup->save();
-
-        foreach ($exchanges as $exchange) {
-            foreach ($frequencies as $frequency) {
-                foreach ($takeProfits as $takeProfit) {
-                    foreach ($stopLosses as $stopLoss) {
-                        foreach ($trailingStops as $trailingStop) {
-
-                            if ($post['pair_variables_1_2']) {
-                                foreach($variableOneTwoPairs as $oneTwoVariablePairs) {
-                                    $variable1 = $oneTwoVariablePairs[0];
-                                    $variable2 = $oneTwoVariablePairs[1];
-
-                                    foreach ($variable3Values as $variable3)  {
-                                        foreach ($variable4Values as $variable4)  {
-                                            foreach ($variable5Values as $variable5)  {
-
-                                                $newBackTest = new BackTestToBeProcessed();
-
-                                                $newBackTest->back_test_group_id = $newBackTestGroup->id;
-
-                                                $newBackTest->exchange_id = $exchange;
-
-                                                $newBackTest->frequency_id = $frequency;
-
-                                                $newBackTest->slow_frequency_id = $slowFrequency;
-
-                                                $newBackTest->take_profit_pips = $takeProfit;
-
-                                                $newBackTest->stop_loss_pips = $stopLoss;
-
-                                                $newBackTest->trailing_stop_pips = $trailingStop;
-
-                                                $newBackTest->variable_1 = $variable1;
-
-                                                $newBackTest->variable_2 = $variable2;
-
-                                                $newBackTest->variable_3 = $variable3;
-
-                                                $newBackTest->variable_4 = $variable4;
-
-                                                $newBackTest->variable_5 = $variable5;
-
-                                                $newBackTest->save();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else {
-                                foreach ($variable1Values as $variable1)  {
-                                    foreach ($variable2Values as $variable2)  {
-                                        foreach ($variable3Values as $variable3)  {
-                                            foreach ($variable4Values as $variable4)  {
-                                                foreach ($variable5Values as $variable5)  {
-
-                                                    $newBackTest = new BackTestToBeProcessed();
-
-                                                    $newBackTest->back_test_group_id = $newBackTestGroup->id;
-
-                                                    $newBackTest->exchange_id = $exchange;
-
-                                                    $newBackTest->frequency_id = $frequency;
-
-                                                    $newBackTest->take_profit_pips = $takeProfit;
-
-                                                    $newBackTest->stop_loss_pips = $stopLoss;
-
-                                                    $newBackTest->trailing_stop_pips = $trailingStop;
-
-                                                    $newBackTest->slow_frequency_id = $slowFrequency;
-
-                                                    $newBackTest->variable_1 = $variable1;
-
-                                                    $newBackTest->variable_2 = $variable2;
-
-                                                    $newBackTest->variable_3 = $variable3;
-
-                                                    $newBackTest->variable_4 = $variable4;
-
-                                                    $newBackTest->variable_5 = $variable5;
-
-                                                    $newBackTest->save();
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return ['back_test_group_id'=>$newBackTestGroup->id];
     }
 
     public function removeNegativePipData($processId) {

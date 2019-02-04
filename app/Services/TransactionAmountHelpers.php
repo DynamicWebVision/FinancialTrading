@@ -5,7 +5,7 @@ class TransactionAmountHelpers  {
         if ($potentialLoss == 0) {
             return 0;
         }
-        $b = $potentialGain/$potentialLoss;
+        $b = $potentialGain/abs($potentialLoss);
 
         if ($b == 0) {
             return 0;
@@ -21,5 +21,24 @@ class TransactionAmountHelpers  {
     public function calculatePositionAmount($rate, $pip, $stopLoss, $riskAmount) {
         $perUnitRisk = $this->perUnitRisk($rate, $pip, $stopLoss);
         return round($riskAmount/$perUnitRisk);
+    }
+
+    public function expectedGainFromOneTransactionTenK($percentToRisk, $potentialGain, $potentialLoss, $probabilityOfWinning) {
+        if ($percentToRisk <= 0) {
+            return 0;
+        }
+        else {
+            $lossInPips = abs($potentialLoss*.0001);
+
+            $amountToRisk = 10000*$percentToRisk;
+
+            $positionAmount = $amountToRisk/$lossInPips;
+
+            $averageGainPips = $probabilityOfWinning*$potentialGain*.0001;
+            $averageLossPips = abs((1-$probabilityOfWinning)*$potentialLoss*.0001);
+
+            $expectedGain = $positionAmount*($averageGainPips - $averageLossPips);
+            return $expectedGain;
+        }
     }
 }
