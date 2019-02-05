@@ -168,7 +168,13 @@ class BackTestStatsController extends Controller {
         $expectedTenKGain = round($transactionHelpers->expectedGainFromOneTransactionTenK($percentageToRisk, $expectedGainInPips, $expectedLossInPips,$gainProbability), 2);
         $monthCount = sizeof($monthData);
         $totalBackTestPositions = BackTestPosition::where('back_test_id', '=', $backTestId)->count();
-        $expectedMonthlyIncomeTenK = round($expectedTenKGain*(round($totalBackTestPositions/$monthCount)), 2);
+
+        if ($monthCount == 0) {
+            $expectedMonthlyIncomeTenK = 0;
+        }
+        else {
+            $expectedMonthlyIncomeTenK = round($expectedTenKGain*(round($totalBackTestPositions/$monthCount)), 2);
+        }
 
         $newBackTestStats = new BackTestStats();
 
@@ -374,7 +380,6 @@ class BackTestStatsController extends Controller {
         $backTestToBeProcessed = BackTestToBeProcessed::where('back_test_group_id', '=', $backTestGroup)->get();
 
         foreach ($backTestToBeProcessed as $backTestProcess) {
-
             try {
                 $backTest = BackTestModel::where('process_id', '=', $backTestProcess->id)->first();
                 BackTestStats::where('back_test_id', '=', $backTest->id)->delete();
@@ -392,6 +397,10 @@ class BackTestStatsController extends Controller {
             $backTestToBeProcessed->save();
 
         }
+
+        $backTestGroupModel = BackTestGroup::find($backTestGroup);
+        $backTestGroupModel->stats_run = 0;
+        $backTestGroupModel->save();
     }
 
     public function rollBackTestStatsServerId() {
