@@ -13,7 +13,17 @@ class EquityBackTestBroker {
 
     }
 
+    public function newShortPosition() {
+        
+    }
+
     public function setAccountCurrentInfo() {
+        return [
+
+        ];
+    }
+
+    public function endPeriod() {
 
     }
 }

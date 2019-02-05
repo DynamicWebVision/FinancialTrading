@@ -159,7 +159,6 @@ class AutomatedBackTestController extends Controller {
             $serverController = new ServersController();
             $serverController->getNextBackTestGroupForServer();
             $this->runAutoBackTestIfFailsUpdate();
-
         }
     }
 
