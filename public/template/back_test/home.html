@@ -323,28 +323,16 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td colspan="2">Kelly Total</td>
-                                        <td colspan="2">{{backTest.total_kelly_criterion_gain_loss}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Kelly Month</td>
-                                        <td colspan="2">{{backTest.total_kelly_by_month}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Month Gain% Standard Dev.</td>
-                                        <td colspan="2">{{backTest.month_gain_loss_probability_sd}}</td>
-                                    </tr>
-                                    <tr>
                                         <td colspan="2">% To Risk Per Trade</td>
                                         <td colspan="2">{{backTest.percent_to_risk}}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">Position Amount 10K</td>
-                                        <td colspan="2">{{backTest.position_amount_ten_k}}</td>
+                                        <td colspan="2">Kelly Expected Transaction (10K)</td>
+                                        <td colspan="2">{{backTest.expected_gl_kelly_10k}}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">Expected Gain/Loss Per Transaction 10K</td>
-                                        <td colspan="2">{{backTest.expected_gain_loss}}</td>
+                                        <td colspan="2">Kelly Month (10K)</td>
+                                        <td colspan="2">{{backTest.expected_month_gl_kelly_10k}}</td>
                                     </tr>
                                     </tbody>
                                 </table>

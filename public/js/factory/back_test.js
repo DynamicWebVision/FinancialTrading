@@ -45,8 +45,12 @@ app.factory('BackTest', function(UtilityService, $http, $q, SweetAlert) {
             desc: 'HL Ratio'
         },
         {
-            code: 'kelly_total',
-            desc: 'Kelly Criterion Total'
+            code: 'expected_gl_kelly_10k',
+            desc: 'Kelly 10K Single'
+        },
+        {
+            code: 'expected_month_gl_kelly_10k',
+            desc: 'Kelly 10K Month'
         },
     ];
 

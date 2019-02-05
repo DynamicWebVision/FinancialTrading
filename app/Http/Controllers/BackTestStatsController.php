@@ -366,10 +366,6 @@ class BackTestStatsController extends Controller {
         $this->rollbackSingleProcess($processId);
     }
 
-    public function manualRollbackGroup() {
-        $this->rollbackSingleProcess(41);
-    }
-
     public function manualRollbackGroupStats() {
         $this->rollbackBackTestGroupStats(42);
     }

@@ -93,19 +93,22 @@
             else if (vm.currentSortBy == 'total_gl_ratio') {
                 return - parseInt(back_test.gl_ratio);
             }
-            else if (vm.currentSortBy == 'high_low_ratio') {
-                return (back_test.median_max_gain - back_test.median_max_loss)*-1;
+            // else if (vm.currentSortBy == 'high_low_ratio') {
+            //     return (back_test.median_max_gain - back_test.median_max_loss)*-1;
+            // }
+            // else if (vm.currentSortBy == 'high_low_ratio_by_total') {
+            //     var total_transactions = back_test.total_gain_transactions + back_test.total_loss_transactions;
+            //     return (total_transactions*(back_test.median_max_gain - back_test.median_max_loss))*-1;
+            // }
+            // else if (vm.currentSortBy == 'gl_ratio_by_tp_sl') {
+            //     var total_transactions = back_test.total_gain_transactions + back_test.total_loss_transactions;
+            //     return (total_transactions*(back_test.median_max_gain - back_test.median_max_loss))*-1;
+            // }
+            else if (vm.currentSortBy == 'expected_gl_kelly_10k') {
+                return -back_test.expected_gl_kelly_10k;
             }
-            else if (vm.currentSortBy == 'high_low_ratio_by_total') {
-                var total_transactions = back_test.total_gain_transactions + back_test.total_loss_transactions;
-                return (total_transactions*(back_test.median_max_gain - back_test.median_max_loss))*-1;
-            }
-            else if (vm.currentSortBy == 'gl_ratio_by_tp_sl') {
-                var total_transactions = back_test.total_gain_transactions + back_test.total_loss_transactions;
-                return (total_transactions*(back_test.median_max_gain - back_test.median_max_loss))*-1;
-            }
-            else if (vm.currentSortBy == 'kelly_total') {
-                return -back_test.total_kelly_criterion_gain_loss;
+            else if (vm.currentSortBy == 'expected_month_gl_kelly_10k') {
+                return -back_test.expected_month_gl_kelly_10k;
             }
         }
 
