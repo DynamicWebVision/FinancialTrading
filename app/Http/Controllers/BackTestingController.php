@@ -174,7 +174,9 @@ class BackTestingController extends Controller {
                     back_test_stats.expected_gain_loss,
                     back_test_stats.mean_max_gain,
                     back_test_stats.gl_ratio,
-                    back_test_stats.mean_max_loss
+                    back_test_stats.mean_max_loss,
+                    back_test_stats.expected_gl_kelly_10k,
+                    back_test_stats.expected_month_gl_kelly_10k 
                 from back_test join strategy on back_test.strategy_id = strategy.id
                 join decode_frequency on back_test.frequency_id = decode_frequency.id
                 join back_test_stats on back_test.id = back_test_stats.back_test_id 

@@ -18,15 +18,15 @@ class BackTestStatsControllerTest extends TestCase
     public $transactionController;
     public $oanda;
 
-//    public function testBacktestProcessStatsSpecificProcess() {
-//        $backTestStatsController = new BackTestStatsController();
-//
-//        $backTestGroupId = 280;
-//        $processId = 217624;
-//        $backTestStatsController->rollbackBackTestGroupStats($backTestGroupId);
-//
-//        $backTestStatsController->backtestProcessStatsSpecificProcess($processId);
-//    }
+    public function testBacktestProcessStatsSpecificProcess() {
+        $backTestStatsController = new BackTestStatsController();
+
+        $backTestGroupId = 280;
+        $processId = 204244;
+        //$backTestStatsController->rollbackBackTestGroupStats($backTestGroupId);
+
+        $backTestStatsController->backtestProcessStatsSpecificProcess($processId);
+    }
 //
 //    public function testRollBackReviewedNonProfitableProcesses() {
 //        $backTestStatsController = new BackTestStatsController();
