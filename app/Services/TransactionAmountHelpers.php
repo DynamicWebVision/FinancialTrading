@@ -24,6 +24,10 @@ class TransactionAmountHelpers  {
     }
 
     public function expectedGainFromOneTransactionTenK($percentToRisk, $potentialGain, $potentialLoss, $probabilityOfWinning) {
+        if ($potentialLoss == 0) {
+            $potentialLoss = -1;
+        }
+
         if ($percentToRisk <= 0) {
             return 0;
         }

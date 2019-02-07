@@ -25,7 +25,7 @@ class BackTestStatsControllerTest extends TestCase
         $processId = 204244;
         //$backTestStatsController->rollbackBackTestGroupStats($backTestGroupId);
 
-        $backTestStatsController->backtestProcessStatsSpecificProcess($processId);
+        //$backTestStatsController->backtestProcessStatsSpecificProcess($processId);
     }
 //
 //    public function testRollBackReviewedNonProfitableProcesses() {

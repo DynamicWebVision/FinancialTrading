@@ -159,6 +159,7 @@ class BackTestStatsController extends Controller {
             $allMonths[] = ($month->sum_gain_loss/$exchange['pip']);
         }
 
+        //Median Kelly Criterian
         $expectedGainInPips = round($indicators->median($backTestPositionGains)/$exchange['pip']);
         $expectedLossInPips = round($indicators->median($backTestPositionLosses)/$exchange['pip']);
 
@@ -174,6 +175,42 @@ class BackTestStatsController extends Controller {
         }
         else {
             $expectedMonthlyIncomeTenK = round($expectedTenKGain*(round($totalBackTestPositions/$monthCount)), 2);
+        }
+
+        //Mean Kelly Criterian
+        $expectedGainInPips = round($indicators->average($backTestPositionGains)/$exchange['pip']);
+        $expectedLossInPips = round($indicators->average($backTestPositionLosses)/$exchange['pip']);
+
+        $percentageToRiskMean = $transactionHelpers->kellyCriterion($expectedGainInPips,
+            $expectedLossInPips, $gainProbability);
+
+        $expectedTenKGainMean = round($transactionHelpers->expectedGainFromOneTransactionTenK($percentageToRiskMean, $expectedGainInPips, $expectedLossInPips,$gainProbability), 2);
+        $monthCount = sizeof($monthData);
+        $totalBackTestPositions = BackTestPosition::where('back_test_id', '=', $backTestId)->count();
+
+        if ($monthCount == 0) {
+            $expectedMonthlyIncomeTenKMean = 0;
+        }
+        else {
+            $expectedMonthlyIncomeTenKMean = round($expectedTenKGainMean*(round($totalBackTestPositions/$monthCount)), 2);
+        }
+
+        //Outer Median SD Kelly Criterian
+        $expectedGainInPips = round($indicators->median($backTestPositionGains)/$exchange['pip']);
+        $expectedLossInPips = round($indicators->median($backTestPositionLosses)/$exchange['pip']) - round($indicators->standardDeviation($backTestPositionLosses)/$exchange['pip']);
+
+        $percentageToRiskOSd = $transactionHelpers->kellyCriterion($expectedGainInPips,
+            $expectedLossInPips, $gainProbability);
+
+        $expectedTenKGainOSd = round($transactionHelpers->expectedGainFromOneTransactionTenK($percentageToRiskOSd, $expectedGainInPips, $expectedLossInPips,$gainProbability), 2);
+        $monthCount = sizeof($monthData);
+        $totalBackTestPositions = BackTestPosition::where('back_test_id', '=', $backTestId)->count();
+
+        if ($monthCount == 0) {
+            $expectedMonthlyIncomeTenKOSd = 0;
+        }
+        else {
+            $expectedMonthlyIncomeTenKOSd = round($expectedTenKGainOSd*(round($totalBackTestPositions/$monthCount)), 2);
         }
 
         $newBackTestStats = new BackTestStats();
@@ -211,9 +248,18 @@ class BackTestStatsController extends Controller {
         $newBackTestStats->mean_month_losses =  round($indicators->average($negativeMonths));
 
         $newBackTestStats->month_gain_loss_probability_sd =  $gainProbabilityStandardDeviation;
+
         $newBackTestStats->expected_gl_kelly_10k =  $expectedTenKGain;
         $newBackTestStats->expected_month_gl_kelly_10k =  $expectedMonthlyIncomeTenK;
         $newBackTestStats->percent_to_risk =  $percentageToRisk;
+
+        $newBackTestStats->expected_gl_k_mean_10k =  $expectedTenKGainMean;
+        $newBackTestStats->expected_month_gl_k_mean_10k =  $expectedMonthlyIncomeTenKMean;
+        $newBackTestStats->percent_to_risk_mean =  round($percentageToRiskMean*100);
+
+        $newBackTestStats->expected_gl_k_o_sd_10k =  $expectedTenKGainOSd;
+        $newBackTestStats->expected_month_gl_k_o_sd_10k =  $expectedMonthlyIncomeTenKOSd;
+        $newBackTestStats->percent_to_risk_o_sd =  round($percentageToRiskOSd*100);
 
         $newBackTestStats->save();
 
