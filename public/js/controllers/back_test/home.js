@@ -110,6 +110,12 @@
             else if (vm.currentSortBy == 'expected_month_gl_kelly_10k') {
                 return -back_test.expected_month_gl_kelly_10k;
             }
+            else if (vm.currentSortBy == 'expected_gl_k_mean_10k') {
+                return -back_test.expected_gl_k_mean_10k;
+            }
+            else if (vm.currentSortBy == 'expected_month_gl_k_mean_10k') {
+                return -back_test.expected_month_gl_k_mean_10k;
+            }
         }
 
         function getRatio(value_1, value_2) {

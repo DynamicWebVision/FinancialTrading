@@ -440,6 +440,7 @@ class BackTestStatsController extends Controller {
 
         $backTestGroupModel = BackTestGroup::find($backTestGroup);
         $backTestGroupModel->stats_run = 0;
+        $backTestGroupModel->reviewed = 0;
         $backTestGroupModel->save();
     }
 

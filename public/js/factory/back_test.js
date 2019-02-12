@@ -46,11 +46,19 @@ app.factory('BackTest', function(UtilityService, $http, $q, SweetAlert) {
         },
         {
             code: 'expected_gl_kelly_10k',
-            desc: 'Kelly 10K Single'
+            desc: 'Kelly Median 10K Single'
         },
         {
             code: 'expected_month_gl_kelly_10k',
-            desc: 'Kelly 10K Month'
+            desc: 'Kelly Median 10K Month'
+        },
+        {
+            code: 'expected_gl_k_mean_10k',
+            desc: 'Kelly Mean 10K Single'
+        },
+        {
+            code: 'expected_month_gl_k_mean_10k',
+            desc: 'Kelly Mean 10K Month'
         },
     ];
 

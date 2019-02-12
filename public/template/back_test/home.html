@@ -318,21 +318,42 @@
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th colspan="4">Kelly Stuff</th>
+                                        <th colspan="4">Kelly Median Stuff</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td colspan="2">% To Risk Per Trade</td>
+                                        <td colspan="2">% To Risk Per Trade (Median)</td>
                                         <td colspan="2">{{backTest.percent_to_risk}}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">Kelly Expected Transaction (10K)</td>
+                                        <td colspan="2">Kelly Expected Transaction 10K (Median)</td>
                                         <td colspan="2">{{backTest.expected_gl_kelly_10k}}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">Kelly Month (10K)</td>
+                                        <td colspan="2">Kelly Month 10K (Median)</td>
                                         <td colspan="2">{{backTest.expected_month_gl_kelly_10k}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="4">Kelly Mean Stuff</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td colspan="2">% To Risk Per Trade (Mean)</td>
+                                        <td colspan="2">{{backTest.percent_to_risk_mean}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Kelly Expected Transaction 10K (Mean)</td>
+                                        <td colspan="2">{{backTest.expected_gl_k_mean_10k}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Kelly Month 10K (Mean)</td>
+                                        <td colspan="2">{{backTest.expected_month_gl_k_mean_10k}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
