@@ -317,24 +317,22 @@ abstract class Strategy  {
     }
 
     public function modifyStopLoss($newPricePoint) {
-        if (!$this->backtesting) {
-            $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($newPricePoint, $this->exchange->pip);
-            foreach ($this->openPosition['positionTradeIds'] as $tradeId) {
-                $this->oanda->modifyStopLoss($tradeId);
-            }
-//            if (isset($this->openPosition['stopLossId'])) {
-//                $this->strategyLogger->logMessage('Modify Stop Loss Start', 2);
-//
-//                $this->oanda->modifyStopLoss($this->openPosition['stopLossId']);
-//            }
-//            else {
-//                $this->strategyLogger->logMessage('Add Stop Loss Start', 2);
-//                $this->oanda->addStopLoss($this->openPosition['tradeId']);
-//            }
-
+        //Close the Position if the stop loss rate is out of bounds with the current price
+        if (($this->openPosition['side'] == 'long' && $newPricePoint > $this->currentPriceData->open) ||
+            ($this->openPosition['side'] == 'short' && $newPricePoint < $this->currentPriceData->open))
+        {
+            $this->closePosition();
         }
         else {
-            $this->backTestPositions[sizeof($this->backTestPositions)-1]['stopLoss'] = $newPricePoint;
+            if (!$this->backtesting) {
+                $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($newPricePoint, $this->exchange->pip);
+                foreach ($this->openPosition['positionTradeIds'] as $tradeId) {
+                    $this->oanda->modifyStopLoss($tradeId);
+                }
+            }
+            else {
+                $this->backTestPositions[sizeof($this->backTestPositions)-1]['stopLoss'] = $newPricePoint;
+            }
         }
     }
 

@@ -204,4 +204,20 @@ class TrueRange {
             }
         }
     }
+
+    public function getStopLossTrueRangeOrOnePipProfitable($rates, $length, $trueRangeCutoff, $exchangePips , $openPosition) {
+        $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
+        $currentPrice = end($rates);
+
+        if ($openPosition['side'] == 'long') {
+            $breakEven = $openPosition['openPrice'] + ($exchangePips*3);
+            $trueRangeStopLoss = $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
+            return max([$breakEven, $trueRangeStopLoss]);
+        }
+        elseif ($openPosition['side'] == 'short') {
+            $breakEven = $openPosition['openPrice'] - ($exchangePips*3);
+            $trueRangeStopLoss = $currentPrice->closeMid + (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
+            return min([$breakEven, $trueRangeStopLoss]);
+        }
+    }
 }
