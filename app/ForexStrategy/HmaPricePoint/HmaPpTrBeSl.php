@@ -65,12 +65,10 @@ class HmaPpTrBeSl extends \App\ForexStrategy\Strategy  {
         $this->strategyLogger->logIndicators($this->decisionIndicators);
 
         if ($this->openPosition['side'] == 'long') {
-
             //A Conditions
             // $this->modifyStopLoss($this->decisionIndicators['trueRangeBreakevenSLMP']);
             //B Conditions
             // $this->modifyStopLoss($this->decisionIndicators['trueRangeBreakevenSLMP']);
-
             if ( $this->decisionIndicators['hmaChangeDirection']['currentTrendingSide'] == 'short' ) {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();

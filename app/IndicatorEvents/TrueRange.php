@@ -100,9 +100,7 @@ class TrueRange {
         return round(($trueRange/$exchangePips)*$lossMultiplier);
     }
 
-    public function getStopLossTrueRangeOrBreakEven($rates, $length, $trueRangeCutoff, $exchangePips , $openPosition) {
-        $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
-
+    public function currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips) {
         $utility = new Utility();
 
         $relevantAtr = $utility->getLastXElementsInArray($averageTrueRangePips, $openPosition['periodsOpen']);
@@ -127,85 +125,82 @@ class TrueRange {
                 $pricePassedAtrProfit = true;
             }
             $index++;
-        }
-
-        if ($pricePassedAtrProfit) {
-            if ($openPosition['side'] == 'long') {
-                return $openPosition['openPrice'] + ($exchangePips*2);
-            }
-            elseif ($openPosition['side'] == 'short') {
-                return $openPosition['openPrice'] - ($exchangePips*2);
-            }
-        }
-        else {
-            $currentPrice = end($rates);
-            if ($openPosition['side'] == 'long') {
-                return $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
-            }
-            elseif ($openPosition['side'] == 'short') {
-                return $currentPrice->closeMid + (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
-            }
         }
     }
 
-    public function getStopLossTrueRangeOrBreakEvenMostProfitable($rates, $length, $trueRangeCutoff, $exchangePips , $openPosition) {
+    public function getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips) {
+        $currentPrice = end($rates);
+        if ($openPosition['side'] == 'long') {
+            return $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeMultiplier*$exchangePips);
+        }
+        elseif ($openPosition['side'] == 'short') {
+            return $currentPrice->closeMid + (end($averageTrueRangePips)*$trueRangeMultiplier*$exchangePips);
+        }
+    }
+
+    public function getPositionOpenPriceTrueRangeStopLoss($openPosition, $trueRangeMultiplier, $exchangePips) {
+        if ($openPosition['side'] == 'long') {
+            return $openPosition['openPrice'] - (end($averageTrueRangePips)*$trueRangeMultiplier*$exchangePips);
+        }
+        elseif ($openPosition['side'] == 'short') {
+            return $openPosition['openPrice'] + (end($averageTrueRangePips)*$trueRangeMultiplier*$exchangePips);
+        }
+    }
+
+    public function getBreakEvenStopLoss($openPosition, $exchangePips) {
+        if ($openPosition['side'] == 'long') {
+            return $openPosition['openPrice'] + ($exchangePips*2);
+        }
+        elseif ($openPosition['side'] == 'short') {
+            return $openPosition['openPrice'] - ($exchangePips*2);
+        }
+    }
+
+    public function getOnePipProfitStopLoss($openPosition, $exchangePips) {
+        if ($openPosition['side'] == 'long') {
+            return $openPosition['openPrice'] + ($exchangePips*3);
+        }
+        elseif ($openPosition['side'] == 'short') {
+            return $openPosition['openPrice'] - ($exchangePips*3);
+        }
+    }
+
+    public function getStopLossTrueRangeOrBreakEven($rates, $length, $trueRangeMultiplier, $exchangePips , $openPosition) {
         $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
 
-        $utility = new Utility();
+        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips);
 
-        $relevantAtr = $utility->getLastXElementsInArray($averageTrueRangePips, $openPosition['periodsOpen']);
-        $relevantRates = $utility->getLastXElementsInArray($rates, $openPosition['periodsOpen'] + 1);
-
-        $gainLossInPips = array_map(function($rate) use ($exchangePips, $openPosition) {
-            if ($openPosition['side'] == 'long') {
-                return ($rate->closeMid - $openPosition['openPrice'])/$exchangePips;
-            }
-            elseif ($openPosition['side'] == 'short') {
-                return ($openPosition['openPrice'] - $rate->closeMid)/$exchangePips;
-            }
-        }, $relevantRates);
-
-        $index = 0;
-        $pricePassedAtrProfit = false;
-
-        while (isset($relevantAtr[$index]) && !$pricePassedAtrProfit) {
-            $atrCutoffPipAmount = $averageTrueRangePips[$index] * $trueRangeCutoff;
-
-            if (!isset($gainLossInPips[$index])) {
-                $degug=1;
-            }
-
-            if ($gainLossInPips[$index] >= $atrCutoffPipAmount) {
-                $pricePassedAtrProfit = true;
-            }
-            $index++;
+        if ($pricePassedAtrProfit) {
+            return $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
         }
-        $currentPrice = end($rates);
+        else {
+            return $this->getBreakEvenStopLoss($openPosition, $exchangePips);
+        }
+    }
+
+    public function getStopLossTrueRangeOrBreakEvenMostProfitable($rates, $length, $trueRangeMultiplier, $exchangePips , $openPosition) {
+        $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
+
+        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips);
 
         if ($pricePassedAtrProfit) {
             if ($openPosition['side'] == 'long') {
-                $breakEven = $openPosition['openPrice'] + ($exchangePips*2);
-                $trueRangeStopLoss = $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
+                $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
                 return max([$breakEven, $trueRangeStopLoss]);
             }
             elseif ($openPosition['side'] == 'short') {
-                $breakEven = $openPosition['openPrice'] - ($exchangePips*2);
-                $trueRangeStopLoss = $currentPrice->closeMid + (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
+                $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
                 return min([$breakEven, $trueRangeStopLoss]);
             }
         }
         else {
-
-            if ($openPosition['side'] == 'long') {
-                return $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
-            }
-            elseif ($openPosition['side'] == 'short') {
-                return $currentPrice->closeMid + (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
-            }
+            return $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
         }
     }
 
-    public function getStopLossTrueRangeOrOnePipProfitable($rates, $length, $trueRangeCutoff, $exchangePips , $openPosition) {
+    public function getStopLossTrueRangeMostProfitable($rates, $length, $trueRangeCutoff, $exchangePips , $openPosition) {
         $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
         $currentPrice = end($rates);
 
@@ -218,6 +213,55 @@ class TrueRange {
             $breakEven = $openPosition['openPrice'] - ($exchangePips*3);
             $trueRangeStopLoss = $currentPrice->closeMid + (end($averageTrueRangePips)*$trueRangeCutoff*$exchangePips);
             return min([$breakEven, $trueRangeStopLoss]);
+        }
+    }
+
+    public function getStopLossOpenTrUntilCurrentTrProfitableThenBestCurrentTrOrOnePip($rates, $length, $trueRangeMultiplier, $exchangePips , $openPosition)
+    {
+        $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
+
+        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips);
+
+        if ($pricePassedAtrProfit) {
+            if ($openPosition['side'] == 'long') {
+                $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+                return max([$breakEven, $trueRangeStopLoss]);
+            }
+            elseif ($openPosition['side'] == 'short') {
+                $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+                return min([$breakEven, $trueRangeStopLoss]);
+            }
+        }
+        else {
+            return $this->getPositionOpenPriceTrueRangeStopLoss($openPosition, $trueRangeMultiplier, $exchangePips);
+        }
+    }
+
+    public function getSLOpenTrUntilCurrentTrProfOrNumberOfPeriods($rates, $length, $trueRangeMultiplier, $exchangePips , $openPosition, $trPeriodCutoff)
+    {
+        $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
+
+        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips);
+
+        if ($pricePassedAtrProfit) {
+            if ($openPosition['side'] == 'long') {
+                $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+                return max([$breakEven, $trueRangeStopLoss]);
+            }
+            elseif ($openPosition['side'] == 'short') {
+                $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+                return min([$breakEven, $trueRangeStopLoss]);
+            }
+        }
+        elseif ($openPosition['periodsOpen'] >= $trPeriodCutoff) {
+            return $this->getBreakEvenStopLoss($openPosition, $exchangePips);
+        }
+        else {
+            return $this->getPositionOpenPriceTrueRangeStopLoss($openPosition, $trueRangeMultiplier, $exchangePips);
         }
     }
 }

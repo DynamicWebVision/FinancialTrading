@@ -16,6 +16,7 @@ use \App\ForexStrategy\RsiPullback\RsiPbEmaTrSl;
 use \App\ForexStrategy\RsiPullback\RsiPbHmaTrSl;
 use \App\ForexStrategy\RsiPullback\RsiPbHmaSLBe;
 use \App\ForexStrategy\RsiPullback\RsiPbEmaProf;
+use \App\ForexStrategy\RsiPullback\RsiPbProtectProf;
 //END STRATEGY DECLARATIONS
 
 class RsiPullbackBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBeProcessed\Base
@@ -103,7 +104,7 @@ class RsiPullbackBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBePr
             $strategy->rsiCutoff = intval($this->backTestToBeProcessed->variable_3);
             $strategy->emaLengthFast = intval($this->backTestToBeProcessed->variable_4);
             $strategy->trueRangeLength = 14;
-            $strategy->trueRangeMultiplier = intval($this->backTestToBeProcessed->variable_5);
+            $strategy->trueRangeMultiplier = floatval($this->backTestToBeProcessed->variable_5);
         
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
@@ -123,7 +124,7 @@ class RsiPullbackBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBePr
             $strategy->hmaLength = intval($this->backTestToBeProcessed->variable_1);
             $strategy->rsiLength = intval($this->backTestToBeProcessed->variable_2);
             $strategy->rsiCutoff = intval($this->backTestToBeProcessed->variable_3);
-            $strategy->trueRangeMultiplier = intval($this->backTestToBeProcessed->variable_4);
+            $strategy->trueRangeMultiplier = floatval($this->backTestToBeProcessed->variable_4);
             $strategy->emaLength = intval($this->backTestToBeProcessed->variable_5);
         
             $strategy->takeProfitPipAmount = 0;
@@ -148,9 +149,9 @@ class RsiPullbackBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBePr
 
             $strategy->emaLength = intval($this->backTestToBeProcessed->variable_4);
 
-            $strategy->trueRangeMultiplierNew = intval($this->backTestToBeProcessed->variable_5);
+            $strategy->trueRangeMultiplierNew = floatval($this->backTestToBeProcessed->variable_5);
 
-            $strategy->trueRangeMultiplierOpen = intval($this->backTestToBeProcessed->stop_loss_pips);
+            $strategy->trueRangeMultiplierOpen = floatval($this->backTestToBeProcessed->stop_loss_pips);
         
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
@@ -171,11 +172,34 @@ class RsiPullbackBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBePr
             $strategy->rsiCutoff = intval($this->backTestToBeProcessed->variable_2);
             $strategy->emaLength = intval($this->backTestToBeProcessed->variable_3);
             $strategy->emaSlowLength = intval($this->backTestToBeProcessed->variable_4);
-            $strategy->trueRangeMultiplier = intval($this->backTestToBeProcessed->variable_5);
+            $strategy->trueRangeMultiplier = floatval($this->backTestToBeProcessed->variable_5);
         
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
         intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
+        
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'RSI_PB_PROT_PROF') {
+            $backTest->rateLevel = 'both';
+        
+            $strategy = new RsiPbProtectProf(1,1,true);
+        
+            //$strategy->orderType = 'MARKET_IF_TOUCHED';
+            $strategy->emaLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->emaSlowLength = 200;
+            $strategy->rsiLength = intval($this->backTestToBeProcessed->variable_2);
+            $strategy->rsiCutoff = intval($this->backTestToBeProcessed->variable_3);
+            $strategy->trueRangeLength = 14;
+            $strategy->trueRangeMultiplier = floatval($this->backTestToBeProcessed->variable_4);
+            $strategy->trueRangeSLPeriodOpenCutoff = floatval($this->backTestToBeProcessed->variable_5);
+        
+            $strategy->takeProfitPipAmount = 0;
+            $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
+        intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5), 150]);
         
             //Values for Getting Rates
             $backTest->rateCount = intval($multiplyValue)*10;
