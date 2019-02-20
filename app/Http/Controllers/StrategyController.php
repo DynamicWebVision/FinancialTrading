@@ -33,10 +33,10 @@ class StrategyController extends Controller {
 
         $strategyFileName = preg_replace("/[^A-Za-z0-9 ]/", '', $post['name']);
 
-        mkdir(env('APP_ROOT').'app/Strategy/'.$strategyFileName);
+        mkdir(env('APP_ROOT').'app/ForexStrategy/'.$strategyFileName);
         //chmod(env('APP_ROOT').'app/Strategy/'.$strategyFileName);
 
-        $backTestFilePath = env('APP_ROOT').'app/BackTest/BackTestToBeProcessed/Strategy/'.$strategyFileName;
+        $backTestFilePath = env('APP_ROOT').'app/ForexBackTest/BackTestToBeProcessed/Strategy/'.$strategyFileName;
         mkdir($backTestFilePath, 0777, true);
         //shell_exec('sudo chmod -R 777 '.env('APP_ROOT').'app/BackTest/BackTestToBeProcessed/Strategy/');
         //chmod(env('APP_ROOT').'app/BackTest/BackTestToBeProcessed/Strategy/'.$strategyFileName);

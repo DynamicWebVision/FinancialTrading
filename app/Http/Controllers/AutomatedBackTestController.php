@@ -20,6 +20,7 @@ use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\TestingSystems\Testing
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\HmaReversal\HmaReversalBackTestToBeProcessed;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\RsiPullback\RsiPullbackBackTestToBeProcessed;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\HmaPricePoint\HmaPricePointBackTestToBeProcessed;
+use App\BackTest\BackTestToBeProcessed\Strategy\EmaPriceCross\EmaPriceCrossBackTestToBeProcessed;
 //END OF Backtest Declarations
 
 use \Log;
@@ -313,6 +314,10 @@ class AutomatedBackTestController extends Controller {
         }
         elseif ($server->current_back_test_strategy == 'HMA_PRICE_POINT') {
             $backTestStrategy = new HmaPricePointBackTestToBeProcessed($processId, $server);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($server->current_back_test_strategy == 'EMA_PRICE_X') {
+            $backTestStrategy = new EmaPriceCrossBackTestToBeProcessed($processId, $server);
             $backTestStrategy->callProcess();
         }
         //END OF STRATEGY IFS

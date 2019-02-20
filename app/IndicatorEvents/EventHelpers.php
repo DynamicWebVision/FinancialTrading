@@ -84,7 +84,19 @@ class EventHelpers {
     }
 
     public function priceCrossoverLine($line, $rateCloses) {
+        $currentPrice = end($rateCloses);
+        $previousPrice = $this->utility->getXFromLastValue($rateCloses, 1);
 
+        $secondToLastLineValue = $this->utility->getXFromLastValue($line, 1);;
+        $lastLineValue = end($line);
+
+        if ($previousPrice < $secondToLastLineValue && $currentPrice > $lastLineValue) {
+            return 'crossedAbove';
+        }
+        elseif ($previousPrice > $secondToLastLineValue && $currentPrice < $lastLineValue) {
+            return 'crossedBelow';
+        }
+        return 'none';
     }
 }
 

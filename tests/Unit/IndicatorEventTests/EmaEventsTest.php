@@ -72,4 +72,23 @@ class EmaEventsTest extends TestCase
 
         $this->assertEquals(1.13784, round(end($ema), 5));
     }
+
+    public function testPriceCrossedOver() {
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-21 8:00');
+
+        $emaEvents = new EmaEvents();
+
+        $cross = $emaEvents->priceCrossedOver($rates, 5);
+
+        $this->assertEquals($cross, 'crossedBelow');
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-24 8:00');
+
+        $emaEvents = new EmaEvents();
+
+        $cross = $emaEvents->priceCrossedOver($rates, 5);
+
+        $this->assertEquals($cross, 'crossedAbove');
+    }
 }
