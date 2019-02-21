@@ -118,6 +118,7 @@
 <script src="js/angular.min.1.5.6.js"></script>
 
 <script src="js/angular_routing.min.1.2.3.js"></script>
+<script src="javascript/ui-bootstrap-tpls-0.13.0.js"></script>
 
 @yield('javascript')
 </body>

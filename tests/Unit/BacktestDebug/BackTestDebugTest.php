@@ -88,6 +88,14 @@ class BackTestDebugTest extends TestCase
         $backTestingController->deleteServerGroup();
     }
 
+    public function testDeletMultipleGroups() {
+        $backTestingController = new BackTestingController();
+
+        $groupsToBeDeleted = [];
+
+        $backTestingController->deleteBackTestGroup($groupId);
+    }
+
     /*******************************************************
      SINGLE SPECIFIC PROCESS
      *******************************************************/

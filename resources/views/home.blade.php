@@ -27,6 +27,10 @@
     <script src="/js/factory/strategy_system.js"></script>
     <script src="/js/factory/strategy_note.js"></script>
     <script src="/js/factory/transactions.js"></script>
+    <script src="/js/factory/stock.js"></script>
+    <script src="/js/factory/stock-search.js"></script>
+    <script src="/js/factory/stock-industry.js"></script>
+    <script src="/js/factory/stock-sector.js"></script>
     <script src="/js/service/utility.js"></script>
     <script src="/js/Chart_2.6.js"></script>
     <script src="/js/angular-chart.js"></script>
@@ -53,6 +57,7 @@
     <script type="text/javascript" src="js/modules/strategy-management/strategy-management.js"></script>
     <script type="text/javascript" src="js/modules/strategy-system-create/strategy-system-create.js"></script>
     <script type="text/javascript" src="js/modules/indicators/indicators-management.js"></script>
+    <script type="text/javascript" src="js/modules/stocks/stocks-main/stocks-main.js"></script>
 @stop
 
 @section('side_nav')
@@ -62,6 +67,12 @@
                 <a href="#home" class="waves-effect">
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <span> Main </span> <span class="pull-right"></span>
+                </a>
+            </li>
+            <li>
+                <a href="#stocks_main" class="waves-effect">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span> Stocks </span> <span class="pull-right"></span>
                 </a>
             </li>
             <li>

@@ -48,17 +48,20 @@ class StocksInformationController extends Controller {
 
         $nextTask->save();
 
-        if ($nextTask->id == 1) {
-            $controller = new StocksCompanyProfileController();
-            $controller->keepRunning();
-        }
-        elseif ($nextTask->id == 2) {
-            $controller = new StocksFinancialsController();
-            $controller->keepRunning();
-        }
-        elseif ($nextTask->id == 3) {
-            $controller = new StockFundamentalDataController();
-            $controller->keepRunning();
-        }
+        $controller = new StockFundamentalDataController();
+        $controller->keepRunning();
+
+//        if ($nextTask->id == 1) {
+//            $controller = new StocksCompanyProfileController();
+//            $controller->keepRunning();
+//        }
+//        elseif ($nextTask->id == 2) {
+//            $controller = new StocksFinancialsController();
+//            $controller->keepRunning();
+//        }
+//        elseif ($nextTask->id == 3) {
+//            $controller = new StockFundamentalDataController();
+//            $controller->keepRunning();
+//        }
     }
 }

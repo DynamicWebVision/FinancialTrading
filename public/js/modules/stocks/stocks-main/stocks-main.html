@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="panel panel-primary" ng-class="sh.stockSearch.fiftyOpacity(sm.processing)">
+        <div class="panel-heading">
+            <h3 class="panel-title">Stocks</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Search</label>
+                            <div class="col-md-9">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Industry</label>
+                            <div class="col-md-9">
+                                <select name="strategy" class="form-control input-large margin-top-five" ng-required="true"
+                                        ng-model="sh.stockSearch.searchCriteria.industry" ng-fade
+                                        ng-options="industry.id as industry.name for industry in sh.stockIndustry.industries">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Sector</label>
+                            <div class="col-md-9">
+                                <select name="strategy" class="form-control input-large margin-top-five" ng-required="true"
+                                        ng-model="sh.stockSearch.searchCriteria.sector" ng-fade
+                                        ng-options="sector.id as sector.name for sector in sh.stockSector.sectors">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="submit-contain pull-right">
+                            <button class = 'btn-success btn' ng-click="sh.stockSearch.search()">Filter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<pagination total-items="sh.stockSearch.totalResults"
+            ng-model="sh.stockSearch.currentPage"
+            items-per-page="sh.stockSearch.itemsPerPage"
+            ng-change="sh.stockSearch.pageChanged()"></pagination>
