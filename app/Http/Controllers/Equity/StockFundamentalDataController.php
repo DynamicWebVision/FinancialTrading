@@ -74,6 +74,13 @@ class StockFundamentalDataController extends Controller {
 
         $response = $tdAmeritrade->getStockFundamentalData($stock->symbol);
 
+        if (!isset($response->{$stock->symbol}->fundamental)) {
+            $stockIssue = Stocks::find($stock->id);
+            $stockIssue->fund_issue = 1;
+            $stockIssue->save();
+            return;
+        }
+
         $response = $response->{$stock->symbol}->fundamental;
 
         $newStockFundamentalData = StocksFundamentalData::firstOrNew(['stock_id'=> $stock->id]);
@@ -258,10 +265,6 @@ class StockFundamentalDataController extends Controller {
             $newStockFundamentalData->vol3_month_avg = $response->vol3MonthAvg;
         }
 
-
-
         $newStockFundamentalData->save();
-
-
     }
 }
