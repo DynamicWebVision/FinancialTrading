@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="panel panel-primary" ng-class="sh.stockSearch.fiftyOpacity(sm.processing)">
+    <div class="panel panel-primary" ng-class="sh.stockSearch.fiftyOpacity()">
         <div class="panel-heading">
             <h3 class="panel-title">Stocks</h3>
         </div>
@@ -8,11 +8,22 @@
                 <div class="col-md-12">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Search</label>
+                            <label class="col-md-3 control-label">Symbol</label>
                             <div class="col-md-9">
-
+                                <input type="text" class="input-med form-control m-b-5" name="priority" placeholder="Stock Symbol"
+                                       ng-model="sh.stockSearch.searchCriteria.symbol">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="input-med form-control m-b-5" name="priority" placeholder="Company Name"
+                                       ng-model="sh.stockSearch.searchCriteria.name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+
                     </div>
 
                     <div class="col-md-3"></div>
@@ -49,6 +60,37 @@
     </div>
 </div>
 
+<div class="menu-list">
+    <div class="panel panel-primary" ng-class="sh.stockSearch.fiftyOpacity()">
+        <div class="panel-heading">
+            <h3 class="panel-title">Filter Results</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover content-table" ng-show="sh.stockSearch.results.length > 0">
+                <thead>
+                <tr>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">ID</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Symbol</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks.name')">Name</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks.last_sale')">Price</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Sector</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Industry</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="stock in sh.stockSearch.results">
+                    <td>{{stock.id}}</td>
+                    <td>{{stock.symbol}}</td>
+                    <td>{{stock.name}}</td>
+                    <td>{{stock.last_sale}}</td>
+                    <td>{{stock.sector_name}}</td>
+                    <td>{{stock.industry_name}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <pagination total-items="sh.stockSearch.totalResults"
             ng-model="sh.stockSearch.currentPage"
             items-per-page="sh.stockSearch.itemsPerPage"

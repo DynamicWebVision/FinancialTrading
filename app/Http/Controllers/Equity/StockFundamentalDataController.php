@@ -10,6 +10,7 @@ use App\Broker\TDAmeritrade;
 use Illuminate\Support\Facades\Config;
 
 use App\Model\Stocks\StocksDump;
+use App\Model\Stocks\StocksApiJobs;
 use App\Model\Stocks\Stocks;
 use App\Model\Stocks\StocksFundamentalData;
 use App\Model\Servers;
@@ -63,10 +64,11 @@ class StockFundamentalDataController extends Controller {
     }
 
     public function pullOneStock() {
-        $stock = Stocks::orderBy('last_fundamental_pull')->first();
+        $stockApi = StocksApiJobs::orderBy('last_fundamental_pull')->first();
+        $stock = Stocks::find($stockApi->stock_id);
         $this->updateFundamentalData($stock);
-        $stock->last_fundamental_pull = time();
-        $stock->save();
+        $stockApi->last_fundamental_pull = time();
+        $stockApi->save();
     }
 
     public function updateFundamentalData($stock) {

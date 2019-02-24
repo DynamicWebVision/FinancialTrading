@@ -403,3 +403,7 @@ label {
 	overflow-x: visible !important;
 	overflow-y: visible !important;
 }
+
+.cursor-pointer {
+	cursor: pointer;
+}

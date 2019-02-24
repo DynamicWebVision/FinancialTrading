@@ -18,6 +18,12 @@ class IexTradingTest extends TestCase
         $iexTrading->getCompanyProfile('XOM');
     }
 
+    public function testGetBook()
+    {
+        $iexTrading = new IexTrading();
+        $iexTrading->getBook('XOM');
+    }
+
     public function testGetCompanyProfileGetOne()
     {
         $iexTrading = new StocksCompanyProfileController();

@@ -17,13 +17,16 @@ class RsiPbHmaSLBe extends \App\ForexStrategy\Strategy  {
 
     public $rsiLength;
     public $rsiCutoff;
+
     public $hmaLength;
+
     public $trueRangeLength = 14;
     public $trueRangeMultiplierNew;
     public $trueRangeMultiplierOpen;
+
     public $emaLength;
 
-    public function setEntryIndicators() {
+    public function longCheck($rates) {
         $rsiEvents = new \App\IndicatorEvents\RsiEvents;
         $rsiEvents->strategyLogger = $this->strategyLogger;
 
@@ -36,7 +39,6 @@ class RsiPbHmaSLBe extends \App\ForexStrategy\Strategy  {
         $emaEvents = new \App\IndicatorEvents\EmaEvents;
         $emaEvents->strategyLogger = $this->strategyLogger;
 
-
         $this->decisionIndicators['rsiOutsideLevel'] = $rsiEvents->outsideLevel(
             $this->rates['simple'], $this->rsiLength, $this->rsiCutoff);
 
@@ -45,73 +47,9 @@ class RsiPbHmaSLBe extends \App\ForexStrategy\Strategy  {
         $this->stopLossPipAmount = $trueRange->getStopLossPipValue($this->rates['full'], $this->trueRangeLength, $this->exchange->pip, $this->trueRangeMultiplierNew);
 
         $this->decisionIndicators['emaPriceAboveBelow'] = $emaEvents->priceAboveBelowEma($this->rates['simple'], $this->emaLength);
-
     }
 
-    public function getEntryDecision() {
-        $this->setEntryIndicators();
-        $this->strategyLogger->logIndicators($this->decisionIndicators);
+    public function shortCheck($rates) {
 
-        if (
-            $this->decisionIndicators['rsiOutsideLevel'] == 'overBoughtShort'
-            && $this->decisionIndicators['priceAboveBelowHma'] == 'above'
-            && $this->decisionIndicators['emaPriceAboveBelow'] == 'below'
-        ) {
-            $this->newLongPosition();
-        }
-        elseif (
-            $this->decisionIndicators['rsiOutsideLevel'] == 'overBoughtLong'
-            && $this->decisionIndicators['priceAboveBelowHma'] == 'below'
-            && $this->decisionIndicators['emaPriceAboveBelow'] == 'above'
-        ) {
-            $this->newShortPosition();
-        }
-    }
-
-    public function inPositionDecision() {
-        $emaEvents = new \App\IndicatorEvents\EmaEvents;
-        $emaEvents->strategyLogger = $this->strategyLogger;
-
-        $trueRange = new \App\IndicatorEvents\TrueRange;
-        $trueRange->strategyLogger = $this->strategyLogger;
-
-        $this->decisionIndicators['emaPriceAboveBelow'] = $emaEvents->priceAboveBelowEma($this->rates['simple'], $this->emaLength);
-
-        $this->decisionIndicators['trueRangeBreakevenSLMP'] = $trueRange->getStopLossTrueRangeOrBreakEvenMostProfitable($this->rates['full'], $this->trueRangeLength,
-            $this->trueRangeMultiplierOpen, $this->exchange->pip , $this->openPosition);
-
-        $this->strategyLogger->logIndicators($this->decisionIndicators);
-
-        if ($this->openPosition['side'] == 'long') {
-            //A Conditions
-            // $this->decisionIndicators['emaPriceAboveBelow'] == 'above'
-            //B Conditions
-            // $this->decisionIndicators['emaPriceAboveBelow'] == 'below'
-            if ( $this->decisionIndicators['emaPriceAboveBelow'] == 'above' ) {
-                $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
-                $this->closePosition();
-            }
-            else {
-                $this->modifyStopLoss($this->decisionIndicators['trueRangeBreakevenSLMP']);
-            }
-        }
-        elseif ($this->openPosition['side'] == 'short') {
-            if ( $this->decisionIndicators['emaPriceAboveBelow'] == 'below' ) {
-                $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
-                $this->closePosition();
-            }
-            else {
-                $this->modifyStopLoss($this->decisionIndicators['trueRangeBreakevenSLMP']);
-            }
-        }
-    }
-    public function checkForNewPosition() {
-        $this->setOpenPosition();
-        if (!$this->openPosition) {
-            $this->decision = $this->getEntryDecision();
-        }
-        else {
-            $this->inPositionDecision();
-        }
     }
 }

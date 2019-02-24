@@ -10,7 +10,7 @@ use App\Model\HistoricalRates;
 use App\Model\TmpTestRates;
 use App\Http\Controllers\Equity\StockFundamentalDataController;
 use App\Http\Controllers\ServersController;
-use App\Model\Servers;
+use App\Model\Stocks\Stocks;
 use Illuminate\Support\Facades\Config;
 use App\Broker\OandaV20;
 
@@ -27,5 +27,17 @@ class StocksFundamentalDataControllerTest extends TestCase
     public function testPullOneStock() {
         $stocksHistoricalDataTest = new StockFundamentalDataController();
         $stocksHistoricalDataTest->pullOneStock();
+    }
+
+    public function testFixFundamnetalData() {
+        $stocks = Stocks::get();
+
+        foreach ($stocks as $stock) {
+            $symbol = trim($stock->symbol);
+
+            $goodTrimStock = Stocks::find($stock->id);
+            $goodTrimStock->symbol = $symbol;
+            $goodTrimStock->save();
+        }
     }
 }

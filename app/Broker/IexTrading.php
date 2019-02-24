@@ -54,4 +54,17 @@ class IexTrading extends \App\Broker\Base  {
             return $response;
         }
     }
+
+    public function getBook($symbol) {
+        $this->apiUrl = $this->baseUrl.'stock/'.trim($symbol).'/book';
+        $response = $this->apiGetRequest();
+
+        if (!is_array($response)) {
+            $this->createApiErrorLogRecord('IexTrading', 'getBook', $symbol);
+            return false;
+        }
+        else {
+            return $response;
+        }
+    }
 }

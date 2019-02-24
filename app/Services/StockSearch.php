@@ -78,11 +78,32 @@ class StockSearch  {
             ->join('stocks_sector', 'stocks_company_profile.sector_id', '=', 'stocks_sector.id');
 
         $this->sectorCriteria();
+        $this->industryCriteria();
+        $this->symbolCriteria();
+        $this->nameCriteria();
     }
 
     protected function sectorCriteria() {
         if ($this->criteria['sector'] > 0) {
             $this->searchObject->where('stocks_sector.id', '=', $this->criteria['sector']);
+        }
+    }
+
+    protected function industryCriteria() {
+        if ($this->criteria['industry'] > 0) {
+            $this->searchObject->where('stocks_industry.id', '=', $this->criteria['industry']);
+        }
+    }
+
+    protected function symbolCriteria() {
+        if (strlen($this->criteria['symbol']) > 0) {
+            $this->searchObject->where('stocks.symbol', '=', $this->criteria['symbol']);
+        }
+    }
+
+    protected function nameCriteria() {
+        if (strlen($this->criteria['name']) > 0) {
+            $this->searchObject->where('stocks.name', 'like', '%' . $this->criteria['name'] . '%');
         }
     }
 
@@ -96,6 +117,10 @@ class StockSearch  {
 
     public function getCurrentResult() {
         $skip = $this->getSkip();
-        return $this->searchObject->select($this->selectArray)->skip($skip)->take(self::RESULT_COUNT)->get()->toArray();
+        return $this->searchObject->select($this->selectArray)
+                ->skip($skip)
+                ->take(self::RESULT_COUNT)
+                ->orderBy($this->criteria['orderBy'])
+                ->get()->toArray();
     }
 }

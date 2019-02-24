@@ -14,11 +14,11 @@ class StockSearchController extends Controller {
         $stockSearch = new StockSearch();
         $stockSearch->criteria = $data['searchCriteria'];
         $stockSearch->setQuery();
-        DB::enableQueryLog();
+        //DB::enableQueryLog();
         $totalCount = $stockSearch->getResultTotalCount();
-        $test = DB::getQueryLog();
+        //$test = DB::getQueryLog();
 
-        $stockSearch->currentPage = 1;
+        $stockSearch->currentPage = $data['currentPage'];
         $results = $stockSearch->getCurrentResult();
         return ['totalCount'=>$totalCount, 'results'=>$results];
     }
