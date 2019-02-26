@@ -100,7 +100,7 @@ class TrueRange {
         return round(($trueRange/$exchangePips)*$lossMultiplier);
     }
 
-    public function currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips) {
+    public function currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips, $trueRangeCutoff) {
         $utility = new Utility();
 
         $relevantAtr = $utility->getLastXElementsInArray($averageTrueRangePips, $openPosition['periodsOpen']);
@@ -168,7 +168,7 @@ class TrueRange {
     public function getStopLossTrueRangeOrBreakEven($rates, $length, $trueRangeMultiplier, $exchangePips , $openPosition) {
         $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
 
-        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips);
+        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips, $trueRangeMultiplier);
 
         if ($pricePassedAtrProfit) {
             return $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
@@ -181,7 +181,7 @@ class TrueRange {
     public function getStopLossTrueRangeOrBreakEvenMostProfitable($rates, $length, $trueRangeMultiplier, $exchangePips , $openPosition) {
         $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
 
-        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips);
+        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips, $trueRangeMultiplier);
 
         if ($pricePassedAtrProfit) {
             if ($openPosition['side'] == 'long') {
@@ -220,7 +220,7 @@ class TrueRange {
     {
         $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
 
-        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips);
+        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips, $trueRangeMultiplier);
 
         if ($pricePassedAtrProfit) {
             if ($openPosition['side'] == 'long') {
@@ -243,7 +243,7 @@ class TrueRange {
     {
         $averageTrueRangePips = $this->averageTrueRangePips($rates, $length, $exchangePips);
 
-        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips);
+        $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips, $trueRangeMultiplier);
 
         if ($pricePassedAtrProfit) {
             if ($openPosition['side'] == 'long') {

@@ -68,7 +68,8 @@ class RsiPbEmaTrSl extends \App\ForexStrategy\Strategy  {
 
         $this->decisionIndicators['emaPriceAboveBelowFast'] = $emaEvents->priceAboveBelowEma($this->rates['simple'], $this->emaLengthFast);
 
-        $this->decisionIndicators['trueRangeBreakevenSL'] = $trueRange->getStopLossTrueRangeOrBreakEven($this->rates['full'], $this->trueRangeLength, $this->trueRangeMultiplier, $this->exchange->pip , $this->openPosition);
+        $this->decisionIndicators['trueRangeBreakevenSL'] = $trueRange->getStopLossTrueRangeOrBreakEven($this->rates['full'], $this->trueRangeLength,
+            $this->trueRangeMultiplier, $this->exchange->pip , $this->openPosition);
 
         if ($this->openPosition['side'] == 'long') {
 
