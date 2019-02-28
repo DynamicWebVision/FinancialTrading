@@ -139,7 +139,7 @@ class TrueRange {
         }
     }
 
-    public function getPositionOpenPriceTrueRangeStopLoss($openPosition, $trueRangeMultiplier, $exchangePips) {
+    public function getPositionOpenPriceTrueRangeStopLoss($openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips) {
         if ($openPosition['side'] == 'long') {
             return $openPosition['openPrice'] - (end($averageTrueRangePips)*$trueRangeMultiplier*$exchangePips);
         }
@@ -236,7 +236,7 @@ class TrueRange {
             }
         }
         else {
-            return $this->getPositionOpenPriceTrueRangeStopLoss($openPosition, $trueRangeMultiplier, $exchangePips);
+            return $this->getPositionOpenPriceTrueRangeStopLoss($openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips);
         }
     }
 
@@ -262,7 +262,7 @@ class TrueRange {
             return $this->getBreakEvenStopLoss($openPosition, $exchangePips);
         }
         else {
-            return $this->getPositionOpenPriceTrueRangeStopLoss($openPosition, $trueRangeMultiplier, $exchangePips);
+            return $this->getPositionOpenPriceTrueRangeStopLoss($openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips);
         }
     }
 }

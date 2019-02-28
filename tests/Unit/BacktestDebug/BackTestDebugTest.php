@@ -66,6 +66,11 @@ class BackTestDebugTest extends TestCase
             260,
             261,
             262,
+            270,
+            271,
+            272,
+            273,
+            274,
             275,
             276,
             277,
@@ -75,7 +80,11 @@ class BackTestDebugTest extends TestCase
             289,
             290,
             291,
-            292
+            292,
+            293,
+            294,
+            295,
+            296
         ];
 
         $backTestingController = new BackTestingController();
