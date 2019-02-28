@@ -4,6 +4,7 @@
             <h3 class="panel-title">Stocks</h3>
         </div>
         <div class="panel-body">
+            <form name="sh.stock_filter_form" ng-submit="sh.stockSearch.search()">
             <div class="row">
                 <div class="col-md-12">
                     <div class="col-md-3">
@@ -56,6 +57,7 @@
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -75,6 +77,7 @@
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks.last_sale')">Price</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Sector</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Industry</th>
+                    <th class="cursor-pointer">Chart</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,6 +88,7 @@
                     <td>{{stock.last_sale}}</td>
                     <td>{{stock.sector_name}}</td>
                     <td>{{stock.industry_name}}</td>
+                    <td ng-click="sh.openChart(stock)">chart</td>
                 </tr>
                 </tbody>
             </table>
@@ -95,3 +99,5 @@
             ng-model="sh.stockSearch.currentPage"
             items-per-page="sh.stockSearch.itemsPerPage"
             ng-change="sh.stockSearch.pageChanged()"></pagination>
+
+<stock-chart></stock-chart>

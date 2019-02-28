@@ -126,9 +126,10 @@ class TrueRange {
             }
             $index++;
         }
+        return $pricePassedAtrProfit;
     }
 
-    public function getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips) {
+    public function getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips) {
         $currentPrice = end($rates);
         if ($openPosition['side'] == 'long') {
             return $currentPrice->closeMid - (end($averageTrueRangePips)*$trueRangeMultiplier*$exchangePips);
@@ -171,7 +172,7 @@ class TrueRange {
         $pricePassedAtrProfit = $this->currentPriceSurpassedAtrFromOpen($averageTrueRangePips, $openPosition, $rates, $exchangePips, $trueRangeMultiplier);
 
         if ($pricePassedAtrProfit) {
-            return $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+            return $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips);
         }
         else {
             return $this->getBreakEvenStopLoss($openPosition, $exchangePips);
@@ -186,17 +187,17 @@ class TrueRange {
         if ($pricePassedAtrProfit) {
             if ($openPosition['side'] == 'long') {
                 $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
-                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips);
                 return max([$breakEven, $trueRangeStopLoss]);
             }
             elseif ($openPosition['side'] == 'short') {
                 $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
-                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips);
                 return min([$breakEven, $trueRangeStopLoss]);
             }
         }
         else {
-            return $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+            return $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips);
         }
     }
 
@@ -225,12 +226,12 @@ class TrueRange {
         if ($pricePassedAtrProfit) {
             if ($openPosition['side'] == 'long') {
                 $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
-                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips);
                 return max([$breakEven, $trueRangeStopLoss]);
             }
             elseif ($openPosition['side'] == 'short') {
                 $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
-                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips);
                 return min([$breakEven, $trueRangeStopLoss]);
             }
         }
@@ -248,12 +249,12 @@ class TrueRange {
         if ($pricePassedAtrProfit) {
             if ($openPosition['side'] == 'long') {
                 $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
-                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips);
                 return max([$breakEven, $trueRangeStopLoss]);
             }
             elseif ($openPosition['side'] == 'short') {
                 $breakEven = $this->getBreakEvenStopLoss($openPosition, $exchangePips);
-                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips);
+                $trueRangeStopLoss = $this->getCurrentPriceTrueRangeStopLoss($rates, $openPosition, $trueRangeMultiplier, $exchangePips, $averageTrueRangePips);
                 return min([$breakEven, $trueRangeStopLoss]);
             }
         }

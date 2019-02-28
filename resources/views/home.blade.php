@@ -28,6 +28,7 @@
     <script src="/js/factory/strategy_note.js"></script>
     <script src="/js/factory/transactions.js"></script>
     <script src="/js/factory/stock.js"></script>
+    <script src="/js/factory/stock-rates.js"></script>
     <script src="/js/factory/stock-search.js"></script>
     <script src="/js/factory/stock-industry.js"></script>
     <script src="/js/factory/stock-sector.js"></script>
@@ -38,6 +39,7 @@
     <script src="/js/modules/shared/directive/strategy-note-create/strategy-note-create.js"></script>
     <script src="/js/modules/shared/directive/strategy-note-view/strategy-note-view.js"></script>
     <script src="/js/modules/shared/directive/indicator-event-select/indicator-event-select.js"></script>
+    <script src="/js/modules/shared/directive/stock-chart/stock-chart.js"></script>
 
 
     <!– Angular Controllers ->

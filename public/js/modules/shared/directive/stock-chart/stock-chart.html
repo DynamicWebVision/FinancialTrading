@@ -1,0 +1,29 @@
+<div id="stock-chart-modal" class="modal fade promo-merchant-select-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{{stockRates.symbol}}</h4>
+                <div class="flex col-md-9 pull-right">
+                    <div class="flex-justify-equal chart-button-contain" ng-repeat="chartPeriod in stockRates.chartPeriods">
+                        <button type="button" ng-class="stockRates.currentPeriod(chartPeriod)" class="btn-xs" ng-click="stockRates.setRates(chartPeriod)">
+                            {{chartPeriod}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <canvas id="line" class="chart chart-line" chart-data="stockRates.rates"
+                        chart-labels="stockRates.labels">
+                </canvas>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

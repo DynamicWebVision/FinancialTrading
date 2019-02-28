@@ -407,3 +407,15 @@ label {
 .cursor-pointer {
 	cursor: pointer;
 }
+
+.flex {
+	display: flex;
+}
+
+.flex-justify-equal {
+	justify-content: space-between;
+}
+
+.chart-button-contain {
+	margin-left: 12px;
+}

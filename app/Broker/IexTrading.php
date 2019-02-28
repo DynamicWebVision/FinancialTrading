@@ -67,4 +67,10 @@ class IexTrading extends \App\Broker\Base  {
             return $response;
         }
     }
+
+    public function getChart($symbol, $charPeriod) {
+        $this->apiUrl = $this->baseUrl.'stock/'.trim($symbol).'/chart/'.$charPeriod;
+        $response = $this->apiGetRequest();
+        return $response;
+    }
 }

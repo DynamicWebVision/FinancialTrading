@@ -180,6 +180,7 @@ Route::get('test_log', 'TestController@testLog');
 Route::get('stocks_historical_data', 'Equity\StocksHistoricalDataController@getStockData');
 Route::get('stocks/industry', 'Equity\StockIndustryController@index');
 Route::get('stocks/sectors', 'Equity\StockSectorController@index');
+Route::get('stocks/rates/{symbol}/{chartPeriod}', 'Equity\StockRatesController@getChart');
 Route::post('stocks/search', 'Equity\StockSearchController@index');
 
 
