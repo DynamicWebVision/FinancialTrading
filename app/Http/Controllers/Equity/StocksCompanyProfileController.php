@@ -66,6 +66,7 @@ class StocksCompanyProfileController extends Controller {
     }
 
     public function pullOneStock() {
+
         $stock = Stocks::orderBy('last_company_profile_pull')->first();
         $this->updateCompanyProfileData($stock);
         $stock->last_company_profile_pull = time();

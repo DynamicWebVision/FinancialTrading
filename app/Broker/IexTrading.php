@@ -59,12 +59,12 @@ class IexTrading extends \App\Broker\Base  {
         $this->apiUrl = $this->baseUrl.'stock/'.trim($symbol).'/book';
         $response = $this->apiGetRequest();
 
-        if (!is_array($response)) {
+        if (!is_object($response)) {
             $this->createApiErrorLogRecord('IexTrading', 'getBook', $symbol);
             return false;
         }
         else {
-            return $response;
+            return $response->quote;
         }
     }
 

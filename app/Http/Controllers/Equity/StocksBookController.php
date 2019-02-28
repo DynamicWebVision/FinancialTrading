@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Config;
 
 use App\Model\Stocks\StocksDump;
 use App\Model\Stocks\Stocks;
-use App\Model\Stocks\StocksSector;
+use App\Model\Stocks\StocksApiJobs;
+use App\Model\Stocks\StocksBook;
 use App\Model\Stocks\StocksTags;
 use App\Model\Stocks\StocksIndustry;
 use App\Model\Stocks\StocksFundamentalData;
@@ -42,14 +43,13 @@ class StocksBookController extends Controller {
         $lastGitPullTime = $serverController->getLastGitPullTime();
         Config::set('last_git_pull_time', $lastGitPullTime);
         $this->keepRunningStartTime = time();
-        Log::emergency('Keep Running Start Time '.$this->keepRunningStartTime);
+        $currentDay = date('z') + 1;
+        Log::emergency('Keep Running Book Start Time '.$this->keepRunningStartTime);
+        $stocksToPullCount = 100;
 
-        while ($this->keepRunningCheck) {
-            if ($this->lastPullTime == time()) {
-                sleep(2);
-            }
-            $this->lastPullTime = time();
-            $this->pullOneStock();
+        while ($stocksToPullCount > 0) {
+            $this->lastPullTime = $currentDay;
+            $this->pullOneStock($currentDay);
 
             $lastGitPullTime = $serverController->getLastGitPullTime();
             $configLastGitPullTime = Config::get('last_git_pull_time');
@@ -57,81 +57,85 @@ class StocksBookController extends Controller {
             if ($lastGitPullTime != $configLastGitPullTime) {
                 $this->keepRunningCheck = false;
             }
-
-            if (($this->keepRunningStartTime + (45*60)) < time()) {
-                $this->keepRunningCheck = false;
-            }
+            $stocksToPullCount = StocksApiJobs::where('last_book_pull', '!=', $currentDay)->count();
         }
-        Log::emergency('Keep Running Stock Company Profile Data End');
+        Log::emergency('Keep Running Book End Time '.$this->keepRunningStartTime);
     }
 
-    public function pullOneStock() {
-        $stock = Stocks::orderBy('last_company_profile_pull')->first();
-        $this->updateCompanyProfileData($stock);
-        $stock->last_company_profile_pull = time();
-        $stock->save();
+    public function pullOneStock($currentDay) {
+        $stockApi = StocksApiJobs::where('last_book_pull', '!=', $currentDay)->first();
+        $stock = Stocks::find($stockApi->stock_id);
+        $this->updateBook($stock);
+        $stockApi->last_book_pull = $currentDay;
+        $stockApi->save();
     }
 
-    public function updateCompanyProfileData($stock) {
+    public function updateBook($stock) {
         $ieTrading = new IexTrading();
 
-        $response = $ieTrading->getCompanyProfile($stock->symbol);
+        $response = $ieTrading->getBook($stock->symbol);
 
-        $newStockCompanyProfile = StocksCompanyProfile::firstOrNew(['stock_id'=> $stock->id]);
-
-        if (isset($response->symbol)) {
-            $newStockCompanyProfile->symbol = $response->symbol;
+        if (!$response) {
+            return;
         }
 
-        if (isset($response->companyName)) {
-            $newStockCompanyProfile->company_name = $response->companyName;
+        $newIexBook = StocksBook::firstOrNew(['stock_id'=> $stock->id]);
+
+        if (isset($response->open)) {
+            $newIexBook->open = $response->open;
         }
 
-        if (isset($response->exchange)) {
-            $newStockCompanyProfile->exchange = $response->exchange;
+        if (isset($response->close)) {
+            $newIexBook->close = $response->close;
         }
 
-        if (isset($response->industry)) {
-            $industry = StocksIndustry::firstOrNew(['name'=>trim($response->industry)]);
-            $industry->save();
-            $newStockCompanyProfile->industry_id = $industry->id;
+        if (isset($response->high)) {
+            $newIexBook->high = $response->high;
         }
 
-        if (isset($response->website)) {
-            $newStockCompanyProfile->website = $response->website;
+        if (isset($response->low)) {
+            $newIexBook->low = $response->low;
         }
 
-        if (isset($response->description)) {
-            $newStockCompanyProfile->description = $response->description;
+        if (isset($response->latestPrice)) {
+            $newIexBook->latest_price = $response->latestPrice;
         }
 
-        if (isset($response->CEO)) {
-            $newStockCompanyProfile->ceo = $response->CEO;
+        if (isset($response->latestVolume)) {
+            $newIexBook->latest_volume = $response->latestVolume;
         }
 
-        if (isset($response->issueType)) {
-            $newStockCompanyProfile->issue_type = $response->issueType;
+        if (isset($response->changePrice)) {
+            $newIexBook->change_price = $response->changePrice;
         }
 
-        if (isset($response->sector)) {
-            $sector = StocksSector::firstOrNew(['name'=>trim($response->sector)]);
-            $sector->save();
-            $newStockCompanyProfile->sector_id = $sector->id;
+        if (isset($response->changePercent)) {
+            $newIexBook->change_percent = $response->changePercent;
         }
 
-        if (isset($response->tags)) {
-            foreach ($response->tags as $tag) {
-                $tag = StocksTags::firstOrNew(['name'=>trim($tag)]);
-                $tag->save();
-
-                DB::table('stocks_tag_xref')->insert(
-                    [
-                        'stock_id'=> $stock->id,
-                        'tag_id'=> $tag->id,
-                    ]
-                );
-            }
+        if (isset($response->avgTotalVolume)) {
+            $newIexBook->avg_total_volume = $response->avgTotalVolume;
         }
-        $newStockCompanyProfile->save();
+
+        if (isset($response->marketCap)) {
+            $newIexBook->market_cap = $response->marketCap;
+        }
+
+        if (isset($response->peRatio)) {
+            $newIexBook->pe_ratio = $response->peRatio;
+        }
+
+        if (isset($response->week52High)) {
+            $newIexBook->week52_high = $response->week52High;
+        }
+
+        if (isset($response->week52Low)) {
+            $newIexBook->week52_low = $response->week52Low;
+        }
+
+        if (isset($response->ytdChange)) {
+            $newIexBook->ytd_change = $response->ytdChange;
+        }
+        $newIexBook->save();
     }
 }

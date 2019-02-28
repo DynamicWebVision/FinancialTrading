@@ -14,27 +14,27 @@ class MySqlObjectCreateTest extends TestCase
     public function testCreateTableFromJson() {
         $mysqlObjectCreate = new MySqlObjectCreate();
 
-        $jsonObject = '{"date":"2019-01-10","open":152.5,"high":153.97,"low":150.86,"close":153.8,"volume":35780670,"unadjustedVolume":35780670,"change":0.49,"changePercent":0.32,"vwap":152.7021,"changeOverTime":1.1896417700505981}';
+        $jsonObject = '{"open":174.32,"close":174.87, "high":174.91,"low":173.4,"latestPrice":173.1,"latestVolume":27693778,"changePrice":-1.77,"changePercent":-0.01012,"avgTotalVolume":28272517,"marketCap":816214968000,"peRatio":14.58,"week52High":233.47,"week52Low":142,"ytdChange":0.10196269870997905}';
 
-        $mysqlObjectCreate->createTableFromJson('stock_daily_rates_5y', $jsonObject);
+        $mysqlObjectCreate->createTableFromJson('stocks_book', $jsonObject);
         //$mysqlObjectCreate->createDbSaveStatement($jsonObject, 'newStockCompanyProfile', 'response');
     }
     public function testCreateObjectSaveFromJson() {
         $mysqlObjectCreate = new MySqlObjectCreate();
 
-        $jsonObject = '{"date":"2019-01-10","open":152.5,"high":153.97,"low":150.86,"close":153.8,"volume":35780670,"unadjustedVolume":35780670,"change":0.49,"changePercent":0.32,"vwap":152.7021,"changeOverTime":1.1896417700505981}';
+        $jsonObject = '{"open":174.32,"close":174.87, "high":174.91,"low":173.4,"latestPrice":173.1,"latestVolume":27693778,"changePrice":-1.77,"changePercent":-0.01012,"avgTotalVolume":28272517,"marketCap":816214968000,"peRatio":14.58,"week52High":233.47,"week52Low":142,"ytdChange":0.10196269870997905}';
 
         //$mysqlObjectCreate->createTableFromJson('stocks_', $jsonObject);
-        $mysqlObjectCreate->createDbSaveStatement($jsonObject, 'newIexDailyRate', 'rate');
+        $mysqlObjectCreate->createDbSaveStatement($jsonObject, 'newIexBook', 'response');
     }
 
     public function testCreateIndexesFromJson() {
         $mysqlObjectCreate = new MySqlObjectCreate();
 
-        $jsonObject = '{"reportDate":"2018-09-30","grossProfit":101839000000,"costOfRevenue":163756000000,"operatingRevenue":265595000000,"totalRevenue":265595000000,"operatingIncome":70898000000,"netIncome":59531000000,"researchAndDevelopment":14236000000,"operatingExpense":30941000000,"currentAssets":131339000000,"totalAssets":365725000000,"totalLiabilities":258578000000,"currentCash":25913000000,"currentDebt":20748000000,"totalCash":66301000000,"totalDebt":114483000000,"shareholderEquity":107147000000,"cashChange":5624000000,"cashFlow":77434000000,"operatingGainsLosses":null}';
+        $jsonObject = '{"open":174.32,"close":174.87, "high":174.91,"low":173.4,"latestPrice":173.1,"latestVolume":27693778,"changePrice":-1.77,"changePercent":-0.01012,"avgTotalVolume":28272517,"marketCap":816214968000,"peRatio":14.58,"week52High":233.47,"week52Low":142,"ytdChange":0.10196269870997905}';
 
         //$mysqlObjectCreate->createTableFromJson('stocks_', $jsonObject);
-        $mysqlObjectCreate->createIndexes('stocks_financials_annual', 'sfa', $jsonObject);
+        $mysqlObjectCreate->createIndexes('stocks_book', 'sbk', $jsonObject);
     }
 
     public function testCreateTypeDecodeTable() {
