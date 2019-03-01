@@ -82,60 +82,103 @@ class StocksBookController extends Controller {
         $newIexBook = StocksBook::firstOrNew(['stock_id'=> $stock->id]);
 
         if (isset($response->open)) {
-            $newIexBook->open = $response->open;
+            if (is_numeric($response->open)) {
+                $newIexBook->open = $response->open;
+            }
+
         }
 
         if (isset($response->close)) {
-            $newIexBook->close = $response->close;
+            if (is_numeric($response->close)) {
+                $newIexBook->close = $response->close;
+            }
+
         }
 
         if (isset($response->high)) {
-            $newIexBook->high = $response->high;
+            if (is_numeric($response->high)) {
+                $newIexBook->high = $response->high;
+            }
+
         }
 
         if (isset($response->low)) {
-            $newIexBook->low = $response->low;
+            if (is_numeric($response->low)) {
+                $newIexBook->low = $response->low;
+            }
+
         }
 
         if (isset($response->latestPrice)) {
-            $newIexBook->latest_price = $response->latestPrice;
+            if (is_numeric($response->latestPrice)) {
+                $newIexBook->latest_price = $response->latestPrice;
+            }
+
         }
 
         if (isset($response->latestVolume)) {
-            $newIexBook->latest_volume = $response->latestVolume;
+            if (is_numeric($response->latestVolume)) {
+                $newIexBook->latest_volume = $response->latestVolume;
+            }
+
         }
 
         if (isset($response->changePrice)) {
-            $newIexBook->change_price = $response->changePrice;
+            if (is_numeric($response->changePrice)) {
+                $newIexBook->change_price = $response->changePrice;
+            }
+
         }
 
         if (isset($response->changePercent)) {
-            $newIexBook->change_percent = $response->changePercent;
+            if (is_numeric($response->changePercent)) {
+                $newIexBook->change_percent = $response->changePercent;
+            }
+
         }
 
         if (isset($response->avgTotalVolume)) {
-            $newIexBook->avg_total_volume = $response->avgTotalVolume;
+            if (is_numeric($response->avgTotalVolume)) {
+                $newIexBook->avg_total_volume = $response->avgTotalVolume;
+            }
+
         }
 
         if (isset($response->marketCap)) {
-            $newIexBook->market_cap = $response->marketCap;
+            if (is_numeric($response->marketCap)) {
+                $newIexBook->market_cap = $response->marketCap;
+            }
+
         }
 
         if (isset($response->peRatio)) {
-            $newIexBook->pe_ratio = $response->peRatio;
+            if (is_numeric($response->peRatio)) {
+                $newIexBook->pe_ratio = $response->peRatio;
+            }
+
         }
 
         if (isset($response->week52High)) {
-            $newIexBook->week52_high = $response->week52High;
+            if (is_numeric($response->week52High)) {
+                $newIexBook->week52_high = $response->week52High;
+            }
+
         }
 
         if (isset($response->week52Low)) {
-            $newIexBook->week52_low = $response->week52Low;
+            if (is_numeric($response->week52Low)) {
+                $newIexBook->week52_low = $response->week52Low;
+            }
+
         }
 
         if (isset($response->ytdChange)) {
-            $newIexBook->ytd_change = $response->ytdChange;
+            if (is_numeric($response->ytdChange)) {
+                $newIexBook->ytd_change = $response->ytdChange;
+            }
+
         }
+
         $newIexBook->save();
     }
 }
