@@ -123,9 +123,9 @@ class StocksBookController extends Controller {
 
         }
 
-        if (isset($response->changePrice)) {
-            if (is_numeric($response->changePrice)) {
-                $newIexBook->change_price = $response->changePrice;
+        if (isset($response->change)) {
+            if (is_numeric($response->change)) {
+                $newIexBook->change_price = $response->change;
             }
 
         }

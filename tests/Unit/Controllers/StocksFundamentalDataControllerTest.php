@@ -26,7 +26,7 @@ class StocksFundamentalDataControllerTest extends TestCase
 
     public function testPullOneStock() {
         $stocksHistoricalDataTest = new StockFundamentalDataController();
-        $stocksHistoricalDataTest->pullOneStock();
+        $stocksHistoricalDataTest->keepRunning();
     }
 
     public function testFixFundamnetalData() {

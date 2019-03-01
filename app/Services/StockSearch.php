@@ -74,6 +74,7 @@ class StockSearch  {
         $this->searchObject = DB::table('stocks')
             ->join('stocks_company_profile', 'stocks.id', '=', 'stocks_company_profile.stock_id')
             ->join('stocks_fundamental', 'stocks.id', '=', 'stocks_fundamental.stock_id')
+            ->join('stocks_book', 'stocks.id', '=', 'stocks_book.stock_id')
             ->join('stocks_industry', 'stocks_company_profile.industry_id', '=', 'stocks_industry.id')
             ->join('stocks_sector', 'stocks_company_profile.sector_id', '=', 'stocks_sector.id');
 

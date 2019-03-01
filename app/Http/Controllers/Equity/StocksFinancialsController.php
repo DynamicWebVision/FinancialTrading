@@ -40,11 +40,13 @@ class StocksFinancialsController extends Controller {
         $lastGitPullTime = $serverController->getLastGitPullTime();
         Config::set('last_git_pull_time', $lastGitPullTime);
         $this->keepRunningStartTime = time();
+        $currentDay = date('z') + 1;
         Log::emergency('Keep Running Start Time '.$this->keepRunningStartTime);
+        $stocksToPullCount = StocksApiJobs::where('last_fin_pull', '!=', $currentDay)->count();
 
-        while ($this->keepRunningCheck) {
+        while ($this->keepRunningCheck && $stocksToPullCount > 0) {
             $this->lastPullTime = time();
-            $this->pullOneStock();
+            $this->pullOneStock($currentDay);
 
             $lastGitPullTime = $serverController->getLastGitPullTime();
             $configLastGitPullTime = Config::get('last_git_pull_time');
@@ -53,18 +55,16 @@ class StocksFinancialsController extends Controller {
                 $this->keepRunningCheck = false;
             }
 
-            if (($this->keepRunningStartTime + (45*60)) < time()) {
-                $this->keepRunningCheck = false;
-            }
+            $stocksToPullCount = StocksApiJobs::where('last_fin_pull', '!=', $currentDay)->count();
         }
         Log::emergency('Keep Running Stock Financials End');
     }
 
-    public function pullOneStock() {
+    public function pullOneStock($currentDay) {
         $stock = Stocks::orderBy('last_fin_pull')->first();
         $this->updateFinancialDataAnnual($stock);
         $this->updateFinancialDataQuarter($stock);
-        $stock->last_fin_pull = time();
+        $stock->last_fin_pull = $currentDay;
         $stock->save();
     }
 

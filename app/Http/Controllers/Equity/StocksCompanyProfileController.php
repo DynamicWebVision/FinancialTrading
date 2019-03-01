@@ -42,14 +42,17 @@ class StocksCompanyProfileController extends Controller {
         $lastGitPullTime = $serverController->getLastGitPullTime();
         Config::set('last_git_pull_time', $lastGitPullTime);
         $this->keepRunningStartTime = time();
+        $currentDay = date('z') + 1;
         Log::emergency('Keep Running Start Time '.$this->keepRunningStartTime);
 
-        while ($this->keepRunningCheck) {
+        $stocksToPullCount = 100;
+
+        while ($this->keepRunningCheck && $stocksToPullCount > 0) {
             if ($this->lastPullTime == time()) {
                 sleep(2);
             }
             $this->lastPullTime = time();
-            $this->pullOneStock();
+            $this->pullOneStock($currentDay);
 
             $lastGitPullTime = $serverController->getLastGitPullTime();
             $configLastGitPullTime = Config::get('last_git_pull_time');
@@ -58,18 +61,15 @@ class StocksCompanyProfileController extends Controller {
                 $this->keepRunningCheck = false;
             }
 
-            if (($this->keepRunningStartTime + (45*60)) < time()) {
-                $this->keepRunningCheck = false;
-            }
+            $stocksToPullCount = StocksApiJobs::where('last_fin_pull', '!=', $currentDay)->count();
         }
         Log::emergency('Keep Running Stock Company Profile Data End');
     }
 
-    public function pullOneStock() {
-
+    public function pullOneStock($currentDay) {
         $stock = Stocks::orderBy('last_company_profile_pull')->first();
         $this->updateCompanyProfileData($stock);
-        $stock->last_company_profile_pull = time();
+        $stock->last_company_profile_pull = $currentDay;
         $stock->save();
     }
 
