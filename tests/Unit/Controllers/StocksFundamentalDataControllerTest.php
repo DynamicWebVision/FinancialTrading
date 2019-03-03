@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\CurrencyIndicators;
 use App\Model\HistoricalRates;
 use App\Model\TmpTestRates;
+
 use App\Http\Controllers\Equity\StockFundamentalDataController;
 use App\Http\Controllers\ServersController;
 use App\Model\Stocks\Stocks;
@@ -19,12 +20,14 @@ class StocksFundamentalDataControllerTest extends TestCase
     public $transactionController;
     public $oanda;
 
-//    public function testGetSymbolData() {
-//        $stocksHistoricalDataTest = new StocksHistoricalDataController();
-//        $stocksHistoricalDataTest->getStockData();
-//    }
+    public function testGetSymbolData() {
+        $stock = Stocks::find(5964);
+        $stocksHistoricalDataTest = new StockFundamentalDataController();
+        $stocksHistoricalDataTest->updateFundamentalData($stock);
+    }
 
     public function testPullOneStock() {
+
         $stocksHistoricalDataTest = new StockFundamentalDataController();
         $stocksHistoricalDataTest->keepRunning();
     }

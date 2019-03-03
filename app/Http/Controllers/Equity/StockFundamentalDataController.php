@@ -46,7 +46,7 @@ class StockFundamentalDataController extends Controller {
 
         while ($this->keepRunningCheck && $stocksToPullCount > 0) {
             if ($this->lastPullTime == time()) {
-                sleep(2);
+                sleep(1);
             }
             $this->lastPullTime = time();
             $this->pullOneStock($currentDay);
@@ -267,5 +267,9 @@ class StockFundamentalDataController extends Controller {
         }
 
         $newStockFundamentalData->save();
+
+        $stockIssue = Stocks::find($stock->id);
+        $stockIssue->fund_issue = 0;
+        $stockIssue->save();
     }
 }

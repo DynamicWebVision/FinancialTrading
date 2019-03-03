@@ -77,18 +77,24 @@
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks.last_sale')">Price</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Sector</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Industry</th>
-                    <th class="cursor-pointer">Chart</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.change_percent')">% Change</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.ytd_change')">YTD Change</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.pe_ratio')">PE Ratio</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.market_cap')">Mkt Cap</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="stock in sh.stockSearch.results">
+                <tr ng-repeat="stock in sh.stockSearch.results" ng-click="sh.openChart(stock)">
                     <td>{{stock.id}}</td>
                     <td>{{stock.symbol}}</td>
                     <td>{{stock.name}}</td>
                     <td>{{stock.last_sale}}</td>
                     <td>{{stock.sector_name}}</td>
                     <td>{{stock.industry_name}}</td>
-                    <td ng-click="sh.openChart(stock)">chart</td>
+                    <td>{{stock.change_percent}}</td>
+                    <td>{{stock.ytd_change}}</td>
+                    <td>{{stock.market_cap}}</td>
+                    <td >chart</td>
                 </tr>
                 </tbody>
             </table>

@@ -68,6 +68,19 @@ class StockSearch  {
         'stocks_sector.name as sector_name',
         'stocks_industry.id as industry_id',
         'stocks_industry.name as industry_name',
+        'stocks_book.open',
+        'stocks_book.close',
+        'stocks_book.high',
+        'stocks_book.low',
+        'stocks_book.latest_price',
+        'stocks_book.latest_volume',
+        'stocks_book.change_price',
+        'stocks_book.change_percent',
+        'stocks_book.avg_total_volume',
+        'stocks_book.market_cap',
+        'stocks_book.week52_high',
+        'stocks_book.week52_low',
+        'stocks_book.ytd_change'
         ];
 
     public function setQuery() {
@@ -82,6 +95,7 @@ class StockSearch  {
         $this->industryCriteria();
         $this->symbolCriteria();
         $this->nameCriteria();
+        $this->setOrderDirection();
     }
 
     protected function sectorCriteria() {
@@ -112,6 +126,15 @@ class StockSearch  {
         return $this->searchObject->count();
     }
 
+    public function setOrderDirection() {
+        if ($this->criteria['orderDirection'] == 1) {
+            $this->criteria['orderDirection'] = 'asc';
+        }
+        else {
+            $this->criteria['orderDirection'] = 'desc';
+        }
+    }
+
     public function getSkip() {
         return ($this->currentPage-1)*self::RESULT_COUNT;
     }
@@ -121,7 +144,7 @@ class StockSearch  {
         return $this->searchObject->select($this->selectArray)
                 ->skip($skip)
                 ->take(self::RESULT_COUNT)
-                ->orderBy($this->criteria['orderBy'])
+                ->orderBy($this->criteria['orderBy'], $this->criteria['orderDirection'])
                 ->get()->toArray();
     }
 }

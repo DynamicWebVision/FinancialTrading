@@ -13,6 +13,7 @@ app.factory('StockSearch', function($http, $q) {
     service.searchCriteria.orderBy = 'id';
     service.searchCriteria.symbol = '';
     service.searchCriteria.name = '';
+    service.searchCriteria.orderDirection = 1;
 
     service.resetSearchParams = function() {
         service.searchCriteria.industry = -1;
@@ -20,7 +21,6 @@ app.factory('StockSearch', function($http, $q) {
     }
 
     service.pageChanged = function() {
-        console.log(service.currentPage);
         service.loadResults();
     }
 
@@ -40,6 +40,7 @@ app.factory('StockSearch', function($http, $q) {
 
     service.orderByChange = function(orderBy) {
         service.searchCriteria.orderBy = orderBy;
+        service.searchCriteria.orderDirection = service.searchCriteria.orderDirection*-1;
         service.loadResults();
     }
 
