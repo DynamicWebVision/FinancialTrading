@@ -8,11 +8,19 @@ use \App\Services\AwsService;
 
 class AwsServiceTest extends TestCase
 {
-    public function testGetInstance()
+//    public function testGetInstance()
+//    {
+//        $awsService = new AwsService();
+//
+//        $instance = $awsService->getCurrentInstance();
+//        dd($instance);
+//    }
+
+    public function testGetIpAddressWithTag()
     {
         $awsService = new AwsService();
 
-        $instance = $awsService->getCurrentInstance();
+        $instance = $awsService->getReservationIPWithTag();
         dd($instance);
     }
 }
