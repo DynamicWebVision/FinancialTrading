@@ -45,7 +45,7 @@ class ProcessLogger  {
 
     public function logMessage($message, $type = 4) {
             $logMessage = new ProcessLogMessage();
-            $logMessage->log_id = $this->logId;
+            $logMessage->process_log_id = $this->logId;
             $logMessage->message = $message;
             $logMessage->message = $message;
             $logMessage->message_type_id = $type;
