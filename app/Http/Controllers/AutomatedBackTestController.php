@@ -20,7 +20,7 @@ use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\TestingSystems\Testing
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\HmaReversal\HmaReversalBackTestToBeProcessed;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\RsiPullback\RsiPullbackBackTestToBeProcessed;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\HmaPricePoint\HmaPricePointBackTestToBeProcessed;
-use App\BackTest\BackTestToBeProcessed\Strategy\EmaPriceCross\EmaPriceCrossBackTestToBeProcessed;
+use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\EmaPriceCross\EmaPriceCrossBackTestToBeProcessed;
 //END OF Backtest Declarations
 
 use \Log;

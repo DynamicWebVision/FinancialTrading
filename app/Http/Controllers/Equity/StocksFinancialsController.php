@@ -163,4 +163,10 @@ class StocksFinancialsController extends Controller {
             $newStockFinancialsAnnual->save();
         }
     }
+
+    public function getFinancial($stockId) {
+        $financials = StocksCompanyFinancialsAnnual::where('stock_id', '=', $stockId)->get()->toArray();
+
+        return $financials;
+    }
 }

@@ -153,6 +153,11 @@ app.service('UtilityService', function($http, $q) {
         element.innerHTML = document.createTextNode(JSON.stringify(json_text, null, 4));
     }
 
+    service.numberWithCommas = function(x) {
+        console.log(x);
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     return service;
 });
 

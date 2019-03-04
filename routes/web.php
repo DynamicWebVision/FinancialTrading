@@ -180,6 +180,7 @@ Route::get('test_log', 'TestController@testLog');
 Route::get('stocks_historical_data', 'Equity\StocksHistoricalDataController@getStockData');
 Route::get('stocks/industry', 'Equity\StockIndustryController@index');
 Route::get('stocks/sectors', 'Equity\StockSectorController@index');
+Route::get('stocks/financial/{stockId}', 'Equity\StockSectorController@getFinancial');
 Route::get('stocks/rates/{symbol}/{chartPeriod}', 'Equity\StockRatesController@getChart');
 Route::post('stocks/search', 'Equity\StockSearchController@index');
 
@@ -193,7 +194,6 @@ Route::get('strategy_logger/log_messages/{logId}', 'StrategyLogController@getLog
 Route::get('strategy_logger/log_api/{logId}', 'StrategyLogController@getLogApi');
 Route::get('strategy_logger/log_indicators/{logId}', 'StrategyLogController@getLogIndicators');
 Route::get('strategy_logger/log_history_subset/{pageNumber}/{account}/{exchange}/{dateTime}/{onlyEvents}', 'StrategyLogController@getLogsSubset');
-
 
 //Route::resource('strategy', 'StrategyController');
 Route::resource('indicator', 'IndicatorsController');

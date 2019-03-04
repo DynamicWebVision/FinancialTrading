@@ -66,21 +66,61 @@
     <div class="panel panel-primary" ng-class="sh.stockSearch.fiftyOpacity()">
         <div class="panel-heading">
             <h3 class="panel-title">Filter Results</h3>
+
+
         </div>
         <div class="panel-body">
-            <table class="table table-hover content-table" ng-show="sh.stockSearch.results.length > 0">
+            <div class="flex col-md-12">
+                <div class="flex-justify-equal chart-button-contain" ng-repeat="tableType in sh.tableDisplays">
+                    <button type="button" ng-class="sh.tableType(tableType)" class="btn-xs" ng-click="sh.currentTable = tableType">
+                        {{tableType}}
+                    </button>
+                </div>
+            </div>
+
+            <table class="table table-hover content-table" ng-show="sh.stockSearch.results.length > 0 && sh.currentTable == 'main'">
                 <thead>
                 <tr>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">ID</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Symbol</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks.name')">Name</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks.last_sale')">Price</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.market_cap')">Mkt Cap</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Sector</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Industry</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.change_percent')">% Change</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.ytd_change')">YTD Change</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.pe_ratio')">PE Ratio</th>
-                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.market_cap')">Mkt Cap</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="stock in sh.stockSearch.results" ng-click="sh.openFinancial(stock)">
+                    <td>{{stock.id}}</td>
+                    <td>{{stock.symbol}}</td>
+                    <td>{{stock.name}}</td>
+                    <td>{{stock.last_sale}}</td>
+                    <td>{{sh.utilityService.numberWithCommas(stock.market_cap)}}</td>
+                    <td>{{stock.sector_name}}</td>
+                    <td>{{stock.industry_name}}</td>
+                    <td>{{stock.change_percent}}</td>
+                    <td>{{stock.ytd_change}}</td>
+                    <td>{{stock.pe_ratio}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <table class="table table-hover content-table" ng-show="sh.stockSearch.results.length > 0 && sh.currentTable == 'fundamental'">
+                <thead>
+                <tr>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">ID</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('symbol')">Symbol</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks.name')">Name</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_fundamental.pe_ratio')">PE</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_fundamental.peg_ratio')">PEG</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_fundamental.total_debt_to_equity')">Total Debt/Capital</th>
+                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_fundamental.return_on_assets')">RET/Assets</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -88,13 +128,10 @@
                     <td>{{stock.id}}</td>
                     <td>{{stock.symbol}}</td>
                     <td>{{stock.name}}</td>
-                    <td>{{stock.last_sale}}</td>
-                    <td>{{stock.sector_name}}</td>
-                    <td>{{stock.industry_name}}</td>
-                    <td>{{stock.change_percent}}</td>
-                    <td>{{stock.ytd_change}}</td>
-                    <td>{{stock.market_cap}}</td>
-                    <td >chart</td>
+                    <td>{{stock.pe_ratio}}</td>
+                    <td>{{stock.peg_ratio}}</td>
+                    <td>{{stock.total_debt_to_capital}}</td>
+                    <td>{{stock.return_on_assets}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -107,3 +144,4 @@
             ng-change="sh.stockSearch.pageChanged()"></pagination>
 
 <stock-chart></stock-chart>
+<stock-financial></stock-financial>

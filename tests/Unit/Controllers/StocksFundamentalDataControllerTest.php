@@ -21,7 +21,7 @@ class StocksFundamentalDataControllerTest extends TestCase
     public $oanda;
 
     public function testGetSymbolData() {
-        $stock = Stocks::find(5964);
+        $stock = Stocks::where('symbol', '=', 'NH')->first();
         $stocksHistoricalDataTest = new StockFundamentalDataController();
         $stocksHistoricalDataTest->updateFundamentalData($stock);
     }

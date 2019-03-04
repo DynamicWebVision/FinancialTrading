@@ -25,6 +25,7 @@
     <script src="/js/factory/indicator.js"></script>
     <script src="/js/factory/indicator_event.js"></script>
     <script src="/js/factory/strategy_system.js"></script>
+    <script src="/js/factory/stock-financial.js"></script>
     <script src="/js/factory/strategy_note.js"></script>
     <script src="/js/factory/transactions.js"></script>
     <script src="/js/factory/stock.js"></script>
