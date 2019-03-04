@@ -20,7 +20,7 @@ class AwsServiceTest extends TestCase
     {
         $awsService = new AwsService();
 
-        $instance = $awsService->getReservationIPWithTag();
+        $instance = $awsService->getCurrentInstanceIp();
         dd($instance);
     }
 }

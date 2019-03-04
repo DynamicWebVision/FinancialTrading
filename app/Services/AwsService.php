@@ -69,11 +69,11 @@ class AwsService  {
 //        );
     }
 
-    public function getCurrentInstance() {
+    public function getCurrentInstanceIp() {
         $instance_id = file_get_contents("http://instance-data/latest/meta-data/instance-id");
 
         $response = $this->ec2Client->describeInstances(['InstanceIds'=>[$instance_id]]);
 
-        return $response['Reservations'][0]['Instances'][0];
+        return $response['Reservations'][0]['Instances'][0]['PublicIpAddress'];
     }
 }
