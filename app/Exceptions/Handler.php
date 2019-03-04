@@ -9,7 +9,7 @@ use Twilio;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\DB;
 use App\Services\TextMessage;
-
+use App\Model\ProcessLog\ProcessLogMessage;
 use \Log;
 use App\Model\BackTestToBeProcessed;
 use App\Model\ProdException;
@@ -75,13 +75,16 @@ class Handler extends ExceptionHandler
 
             date('m/d H:m');
 
-//            try {
-//                $textMessage->sendTextMessage('Error on '.env('APP_ENV').substr($exception,0,100));
-//            }
-//            catch (\Exception $e) {
-//                \Log::emergency('Twilio Exception'.$e);
-//            }
+        }
 
+        $processLogId = Config::get('process_log_id');
+
+        if (!is_null($processLogId)) {
+            $processLogMessage = new ProcessLogMessage();
+            $processLogMessage->process_log_id = $processLogId;
+            $processLogMessage->message_type_id = 1;
+            $processLogMessage->message = $exception;
+            $processLogMessage->save();
         }
 
         return $reportException;

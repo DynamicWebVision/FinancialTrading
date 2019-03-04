@@ -7,6 +7,7 @@ use App\Model\ApiErrorLog;
 class IexTrading extends \App\Broker\Base  {
 
     public $baseUrl = 'https://api.iextrading.com/1.0/';
+    public $processLogger;
 
     public function __construct()
     {

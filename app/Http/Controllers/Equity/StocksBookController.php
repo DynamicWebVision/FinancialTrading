@@ -16,7 +16,7 @@ use App\Model\Stocks\StocksBook;
 use App\Model\Stocks\StocksTags;
 use App\Model\Stocks\StocksIndustry;
 use App\Model\Stocks\StocksFundamentalData;
-use App\Model\Servers;
+use App\Services\ProcessLogger;
 use App\Services\Csv;
 
 class StocksBookController extends Controller {
@@ -27,6 +27,7 @@ class StocksBookController extends Controller {
     public $keepRunningCheck = true;
     public $lastPullTime = 0;
     public $keepRunningStartTime = 0;
+    public $logger;
 
     public function __construct() {
         set_time_limit(0);
@@ -38,14 +39,14 @@ class StocksBookController extends Controller {
     }
 
     public function keepRunning() {
-        Log::emergency('Keep Running Stock Company Profile Data Start');
+        $this->logger = new ProcessLogger(1);
+
         $serverController = new ServersController();
         $lastGitPullTime = $serverController->getLastGitPullTime();
         Config::set('last_git_pull_time', $lastGitPullTime);
-        $this->keepRunningStartTime = time();
+
         $currentDay = date('z') + 1;
-        Log::emergency('Keep Running Book Start Time '.$this->keepRunningStartTime);
-        $stocksToPullCount = 100;
+        $stocksToPullCount = StocksApiJobs::where('last_book_pull', '!=', $currentDay)->count();
 
         while ($stocksToPullCount > 0) {
             $this->lastPullTime = $currentDay;
@@ -59,7 +60,7 @@ class StocksBookController extends Controller {
             }
             $stocksToPullCount = StocksApiJobs::where('last_book_pull', '!=', $currentDay)->count();
         }
-        Log::emergency('Keep Running Book End Time '.$this->keepRunningStartTime);
+        $this->logger->logStrategyEnd();
     }
 
     public function pullOneStock($currentDay) {
@@ -71,11 +72,14 @@ class StocksBookController extends Controller {
     }
 
     public function updateBook($stock) {
+        $this->logger->logMessage('Getting Book for id: '.$stock->id.' symbol: '.$stock->symbol);
         $ieTrading = new IexTrading();
-
         $response = $ieTrading->getBook($stock->symbol);
 
         if (!$response) {
+            $errorMessage = 'Invalid API Response '.$stock->id.' symbol: '.$stock->symbol;
+            $errorMessage .= '<BR> API URL: '.$ieTrading->apiUrl.'<BR> Response: '.$response;
+            $this->logger->logMessage($errorMessage);
             return;
         }
 
@@ -120,7 +124,6 @@ class StocksBookController extends Controller {
             if (is_numeric($response->latestVolume)) {
                 $newIexBook->latest_volume = $response->latestVolume;
             }
-
         }
 
         if (isset($response->change)) {
@@ -180,5 +183,6 @@ class StocksBookController extends Controller {
         }
 
         $newIexBook->save();
+        $this->logger->logMessage('Successful Save '.$stock->id.' symbol: '.$stock->symbol);
     }
 }

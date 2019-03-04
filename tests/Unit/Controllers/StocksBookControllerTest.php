@@ -19,12 +19,12 @@ class StocksBookControllerTest extends TestCase
     public $transactionController;
     public $oanda;
 
-    public function testPullOneStock() {
-        $stock = Stocks::find(528);
-
-        $stocksHistoricalDataTest = new StocksBookController();
-        $stocksHistoricalDataTest->pullOneStock($stock);
-    }
+//    public function testPullOneStock() {
+//        $stock = Stocks::find(528);
+//
+//        $stocksHistoricalDataTest = new StocksBookController();
+//        $stocksHistoricalDataTest->pullOneStock($stock);
+//    }
 
     public function testKeepRunning() {
         $stocksHistoricalDataTest = new StocksBookController();

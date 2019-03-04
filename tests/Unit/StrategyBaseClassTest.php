@@ -14,6 +14,7 @@ use \App\Model\TmpTestRates;
 use \App\ForexStrategy\EmaMomentum\EmaXAdxConfirmWithMarketIfTouched;
 use \App\Http\Controllers\AutomatedBackTestController;
 use \App\Services\StrategyLogger;
+use Illuminate\Support\Facades\Config;
 
 class StrategyBaseClassTest extends TestCase
 {
@@ -122,6 +123,14 @@ class StrategyBaseClassTest extends TestCase
             $this->systemStrategy->setOpenPosition();
 
             $this->systemStrategy->modifyStopLoss(1.05);
+        }
+    }
+
+    public function testAbc() {
+        $process_id = Config::get('process_log_id');
+
+        if (!is_null($process_id)) {
+            echo 'asdfjlkasjdf';
         }
     }
 }
