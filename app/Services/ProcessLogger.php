@@ -57,4 +57,8 @@ class ProcessLogger  {
         $logStrategy->end_date_time = $this->utility->mysqlDateTime();
         $logStrategy->save();
     }
+
+    public function deleteOldLogs() {
+
+    }
 }

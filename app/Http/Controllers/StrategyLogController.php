@@ -130,4 +130,24 @@ class StrategyLogController extends Controller {
         }, $logs);
         return $logs;
     }
+
+    public function deleteOldStrategyLogs() {
+        $accounts = OandaAccounts::get()->toArray();
+        $today = date('Y-m-d H:i:s', time());
+
+        foreach ($accounts as $account) {
+            if ($account['live_trading'] == 0) {
+                $cutoffDate = date('Y-m-d H:i:s', strtotime($today. ' - 30 days'));
+                $logs = StrategyLog::where('oanda_account_id', '=', $account['id'])->where('start_date_time', '<', $cutoffDate)->get()->toArray();
+
+                foreach ($logs as $log) {
+                    StrategyLogIndicators::where('log_id', '=', $log['id'])->delete();
+                    StrategyLogMessage::where('log_id', '=', $log['id'])->delete();
+                    StrategyLogApi::where('log_id', '=', $log['id'])->delete();
+                    StrategyLogRates::where('log_id', '=', $log['id'])->delete();
+                    StrategyLog::destroy($log['id']);
+                }
+            }
+        }
+    }
 }
