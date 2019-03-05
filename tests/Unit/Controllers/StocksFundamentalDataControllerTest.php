@@ -20,11 +20,11 @@ class StocksFundamentalDataControllerTest extends TestCase
     public $transactionController;
     public $oanda;
 
-    public function testGetSymbolData() {
-        $stock = Stocks::where('symbol', '=', 'NH')->first();
-        $stocksHistoricalDataTest = new StockFundamentalDataController();
-        $stocksHistoricalDataTest->updateFundamentalData($stock);
-    }
+//    public function testGetSymbolData() {
+//        $stock = Stocks::where('symbol', '=', 'NH')->first();
+//        $stocksHistoricalDataTest = new StockFundamentalDataController();
+//        $stocksHistoricalDataTest->updateFundamentalData($stock);
+//    }
 
     public function testPullOneStock() {
 
@@ -32,15 +32,15 @@ class StocksFundamentalDataControllerTest extends TestCase
         $stocksHistoricalDataTest->keepRunning();
     }
 
-    public function testFixFundamnetalData() {
-        $stocks = Stocks::get();
-
-        foreach ($stocks as $stock) {
-            $symbol = trim($stock->symbol);
-
-            $goodTrimStock = Stocks::find($stock->id);
-            $goodTrimStock->symbol = $symbol;
-            $goodTrimStock->save();
-        }
-    }
+//    public function testFixFundamnetalData() {
+//        $stocks = Stocks::get();
+//
+//        foreach ($stocks as $stock) {
+//            $symbol = trim($stock->symbol);
+//
+//            $goodTrimStock = Stocks::find($stock->id);
+//            $goodTrimStock->symbol = $symbol;
+//            $goodTrimStock->save();
+//        }
+//    }
 }
