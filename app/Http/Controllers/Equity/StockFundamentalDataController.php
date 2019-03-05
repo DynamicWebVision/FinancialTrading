@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ServersController;
 use App\Broker\TDAmeritrade;
 use Illuminate\Support\Facades\Config;
-
+use App\Services\ProcessLogger;
 use App\Model\Stocks\StocksDump;
 use App\Model\Stocks\StocksApiJobs;
 use App\Model\Stocks\Stocks;
@@ -35,13 +35,13 @@ class StockFundamentalDataController extends Controller {
     }
 
     public function keepRunning() {
-        Log::emergency('Keep Running Stock Fundamental Data Start');
+        $this->logger = new ProcessLogger(2);
+
         $serverController = new ServersController();
         $lastGitPullTime = $serverController->getLastGitPullTime();
         Config::set('last_git_pull_time', $lastGitPullTime);
         $this->keepRunningStartTime = time();
         $currentDay = date('z') + 1;
-        Log::emergency('Keep Running Start Time '.$this->keepRunningStartTime);
         $stocksToPullCount = 100;
 
         while ($this->keepRunningCheck && $stocksToPullCount > 0) {
@@ -59,7 +59,7 @@ class StockFundamentalDataController extends Controller {
             }
             $stocksToPullCount = StocksApiJobs::where('last_fundamental_pull', '!=', $currentDay)->count();
         }
-        Log::emergency('Keep Running Stock Fundamental Data End');
+        $this->logger->logStrategyEnd();
     }
 
     public function pullOneStock($currentDay) {
@@ -72,13 +72,16 @@ class StockFundamentalDataController extends Controller {
 
     public function updateFundamentalData($stock) {
         $tdAmeritrade = new TDAmeritrade();
-
+        $this->logger->logMessage('Getting Fund Data for id: '.$stock->id.' symbol: '.$stock->symbol);
         $response = $tdAmeritrade->getStockFundamentalData($stock->symbol);
 
         if (!isset($response->{$stock->symbol}->fundamental)) {
             $stockIssue = Stocks::find($stock->id);
             $stockIssue->fund_issue = 1;
             $stockIssue->save();
+            $errorMessage = 'Invalid API Response '.$stock->id.' symbol: '.$stock->symbol;
+            $errorMessage .= '<BR> API URL: '.$tdAmeritrade->apiUrl.'<BR> Response: '.$response;
+            $this->logger->logMessage($errorMessage);
             return;
         }
 
@@ -271,5 +274,6 @@ class StockFundamentalDataController extends Controller {
         $stockIssue = Stocks::find($stock->id);
         $stockIssue->fund_issue = 0;
         $stockIssue->save();
+        $this->logger->logMessage('Successful Save '.$stock->id.' symbol: '.$stock->symbol);
     }
 }

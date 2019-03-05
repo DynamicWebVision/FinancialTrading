@@ -84,20 +84,21 @@ class Kernel extends ConsoleKernel
                 $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
             }
             elseif ($server->task_code == 'fx_maintenance') {
+                $schedule->call('App\Http\Controllers\BackTestingController@deleteDevTestOnlyBackTestGroups')->tuesdays();
+
+                $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->dailyAt('0:00');
+                $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->dailyAt('1:00');
+
                 $schedule->call('App\Http\Controllers\BackTestStatsController@rollBackReviewedNonProfitableProcesses')->hourly();
 
                 $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->hourly();
                 $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
 
-                $schedule->call('App\Http\Controllers\BackTestingController@deleteDevTestOnlyBackTestGroups')->tuesdays();
-
                 $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
-
-                $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->daily();
-                $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->daily();
             }
             elseif ($server->task_code == 'stock_fund_data') {
                 $schedule->call('App\Http\Controllers\Equity\StocksBookController@keepRunning')->dailyAt('21:30');
+                $schedule->call('App\Http\Controllers\Equity\StockFundamentalDataController@keepRunning')->dailyAt('23:00');
                 $schedule->call('App\Http\Controllers\Equity\ProcessLogController@deleteOldProcessLogs')->dailyAt('09:30');
             }
         }
