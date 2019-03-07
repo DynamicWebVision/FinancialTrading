@@ -52,35 +52,6 @@ class BackTestDebugTest extends TestCase
 
     public function testRollBackMultipleBackTestGroups() {
         $groupsToRollback = [
-            252,
-            253,
-            254,
-            255,
-            256,
-            281,
-            284,
-            287,
-            288,
-            258,
-            259,
-            260,
-            261,
-            262,
-            270,
-            271,
-            272,
-            273,
-            274,
-            275,
-            276,
-            277,
-            278,
-            279,
-            280,
-            289,
-            290,
-            291,
-            292,
             293,
             294,
             295,
@@ -113,7 +84,7 @@ class BackTestDebugTest extends TestCase
 
     //Re-Run Full Process
     public function testFullSpecificProcess() {
-        $processId = 204011;
+        $processId = 219729;
 
         $backTestingController = new BackTestingController();
         $backTestingController->rollbackSingleProcess($processId);

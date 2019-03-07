@@ -98,5 +98,31 @@ class EventHelpers {
         }
         return 'none';
     }
+
+    public function lineSameDirectionOverPastPeriods($line) {
+        $pointDifferences = [];
+        foreach ($line as $index=>$linePoint) {
+            if ($index > 0) {
+                $previousPoint = $line[$index-1];
+
+                if ($linePoint > $previousPoint) {
+                    $pointDifferences[] = 'up';
+                }
+                elseif ($linePoint < $previousPoint) {
+                    $pointDifferences[] = 'down';
+                }
+                else {
+                    $pointDifferences[] = 'equal';
+                }
+            }
+        }
+
+        if (count(array_unique($pointDifferences)) === 1) {
+            return $pointDifferences[0];
+        }
+        else {
+            return false;
+        }
+    }
 }
 

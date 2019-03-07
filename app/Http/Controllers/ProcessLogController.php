@@ -17,7 +17,7 @@ class ProcessLogController extends Controller {
 
         foreach ($processes as $process) {
             $cutoffDate = date('Y-m-d H:i:s', strtotime($today. ' - '.$process['days_to_keep'].' days'));
-            $processLogs = ProcessLog::where('end_date_time', '<', $cutoffDate)->get()->toArray();
+            $processLogs = ProcessLog::where('start_date_time', '<', $cutoffDate)->get()->toArray();
 
             foreach($processLogs as $processLog) {
                 ProcessLogMessage::where('process_log_id', '=', $processLog['id'])->delete();

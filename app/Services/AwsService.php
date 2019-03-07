@@ -70,6 +70,9 @@ class AwsService  {
     }
 
     public function getCurrentInstanceIp() {
+        if (env('APP_ENV') == 'local') {
+            return 'LOCAL';
+        }
         $instance_id = file_get_contents("http://instance-data/latest/meta-data/instance-id");
 
         $response = $this->ec2Client->describeInstances(['InstanceIds'=>[$instance_id]]);

@@ -93,4 +93,40 @@ class HullEventsTest extends TestCase
 
         $this->assertEquals($hmaAboveBelow, 'below');
     }
+
+    public function testHmaSameSlopeDirectionMultiplePeriods() {
+        $historicalRates = new \App\Model\HistoricalRates();
+
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-7-30 20:00:00');
+
+        $hullMovingAverage = new HullMovingAverage();
+
+        $hmaSameDirectionExpectedUp = $hullMovingAverage->hmaSameSlopeDirectionMultiplePeriods($rates, 25, 5);
+
+        $this->assertEquals($hmaSameDirectionExpectedUp, 'up');
+
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-7-30 9:00:00');
+
+        $hullMovingAverage = new HullMovingAverage();
+
+        $hmaSameDirectionExpectedUp = $hullMovingAverage->hmaSameSlopeDirectionMultiplePeriods($rates, 25, 19);
+
+        $this->assertEquals($hmaSameDirectionExpectedUp, false);
+
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-8-3 00:00:00');
+
+        $hullMovingAverage = new HullMovingAverage();
+
+        $hmaSameDirectionExpectedUp = $hullMovingAverage->hmaSameSlopeDirectionMultiplePeriods($rates, 25, 5);
+
+        $this->assertEquals($hmaSameDirectionExpectedUp, 'down');
+
+        $rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-8-23 17:00:00');
+
+        $hullMovingAverage = new HullMovingAverage();
+
+        $hmaSameDirectionExpectedUp = $hullMovingAverage->hmaSameSlopeDirectionMultiplePeriods($rates, 25, 15);
+
+        $this->assertEquals($hmaSameDirectionExpectedUp, false);
+    }
 }

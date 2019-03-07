@@ -88,13 +88,13 @@ class EmaPriceXMomRsi extends \App\ForexStrategy\Strategy  {
             // $this->decisionIndicators['rsiOutsideLevel'] == 'overBoughtLong'
             // 
 
-            if ( $this->decisionIndicators['emaPriceAboveBelow'] == 'above' || $this->decisionIndicators['rsiOutsideLevel'] == 'overBoughtLong') {
+            if ( $this->decisionIndicators['emaPriceAboveBelow'] == 'below' || $this->decisionIndicators['rsiOutsideLevel'] == 'overBoughtLong') {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
             }
         }
         elseif ($this->openPosition['side'] == 'short') {
-            if ( $this->decisionIndicators['emaPriceAboveBelow'] == 'below' || $this->decisionIndicators['rsiOutsideLevel'] == 'overBoughtShort') {
+            if ( $this->decisionIndicators['emaPriceAboveBelow'] == 'above' || $this->decisionIndicators['rsiOutsideLevel'] == 'overBoughtShort') {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
             }

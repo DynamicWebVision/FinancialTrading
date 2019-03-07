@@ -180,7 +180,8 @@ class HullMovingAverage {
         }
     }
 
-    public function absSlopeLastXPeriods() {
-
+    public function hmaSameSlopeDirectionMultiplePeriods($rates, $length, $periodsBack) {
+        $hma = $this->hmaLastXPeriods($rates, $length, $periodsBack);
+        return $this->eventHelpers->lineSameDirectionOverPastPeriods($hma);
     }
 }
