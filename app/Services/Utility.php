@@ -209,4 +209,8 @@ class Utility  {
         }
     }
 
+    public function sleepXMinutes($minutes) {
+        $secondsToSleep = $minutes*60;
+        sleep($secondsToSleep);
+    }
 }
