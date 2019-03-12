@@ -61,4 +61,8 @@ class ProcessLogger  {
     public function deleteOldLogs() {
 
     }
+
+    public function setRelevantId($id) {
+        Config::set('process_log_relevant_id', $id);
+    }
 }

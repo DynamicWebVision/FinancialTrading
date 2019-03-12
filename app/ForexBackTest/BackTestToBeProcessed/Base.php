@@ -14,6 +14,7 @@ abstract class Base  {
     public $groupId;
     public $backTestToBeProcessed;
     public $utility;
+    public $logger;
 
     public function __construct($processId, $server) {
         //Set it so there is no process timeout
@@ -37,7 +38,8 @@ abstract class Base  {
 
         $this->backTestToBeProcessed->save();
 
-        Log::debug('FINISH Back Test Group ID '.$this->backTestToBeProcessed->back_test_group_id.'Process ID '.$this->backTestToBeProcessed->id);
+        $this->logger->logMessage("Finished Process ".$this->backTestToBeProcessed->id);
+
     }
 
     public function start($processId = false) {
@@ -50,6 +52,8 @@ abstract class Base  {
                 ->where('start', '=', 0)
                 ->first();
         }
+        $this->logger->logMessage("Starting Next Process ".$this->backTestToBeProcessed->id);
+        $this->logger->setRelevantId($this->backTestToBeProcessed->id);
 
         $this->backTestToBeProcessed->start = 1;
 

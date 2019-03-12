@@ -195,6 +195,8 @@ Route::get('strategy_logger/log_api/{logId}', 'StrategyLogController@getLogApi')
 Route::get('strategy_logger/log_indicators/{logId}', 'StrategyLogController@getLogIndicators');
 Route::get('strategy_logger/log_history_subset/{pageNumber}/{account}/{exchange}/{dateTime}/{onlyEvents}', 'StrategyLogController@getLogsSubset');
 
+Route::get('process_logger', 'ProcessLogController@index');
+
 //Route::resource('strategy', 'StrategyController');
 Route::resource('indicator', 'IndicatorsController');
 Route::resource('indicator_event', 'IndicatorsEventsController');

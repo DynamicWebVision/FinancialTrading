@@ -2,6 +2,7 @@
 
 use App\ForexBackTest\BackTestToBeProcessed\FiftyOneHundredEmaTBP;
 use App\ForexBackTest\BackTestToBeProcessed\HmaTrendTBP;
+use App\Services\ProcessLogger;
 use App\ForexBackTest\BackTestToBeProcessed\HighLowBreakoutTBP;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\EmaMomentum\EmaMomentumBackTest;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\TwoTier\EmaFastHmaSlowBT;
@@ -36,6 +37,7 @@ use App\Services\Utility;
 class AutomatedBackTestController extends Controller {
     
     protected $server;
+    public $logger;
     
     public function __construct() {
         set_time_limit(0);
@@ -61,8 +63,9 @@ class AutomatedBackTestController extends Controller {
     }
 
     public function runAutoBackTestIfFailsUpdate() {
+        $this->logger = new ProcessLogger(3);
 
-        Log::emergency('runAutoBackTestIfFailsUpdate starting');
+        $this->logger->logMessage('Starting');
 
         //Set Last Git Pull Time To Check Later
         $serverController = new ServersController();
@@ -73,7 +76,7 @@ class AutomatedBackTestController extends Controller {
 
         $firstCount = BackTestToBeProcessed::where('back_test_group_id', '=', $this->server->current_back_test_group_id)->where('start', '=', 0)->where('finish', '=', 0)->count();
 
-        Log::emergency('runAutoBackTestIfFailsUpdate first count '.$firstCount);
+        $this->logger->logMessage('runAutoBackTestIfFailsUpdate first count '.$firstCount);
 
         if ($firstCount == 0) {
 
@@ -95,7 +98,7 @@ class AutomatedBackTestController extends Controller {
 
             $inProcessCount = BackTestToBeProcessed::where('back_test_group_id', '=', $this->server->current_back_test_group_id)->where('start', '=', 1)->where('finish', '=', 0)->where('hung_up', '=', 0)->count();
 
-            Log::emergency('In Process Count '.$inProcessCount);
+            $this->logger->logMessage('In Process Count '.$inProcessCount);
 
             if ($inProcessCount == 0) {
 
@@ -171,7 +174,7 @@ class AutomatedBackTestController extends Controller {
 
         while ($recordCount > 0) {
             try {
-                Log::emergency('Starting environmentVariableDriveProcess');
+                $this->logger->logMessage('Starting environmentVariableDriveProcess');
                 $this->environmentVariableDriveProcess();
             }
             catch (\Exception $e) {
@@ -207,121 +210,123 @@ class AutomatedBackTestController extends Controller {
         $this->server = Servers::find(Config::get('server_id'));
 
         if ($this->server->current_back_test_strategy == 'HMA') {
-            $fiftyOneHundredToBeProcessed = new HmaTrendTBP($processId, $server);
-            $fiftyOneHundredToBeProcessed->callProcess();
+            $backTestStrategy = new HmaTrendTBP($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'HIGH_LOW_BREAKOUT') {
-            $fiftyOneHundredToBeProcessed = new HighLowBreakoutTBP($processId, $server);
-            $fiftyOneHundredToBeProcessed->callProcess();
+            $backTestStrategy = new HighLowBreakoutTBP($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'EMA_MOMENTUM') {
-            $fiftyOneHundredToBeProcessed = new EmaMomentumBackTest($processId, $server);
-            $fiftyOneHundredToBeProcessed->callProcess();
+            $backTestStrategy = new EmaMomentumBackTest($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_TPSL') {
-            $hmaTakeProfitStopLoss = new HmaTpSlTBP($processId, $server);
-            $hmaTakeProfitStopLoss->callProcess();
+            $backTestStrategy = new HmaTpSlTBP($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'EMA_MOMENTUM_TPSL') {
-            $emaMomentumProcess = new EmaMomentumSlTP($processId, $server);
-            $emaMomentumProcess->callProcess();
+            $backTestStrategy = new EmaMomentumSlTP($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'EMA_MOMENTUM_TPSL_WITH_TRAILING_STOP') {
-            $emaMomentumProcess = new EmaMomentumTPSLAndTrailingStop($processId, $server);
-            $emaMomentumProcess->callProcess();
+            $backTestStrategy = new EmaMomentumTPSLAndTrailingStop($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_STOP_OR_STRATEGY_CLOSE') {
-            $emaMomentumProcess = new HmaStayInStopLoss($processId, $server);
-            $emaMomentumProcess->callProcess();
+            $backTestStrategy = new HmaStayInStopLoss($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'TWO_TIER_EMA_HMA') {
-            $emaMomentumProcess = new EmaFastHmaSlowBT($processId, $server);
-            $emaMomentumProcess->callProcess();
+            $backTestStrategy = new EmaFastHmaSlowBT($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_CROSS') {
-            $emaMomentumProcess = new HmaCrossTPSL($processId, $server);
-            $emaMomentumProcess->callProcess();
+            $backTestStrategy = new HmaCrossTPSL($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'THREE_STAY_IN') {
-            $emaMomentumProcess = new StayIn($processId, $server);
-            $emaMomentumProcess->callProcess();
+            $backTestStrategy = new StayIn($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'PIVOT_TPSL') {
-            $emaMomentumProcess = new PivotPointTestTPSl($processId, $server);
-            $emaMomentumProcess->callProcess();
+            $backTestStrategy = new PivotPointTestTPSl($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'MACD_MOMENTUM_STAYIN') {
-            $emaMomentumProcess = new MacdStayInOrClose($processId, $server);
-            $emaMomentumProcess->callProcess();
+            $backTestStrategy = new MacdStayInOrClose($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'STOCH_TPSL') {
-            $emaMomentumProcess = new StochasticTPSl($processId, $server);
-            $emaMomentumProcess->callProcess();
+            $backTestStrategy = new StochasticTPSl($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'TT_OVBT_MOM_TPSL') {
-            $slowOverboughtFastMomentumTpSl = new SlowOverboughtFastMomentumTpSL($processId, $server);
-            $slowOverboughtFastMomentumTpSl->callProcess();
+            $backTestStrategy = new SlowOverboughtFastMomentumTpSL($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_X_STAYIN') {
-            $slowOverboughtFastMomentumTpSl = new HmaCrossoverStayIn($processId, $server);
-            $slowOverboughtFastMomentumTpSl->callProcess();
+            $backTestStrategy = new HmaCrossoverStayIn($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'HLHB') {
-            $slowOverboughtFastMomentumTpSl = new HlhbTpWTrailingStop($processId, $server);
-            $slowOverboughtFastMomentumTpSl->callProcess();
+            $backTestStrategy = new HlhbTpWTrailingStop($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'BOLLINGER' || $this->server->current_back_test_strategy == 'BOLLINGER_PULLBACK') {
-            $bolingerMomentumTest = new BollingerMomentumBackTest($processId, $server);
-            $bolingerMomentumTest->callProcess();
+            $backTestStrategy = new BollingerMomentumBackTest($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_CHANGE_DIRECTION') {
-            $hmaReverseTest = new HmaRev($processId, $server);
-            $hmaReverseTest->callProcess();
+            $backTestStrategy = new HmaRev($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'THREE_DUCKS') {
-            $hmaReverseTest = new ThreeDucks($processId, $server);
-            $hmaReverseTest->callProcess();
+            $backTestStrategy = new ThreeDucks($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'PREVIOUS_PRICE_BREAKOUT') {
-            $hmaReverseTest = new PreviousPeriodPriceBreakout($processId, $server);
-            $hmaReverseTest->callProcess();
+            $backTestStrategy = new PreviousPeriodPriceBreakout($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'TEST_STUFFED_NOSE') {
-            $backTestStrategy = new TestStuffedNoseBackTestToBeProcessed($processId, $server);
-            $backTestStrategy->callProcess();
+            $backTestStrategy = new TestStuffedNoseBackTestToBeProcessed($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_QUICK_TEST') {
-            $backTestStrategy = new HmaQuickTestBackTestToBeProcessed($processId, $server);
-            $backTestStrategy->callProcess();
+            $backTestStrategy = new HmaQuickTestBackTestToBeProcessed($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_TURN') {
-            $backTestStrategy = new HmaTurnBackTestToBeProcessed($processId, $server);
-            $backTestStrategy->callProcess();
+            $backTestStrategy = new HmaTurnBackTestToBeProcessed($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'NEW_INDICATOR_TESTING') {
-            $backTestStrategy = new NewIndicatorTestingBackTestToBeProcessed($processId, $server);
-            $backTestStrategy->callProcess();
+            $backTestStrategy = new NewIndicatorTestingBackTestToBeProcessed($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'TESTING_SYSTEMS') {
-            $backTestStrategy = new TestingSystemsBackTestToBeProcessed($processId, $server);
-            $backTestStrategy->callProcess();
+            $backTestStrategy = new TestingSystemsBackTestToBeProcessed($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_REVERSAL') {
-            $backTestStrategy = new HmaReversalBackTestToBeProcessed($processId, $server);
-            $backTestStrategy->callProcess();
+            $backTestStrategy = new HmaReversalBackTestToBeProcessed($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'RSI_PULLBACK') {
-            $backTestStrategy = new RsiPullbackBackTestToBeProcessed($processId, $server);
-            $backTestStrategy->callProcess();
+            $backTestStrategy = new RsiPullbackBackTestToBeProcessed($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_PRICE_POINT') {
-            $backTestStrategy = new HmaPricePointBackTestToBeProcessed($processId, $server);
-            $backTestStrategy->callProcess();
+            $backTestStrategy = new HmaPricePointBackTestToBeProcessed($processId, $this->server);
+            
         }
         elseif ($this->server->current_back_test_strategy == 'EMA_PRICE_X') {
-            $backTestStrategy = new EmaPriceCrossBackTestToBeProcessed($processId, $server);
-            $backTestStrategy->callProcess();
+            $backTestStrategy = new EmaPriceCrossBackTestToBeProcessed($processId, $this->server);
+            
         }
+        $backTestStrategy->logger = $this->logger;
+        $backTestStrategy->callProcess();
         //END OF STRATEGY IFS
     }
 }

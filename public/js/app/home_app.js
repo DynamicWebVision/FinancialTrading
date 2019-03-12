@@ -4,7 +4,7 @@
  */
 
 var app = angular.module('app', ['ngRoute','ngAnimate','utility.directives','oitozero.ngSweetAlert',
-    'chart.js', 'angularUtils.directives.dirPagination', 'jsonFormatter', 'ui.bootstrap']);
+    'chart.js', 'angularUtils.directives.dirPagination', 'jsonFormatter', 'ui.bootstrap', 'ui.select', 'ngSanitize']);
 
 app.config(function($routeProvider) {
     $routeProvider
@@ -92,5 +92,10 @@ app.config(function($routeProvider) {
             templateUrl : "js/modules/stocks/stocks-main/stocks-main.html",
             controller : "StocksMainController",
             controllerAs: 'sh'
+        })
+        .when("/process_logger", {
+            templateUrl : "js/modules/process-log/process-log.html",
+            controller : "ProcessLoggerController",
+            controllerAs: 'pl'
         })
 });

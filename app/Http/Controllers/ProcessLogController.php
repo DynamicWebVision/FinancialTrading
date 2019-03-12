@@ -6,10 +6,17 @@ use Request;
 
 use \App\Model\Process;
 use \App\Model\ProcessLog\ProcessLog;
+use \App\Model\ProcessLog\ProcessLogMessageType;
+
 use \App\Model\ProcessLog\ProcessLogMessage;
 
 
 class ProcessLogController extends Controller {
+
+    public function index() {
+        return ['message_types'=> ProcessLogMessageType::get()->toArray(),
+            'processes'=>Process::get()->toArray()];
+    }
 
     public function deleteOldProcessLogs() {
         $processes = Process::get()->toArray();

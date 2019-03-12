@@ -15,6 +15,9 @@
     <script src="/js/angular_directives.js"></script>
     <script src="/bower_components/json-formatter/src/json-formatter.js"></script>
     <script src="/bower_components/json-formatter/src/recursion-helper.js"></script>
+    <script src="bower_components/angular-ui-select/dist/select.js"></script>
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-ui-select/dist/select.css">
+    <script src="/bower_components/json-formatter/src/recursion-helper.js"></script>
 
     <!– Angular Factories and Services ->
     <script src="/js/factory/merchant.js"></script>
@@ -54,6 +57,7 @@
     <script type="text/javascript" src="js/controllers/servers.js"></script>
     <script type="text/javascript" src="js/modules/historical_rates/run-historical-rates/run-historical-rates.js"></script>
     <script type="text/javascript" src="js/modules/strategy-log/strategy-log.js"></script>
+    <script type="text/javascript" src="js/modules/process-log/process-log.js"></script>
     <script type="text/javascript" src="js/modules/strategy-create/strategy-create.js"></script>
     <script type="text/javascript" src="js/modules/indicator-create/indicator-create.js"></script>
     <script type="text/javascript" src="js/modules/indicator-event-create/indicator-event-create.js"></script>
@@ -106,6 +110,12 @@
                 <a href="#strategy_logger" class="waves-effect">
                     <i class="fas fa-align"></i>
                     <span> Strategy Logger </span> <span class="pull-right"></span>
+                </a>
+            </li>
+            <li>
+                <a href="#process_logger" class="waves-effect">
+                    <i class="fas fa-align"></i>
+                    <span> Process Logger </span> <span class="pull-right"></span>
                 </a>
             </li>
             <li>

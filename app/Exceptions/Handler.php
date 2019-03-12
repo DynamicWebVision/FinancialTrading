@@ -85,6 +85,14 @@ class Handler extends ExceptionHandler
             $processLogMessage->message_type_id = 1;
             $processLogMessage->message = $exception;
             $processLogMessage->save();
+
+            $processLogRelevantId = Config::get('process_log_relevant_id');
+
+            $processLogMessage = new ProcessLogMessage();
+            $processLogMessage->process_log_id = $processLogId;
+            $processLogMessage->message_type_id = 4;
+            $processLogMessage->message = "Relevant Execption ID :".$processLogRelevantId;
+            $processLogMessage->save();
         }
 
         return $reportException;

@@ -1,0 +1,64 @@
+<div class="panel panel-primary" ng-class="pl.fiftyOpacity(pl.processing)">
+    <div class="panel-heading">
+        <h3 class="panel-title">Process Logs</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <ui-select ng-model="pl.selectedProcess" on-select="pl.loadProcessLogs()">
+                        <ui-select-match>
+                            <span ng-bind="$select.selected.name" ></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="process in (pl.processes | filter: $select.search) track by process.id"
+                                           refresh="pl.setProcess($select.search)"
+                                           refresh-delay="0">
+                            <div ng-bind-html="process.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-class="pl.fiftyOpacity(pl.processing)">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{pl.accountName}} Logs</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover content-table"
+               ng-class="pl.fiftyOpacityOffset(pl.processing)">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Exchange</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Decision Type</th>
+                <th>Decision Made</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr dir-paginate="log in pl.logs | itemsPerPage: 10"
+                total-items="pl.totalLogCount">
+                <td>{{log.id}}</td>
+                <td>{{log.exchange}}</td>
+                <td>{{log.start_date_time}}</td>
+                <td>{{log.end_date_time}}</td>
+                <td>{{log.decision_type}}</td>
+                <td>{{log.decision_made}}</td>
+                <td><button class = 'btn-success btn-sm' ng-click="pl.loadMessages(log)">Messages</button></td>
+                <td><button class = 'btn-success btn-sm' ng-click="pl.loadApi(log)">Api</button></td>
+                <td><button class = 'btn-success btn-sm' ng-click="pl.loadIndicators(log)">Indicators</button></td>
+            </tr>
+            </tbody>
+        </table>
+        <dir-pagination-controls max-size="7"
+                                 ng-show="pl.logs.length > 0"
+                                 on-page-change="pl.changeLogSet(newPageNumber)"></dir-pagination-controls>
+    </div>
+</div>
