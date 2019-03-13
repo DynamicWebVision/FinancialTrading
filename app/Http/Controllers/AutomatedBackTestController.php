@@ -110,12 +110,8 @@ class AutomatedBackTestController extends Controller {
                 $runningProcess = BackTestToBeProcessed::where('back_test_group_id', '=', $this->server->current_back_test_group_id)->where('start', '=', 1)->where('finish', '=', 0)->where('hung_up', '=', 0)->first();
                 $last_update_time = $runningProcess->in_process_unix_time;
 
-                $this->utility->sleepXMinutes(30);
-
-                $runningProcess = BackTestToBeProcessed::find($runningProcess->id);
-
                 //If the Process has not gotten any more rates in 20 minutes, something is almost definitely up
-                if ($last_update_time == $runningProcess->in_process_unix_time && $runningProcess->finish != 1) {
+                if ((time() - $last_update_time) > (20*60)) {
                     //Delete BackTest Record because it needs to be rolled back since it's hung up
                     BackTest::where('process_id', '=', $runningProcess->id)->delete();
 
@@ -126,7 +122,8 @@ class AutomatedBackTestController extends Controller {
                     $this->keepBackTestRunning();
                 }
                 else {
-                    return true;
+                    $this->logger->logMessage('Current Backtest To Be Process Updated less than 20 minutes ago. Killing this Iteration');
+                    return;
                 }
             }
         }
@@ -151,26 +148,35 @@ class AutomatedBackTestController extends Controller {
     }
 
     public function processBackTestStats() {
+        $this->logger->logMessage('Starting Stats');
         $this->server = Servers::find(Config::get('server_id'));
 
         $statsRecordCount = $this->getBackTestGroupStatCount();
-
+        $this->logger->logMessage('Stat Count '.$statsRecordCount);
         while ($statsRecordCount > 0) {
             $autoController = new BackTestStatsController();
             $autoController->backtestProcessStats();
 
             $statsRecordCount = $this->getBackTestGroupStatCount();
         }
+        $this->logger->logMessage('End Backtest Stats');
         $serverController = new ServersController();
+        $this->logger->logMessage('Getting Next Server Backtest Group');
         $serverController->getNextBackTestGroupForServer();
+        $this->logger->logMessage('Re-calling runAutoBackTestIfFailsUpdate');
         $this->runAutoBackTestIfFailsUpdate();
     }
 
     public function keepBackTestRunning() {
-        $recordCount = 1;
         $this->server = Servers::find(Config::get('server_id'));
 
         $groupId = $this->server->current_back_test_group_id;
+
+        $recordCount = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)
+            ->where('finish', '=', 0)
+            ->where('start', '=', 0)
+            ->where('hung_up', '=', 0)
+            ->count();
 
         while ($recordCount > 0) {
             try {
@@ -178,7 +184,7 @@ class AutomatedBackTestController extends Controller {
                 $this->environmentVariableDriveProcess();
             }
             catch (\Exception $e) {
-                Log::critical('BT Exception '.$e);
+                $this->logger->logMessage('Backtest Exception: '.$e);
             }
             $recordCount = BackTestToBeProcessed::where('back_test_group_id', '=', $groupId)
                 ->where('finish', '=', 0)
@@ -194,12 +200,12 @@ class AutomatedBackTestController extends Controller {
             $this->server = Servers::find(Config::get('server_id'));
 
             if ($lastGitPullTime != $configLastGitPullTime || $this->server->current_back_test_group_id != $groupId) {
-                $recordCount = 0;
+                $this->logger->logMessage('last_git_pull_time does not match, killing');
+                die();
             }
         }
-        $serverController->getNextBackTestGroupForServer();
-
-        return true;
+        $this->logger->logMessage('Process Record Count 0. Now calling processBackTestStats');
+        $this->processBackTestStats();
     }
 
     public function environmentVariableDriveProcessId($processId) {
