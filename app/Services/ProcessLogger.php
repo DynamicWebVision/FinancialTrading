@@ -52,7 +52,7 @@ class ProcessLogger  {
             $logMessage->save();
     }
 
-    public function logStrategyEnd() {
+    public function processEnd() {
         $logStrategy = ProcessLog::find($this->logId);
         $logStrategy->end_date_time = $this->utility->mysqlDateTime();
         $logStrategy->save();

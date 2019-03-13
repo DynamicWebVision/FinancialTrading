@@ -59,7 +59,7 @@ class StockFundamentalDataController extends Controller {
             }
             $stocksToPullCount = StocksApiJobs::where('last_fundamental_pull', '!=', $currentDay)->count();
         }
-        $this->logger->logStrategyEnd();
+        $this->logger->processEnd();
     }
 
     public function pullOneStock($currentDay) {

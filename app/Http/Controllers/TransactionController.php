@@ -128,7 +128,7 @@ class TransactionController extends Controller {
 
         $accountUpdate->save();
 
-        $this->logger->logStrategyEnd();
+        $this->logger->processEnd();
     }
 
     public function saveLiveTransactions() {

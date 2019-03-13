@@ -60,7 +60,7 @@ class StocksBookController extends Controller {
             }
             $stocksToPullCount = StocksApiJobs::where('last_book_pull', '!=', $currentDay)->count();
         }
-        $this->logger->logStrategyEnd();
+        $this->logger->processEnd();
     }
 
     public function pullOneStock($currentDay) {
