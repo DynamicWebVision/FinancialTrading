@@ -9,11 +9,13 @@ use \DB;
 use \Log;
 use Request;
 use App\Broker\OandaV20;
+Use App\Services\ProcessLogger;
 
 class TransactionController extends Controller {
 
     public $environment = 'practice';
     public $liveTrading = 0;
+    public $logger;
 
     public function getOandaTransactions($account = false) {
         ini_set('memory_limit', '-1');
@@ -36,14 +38,9 @@ class TransactionController extends Controller {
             $lastProcessedId = $nextAccount[0]->last_order_id;
         }
 
+        $this->logger->logMessage('Getting Rates for Account '.$id);
+
         $broker = new OandaV20($this->environment);
-
-        $runId = uniqid();
-
-        Log::info('Get Transactions Start - '.$runId);
-
-
-        Log::info('Get Transactions Start for Account '.$id.' - '.$runId);
 
         $broker->accountId = $id;
 
@@ -60,8 +57,11 @@ class TransactionController extends Controller {
 //        Log::info('Get Transactions Response Account '.$id.' Oanda Response - '.$runId.PHP_EOL);
 
         if (!isset($transactions)) {
-            Log::info('No Transactions '.$id.' Oanda Response - '.$runId);
+            $this->logger->logMessage('Transactions variable not set');
+            return;
         }
+
+        $this->logger->logMessage('Response of '.sizeof($transactions).' transactions.');
 
       //  $transactions = array_reverse($oanadaResponse->transactions);
         if (sizeof($transactions) > 0) {
@@ -98,9 +98,6 @@ class TransactionController extends Controller {
                         if (isset($t->tradesClosed)) {
                             $oandaTrade = OandaTrades::firstOrNew(['oanda_open_id' => $t->tradesClosed[0]->tradeID]);
                         }
-                        else {
-                            $debug = true;
-                        }
 
                         $oandaTrade->oanda_close_id = $t->id;
 
@@ -131,7 +128,7 @@ class TransactionController extends Controller {
 
         $accountUpdate->save();
 
-        Log::info('Get Transactions FINISH for Account '.$id.' - '.$runId);
+        $this->logger->logStrategyEnd();
     }
 
     public function saveLiveTransactions() {
@@ -143,11 +140,10 @@ class TransactionController extends Controller {
     }
 
     public function savePracticeTransactions() {
-        Log::emergency('Started Practice Transactions');
+        $this->logger = new ProcessLogger(4);
         $this->environment = 'practice';
         $this->liveTrading = 0;
         $this->getOandaTransactions();
-        Log::emergency('Finished Practice Transactions');
     }
 
 //    public function getUnsavedTransactions() {

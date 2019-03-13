@@ -53,7 +53,7 @@ class ProcessLogger  {
     }
 
     public function logStrategyEnd() {
-        $logStrategy = StrategyLog::find($this->logId);
+        $logStrategy = ProcessLog::find($this->logId);
         $logStrategy->end_date_time = $this->utility->mysqlDateTime();
         $logStrategy->save();
     }
