@@ -210,122 +210,121 @@ class AutomatedBackTestController extends Controller {
         $this->server = Servers::find(Config::get('server_id'));
 
         if ($this->server->current_back_test_strategy == 'HMA') {
-            $backTestStrategy = new HmaTrendTBP($processId, $this->server);
+            $backTestStrategy = new HmaTrendTBP($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'HIGH_LOW_BREAKOUT') {
-            $backTestStrategy = new HighLowBreakoutTBP($processId, $this->server);
+            $backTestStrategy = new HighLowBreakoutTBP($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'EMA_MOMENTUM') {
-            $backTestStrategy = new EmaMomentumBackTest($processId, $this->server);
+            $backTestStrategy = new EmaMomentumBackTest($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_TPSL') {
-            $backTestStrategy = new HmaTpSlTBP($processId, $this->server);
+            $backTestStrategy = new HmaTpSlTBP($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'EMA_MOMENTUM_TPSL') {
-            $backTestStrategy = new EmaMomentumSlTP($processId, $this->server);
+            $backTestStrategy = new EmaMomentumSlTP($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'EMA_MOMENTUM_TPSL_WITH_TRAILING_STOP') {
-            $backTestStrategy = new EmaMomentumTPSLAndTrailingStop($processId, $this->server);
+            $backTestStrategy = new EmaMomentumTPSLAndTrailingStop($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_STOP_OR_STRATEGY_CLOSE') {
-            $backTestStrategy = new HmaStayInStopLoss($processId, $this->server);
+            $backTestStrategy = new HmaStayInStopLoss($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'TWO_TIER_EMA_HMA') {
-            $backTestStrategy = new EmaFastHmaSlowBT($processId, $this->server);
+            $backTestStrategy = new EmaFastHmaSlowBT($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_CROSS') {
-            $backTestStrategy = new HmaCrossTPSL($processId, $this->server);
+            $backTestStrategy = new HmaCrossTPSL($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'THREE_STAY_IN') {
-            $backTestStrategy = new StayIn($processId, $this->server);
+            $backTestStrategy = new StayIn($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'PIVOT_TPSL') {
-            $backTestStrategy = new PivotPointTestTPSl($processId, $this->server);
+            $backTestStrategy = new PivotPointTestTPSl($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'MACD_MOMENTUM_STAYIN') {
-            $backTestStrategy = new MacdStayInOrClose($processId, $this->server);
+            $backTestStrategy = new MacdStayInOrClose($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'STOCH_TPSL') {
-            $backTestStrategy = new StochasticTPSl($processId, $this->server);
+            $backTestStrategy = new StochasticTPSl($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'TT_OVBT_MOM_TPSL') {
-            $backTestStrategy = new SlowOverboughtFastMomentumTpSL($processId, $this->server);
+            $backTestStrategy = new SlowOverboughtFastMomentumTpSL($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_X_STAYIN') {
-            $backTestStrategy = new HmaCrossoverStayIn($processId, $this->server);
+            $backTestStrategy = new HmaCrossoverStayIn($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'HLHB') {
-            $backTestStrategy = new HlhbTpWTrailingStop($processId, $this->server);
+            $backTestStrategy = new HlhbTpWTrailingStop($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'BOLLINGER' || $this->server->current_back_test_strategy == 'BOLLINGER_PULLBACK') {
-            $backTestStrategy = new BollingerMomentumBackTest($processId, $this->server);
+            $backTestStrategy = new BollingerMomentumBackTest($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_CHANGE_DIRECTION') {
-            $backTestStrategy = new HmaRev($processId, $this->server);
+            $backTestStrategy = new HmaRev($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'THREE_DUCKS') {
-            $backTestStrategy = new ThreeDucks($processId, $this->server);
+            $backTestStrategy = new ThreeDucks($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'PREVIOUS_PRICE_BREAKOUT') {
-            $backTestStrategy = new PreviousPeriodPriceBreakout($processId, $this->server);
+            $backTestStrategy = new PreviousPeriodPriceBreakout($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'TEST_STUFFED_NOSE') {
-            $backTestStrategy = new TestStuffedNoseBackTestToBeProcessed($processId, $this->server);
+            $backTestStrategy = new TestStuffedNoseBackTestToBeProcessed($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_QUICK_TEST') {
-            $backTestStrategy = new HmaQuickTestBackTestToBeProcessed($processId, $this->server);
+            $backTestStrategy = new HmaQuickTestBackTestToBeProcessed($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_TURN') {
-            $backTestStrategy = new HmaTurnBackTestToBeProcessed($processId, $this->server);
+            $backTestStrategy = new HmaTurnBackTestToBeProcessed($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'NEW_INDICATOR_TESTING') {
-            $backTestStrategy = new NewIndicatorTestingBackTestToBeProcessed($processId, $this->server);
+            $backTestStrategy = new NewIndicatorTestingBackTestToBeProcessed($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'TESTING_SYSTEMS') {
-            $backTestStrategy = new TestingSystemsBackTestToBeProcessed($processId, $this->server);
+            $backTestStrategy = new TestingSystemsBackTestToBeProcessed($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_REVERSAL') {
-            $backTestStrategy = new HmaReversalBackTestToBeProcessed($processId, $this->server);
+            $backTestStrategy = new HmaReversalBackTestToBeProcessed($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'RSI_PULLBACK') {
-            $backTestStrategy = new RsiPullbackBackTestToBeProcessed($processId, $this->server);
+            $backTestStrategy = new RsiPullbackBackTestToBeProcessed($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'HMA_PRICE_POINT') {
-            $backTestStrategy = new HmaPricePointBackTestToBeProcessed($processId, $this->server);
+            $backTestStrategy = new HmaPricePointBackTestToBeProcessed($processId, $this->server, $this->logger);
             
         }
         elseif ($this->server->current_back_test_strategy == 'EMA_PRICE_X') {
-            $backTestStrategy = new EmaPriceCrossBackTestToBeProcessed($processId, $this->server);
-            
+            $backTestStrategy = new EmaPriceCrossBackTestToBeProcessed($processId, $this->server, $this->logger);
         }
-        $backTestStrategy->logger = $this->logger;
+
         $backTestStrategy->callProcess();
         //END OF STRATEGY IFS
     }
