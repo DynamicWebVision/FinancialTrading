@@ -110,10 +110,13 @@ class AutomatedBackTestController extends Controller {
                 $runningProcess = BackTestToBeProcessed::where('back_test_group_id', '=', $this->server->current_back_test_group_id)->where('start', '=', 1)->where('finish', '=', 0)->where('hung_up', '=', 0)->first();
                 $last_update_time = $runningProcess->in_process_unix_time;
 
-                //If the Process has not gotten any more rates in 20 minutes, something is almost definitely up
-                if ((time() - $last_update_time) > (20*60)) {
+                //If the Process has not gotten any more rates in 60 minutes, something is almost definitely up
+                $timeSinceLastUpdate = time() - $last_update_time;
+                if ($timeSinceLastUpdate > (60*60)) {
                     //Delete BackTest Record because it needs to be rolled back since it's hung up
                     BackTest::where('process_id', '=', $runningProcess->id)->delete();
+
+                    $this->logger->logMessage('Time Since Last Process Update '.$timeSinceLastUpdate);
 
                     //Save the Process as Hung Up To Review Later
                     $runningProcess->hung_up = 1;
