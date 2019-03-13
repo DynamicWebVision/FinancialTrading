@@ -80,7 +80,7 @@ class StockFundamentalDataController extends Controller {
             $stockIssue->fund_issue = 1;
             $stockIssue->save();
             $errorMessage = 'Invalid API Response '.$stock->id.' symbol: '.$stock->symbol;
-            $errorMessage .= '<BR> API URL: '.$tdAmeritrade->apiUrl.'<BR> Response: '.$response;
+            $errorMessage .= '<BR> API URL: '.$tdAmeritrade->apiUrl.'<BR> Response: '.json_encode($response);
             $this->logger->logMessage($errorMessage);
             return;
         }
