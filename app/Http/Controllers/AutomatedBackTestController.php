@@ -201,7 +201,7 @@ class AutomatedBackTestController extends Controller {
 
             if ($lastGitPullTime != $configLastGitPullTime || $this->server->current_back_test_group_id != $groupId) {
                 $this->logger->logMessage('last_git_pull_time does not match, killing');
-                $this->logger->en;
+                $this->logger->processEnd();
                 die();
             }
         }
