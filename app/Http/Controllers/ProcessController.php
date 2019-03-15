@@ -28,6 +28,7 @@ class ProcessController extends Controller
         $serverController->logger = $this->logger;
         $serverController->serverAlreadyRunningCheck();
 
+        $serverController->updateProcessRun();
         $this->processNextJob();
     }
 
@@ -49,6 +50,7 @@ class ProcessController extends Controller
     }
 
     public function processNextJob() {
+
         $processToBeRun = ProcessQueue::where('server_id', '=', 0)->orderBy('priority')->first();
 
         if (is_null($processToBeRun)) {
