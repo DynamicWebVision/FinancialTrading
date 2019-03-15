@@ -19,17 +19,17 @@ class ServersControllerTest extends TestCase
     public $transactionController;
     public $oanda;
 
-    public function testUpdateIpAddresses() {
-        $serversController = new ServersController();
-
-        $serversController->reWriteServerIpLocal();
-    }
-
-    public function testGetLastGitPull() {
-        $serversController = new ServersController();
-        $lastGitPullTime = $serversController->getLastGitPullTime();
-        $this->assertEquals(1546457963, $lastGitPullTime);
-    }
+//    public function testUpdateIpAddresses() {
+//        $serversController = new ServersController();
+//
+//        $serversController->reWriteServerIpLocal();
+//    }
+//
+//    public function testGetLastGitPull() {
+//        $serversController = new ServersController();
+//        $lastGitPullTime = $serversController->getLastGitPullTime();
+//        $this->assertEquals(1546457963, $lastGitPullTime);
+//    }
 
 //    public function testSetServerEnvironmentTest() {
 //        $serversController = new ServersController();
@@ -43,4 +43,8 @@ class ServersControllerTest extends TestCase
 //
 //        $this->assertEquals('fx_maintenance', $server->task_code);
 //    }
+    public function testTaskCode() {
+        $controller = new ServersController();
+        $controller->setServerId();
+    }
 }

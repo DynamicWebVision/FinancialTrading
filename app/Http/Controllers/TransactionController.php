@@ -140,7 +140,7 @@ class TransactionController extends Controller {
     }
 
     public function savePracticeTransactions() {
-        $this->logger = new ProcessLogger(4);
+        $this->logger = new ProcessLogger('fx_practice_transactions');
         $this->environment = 'practice';
         $this->liveTrading = 0;
         $this->getOandaTransactions();

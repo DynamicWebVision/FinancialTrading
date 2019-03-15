@@ -39,7 +39,7 @@ class StocksBookController extends Controller {
     }
 
     public function keepRunning() {
-        $this->logger = new ProcessLogger(1);
+        $this->logger = new ProcessLogger('eq_book_iex');
 
         $serverController = new ServersController();
         $lastGitPullTime = $serverController->getLastGitPullTime();

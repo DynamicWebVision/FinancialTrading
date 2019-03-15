@@ -67,10 +67,7 @@ class AutomatedBackTestController extends Controller {
 
         $this->logger->logMessage('Starting');
 
-        //Set Last Git Pull Time To Check Later
-        $serverController = new ServersController();
-        $lastGitPullTime = $serverController->getLastGitPullTime();
-        Config::set('last_git_pull_time', $lastGitPullTime);
+
 
         $this->server = Servers::find(Config::get('server_id'));
 
@@ -132,6 +129,62 @@ class AutomatedBackTestController extends Controller {
         }
     }
 
+    public function runOneProcessOrAllBacktestStats() {
+        $this->logger = new ProcessLogger('fx_backtest');
+
+        $this->logger->logMessage('Starting');
+
+        $this->server = Servers::find(Config::get('server_id'));
+
+        $firstCount = BackTestToBeProcessed::where('back_test_group_id', '=', $this->server->current_back_test_group_id)->where('start', '=', 0)->where('finish', '=', 0)->count();
+
+        $this->logger->logMessage('Count of backtests with start and finish = 0 is :'.$firstCount);
+
+        if ($firstCount == 0) {
+
+            $statCount = $this->getBackTestGroupStatCount();
+
+            if ($statCount == 0) {
+                $this->markBackTestGroupStatsComplete();
+
+                $serverController = new ServersController();
+                $serverController->getNextBackTestGroupForServer();
+            }
+            else {
+                $this->processBackTestStats();
+                $this->logger->logMessage('Process Stats Complete');
+                $this->logger->processEnd();
+            }
+        }
+        else {
+
+            $inProcessCount = BackTestToBeProcessed::where('back_test_group_id', '=', $this->server->current_back_test_group_id)->where('start', '=', 1)->where('finish', '=', 0)->where('hung_up', '=', 0)->count();
+
+            $this->logger->logMessage('In Process Count '.$inProcessCount);
+
+            if ($inProcessCount != 0) {
+                $hungUpBacktests = BackTestToBeProcessed::where('back_test_group_id', '=', $this->server->current_back_test_group_id)->where('start', '=', 1)->where('finish', '=', 0)->where('hung_up', '=', 0)->get();
+
+                foreach ($hungUpBacktests as $backtestHung) {
+                    $this->logger->logMessage('Marking Process Id '.$backtestHung->id.' as hung up.');
+
+                    $actualBackTest  = BackTestToBeProcessed::find($backtestHung->id);
+                    $actualBackTest->hung_up = 1;
+                    $actualBackTest->save();
+                }
+                $this->environmentVariableDriveProcess();
+            }
+            else {
+                $this->logger->logMessage('No backtests in Process. Going to run one backtest process.');
+                //No Tests In Process, Start Running
+                $this->environmentVariableDriveProcess();
+            }
+            $this->logger->logMessage('Backtest Single Process Run Complete.');
+            $this->logger->processEnd();
+        }
+    }
+
+
     protected function getBackTestGroupStatCount() {
         return BackTestToBeProcessed::where('stats_finish', '=', 0)->where('stats_start', '=', 0)
             ->where('hung_up', '=', 0)
@@ -167,7 +220,6 @@ class AutomatedBackTestController extends Controller {
         $this->logger->logMessage('Getting Next Server Backtest Group');
         $serverController->getNextBackTestGroupForServer();
         $this->logger->logMessage('Re-calling runAutoBackTestIfFailsUpdate');
-        $this->runAutoBackTestIfFailsUpdate();
     }
 
     public function keepBackTestRunning() {
@@ -334,7 +386,6 @@ class AutomatedBackTestController extends Controller {
         elseif ($this->server->current_back_test_strategy == 'EMA_PRICE_X') {
             $backTestStrategy = new EmaPriceCrossBackTestToBeProcessed($processId, $this->server, $this->logger);
         }
-
         $backTestStrategy->callProcess();
         //END OF STRATEGY IFS
     }

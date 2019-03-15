@@ -35,7 +35,7 @@ class StockFundamentalDataController extends Controller {
     }
 
     public function keepRunning() {
-        $this->logger = new ProcessLogger(2);
+        $this->logger = new ProcessLogger('eq_fundamental_td');
 
         $serverController = new ServersController();
         $lastGitPullTime = $serverController->getLastGitPullTime();

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Config;
 class ServersController extends Controller {
 
     public $serverId;
+    public $logger;
 
     public function index() {
         $servers = Servers::with('task')->get()->toArray();
@@ -177,6 +178,7 @@ class ServersController extends Controller {
     public function setServerId() {
         if (env('APP_ENV') == 'local') {
             Config::set('server_id', 6);
+            $this->serverId = 6;
         }
         else {
             \Log::emergency("Attempting to Update AWS Host");
@@ -279,6 +281,56 @@ class ServersController extends Controller {
         }
         else {
             return 0;
+        }
+    }
+
+    public function serverAlreadyRunningCheck() {
+        $this->setServerId();
+
+        $server = Servers::find($this->serverId);
+        $timeSinceLastRunUpdateInMinutes = (time() - $server->last_process_run)/60;
+
+        if ($timeSinceLastRunUpdateInMinutes <= 90 && $server->last_run_killed == 0) {
+            $this->logger->logMessage('$timeSinceLastRunUpdateInMinutes value of '.$timeSinceLastRunUpdateInMinutes.' is less than 90 minutes. Server is Running so killing process');
+            $this->logger->processEnd();
+            die();
+        }
+        else {
+            if ($server->last_run_killed == 1) {
+                $server->last_run_killed = 0;
+                $server->save();
+                $this->logger->logMessage('Last Server Killed due to Git. Running this Process');
+            }
+            else {
+                $this->logger->logMessage('$timeSinceLastRunUpdateInMinutes value of '.$timeSinceLastRunUpdateInMinutes.' is greater than 90 minutes. Continuing with Process.');
+            }
+
+        }
+    }
+
+    public function updateProcessRun() {
+        $this->setServerId();
+
+        $server = Servers::find($this->serverId);
+        $server->last_process_run = time();
+        $server->save();
+    }
+
+    public function gitPullCheck() {
+        $lastActualGitPullTime = $this->getLastGitPullTime();
+
+        $this->setServerId();
+
+        $server = Servers::find($this->serverId);
+
+        if ($server->last_git_pull_time != $lastActualGitPullTime) {
+            $server->last_git_pull_time = $lastActualGitPullTime;
+            $server->last_run_killed = 1;
+            $server->save();
+            return 'invalid_git_pull_time';
+        }
+        else {
+            return 'git_pull_times_match';
         }
     }
 }

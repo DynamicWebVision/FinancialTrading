@@ -669,7 +669,6 @@ abstract class BackTest  {
     }
 
     public function endBackTest() {
-        \Log::emergency('We Got TO End Back Test endBackTest');
         $this->savePositions();
 
         $backTest = \App\Model\BackTest::find($this->backTestId);

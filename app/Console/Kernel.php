@@ -36,6 +36,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\UpdateServers',
         'App\Console\Commands\UpdateDBHost',
         'App\Console\Commands\UpdateGitPullTime',
+        'App\Console\Commands\ScheduleProcessInQueue',
     ];
 
     public $everyFifteenMinuteEarlyInterval = '59,14,29,44 * * * * *';
@@ -54,6 +55,13 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LiveTradingController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
         }
         elseif (env('APP_ENV') == 'live_practice') {
+            /*********************************************************************
+             * SCHEDULE PROCESS JOBS
+             *********************************************************************/
+            $schedule->command('schedule_process eq_book_iex 3')->dailyAt('21:30');
+            $schedule->command('schedule_process eq_fundamental_td 3')->dailyAt('23:00');
+            $schedule->command('schedule_process delete_process_logs 9')->dailyAt('9:30');
+
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
 
@@ -66,41 +74,24 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('22:01');
         }
         elseif (env('APP_ENV') == 'utility') {
-            $serverController = new ServersController();
-            $serverController->setServerId();
+            $schedule->call('App\Http\Controllers\ProcessController@serverRunCheck')->cron($this->everyFifteenMinutesInterval);
 
-            $server = Servers::find(Config::get('server_id'));
 
-            //$schedule->call('App\Http\Controllers\HistoricalDataController@initialLoad')->cron($this->everyFifteenMinutesInterval);
-
-            if (!isset($server->task_code)) {
-                \Log::emergency('Server Task Code Not Set');
-                \Log::emergency('Server Id: '.Config::get('server_id'));
-                \Log::emergency(json_encode($server));
-                return false;
-            }
-
-            if ($server->task_code == 'fx_backtest') {
-                $schedule->call('App\Http\Controllers\AutomatedBackTestController@runAutoBackTestIfFailsUpdate')->hourly();
-            }
-            elseif ($server->task_code == 'fx_maintenance') {
-                $schedule->call('App\Http\Controllers\BackTestingController@deleteDevTestOnlyBackTestGroups')->tuesdays();
-
-                $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->dailyAt('0:00');
-                $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->dailyAt('1:00');
-
-                $schedule->call('App\Http\Controllers\BackTestStatsController@rollBackReviewedNonProfitableProcesses')->hourly();
-
-                $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->hourly();
-                $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
-
-                $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
-            }
-            elseif ($server->task_code == 'stock_fund_data') {
-                $schedule->call('App\Http\Controllers\Equity\StocksBookController@keepRunning')->dailyAt('21:30');
-                $schedule->call('App\Http\Controllers\Equity\StockFundamentalDataController@keepRunning')->dailyAt('23:00');
-                $schedule->call('App\Http\Controllers\Equity\ProcessLogController@deleteOldProcessLogs')->dailyAt('09:30');
-            }
+//            if ($server->task_code == 'fx_maintenance') {
+//                $schedule->call('App\Http\Controllers\BackTestingController@deleteDevTestOnlyBackTestGroups')->tuesdays();
+//
+//                $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->dailyAt('0:00');
+//                $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->dailyAt('1:00');
+//
+//                $schedule->call('App\Http\Controllers\BackTestStatsController@rollBackReviewedNonProfitableProcesses')->hourly();
+//
+//                $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->hourly();
+//                $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
+//
+//                $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
+//            }
+//            elseif ($server->task_code == 'stock_fund_data') {
+//            }
         }
     }
 

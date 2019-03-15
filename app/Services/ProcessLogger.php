@@ -6,6 +6,8 @@ use \App\Model\ProcessLog\ProcessLogMessage;
 use Illuminate\Support\Facades\Config;
 use \App\Services\Utility;
 use \App\Services\AwsService;
+use App\Model\ProcessLog\Process;
+use App\Http\Controllers\ServersController;
 
 class ProcessLogger  {
 
@@ -19,21 +21,23 @@ class ProcessLogger  {
 
     public $loggingOn;
 
-    public function __construct($processId) {
+    public function __construct($processCode) {
         $this->utility = new Utility();
-        $this->newStrategyLog($processId);
+        $this->newStrategyLog($processCode);
     }
 
-    public function newStrategyLog($processId) {
+    public function newStrategyLog($processCode) {
         $awsService = new AwsService();
         $ipAddress = $awsService->getCurrentInstanceIp();
         $serverId = Config::get('server_id');
+
+        $process = Process::where('code', '=', $processCode)->first();
 
         $newProcessLog = new ProcessLog();
 
         $newProcessLog->start_date_time = $this->utility->mysqlDateTime();
 
-        $newProcessLog->process_id = $processId;
+        $newProcessLog->process_id = $process->id;
         $newProcessLog->server_address = $ipAddress;
         $newProcessLog->server_id = $serverId;
 
