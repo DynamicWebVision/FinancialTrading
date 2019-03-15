@@ -260,7 +260,9 @@ class ServersController extends Controller {
 
         \Log::emergency("Got DB IP Address ".$dbIpAddress);
 
-        $utility->writeToLine('/var/www/FinancialTrading/.env',5,'DB_HOST='.$dbIpAddress);
+        if (strlen($dbIpAddress) > 4) {
+            $utility->writeToLine('/var/www/FinancialTrading/.env',5,'DB_HOST='.$dbIpAddress);
+        }
 
         \Log::emergency("Wrote Line");
     }
