@@ -4,7 +4,7 @@ use \DB;
 use \Log;
 use Request;
 
-use \App\Model\Process;
+use \App\Model\ProcessLog\Process;
 use \App\Model\ProcessLog\ProcessLog;
 use \App\Model\ProcessLog\ProcessLogMessageType;
 
