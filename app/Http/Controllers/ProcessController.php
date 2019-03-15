@@ -49,9 +49,6 @@ class ProcessController extends Controller
     }
 
     public function processNextJob() {
-        $serversController = new ServersController();
-        $serversController->setServerId();
-
         $processToBeRun = ProcessQueue::where('server_id', '=', 0)->orderBy('priority')->first();
 
         if (is_null($processToBeRun)) {
@@ -62,7 +59,7 @@ class ProcessController extends Controller
             $automatedBacktestController->runOneProcessOrAllBacktestStats();
         }
         else {
-            $processToBeRun->server_id = $serversController->serverId;
+            $processToBeRun->server_id = Config::get('server_id');
             $processToBeRun->start_time = $this->utility->mysqlDateTime();
 
             $processToBeRun->save();

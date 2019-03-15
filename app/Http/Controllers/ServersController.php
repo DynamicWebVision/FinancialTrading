@@ -311,9 +311,7 @@ class ServersController extends Controller {
     }
 
     public function updateProcessRun() {
-        $this->setServerId();
-
-        $server = Servers::find($this->serverId);
+        $server = Servers::find(Config::get('server_id'));
         $server->last_process_run = time();
         $server->save();
     }
@@ -321,9 +319,7 @@ class ServersController extends Controller {
     public function gitPullCheck() {
         $lastActualGitPullTime = $this->getLastGitPullTime();
 
-        $this->setServerId();
-
-        $server = Servers::find($this->serverId);
+        $server = Servers::find(Config::get('server_id'));
 
         if ($server->last_git_pull_time != $lastActualGitPullTime) {
             $server->last_git_pull_time = $lastActualGitPullTime;
