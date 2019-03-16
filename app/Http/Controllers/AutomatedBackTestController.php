@@ -144,10 +144,13 @@ class AutomatedBackTestController extends Controller {
 
             $statCount = $this->getBackTestGroupStatCount();
 
+            $this->logger->logMessage('Stat Count: '.$statCount);
+
             if ($statCount == 0) {
                 $this->markBackTestGroupStatsComplete();
 
                 $serverController = new ServersController();
+                $this->logger->logMessage('Get Next Backtestgroup from Server');
                 $serverController->getNextBackTestGroupForServer();
             }
             else {
@@ -192,6 +195,7 @@ class AutomatedBackTestController extends Controller {
     }
 
     protected function markBackTestGroupStatsComplete() {
+        $this->logger->logMessage('Mark Back Test Group as Complete: '.$this->server->current_back_test_group_id);
         $backTestGroup = BackTestGroup::find($this->server->current_back_test_group_id);
         $backTestGroup->stats_run = 1;
         $backTestGroup->save();
@@ -215,6 +219,7 @@ class AutomatedBackTestController extends Controller {
 
             $statsRecordCount = $this->getBackTestGroupStatCount();
         }
+        $this->markBackTestGroupStatsComplete();
         $this->logger->logMessage('End Backtest Stats');
         $serverController = new ServersController();
         $this->logger->logMessage('Getting Next Server Backtest Group');
