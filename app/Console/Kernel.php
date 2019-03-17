@@ -74,7 +74,7 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('22:01');
         }
         elseif (env('APP_ENV') == 'utility') {
-            $schedule->call('App\Http\Controllers\ProcessController@serverRunCheck')->cron($this->everyFifteenMinutesInterval);
+            $schedule->call('App\Http\Controllers\ProcessController@serverRunCheck')->hourly();
 
 
 //            if ($server->task_code == 'fx_maintenance') {
