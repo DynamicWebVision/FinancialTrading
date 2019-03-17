@@ -43,8 +43,25 @@ class ServersControllerTest extends TestCase
 //
 //        $this->assertEquals('fx_maintenance', $server->task_code);
 //    }
-    public function testTaskCode() {
-        $controller = new ServersController();
-        $controller->setServerId();
+//    public function testTaskCode() {
+//        $controller = new ServersController();
+//        $controller->setServerId();
+//    }
+
+    public function testStatusCode() {
+        $output = shell_exec('ps aux');
+
+        $separator = "\r\n";
+        $line = strtok($output, $separator);
+
+        while ($line !== false) {
+            # do something with $line
+            $line = strtok( $separator );
+            $lineAsArray = preg_split('/\s+/', $line);
+
+            if ($lineAsArray[10] == 'php artisan schedule:run') {
+                echo $lineAsArray[9];
+            }
+        }
     }
 }
