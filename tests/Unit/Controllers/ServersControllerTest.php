@@ -51,6 +51,8 @@ class ServersControllerTest extends TestCase
     public function testStatusCode() {
         $output = shell_exec('ps aux');
 
+        dd($output);
+
         $separator = "\r\n";
         $line = strtok($output, $separator);
 
