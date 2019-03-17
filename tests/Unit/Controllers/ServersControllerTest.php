@@ -59,9 +59,15 @@ class ServersControllerTest extends TestCase
             $line = strtok( $separator );
             $lineAsArray = preg_split('/\s+/', $line);
 
-            if ($lineAsArray[10] == 'php artisan schedule:run') {
-                echo $lineAsArray[9];
+            if (isset($lineAsArray[10])) {
+                if ($lineAsArray[10] == 'php artisan schedule:run') {
+                    echo $lineAsArray[9];
+                }
             }
+            else {
+                echo $lineAsArray;
+            }
+
         }
     }
 }
