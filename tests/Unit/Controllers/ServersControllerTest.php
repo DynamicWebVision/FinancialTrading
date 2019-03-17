@@ -65,7 +65,7 @@ class ServersControllerTest extends TestCase
                 }
             }
             else {
-                echo $lineAsArray;
+                echo json_encode($lineAsArray);
             }
 
         }
