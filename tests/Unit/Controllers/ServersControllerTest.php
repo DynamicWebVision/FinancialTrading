@@ -49,8 +49,6 @@ class ServersControllerTest extends TestCase
 //    }
 
     public function testStatusCode() {
-        $t4st = proc_get_status(2560);
-
         $output = shell_exec('ps aux');
 
         $separator = "\r\n";
@@ -59,8 +57,8 @@ class ServersControllerTest extends TestCase
         while ($line !== false) {
             # do something with $line
             $line = strtok( $separator );
-            //$adjustedLine = preg_split('/ +/', $line);
-            $adjustedLine =preg_split('/[\s]+/', $line);
+            $adjustedLine = preg_split('/ +/', $line);
+            //$adjustedLine =preg_split('/[\s]+/', $line);
 
             echo json_encode($adjustedLine)."\n";
 
