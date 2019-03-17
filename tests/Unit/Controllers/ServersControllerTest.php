@@ -58,7 +58,7 @@ class ServersControllerTest extends TestCase
             # do something with $line
             $line = strtok( $separator );
             $lineAsArray = preg_split('/\s+/', $line);
-            echo $line;
+            echo json_encode($lineAsArray);
 
 //            if (isset($lineAsArray[10])) {
 //                if ($lineAsArray[10] == 'php artisan schedule:run') {
