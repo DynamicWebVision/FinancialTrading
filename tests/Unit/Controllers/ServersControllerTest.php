@@ -50,9 +50,10 @@ class ServersControllerTest extends TestCase
 
     public function testStatusCode() {
         $myPid = getmypid();
-        dd($myPid);
 
-        $output = shell_exec('ps aux');
+        $output = shell_exec('ps -o etime= -p "'.$myPid.'" ');
+
+        dd($output);
 
         $separator = "\r\n";
         $line = strtok($output, $separator);
