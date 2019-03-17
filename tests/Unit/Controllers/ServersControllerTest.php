@@ -49,6 +49,9 @@ class ServersControllerTest extends TestCase
 //    }
 
     public function testStatusCode() {
+        $myPid = getmypid();
+        dd($myPid);
+
         $output = shell_exec('ps aux');
 
         $separator = "\r\n";
