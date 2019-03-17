@@ -49,6 +49,8 @@ class ServersControllerTest extends TestCase
 //    }
 
     public function testStatusCode() {
+        $t4st = proc_get_status(2560);
+
         $output = shell_exec('ps aux');
 
         $separator = "\r\n";
@@ -57,7 +59,9 @@ class ServersControllerTest extends TestCase
         while ($line !== false) {
             # do something with $line
             $line = strtok( $separator );
-            echo $line."\n";
+            $adjustedLine = preg_split('/ +/', $line);
+
+            echo $adjustedLine."\n";
 
 //            if (isset($lineAsArray[10])) {
 //                if ($lineAsArray[10] == 'php artisan schedule:run') {
