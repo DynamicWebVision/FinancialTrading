@@ -8,6 +8,7 @@ use App\Model\ProcessLog\ProcessQueue;
 use App\Http\Controllers\ServersController;
 use App\Http\Controllers\AutomatedBackTestController;
 use App\Services\Utility;
+use Illuminate\Support\Facades\Config;
 use App\Services\ProcessLogger;
 
 class ProcessController extends Controller
