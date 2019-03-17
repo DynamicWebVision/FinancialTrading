@@ -26,7 +26,6 @@ class ProcessController extends Controller
         $this->logger = new ProcessLogger('server_run_check');
 
         $serverController->logger = $this->logger;
-        $serverController->serverAlreadyRunningCheck();
 
         $serverController->updateProcessRun();
         $this->processNextJob();
@@ -84,9 +83,13 @@ class ProcessController extends Controller
     }
 
     public function proccessRunCompletion() {
-        $serversController = new ServersController();
-        $serversController->updateProcessRun();
-        $serversController->gitPullCheck();
+        $serverController = new ServersController();
+        $serverController->setServerId();
+        $this->logger = new ProcessLogger('process_complete');
+
+        $serverController->logger = $this->logger;
+
+        $serverController->killIfProcessOverMinuteThreshold();
 
         $this->processNextJob();
     }

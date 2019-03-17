@@ -12,8 +12,11 @@ use \Log;
 use Request;
 use App\Services\AwsService;
 use Illuminate\Support\Facades\Config;
+use App\Services\StringHelpers;
 
 class ServersController extends Controller {
+
+    const MINUTE_RUN_THRESHOLD = 60;
 
     public $serverId;
     public $logger;
@@ -283,6 +286,24 @@ class ServersController extends Controller {
         }
         else {
             return 0;
+        }
+    }
+
+    public function killIfProcessOverMinuteThreshold() {
+        $myPid = getmypid();
+
+        $output = shell_exec('ps -o etime= -p "'.$myPid.'" ');
+        $stringHelpers = new StringHelpers();
+        $text = $stringHelpers->getAllValuesUntilString($output, ":");
+        $text = trim($text);
+        $minutes = (int) $text;
+
+        if ($minutes >= self::MINUTE_RUN_THRESHOLD) {
+            $this->logger->logMessage('Process has been running over '.self::MINUTE_RUN_THRESHOLD." minutes. Killing it");
+            die();
+        }
+        else {
+            $this->logger->logMessage('Process has been running less than '.self::MINUTE_RUN_THRESHOLD." minutes. Going to next job.");
         }
     }
 
