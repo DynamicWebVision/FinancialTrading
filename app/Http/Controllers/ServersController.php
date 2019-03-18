@@ -265,11 +265,6 @@ class ServersController extends Controller {
             \Log::emergency("Got DB IP Address ".$dbIpAddress);
 
             if (strlen($dbIpAddress) > 4) {
-                if(DB::connection()->getDatabaseName())
-                {
-                    echo "Yes! successfully connected to the DB: " . DB::connection()->getDatabaseName();
-                }
-
                 $utility->writeToLine('/var/www/FinancialTrading/.env',5,'DB_HOST='.$dbIpAddress);
             }
 
