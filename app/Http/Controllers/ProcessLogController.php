@@ -19,6 +19,7 @@ class ProcessLogController extends Controller {
     }
 
     public function deleteOldProcessLogs() {
+        ini_set('memory_limit', '2048M');
         $processes = Process::get()->toArray();
         $today = date('Y-m-d H:i:s', time());
 
