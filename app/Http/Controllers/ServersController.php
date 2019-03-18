@@ -8,6 +8,7 @@ use \App\Model\ServerTasks;
 use App\Model\BackTestToBeProcessed;
 use App\Services\Utility;
 use \DB;
+use Illuminate\Support\Str;
 use \Log;
 use Request;
 use App\Services\AwsService;
@@ -185,15 +186,24 @@ class ServersController extends Controller {
         }
         else {
             if (is_null($this->serverId)) {
-                \Log::emergency("Attempting to Update AWS Host");
-                $awsService = new AwsService();
-                $awsService->setCurrentServerAttributes();
-                $this->serverId = $awsService->getInstanceTagValue('server_id');
-                \Log::emergency("Got Server Id ".$this->serverId);
 
-                Config::set('server_id', $this->serverId);
+                $serverId = Config::get('server_id');
 
-                $this->updateEnvironmentDBHost();
+                if (is_null($serverId)) {
+                    \Log::emergency("Attempting to Update AWS Host");
+                    $awsService = new AwsService();
+                    $awsService->setCurrentServerAttributes();
+                    $this->serverId = $awsService->getInstanceTagValue('server_id');
+                    \Log::emergency("Got Server Id ".$this->serverId);
+
+                    Config::set('server_id', $this->serverId);
+
+                    $this->updateEnvironmentDBHost();
+                }
+                else {
+                    $this->serverId = $serverId;
+                }
+
             }
         }
         \Log::emergency("End setServerId");
@@ -355,5 +365,12 @@ class ServersController extends Controller {
         else {
             return 'git_pull_times_match';
         }
+    }
+
+    public function seeIfPidIsRunning($pid) {
+        $output = shell_exec('ps -p '.$pid);
+        $this->logger->logMessage('pid check output :'.$output);
+        $stringHelpers = new StringHelpers();
+        return $stringHelpers->stringContainsString($output, $pid);
     }
 }

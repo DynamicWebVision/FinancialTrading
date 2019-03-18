@@ -10,11 +10,13 @@ use App\Http\Controllers\AutomatedBackTestController;
 use App\Services\Utility;
 use Illuminate\Support\Facades\Config;
 use App\Services\ProcessLogger;
+use App\Model\ProcessLog\ProcessLog;
 
 class ProcessController extends Controller
 {
     protected $processId;
     public $logger;
+    public $serverController;
 
     public function __construct()
     {
@@ -22,13 +24,14 @@ class ProcessController extends Controller
     }
 
     public function serverRunCheck() {
-        $serverController = new ServersController();
-        $serverController->setServerId();
         $this->logger = new ProcessLogger('server_run_check');
+        $this->serverController->logger = $this->logger;
 
-        $serverController->logger = $this->logger;
+        $this->currentRunningProcessThresholdCheck();
 
-        $serverController->updateProcessRun();
+        $this->serverController->logger = $this->logger;
+
+        $this->serverController->updateProcessRun();
         $this->processNextJob();
     }
 
@@ -84,16 +87,42 @@ class ProcessController extends Controller
     }
 
     public function proccessRunCompletion() {
-        $serverController = new ServersController();
-        $serverController->setServerId();
         $this->logger = new ProcessLogger('process_complete');
 
-        $serverController->logger = $this->logger;
+        $this->serverController->logger = $this->logger;
 
-        $serverController->killIfProcessOverMinuteThreshold();
+        $this->serverController->killIfProcessOverMinuteThreshold();
 
         $this->processNextJob();
     }
 
-//    public function
+    public function currentRunningProcessThresholdCheck() {
+
+        $stillRunningProcesses = ProcessLog::whereNull('end_date_time')->where('server_id', '=', $this->serverController->serverId)
+            ->distinct(['linux_pid'])->get()->toArray();
+
+        $this->logger->logMessage('stillRunningProcessPids :'.json_encode($stillRunningProcesses));
+
+        $processesRunningCount = 0;
+
+        foreach($stillRunningProcesses as $stillRunningProcess) {
+            $pidStillRunning = $this->serverController->seeIfPidIsRunning($stillRunningProcess['linux_pid']);
+            if ($pidStillRunning) {
+                $this->logger->logMessage($stillRunningProcess['linux_pid'].' pid still comming');
+                $processesRunningCount = $processesRunningCount + 1;
+            }
+            else {
+                $this->logger->logMessage($stillRunningProcess['linux_pid'].' not still comming');
+                $this->logger->forceEndProcess($stillRunningProcess['id']);
+            }
+        }
+
+        $this->logger->logMessage($processesRunningCount.' processes running count.');
+
+        if ($processesRunningCount > 1) {
+            $this->logger->logMessage('Killing this run due to already too many processes running.');
+            $this->logger->processEnd();
+            die();
+        }
+    }
 }

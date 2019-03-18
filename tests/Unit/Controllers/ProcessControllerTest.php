@@ -25,8 +25,10 @@ class ProcessControllerTest extends TestCase
         $livePracticeController->serverRunCheck();
     }
 
-    public function testabc() {
-        $s = new ServersController();
-        $s->setServerId();
-    }
+//    public function testABcXyz() {
+//        $livePracticeController = new ProcessController();
+//
+//        $livePracticeController->currentRunningProcessThresholdCheck();
+//
+//    }
 }

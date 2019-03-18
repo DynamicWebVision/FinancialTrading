@@ -77,6 +77,8 @@ class AutomatedBackTestController extends Controller {
 
         if ($firstCount == 0) {
 
+            $this->markBackTestGroupAsProcessRunStarted();
+
             $statCount = $this->getBackTestGroupStatCount();
 
             if ($statCount == 0) {
@@ -92,13 +94,11 @@ class AutomatedBackTestController extends Controller {
             }
         }
         else {
-
             $inProcessCount = BackTestToBeProcessed::where('back_test_group_id', '=', $this->server->current_back_test_group_id)->where('start', '=', 1)->where('finish', '=', 0)->where('hung_up', '=', 0)->count();
 
             $this->logger->logMessage('In Process Count '.$inProcessCount);
 
             if ($inProcessCount == 0) {
-
                 //No Tests In Process, Start Running
                 $this->keepBackTestRunning();
                 }

@@ -66,4 +66,11 @@ class ProcessLogger  {
     public function setRelevantId($id) {
         Config::set('process_log_relevant_id', $id);
     }
+
+    public function forceEndProcess($logId) {
+        $logStrategy = ProcessLog::find($logId);
+        $logStrategy->end_date_time = $this->utility->mysqlDateTime();
+        $logStrategy->forced_end = 1;
+        $logStrategy->save();
+    }
 }
