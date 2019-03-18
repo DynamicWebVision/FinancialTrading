@@ -8,7 +8,8 @@ class StringHelpers  {
     }
 
     public function stringContainsString($parentString, $childString) {
-        echo $parentString.'---';
+        $parentString = (string) $parentString;
+        $childString = (string) $childString;
         echo $childString;
         if (strpos($parentString, $childString) !== false) {
             return true;
