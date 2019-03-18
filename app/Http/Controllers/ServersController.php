@@ -254,20 +254,27 @@ class ServersController extends Controller {
 
     public function updateEnvironmentDBHost() {
         \Log::emergency("updateEnvironmentDBHost");
+        if(!DB::connection()->getDatabaseName())
+        {
+            $utility = new Utility();
+            $awsService = new AwsService();
+            $instances = $awsService->getAllInstances();
 
-        $utility = new Utility();
-        $awsService = new AwsService();
-        $instances = $awsService->getAllInstances();
+            $dbIpAddress = $awsService->getReservationIPWithTag($instances, 'finance_db');
 
-        $dbIpAddress = $awsService->getReservationIPWithTag($instances, 'finance_db');
+            \Log::emergency("Got DB IP Address ".$dbIpAddress);
 
-        \Log::emergency("Got DB IP Address ".$dbIpAddress);
+            if (strlen($dbIpAddress) > 4) {
+                if(DB::connection()->getDatabaseName())
+                {
+                    echo "Yes! successfully connected to the DB: " . DB::connection()->getDatabaseName();
+                }
 
-        if (strlen($dbIpAddress) > 4) {
-            $utility->writeToLine('/var/www/FinancialTrading/.env',5,'DB_HOST='.$dbIpAddress);
+                $utility->writeToLine('/var/www/FinancialTrading/.env',5,'DB_HOST='.$dbIpAddress);
+            }
+
+            \Log::emergency("Wrote Line");
         }
-
-        \Log::emergency("Wrote Line");
     }
 
     public function updateGitPullTime() {

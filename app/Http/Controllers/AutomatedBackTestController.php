@@ -129,9 +129,11 @@ class AutomatedBackTestController extends Controller {
         }
     }
 
-    public function runOneProcessOrAllBacktestStats() {
+    public function setUpLogger() {
         $this->logger = new ProcessLogger('fx_backtest');
+    }
 
+    public function runOneProcessOrAllBacktestStats() {
         $this->logger->logMessage('Starting');
 
         $this->server = Servers::find(Config::get('server_id'));
@@ -158,6 +160,8 @@ class AutomatedBackTestController extends Controller {
                 $this->logger->logMessage('Process Stats Complete');
                 $this->logger->processEnd();
             }
+
+            $this->logger->processEnd();
         }
         else {
 
@@ -195,7 +199,7 @@ class AutomatedBackTestController extends Controller {
     }
 
     protected function markBackTestGroupStatsComplete() {
-        $this->logger->logMessage('Mark Back Test Group as Complete: '.$this->server->current_back_test_group_id);
+        $this->logger->logMessage('Mark Back Test Group Stats as Complete: '.$this->server->current_back_test_group_id);
         $backTestGroup = BackTestGroup::find($this->server->current_back_test_group_id);
         $backTestGroup->stats_run = 1;
         $backTestGroup->save();
@@ -270,6 +274,7 @@ class AutomatedBackTestController extends Controller {
     }
 
     public function environmentVariableDriveProcessId($processId) {
+        $this->setUpLogger();
         $this->environmentVariableDriveProcess($processId);
     }
 
