@@ -110,11 +110,11 @@ class ProcessController extends Controller
         foreach($stillRunningProcesses as $stillRunningProcess) {
             $pidStillRunning = $this->serverController->seeIfPidIsRunning($stillRunningProcess['linux_pid']);
             if ($pidStillRunning) {
-                $this->logger->logMessage($stillRunningProcess['linux_pid'].' pid still comming');
+                $this->logger->logMessage($stillRunningProcess['linux_pid'].' pid IS still running');
                 $processesRunningCount = $processesRunningCount + 1;
             }
             else {
-                $this->logger->logMessage($stillRunningProcess['linux_pid'].' not still comming');
+                $this->logger->logMessage($stillRunningProcess['linux_pid'].' pid NOT running. Forcing process end.');
                 $this->logger->forceEndProcess($stillRunningProcess['id']);
             }
         }

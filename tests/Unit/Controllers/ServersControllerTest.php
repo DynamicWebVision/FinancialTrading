@@ -53,4 +53,10 @@ class ServersControllerTest extends TestCase
         $tesCont = new ServersController();
         $tesCont->killIfProcessOverMinuteThreshold();
     }
+
+    public function testAbc() {
+        $tesCont = new ServersController();
+        $check = $tesCont->seeIfPidIsRunning(3196);
+        dd($check);
+    }
 }
