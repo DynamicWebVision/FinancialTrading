@@ -307,7 +307,7 @@ class ServersController extends Controller {
             die();
         }
         else {
-            $this->logger->logMessage('Process has been running less than '.self::MINUTE_RUN_THRESHOLD." minutes. Going to next job.");
+            $this->logger->logMessage('Process has been running less than '.self::MINUTE_RUN_THRESHOLD." minutes at $minutes. Going to next job.");
         }
     }
 
