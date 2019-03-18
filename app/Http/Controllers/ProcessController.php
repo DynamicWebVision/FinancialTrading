@@ -26,6 +26,7 @@ class ProcessController extends Controller
     public function serverRunCheck() {
         $this->logger = new ProcessLogger('server_run_check');
         $this->serverController = new ServersController();
+        $this->serverController->setServerId();
         $this->serverController->logger = $this->logger;
 
         $this->currentRunningProcessThresholdCheck();
