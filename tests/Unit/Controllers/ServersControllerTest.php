@@ -49,10 +49,10 @@ class ServersControllerTest extends TestCase
 //        $controller->setServerId();
 //    }
 
-    public function testStatusCode() {
-        $tesCont = new ServersController();
-        $tesCont->killIfProcessOverMinuteThreshold();
-    }
+//    public function testStatusCode() {
+//        $tesCont = new ServersController();
+//        $tesCont->killIfProcessOverMinuteThreshold();
+//    }
 
     public function testAbc() {
         $tesCont = new ServersController();
