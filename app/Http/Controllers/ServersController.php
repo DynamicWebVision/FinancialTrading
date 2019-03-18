@@ -370,6 +370,7 @@ class ServersController extends Controller {
     public function seeIfPidIsRunning($pid) {
         $output = shell_exec('ps -p '.$pid);
         //$this->logger->logMessage('pid check output :'.$output);
+        echo $output
         $stringHelpers = new StringHelpers();
         return $stringHelpers->stringContainsString($output, $pid);
     }
