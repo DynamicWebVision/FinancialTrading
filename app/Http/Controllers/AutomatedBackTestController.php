@@ -134,6 +134,8 @@ class AutomatedBackTestController extends Controller {
     }
 
     public function runOneProcessOrAllBacktestStats() {
+        $this->setUpLogger();
+
         $this->logger->logMessage('Starting');
 
         $this->server = Servers::find(Config::get('server_id'));

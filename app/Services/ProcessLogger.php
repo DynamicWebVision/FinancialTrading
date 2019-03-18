@@ -40,6 +40,7 @@ class ProcessLogger  {
         $newProcessLog->process_id = $process->id;
         $newProcessLog->server_address = $ipAddress;
         $newProcessLog->server_id = $serverId;
+        $newProcessLog->linux_pid = getmypid();
 
         $newProcessLog->save();
 

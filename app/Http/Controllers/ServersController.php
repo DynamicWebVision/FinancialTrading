@@ -184,15 +184,17 @@ class ServersController extends Controller {
             $this->serverId = 6;
         }
         else {
-            \Log::emergency("Attempting to Update AWS Host");
-            $awsService = new AwsService();
-            $awsService->setCurrentServerAttributes();
-            $this->serverId = $awsService->getInstanceTagValue('server_id');
-            \Log::emergency("Got Server Id ".$this->serverId);
+            if (is_null($this->serverId)) {
+                \Log::emergency("Attempting to Update AWS Host");
+                $awsService = new AwsService();
+                $awsService->setCurrentServerAttributes();
+                $this->serverId = $awsService->getInstanceTagValue('server_id');
+                \Log::emergency("Got Server Id ".$this->serverId);
 
-            Config::set('server_id', $this->serverId);
+                Config::set('server_id', $this->serverId);
 
-            $this->updateEnvironmentDBHost();
+                $this->updateEnvironmentDBHost();
+            }
         }
         \Log::emergency("End setServerId");
         return true;
