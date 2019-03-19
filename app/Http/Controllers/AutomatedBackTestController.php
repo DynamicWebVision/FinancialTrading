@@ -145,6 +145,7 @@ class AutomatedBackTestController extends Controller {
         $this->logger->logMessage('Count of backtests with start and finish = 0 is :'.$firstCount);
 
         if ($firstCount == 0) {
+            $this->markBackTestGroupAsProcessRunStarted();
 
             $statCount = $this->getBackTestGroupStatCount();
 
