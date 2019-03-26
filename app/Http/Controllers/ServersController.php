@@ -126,6 +126,11 @@ class ServersController extends Controller {
             }))->where('strategy_system_id', '!=', 0)->where('dev_testing_only', '!=', 1)->orderBy('priority', 'desc')->first();
         }
 
+        if (is_null($backTestGroup)) {
+            $this->logger->logMessage('Next Backtest Group is null. Killing Process');
+            die();
+        }
+
         $strategy = Strategy::find($backTestGroup->strategy_id);
         $strategySystem = StrategySystem::find($backTestGroup->strategy_system_id);
 

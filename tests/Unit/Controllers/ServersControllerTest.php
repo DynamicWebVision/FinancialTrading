@@ -59,4 +59,9 @@ class ServersControllerTest extends TestCase
         $check = $tesCont->seeIfPidIsRunning(3196);
         dd($check);
     }
+
+    public function testGetNext() {
+        $tesCont = new ServersController();
+        $check = $tesCont->getNextBackTestGroupForServer();
+    }
 }
