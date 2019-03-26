@@ -52,10 +52,9 @@ class BackTestDebugTest extends TestCase
 
     public function testRollBackMultipleBackTestGroups() {
         $groupsToRollback = [
-            293,
-            294,
-            295,
-            296
+            288,
+            300
+
         ];
 
         $backTestingController = new BackTestingController();

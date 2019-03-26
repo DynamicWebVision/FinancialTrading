@@ -176,11 +176,14 @@ class AutomatedBackTestController extends Controller {
                 $hungUpBacktests = BackTestToBeProcessed::where('back_test_group_id', '=', $this->server->current_back_test_group_id)->where('start', '=', 1)->where('finish', '=', 0)->where('hung_up', '=', 0)->get();
 
                 foreach ($hungUpBacktests as $backtestHung) {
-                    $this->logger->logMessage('Marking Process Id '.$backtestHung->id.' as hung up.');
 
-                    $actualBackTest  = BackTestToBeProcessed::find($backtestHung->id);
-                    $actualBackTest->hung_up = 1;
-                    $actualBackTest->save();
+                    if ((time() - 3600) > $backtestHung->in_process_unix_time) {
+                        $this->logger->logMessage('Marking Process Id '.$backtestHung->id.' as hung up. in_process_unix_time is '.$backtestHung->in_process_unix_time.' and current time is '.time());
+
+                        $actualBackTest  = BackTestToBeProcessed::find($backtestHung->id);
+                        $actualBackTest->hung_up = 1;
+                        $actualBackTest->save();
+                    }
                 }
                 $this->environmentVariableDriveProcess();
             }
