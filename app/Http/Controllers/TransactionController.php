@@ -37,8 +37,7 @@ class TransactionController extends Controller {
             $dbAccountId = $nextAccount[0]->id;
             $lastProcessedId = $nextAccount[0]->last_order_id;
         }
-
-        $this->logger->logMessage('Getting Rates for Account '.$id);
+        $this->logger->logMessage('Getting Transactions for Account '.$id);
 
         $broker = new OandaV20($this->environment);
 
@@ -132,11 +131,13 @@ class TransactionController extends Controller {
     }
 
     public function saveLiveTransactions() {
-        Log::emergency('Started Live Transactions');
+        $this->logger = new ProcessLogger('fx_live_transactions');
+
         $this->environment = 'live';
         $this->liveTrading = 1;
         $this->getOandaTransactions();
-        Log::emergency('Finished Live Transactions');
+
+        $this->logger->processEnd();
     }
 
     public function savePracticeTransactions() {

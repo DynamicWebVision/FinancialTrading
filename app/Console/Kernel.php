@@ -61,6 +61,9 @@ class Kernel extends ConsoleKernel
             $schedule->command('schedule_process eq_book_iex 3')->dailyAt('21:30');
             $schedule->command('schedule_process eq_fundamental_td 3')->dailyAt('23:00');
             $schedule->command('schedule_process delete_process_logs 9')->dailyAt('9:30');
+            $schedule->command('schedule_process fx_delete_dev_bts 2')->tuesdays();
+            $schedule->command('schedule_process fx_live_transactions 3')->hourly();
+            $schedule->command('schedule_process fx_practice_transactions 3')->cron($this->everyFifteenMinutesInterval);
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
@@ -78,12 +81,10 @@ class Kernel extends ConsoleKernel
 
 
 //            if ($server->task_code == 'fx_maintenance') {
-//                $schedule->call('App\Http\Controllers\BackTestingController@deleteDevTestOnlyBackTestGroups')->tuesdays();
-//
+
 //                $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->dailyAt('0:00');
 //                $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->dailyAt('1:00');
-//
-//                $schedule->call('App\Http\Controllers\BackTestStatsController@rollBackReviewedNonProfitableProcesses')->hourly();
+
 //
 //                $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->hourly();
 //                $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);

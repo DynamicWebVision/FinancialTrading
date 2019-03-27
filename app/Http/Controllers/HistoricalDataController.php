@@ -11,23 +11,25 @@ use \App\Model\HistoricalRates;
 use \App\Model\HistoricalRateSpotChecks;
 use \App\Model\OandaAccounts;
 use \App\Model\Strategy;
+use \App\Services\ProcessLogger;
 use \App\Model\HistoricalRatesRandomTesting;
 
 class HistoricalDataController extends Controller {
 
     public $Oanda;
+    public $logger;
 
     public function __construct() {
         $this->Oanda = new Oanda();
     }
 
     public function populateHistoricalData() {
-        Log::info('START Historical Data Populate');
+        $this->logger = new ProcessLogger('historical_fx_rates');
 
         $historicalDataPopulate = new \App\Services\HistoricalDataPopulate();
         $historicalDataPopulate->getHistoricalData();
 
-        Log::info('END Historical Data Populate');
+        $this->logger->processEnd();
     }
 
     public function populateHistoricalDataSpecific($frequencyId,$currencyId) {

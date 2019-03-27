@@ -18,6 +18,7 @@ use App\Model\BackTestGroup;
 use App\Services\CurrencyIndicators;
 use App\Services\TransactionAmountHelpers;
 use App\Model\Servers;
+use App\Services\ProcessLogger;
 
 use \App\ForexBackTest\IndicatorRunThroughTest;
 use \App\ForexStrategy\HullMovingAverage\HmaIndicatorRunThrough;
@@ -721,11 +722,17 @@ class BackTestingController extends Controller {
     }
 
     public function deleteDevTestOnlyBackTestGroups() {
+
+        $this->logger = new ProcessLogger('fx_delete_dev_bts');
+
         $devTestBackTestGroups = BackTestGroup::where('dev_testing_only', '=', 1)->get();
+        $this->logger->logMessage('Deleting Dev/Testing Backtestgroups: '.json_encode($devTestBackTestGroups->toArray()));
 
         foreach ($devTestBackTestGroups as $devTestBackTestGroup) {
             $this->deleteBackTestGroup($devTestBackTestGroup->id);
         }
+
+        $this->logger->processEnd();
     }
 
     public function rollBackServerGroup() {
