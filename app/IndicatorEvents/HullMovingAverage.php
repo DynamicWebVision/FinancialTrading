@@ -184,4 +184,16 @@ class HullMovingAverage {
         $hma = $this->hmaLastXPeriods($rates, $length, $periodsBack);
         return $this->eventHelpers->lineSameDirectionOverPastPeriods($hma);
     }
+
+    public function hmaChangeDirectionForFirstTimeInXPeriods($rates, $length, $changeDirectionPeriods) {
+        $ratesWithoutCurrent = $this->utility->removeLastValueInArray($rates);
+
+        $slopeSameDirection = $this->hmaSameSlopeDirectionMultiplePeriods($ratesWithoutCurrent, $length, $changeDirectionPeriods);
+
+        $hmaChangeDirection = $this->hullChangeDirectionCheck($rates, $length);
+
+        if ($slopeSameDirection && $hmaChangeDirection != 'none') {
+            return $hmaChangeDirection;
+        }
+    }
 }

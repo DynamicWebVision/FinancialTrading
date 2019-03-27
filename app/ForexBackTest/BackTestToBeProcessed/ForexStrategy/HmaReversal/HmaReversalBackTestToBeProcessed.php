@@ -15,6 +15,7 @@ use \App\ForexStrategy\HmaReversal\HmaChangeDirConfirm;
 use \App\ForexStrategy\HmaReversal\HmaChngAdx;
 use \App\ForexStrategy\HmaReversal\HmaRevPriceClose;
 use \App\ForexStrategy\HmaReversal\HmaPpTrSl;
+use \App\ForexStrategy\HmaReversal\HmaRevAfterXPeriods;
 //END STRATEGY DECLARATIONS
 
 class HmaReversalBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBeProcessed\Base
@@ -134,6 +135,24 @@ class HmaReversalBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBePr
             $strategy->hmaSlopeMin = intval($this->backTestToBeProcessed->variable_2);
             $strategy->trueRangeLength = intval($this->backTestToBeProcessed->variable_3);
             $strategy->trueRangeMultiplier = intval($this->backTestToBeProcessed->variable_4);
+        
+            $strategy->takeProfitPipAmount = 0;
+            $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
+        intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
+        
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'HMA_REV_AFTER_X_PERIODS') {
+            $backTest->rateLevel = 'both';
+        
+            $strategy = new HmaRevAfterXPeriods(1,1,true);
+        
+            //$strategy->orderType = 'MARKET_IF_TOUCHED';
+            $strategy->hmaLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->hmaChangeDirPeriods = intval($this->backTestToBeProcessed->variable_2);
         
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
