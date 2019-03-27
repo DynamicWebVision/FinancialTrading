@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Model\BackTestGroup;
+use App\Model\ProcessLog\ProcessLog;
 use \App\Model\Servers;
 use \App\Model\Strategy;
 use \App\Model\StrategySystem;
@@ -314,18 +315,17 @@ class ServersController extends Controller {
     public function killIfProcessOverMinuteThreshold() {
         $myPid = getmypid();
 
-        $output = shell_exec('ps -o etime= -p "'.$myPid.'" ');
-        $stringHelpers = new StringHelpers();
-        $text = $stringHelpers->getAllValuesUntilString($output, ":");
-        $text = trim($text);
-        $minutes = (int) $text;
+        $this->logger->logMessage('Got my linux pid of '.$myPid);
 
-        if ($minutes >= self::MINUTE_RUN_THRESHOLD) {
+        $startDateTime = ProcessLog::where('linux_pid', '=', $myPid)->where('server_id', '=', $this->serverId)->min('start_date_time');
+        $timeRunningInMinutes = (time() - strtotime($startDateTime))/60;
+
+        if ($timeRunningInMinutes >= self::MINUTE_RUN_THRESHOLD) {
             $this->logger->logMessage('Process has been running over '.self::MINUTE_RUN_THRESHOLD." minutes. Killing it");
             die();
         }
         else {
-            $this->logger->logMessage('Process has been running less than '.self::MINUTE_RUN_THRESHOLD." minutes at $minutes. Going to next job.");
+            $this->logger->logMessage('Process has been running less than '.self::MINUTE_RUN_THRESHOLD." minutes at $timeRunningInMinutes. Going to next job.");
         }
     }
 

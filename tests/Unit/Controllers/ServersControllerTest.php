@@ -64,4 +64,9 @@ class ServersControllerTest extends TestCase
         $tesCont = new ServersController();
         $check = $tesCont->getNextBackTestGroupForServer();
     }
+
+    public function testAbcd() {
+        $tesCont = new ServersController();
+        $check = $tesCont->killIfProcessOverMinuteThreshold();
+    }
 }
