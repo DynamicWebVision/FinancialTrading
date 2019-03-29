@@ -78,7 +78,7 @@ class ProcessController extends Controller
             if ($processToBeRun->variable_id != 0) {
                 $relevantVariable = $processToBeRun->variable_id;
             }
-
+            $this->logger->processEnd();
             $this->runJob($relevantVariable);
 
             $processToBeRun->end_time = $this->utility->mysqlDateTime();
