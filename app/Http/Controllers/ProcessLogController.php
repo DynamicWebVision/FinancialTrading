@@ -9,13 +9,17 @@ use \App\Model\ProcessLog\ProcessLog;
 use \App\Model\ProcessLog\ProcessLogMessageType;
 
 use \App\Model\ProcessLog\ProcessLogMessage;
+use \App\Model\Servers;
 
+use App\Services\ProcessLogFilter;
 
 class ProcessLogController extends Controller {
 
     public function index() {
         return ['message_types'=> ProcessLogMessageType::get()->toArray(),
-            'processes'=>Process::get()->toArray()];
+            'processes'=>Process::get()->toArray(),
+            'servers'=>Servers::get()->toArray()
+        ];
     }
 
     public function deleteOldProcessLogs() {
@@ -32,5 +36,14 @@ class ProcessLogController extends Controller {
                 ProcessLog::destroy($processLog['id']);
             }
         }
+    }
+
+    public function getLogs() {
+        $data = Request::all();
+
+        $processLogFilter = new ProcessLogFilter();
+        $processLogFilter->data = $data;
+
+        return $processLogFilter->loadLogs();
     }
 }

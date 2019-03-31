@@ -91,6 +91,9 @@
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.change_percent')">% Change</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.ytd_change')">YTD Change</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.pe_ratio')">PE Ratio</th>
+                    <th class="cursor-pointer">
+
+                    </th>
 
                 </tr>
                 </thead>
@@ -106,6 +109,9 @@
                     <td>{{stock.change_percent}}</td>
                     <td>{{stock.ytd_change}}</td>
                     <td>{{stock.pe_ratio}}</td>
+                    <td>
+                        <h4 class="blue-text"><a ng-href="https://finance.yahoo.com/quote/{{stock.symbol}}/financials?p={{stock.symbol}}" target="_blank">F</a></h4>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -121,6 +127,7 @@
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_fundamental.peg_ratio')">PEG</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_fundamental.total_debt_to_equity')">Total Debt/Capital</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_fundamental.return_on_assets')">RET/Assets</th>
+                    <th class="cursor-pointer"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -132,6 +139,10 @@
                     <td>{{stock.peg_ratio}}</td>
                     <td>{{stock.total_debt_to_capital}}</td>
                     <td>{{stock.return_on_assets}}</td>
+                    <td>{{stock.return_on_assets}}</td>
+                    <td>
+                        <h4 class="blue-text"><a ng-href="https://finance.yahoo.com/quote/{{stock.symbol}}/financials?p={{stock.symbol}}" target="_blank">F</a></h4>
+                    </td>
                 </tr>
                 </tbody>
             </table>

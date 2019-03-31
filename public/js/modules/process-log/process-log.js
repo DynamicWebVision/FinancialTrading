@@ -23,7 +23,10 @@
 
         vm.accountName = '';
         vm.processes = [];
-        vm.selectedProcess = {};
+        vm.servers = [];
+        vm.dataParmas = {};
+        vm.dataParmas.selectedProcess = {};
+        vm.dataParmas.selectedServer = {};
 
         vm.activeLog = {};
 
@@ -34,10 +37,11 @@
         vm.loadApi = loadApi;
         vm.loadIndicators = loadIndicators;
         vm.loadProcessLogs = loadProcessLogs;
+        vm.loadServerLogs = loadServerLogs;
 
         $http.get('/process_logger').success(function(data){
             vm.processes = data.processes;
-            console.log(vm.processes);
+            vm.servers = data.servers;
             vm.processing = false;
         });
 
@@ -127,10 +131,26 @@
             });
         }
 
-        function loadProcessLogs() {
-            console.log(vm.selectedProcess);
+        function loadLogs() {
+            $http.get('process_logger/load_logs', vm.dataParmas).then(function(response) {
+                vm.processing = false;
+                vm.logs = response.data.logs;
+                vm.totalLogCount = response.data.count;
+
+                vm.accountName = UtilityService.returnOneArrayFieldWithAnotherArrayFieldValue(vm.accounts, 'id', 'account_name', vm.account);
+            });
         }
 
-        document.title = 'Strategy Logs';
+        function loadProcessLogs() {
+            vm.dataParmas.selectedServer = {};
+            loadLogs()
+        }
+
+        function loadServerLogs() {
+            vm.dataParmas.selectedProcess = {};
+            loadLogs()
+        }
+
+        document.title = 'Process Logs';
     }
 })();

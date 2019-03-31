@@ -9,6 +9,7 @@ use Twilio;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\DB;
 use App\Services\TextMessage;
+use App\Model\ProcessLog\ProcessLog;
 use App\Model\ProcessLog\ProcessLogMessage;
 use \Log;
 use App\Model\BackTestToBeProcessed;
@@ -85,6 +86,11 @@ class Handler extends ExceptionHandler
             $processLogMessage->message_type_id = 1;
             $processLogMessage->message = $exception;
             $processLogMessage->save();
+
+            $processLog = ProcessLog::find($processLogId);
+            $processLog->has_error = 1;
+            $processLog->save();
+
 
             $processLogRelevantId = Config::get('process_log_relevant_id');
 
