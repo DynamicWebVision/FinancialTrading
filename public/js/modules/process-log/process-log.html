@@ -40,38 +40,65 @@
         <h3 class="panel-title">{{pl.accountName}} Logs</h3>
     </div>
     <div class="panel-body">
-        <table class="table table-hover content-table"
-               ng-class="pl.fiftyOpacityOffset(pl.processing)">
+        <table class="table table-hover content-table" ng-show="pl.results.length > 0">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Exchange</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Decision Type</th>
-                <th>Decision Made</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th class="cursor-pointer" ng-click="pl.orderByChange('process_log.id')">ID</th>
+                <th class="cursor-pointer" ng-click="pl.orderByChange('process.id')">Process</th>
+                <th class="cursor-pointer" ng-click="pl.orderByChange('process.id')">Server</th>
+                <th class="cursor-pointer" ng-click="pl.orderByChange('process.id')">Start</th>
+                <th class="cursor-pointer" ng-click="pl.orderByChange('process.id')">End</th>
+                <th class="cursor-pointer" ng-click="pl.orderByChange('process.id')">Error</th>
+                <th class="cursor-pointer"></th>
             </tr>
             </thead>
             <tbody>
-            <tr dir-paginate="log in pl.logs | itemsPerPage: 10"
-                total-items="pl.totalLogCount">
+            <tr ng-repeat="log in pl.results" ng-click="pl.openFullLog(log)">
                 <td>{{log.id}}</td>
-                <td>{{log.exchange}}</td>
+                <td>{{log.process_name}}</td>
                 <td>{{log.start_date_time}}</td>
                 <td>{{log.end_date_time}}</td>
-                <td>{{log.decision_type}}</td>
-                <td>{{log.decision_made}}</td>
-                <td><button class = 'btn-success btn-sm' ng-click="pl.loadMessages(log)">Messages</button></td>
-                <td><button class = 'btn-success btn-sm' ng-click="pl.loadApi(log)">Api</button></td>
-                <td><button class = 'btn-success btn-sm' ng-click="pl.loadIndicators(log)">Indicators</button></td>
+                <td>{{log.server_name}}</td>
+                <td><span ng-show="log.has_error == 1">{{log.has_error}}</span></td>
             </tr>
             </tbody>
         </table>
-        <dir-pagination-controls max-size="7"
-                                 ng-show="pl.logs.length > 0"
-                                 on-page-change="pl.changeLogSet(newPageNumber)"></dir-pagination-controls>
+    </div>
+</div>
+
+<pagination total-items="pl.totalCount"
+            ng-model="pl.currentPage"
+            items-per-page="pl.itemsPerPage"
+            ng-change="pl.pageChanged()"></pagination>
+
+
+<div id="process-log-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Create New Menu" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close m-r-5" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Log #{{pl.currentLog.id}} {{pl.currentLog.server_name}}  {{sl.currentLog.process_name}} Messages</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row m-t-10" ng-repeat="message in pl.logMessages"
+                     ng-class="pl.dangerClass(message.message_type_id)"
+                     >
+                    <div class="col-md-1">{{message.id}}</div>
+                    <div class="col-md-9" >{{message.message}}</div>
+                    <div class="col-md-2">{{message.created_at}}</div>
+                    <hr>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="buttons-create-merchant">
+                    <div>
+                        <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

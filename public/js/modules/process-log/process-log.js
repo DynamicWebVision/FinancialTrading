@@ -16,17 +16,25 @@
 
         vm.totalLogCount = 0;
         vm.logs = [];
+        vm.logResults = {};
+        vm.currentLog = {};
+        vm.currentPage = 1;
         vm.logMessagesSet = [];
+        vm.logMessages = [];
         vm.logIndicators;
         vm.logApi;
         vm.onlyEvents = false;
+        vm.itemsPerPage = 25;
 
         vm.accountName = '';
         vm.processes = [];
         vm.servers = [];
-        vm.dataParmas = {};
-        vm.dataParmas.selectedProcess = {};
-        vm.dataParmas.selectedServer = {};
+        vm.dataParams = {};
+        vm.dataParams.orderBy = 'start_date_time';
+        vm.dataParams.orderDirection = 1;
+        vm.dataParams.currentPage = 1;
+        vm.dataParams.selectedProcess = {};
+        vm.dataParams.selectedServer = {};
 
         vm.activeLog = {};
 
@@ -38,10 +46,16 @@
         vm.loadIndicators = loadIndicators;
         vm.loadProcessLogs = loadProcessLogs;
         vm.loadServerLogs = loadServerLogs;
+        vm.pageChanged = pageChanged;
+        vm.changeOrderBy = changeOrderBy;
+        vm.openFullLog = openFullLog;
+        vm.dangerClass = dangerClass;
 
         $http.get('/process_logger').success(function(data){
             vm.processes = data.processes;
             vm.servers = data.servers;
+            vm.results = data.logResults;
+            vm.totalCount = data.recordCount;
             vm.processing = false;
         });
 
@@ -67,15 +81,6 @@
 
                 vm.accountName = UtilityService.returnOneArrayFieldWithAnotherArrayFieldValue(vm.accounts, 'id', 'account_name', vm.account);
             });
-        }
-
-        function fiftyOpacity(value) {
-            if (value) {
-                return 'fifty-opacity';
-            }
-            else {
-                return '';
-            }
         }
 
         function changeLogSet(pageNumber) {
@@ -113,7 +118,6 @@
             vm.activeLog = log;
             $http.get('strategy_logger/log_api/'+log.id).then(function(response) {
                 vm.processing = false;
-                console.log(response.data);
                 vm.logApi = response.data;
                 $("#log-api-modal").modal('toggle');
             });
@@ -132,23 +136,67 @@
         }
 
         function loadLogs() {
-            $http.get('process_logger/load_logs', vm.dataParmas).then(function(response) {
+            vm.processing = true;
+            $http.post('process_logger/load_logs', vm.dataParams).then(function(response) {
                 vm.processing = false;
-                vm.logs = response.data.logs;
-                vm.totalLogCount = response.data.count;
+                vm.results = response.data.logs;
+                vm.processing = false;
+            });
+        }
 
-                vm.accountName = UtilityService.returnOneArrayFieldWithAnotherArrayFieldValue(vm.accounts, 'id', 'account_name', vm.account);
+        function loadLogsNew() {
+            vm.processing = true;
+            $http.post('process_logger/load_logs', vm.dataParams).then(function(response) {
+                vm.processing = false;
+                vm.totalCount = response.data.count;
+                vm.results = response.data.logs;
+                vm.processing = false;
             });
         }
 
         function loadProcessLogs() {
-            vm.dataParmas.selectedServer = {};
-            loadLogs()
+            vm.dataParams.selectedServer = {};
+            vm.dataParams.currentPage = 1;
+            loadLogsNew()
         }
 
         function loadServerLogs() {
-            vm.dataParmas.selectedProcess = {};
-            loadLogs()
+            vm.dataParams.selectedProcess = {};
+            vm.dataParams.currentPage = 1;
+            loadLogsNew()
+        }
+
+        function fiftyOpacity(value) {
+            if (value) {
+                return 'fifty-opacity';
+            }
+            else {
+                return '';
+            }
+        }
+
+        function pageChanged() {
+            vm.dataParams.currentPage = vm.currentPage;
+            loadLogs();
+        }
+
+        function changeOrderBy() {
+            vm.dataParams.currentPage = vm.currentPage;
+        }
+
+        function openFullLog(log) {
+            vm.currentLog = log;
+            $http.get('process_log/'+log.id).then(function(response) {
+                vm.logMessages = response.data;
+                $("#process-log-modal").modal('toggle');
+            });
+        }
+
+        function dangerClass(messageType) {
+            console.log(messageType);
+            if (messageType == 1) {
+                return 'text-danger';
+            }
         }
 
         document.title = 'Process Logs';

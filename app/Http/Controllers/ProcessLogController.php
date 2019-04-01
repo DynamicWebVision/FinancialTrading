@@ -16,9 +16,21 @@ use App\Services\ProcessLogFilter;
 class ProcessLogController extends Controller {
 
     public function index() {
+        $processLogFilter = new ProcessLogFilter();
+        $processLogFilter->criteria = ['errors'=>true];
+        $processLogFilter->criteria['orderDirection'] = 1;
+        $processLogFilter->criteria['orderBy'] = 'start_date_time';
+        $processLogFilter->criteria['currentPage'] = 1;
+        $processLogFilter->criteria['errors'] = 1;
+        $processLogFilter->setQuery();
+        $processLogFilter->setOrderDirection();
+        $logs = $processLogFilter->getCurrentResult();
+
         return ['message_types'=> ProcessLogMessageType::get()->toArray(),
             'processes'=>Process::get()->toArray(),
-            'servers'=>Servers::get()->toArray()
+            'servers'=>Servers::get()->toArray(),
+            'logResults'=>$logs,
+            'recordCount'=>$processLogFilter->getResultTotalCount(),
         ];
     }
 
@@ -42,8 +54,19 @@ class ProcessLogController extends Controller {
         $data = Request::all();
 
         $processLogFilter = new ProcessLogFilter();
-        $processLogFilter->data = $data;
+        $processLogFilter->criteria = $data;
+        $processLogFilter->criteria['orderDirection'] = $data['orderDirection'];
+        $processLogFilter->criteria['orderBy'] = $data['orderBy'];
 
-        return $processLogFilter->loadLogs();
+        $processLogFilter->setQuery();
+        $processLogFilter->setOrderDirection();
+        $logs = $processLogFilter->getCurrentResult();
+        $count = $processLogFilter->getResultTotalCount();
+
+        return ['logs'=>$logs, 'count'=>$count];
+    }
+
+    public function getLog($logId) {
+        return ProcessLogMessage::where('process_log_id', '=', $logId)->get()->toArray();
     }
 }
