@@ -71,7 +71,7 @@ class HmaRevAfterXPeriods extends \App\ForexStrategy\Strategy  {
             if (
                 $this->decisionIndicators['hmaRevAfterXPeriods'] == 'reversedUp'
             ) {
-                $this->newShortPosition();
+                $this->newLongPosition();
             }
         }
     }
