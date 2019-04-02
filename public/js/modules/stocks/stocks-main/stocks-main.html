@@ -78,7 +78,7 @@
                 </div>
             </div>
 
-            <table class="table table-hover content-table" ng-show="sh.stockSearch.results.length > 0 && sh.currentTable == 'main'">
+            <table class="table table-responsive content-table" ng-show="sh.stockSearch.results.length > 0 && sh.currentTable == 'main'">
                 <thead>
                 <tr>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">ID</th>
@@ -111,13 +111,15 @@
                     <td>{{stock.pe_ratio}}</td>
                     <td>
                         <h4 class="blue-text"><a ng-href="https://finance.yahoo.com/quote/{{stock.symbol}}/financials?p={{stock.symbol}}" target="_blank">F</a></h4>
+                        <h4 class="text-success" ng-click="sh.openChart(stock)">C</h4>
+                        <h4 class="text-warning" ng-click="sh.openProfile(stock)">P</h4>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
 
-            <table class="table table-hover content-table" ng-show="sh.stockSearch.results.length > 0 && sh.currentTable == 'fundamental'">
+            <table class="table table-responsive content-table" ng-show="sh.stockSearch.results.length > 0 && sh.currentTable == 'fundamental'">
                 <thead>
                 <tr>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">ID</th>
@@ -131,7 +133,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="stock in sh.stockSearch.results" ng-click="sh.openChart(stock)">
+                <tr ng-repeat="stock in sh.stockSearch.results">
                     <td>{{stock.id}}</td>
                     <td>{{stock.symbol}}</td>
                     <td>{{stock.name}}</td>
@@ -142,6 +144,8 @@
                     <td>{{stock.return_on_assets}}</td>
                     <td>
                         <h4 class="blue-text"><a ng-href="https://finance.yahoo.com/quote/{{stock.symbol}}/financials?p={{stock.symbol}}" target="_blank">F</a></h4>
+                        <h4 class="text-success" ng-click="sh.openChart(stock)">C</h4>
+                        <h4 class="text-warning" ng-click="sh.openProfile(stock)">P</h4>
                     </td>
                 </tr>
                 </tbody>
@@ -156,3 +160,4 @@
 
 <stock-chart></stock-chart>
 <stock-financial></stock-financial>
+<stock-company-profile></stock-company-profile>

@@ -20,11 +20,17 @@
         vm.openChart = openChart;
         vm.tableType = tableType;
         vm.openFinancial = openFinancial;
+        vm.openProfile = openProfile;
 
         function openFinancial(stock) {
             $("#stock-financial").modal('toggle');
             StockRates.symbol = stock.symbol;
             StockRates.setRates('1M');
+        }
+
+        function openProfile(stock) {
+            Stock.companyProfile(stock.id);
+            $("#stock-company-profile-modal").modal('toggle');
         }
 
         function openChart(stock) {

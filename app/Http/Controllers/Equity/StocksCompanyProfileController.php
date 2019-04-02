@@ -135,4 +135,14 @@ class StocksCompanyProfileController extends Controller {
         }
         $newStockCompanyProfile->save();
     }
+
+    public function getProfile($stockId) {
+        $companyProfile = StocksCompanyProfile::where('stock_id', '=', $stockId)->first()->toArray();
+        $sector = StocksSector::find($companyProfile['sector_id']);
+        $industry = StocksIndustry::find($companyProfile['industry_id']);
+        $companyProfile['industry_name'] = $industry->name;
+        $companyProfile['sector_name'] = $sector->name;
+
+        return $companyProfile;
+    }
 }

@@ -44,6 +44,7 @@
     <script src="/js/modules/shared/directive/strategy-note-view/strategy-note-view.js"></script>
     <script src="/js/modules/shared/directive/indicator-event-select/indicator-event-select.js"></script>
     <script src="/js/modules/shared/directive/stock-chart/stock-chart.js"></script>
+    <script src="/js/modules/shared/directive/stock-company-profile/stock-company-profile.js"></script>
 
 
     <!– Angular Controllers ->

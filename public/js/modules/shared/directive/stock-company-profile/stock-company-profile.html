@@ -1,0 +1,38 @@
+<div id="stock-company-profile-modal" class="modal fade promo-merchant-select-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{{stock.companyProfileData.symbol}} - {{stock.companyProfileData.company_name}}</h4>
+
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <h5>{{stock.companyProfileData.sector_name}}</h5>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>{{stock.companyProfileData.industry_name}}</h5>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>{{stock.companyProfileData.ceo}}</h5>
+                    </div>
+                </div>
+                <div class="col-md-12 m-t-10">
+                    <p>
+                        {{stock.companyProfileData.description}}
+                    </p>
+                </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-disabled class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

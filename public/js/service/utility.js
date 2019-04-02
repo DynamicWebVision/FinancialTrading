@@ -154,7 +154,6 @@ app.service('UtilityService', function($http, $q) {
     }
 
     service.numberWithCommas = function(x) {
-        console.log(x);
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
