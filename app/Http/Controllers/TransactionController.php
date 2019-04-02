@@ -37,7 +37,7 @@ class TransactionController extends Controller {
             $dbAccountId = $nextAccount[0]->id;
             $lastProcessedId = $nextAccount[0]->last_order_id;
         }
-        $this->logger->logMessage('Getting Transactions for Account '.$id);
+        $this->logger->logMessage('Getting Transactions for Account '.$nextAccount[0]->account_name.' '.$id);
 
         $broker = new OandaV20($this->environment);
 

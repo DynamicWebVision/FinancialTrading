@@ -316,10 +316,14 @@ abstract class Strategy  {
         }
     }
 
+    public function currentMidPrice() {
+        return ($this->currentPriceData->bid + $this->currentPriceData->ask)/2;
+    }
+
     public function modifyStopLoss($newPricePoint) {
         //Close the Position if the stop loss rate is out of bounds with the current price
-        if (($this->openPosition['side'] == 'long' && $newPricePoint > $this->currentPriceData->open) ||
-            ($this->openPosition['side'] == 'short' && $newPricePoint < $this->currentPriceData->open))
+        if (($this->openPosition['side'] == 'long' && $newPricePoint > $this->currentMidPrice()) ||
+            ($this->openPosition['side'] == 'short' && $newPricePoint < $this->currentMidPrice()))
         {
             $this->closePosition();
         }
