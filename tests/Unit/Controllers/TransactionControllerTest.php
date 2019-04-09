@@ -27,4 +27,9 @@ class TransactionControllerTest extends TestCase
         $transactionController = new TransactionController();
         $transactionController->savePracticeTransactions();
     }
+
+    public function testAAA() {
+        $test = env('alksdfjaksldfjks');
+
+    }
 }

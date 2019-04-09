@@ -30,28 +30,32 @@ class OandaV20 extends \App\Broker\Base  {
 
     public function __construct($environment = false) {
         if (!$environment) {
-            $this->curl = curl_init();
-            curl_setopt($this->curl, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.env('OANDA_AUTHORIZATION_TOKEN'),'Content-Type: application/json', 'Accept-Datetime-Format: UNIX']);
-            curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
-            $this->oandaApiUrl = env('OANDA_API_URL');
+            $oandaAuthToken = env('OANDA_AUTHORIZATION_TOKEN');
+            $oandaApiUrl = env('OANDA_API_URL');
         }
         else {
             if ($environment == 'live') {
-                $this->curl = curl_init();
-                curl_setopt($this->curl, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.env('OANDA_LIVE_AUTHORIZATION_TOKEN'),'Content-Type: application/json', 'Accept-Datetime-Format: UNIX']);
-                curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
-                $this->oandaApiUrl = env('OANDA_LIVE_API_URL');
+                $oandaAuthToken = env('OANDA_LIVE_AUTHORIZATION_TOKEN');
+                $oandaApiUrl = env('OANDA_LIVE_API_URL');
             }
             else {
-                $this->curl = curl_init();
-                curl_setopt($this->curl, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.env('OANDA_PRACTICE_AUTHORIZATION_TOKEN'),'Content-Type: application/json', 'Accept-Datetime-Format: UNIX']);
-                curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
-                $this->oandaApiUrl = env('OANDA_PRACTICE_API_URL');
+                if (is_null(env('OANDA_PRACTICE_API_URL'))) {
+                    $oandaAuthToken = env('OANDA_AUTHORIZATION_TOKEN');
+                    $oandaApiUrl = env('OANDA_API_URL');
+                }
+                else {
+                    $oandaAuthToken = env('OANDA_PRACTICE_AUTHORIZATION_TOKEN');
+                    $oandaApiUrl = env('OANDA_PRACTICE_API_URL');
+                }
             }
         }
+
+
+        $this->curl = curl_init();
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.$oandaAuthToken,'Content-Type: application/json', 'Accept-Datetime-Format: UNIX']);
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
+        $this->oandaApiUrl = $oandaApiUrl;
     }
 
     public function getRates() {

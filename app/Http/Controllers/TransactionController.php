@@ -42,6 +42,7 @@ class TransactionController extends Controller {
         $broker = new OandaV20($this->environment);
 
         $broker->accountId = $id;
+        $broker->accountId = '101-001-7608904-007';
 
         //$minId = OandaTrades::where('oanda_account_id', '=', $id)->max('oanda_open_id');
         //$minId = 0;
@@ -333,21 +334,5 @@ class TransactionController extends Controller {
     public function getAccounts() {
         return OandaAccounts::get()->toArray();
 
-    }
-
-    public function playWithOandaJsonData() {
-        $data = json_decode(file_get_contents('/Users/boneill/ReferenceWorkspaces/CurrencyTrading/Tmp/test.json'));
-
-        foreach ($data as $index=>$transaction) {
-            if ($transaction->id == 2939) {
-                $debug= 1;
-            }
-
-            if (isset($transaction->orderID)) {
-                if ($transaction->orderID == '2939') {
-                    $debug = 1;
-                }
-            }
-        }
     }
 }
