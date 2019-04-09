@@ -42,10 +42,6 @@ class TransactionController extends Controller {
         $broker = new OandaV20($this->environment);
 
         $broker->accountId = $id;
-        $broker->accountId = '101-001-7608904-007';
-
-        //$minId = OandaTrades::where('oanda_account_id', '=', $id)->max('oanda_open_id');
-        //$minId = 0;
 
         if ($lastProcessedId != 0) {
             $transactions = $broker->getTransactionsSince($lastProcessedId);

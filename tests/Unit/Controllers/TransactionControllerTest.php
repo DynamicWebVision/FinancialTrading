@@ -30,6 +30,5 @@ class TransactionControllerTest extends TestCase
 
     public function testAAA() {
         $test = env('alksdfjaksldfjks');
-
     }
 }
