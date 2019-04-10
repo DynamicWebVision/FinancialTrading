@@ -32,6 +32,6 @@ class LivePracticeControllerTest extends TestCase
     public function testDailyPreviousPriceBreakout() {
         $livePracticeController = new LivePracticeController();
 
-        $livePracticeController->marketIfTouchedReturnToOpen();
+        $livePracticeController->amazingCrossoverTrailingStop();
     }
 }

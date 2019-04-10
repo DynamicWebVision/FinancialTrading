@@ -22,6 +22,7 @@ use \App\ForexStrategy\EmaMomentum\EmaXAdxConfirmWithMarketIfTouched;
 use \App\ForexStrategy\HullMovingAverage\HmaSimple;
 use \App\ForexStrategy\PreviousCandlePriceHighLow\HighLowSuperSimpleHoldOnePeriod;
 use \App\ForexStrategy\MarketIfTouched\MarketIfTouchedReturnToOpen;
+use \App\ForexStrategy\AmazingCrossover\AmazingCrossoverTS;
 Use App\Services\ProcessLogger;
 
 class LivePracticeController extends Controller {
@@ -164,57 +165,6 @@ class LivePracticeController extends Controller {
 //        Log::info('HmaAdxStayInFourHour: END');
 //    }
 
-
-    public function hmaHourlyAfterHour() {
-        Log::info('hmaHourlyAfterHour: START LivePracticeController->hmaHourlyAfterHour');
-
-        //Need to Change
-        $exchanges = \App\Model\Exchange::get();
-
-        foreach ($exchanges as $exchange) {
-
-            $logPrefix = "hmaHourlyAfterHour-".$exchange->exchange."-".uniqid();
-
-            $twoTierStrategy = new HmaStayInDifferentEntryExitAdx('101-001-7608904-010', $logPrefix);
-
-            /*** LOGGING ***/
-            $strategyLogger = new StrategyLogger();
-            $strategyLogger->exchange_id = $exchange->id;
-            $strategyLogger->method = 'hmaHourlyAfterHour';
-            $strategyLogger->oanda_account_id = 6;
-
-            $strategyLogger->newStrategyLog();
-            $twoTierStrategy->setLogger($strategyLogger);
-
-            if ($exchange->exchange == 'EUR_USD') {
-                $twoTierStrategy->logDbRates = true;
-            }
-
-            $twoTierStrategy->exchange = $exchange;
-            $twoTierStrategy->oanda->frequency = 'H1';
-
-            $twoTierStrategy->rateCount = 200;
-            $twoTierStrategy->rates = $twoTierStrategy->getRates('both');
-
-            $twoTierStrategy->positionMultiplier = 5;
-
-            $twoTierStrategy->maxPositions = 3;
-            $twoTierStrategy->stopLossPipAmount = 200;
-
-            $twoTierStrategy->hullLength = 9;
-            $twoTierStrategy->adxPeriodLength = 14;
-            $twoTierStrategy->adxCutOff = 20;
-
-            $twoTierStrategy->hmaLinRegCutoff = 10;
-            $twoTierStrategy->hmaCloseLinRegCutoff = 8;
-
-            $twoTierStrategy->orderType = 'LIMIT';
-
-            $twoTierStrategy->checkForNewPosition();
-            $strategyLogger->logStrategyEnd();
-        }
-        Log::info('hmaHourlyAfterHour: END');
-    }
 
 
     public function hmaHourlyBeforeHour() {
@@ -1059,6 +1009,53 @@ class LivePracticeController extends Controller {
             $systemStrategy->positionMultiplier = 3;
 
             $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+            $systemStrategy->setCurrentPrice();
+            $logger->logMessage('Checking for New Position '.$exchange->exchange);
+
+            $systemStrategy->checkForNewPosition();
+        }
+    }
+
+    public function amazingCrossoverTrailingStop() {
+
+        $this->utility->sleepUntilAtLeastFiveSeconds();
+
+        $strategy = new AmazingCrossoverTS('101-001-7608904-010', 'initialload');
+        $logger = new ProcessLogger('lp_amazing_x_ts');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logger->logMessage('Starting Exchange '.$exchange->exchange);
+            $logPrefix = "amazingCrossoverTrailingStop-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new AmazingCrossoverTS('101-001-7608904-010', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'amazingCrossoverTrailingStop';
+            $strategyLogger->oanda_account_id = 6;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'H1';
+
+            $systemStrategy->rateCount = 1000;
+            $systemStrategy->trailingStopPipAmount = 25;
+            $systemStrategy->takeProfitPipAmount = 100;
+            $systemStrategy->stopLossPipAmount = 25;
+
+            $systemStrategy->positionMultiplier = 5;
+
+            $systemStrategy->orderType = 'LIMIT';
 
             $systemStrategy->rates = $systemStrategy->getRates('both', true);
             $systemStrategy->setCurrentPrice();

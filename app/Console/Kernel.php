@@ -69,7 +69,7 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
 
-            $schedule->call('App\Http\Controllers\LivePracticeController@hmaThirty')->everyThirtyMinutes();
+            $schedule->call('App\Http\Controllers\LivePracticeController@amazingCrossoverTrailingStop')->hourly();
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouchedHr')->hourly();
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaHour')->hourly();
@@ -80,7 +80,6 @@ class Kernel extends ConsoleKernel
         }
         elseif (env('APP_ENV') == 'utility') {
             $schedule->call('App\Http\Controllers\ProcessController@serverRunCheck')->hourly();
-
 
 //            if ($server->task_code == 'fx_maintenance') {
 
