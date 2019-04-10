@@ -129,13 +129,6 @@ class CurrencyIndicators  {
         $longPeriodBefore = $long[count($long)-2];
         $longCurrent = $long[count($long)-1];
 
-//        dd([
-//            'shortPeriodBefore'=>$shortPeriodBefore,
-//            'shortCurrent'=>$shortCurrent,
-//            'longPeriodBefore'=>$longPeriodBefore,
-//            'longCurrent'=>$longCurrent,
-//        ]);
-
         if ($shortPeriodBefore < $longPeriodBefore && $shortCurrent > $longCurrent) {
             return "crossedAbove";
         }

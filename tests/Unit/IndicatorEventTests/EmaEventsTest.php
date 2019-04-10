@@ -91,4 +91,24 @@ class EmaEventsTest extends TestCase
 
         $this->assertEquals($cross, 'crossedAbove');
     }
+
+    public function testLineCrossover() {
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,5,1000,'2018-9-28 0:00');
+
+        $emaEvents = new EmaEvents();
+
+        $cross = $emaEvents->checkTwoLineCrossover($rates, 5, 10);
+
+        $this->assertEquals($cross, 'crossedBelow');
+
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,5,1000,'2018-8-21 0:00');
+
+        $emaEvents = new EmaEvents();
+
+        $cross = $emaEvents->checkTwoLineCrossover($rates, 5, 10);
+
+        $this->assertEquals($cross, 'crossedAbove');
+    }
 }

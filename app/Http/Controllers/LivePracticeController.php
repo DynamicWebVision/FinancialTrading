@@ -1056,6 +1056,8 @@ class LivePracticeController extends Controller {
 
             $systemStrategy->rateCount = 1000;
 
+            $systemStrategy->positionMultiplier = 3;
+
             $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
 
             $systemStrategy->rates = $systemStrategy->getRates('both', true);

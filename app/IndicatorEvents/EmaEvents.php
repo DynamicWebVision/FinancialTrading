@@ -109,4 +109,11 @@ class EmaEvents {
         $ema = $this->ema($rates, $length);
         return $this->eventHelpers->priceCrossoverLine($ema,$rates);
     }
+
+    public function checkTwoLineCrossover($rates, $fastLength, $slowLength) {
+        $fastEma = $this->ema($rates, $fastLength);
+        $slowEma = $this->ema($rates, $slowLength);
+
+        return $this->eventHelpers->lineCrossedOverLine($fastEma, $slowEma);
+    }
 }

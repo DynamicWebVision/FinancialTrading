@@ -124,5 +124,23 @@ class EventHelpers {
             return false;
         }
     }
+
+    public function lineCrossedOverLine($fastLine, $slowLine) {
+        $fastPeriodBefore = $fastLine[count($fastLine)-2];
+        $fastCurrent = $fastLine[count($fastLine)-1];
+
+        $slowPeriodBefore = $slowLine[count($slowLine)-2];
+        $slowCurrent = $slowLine[count($slowLine)-1];
+
+        if ($fastPeriodBefore < $slowPeriodBefore && $fastCurrent > $slowCurrent) {
+            return "crossedAbove";
+        }
+        elseif ($fastPeriodBefore > $slowPeriodBefore && $fastCurrent < $slowCurrent) {
+            return "crossedBelow";
+        }
+        else {
+            return "none";
+        }
+    }
 }
 
