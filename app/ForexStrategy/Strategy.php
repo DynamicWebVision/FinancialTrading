@@ -705,6 +705,7 @@ abstract class Strategy  {
 
     public function closePosition() {
         if (!$this->backtesting) {
+           $this->logMessage('Current Price Data: '.json_encode($this->currentPriceData));
            $this->oanda->closePosition();
         }
         else {

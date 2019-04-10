@@ -74,7 +74,7 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaHour')->hourly();
 
             //
-            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('22:01');
+            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('21:01');
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpen')->dailyAt('13:00');
         }
         elseif (env('APP_ENV') == 'utility') {
