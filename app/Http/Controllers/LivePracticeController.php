@@ -825,7 +825,7 @@ class LivePracticeController extends Controller {
         $exchanges = \App\Model\Exchange::get();
 
         foreach ($exchanges as $exchange) {
-            $logPrefix = "hmaThirty-".$exchange->exchange."-".uniqid();
+                $logPrefix = "hmaThirty-".$exchange->exchange."-".uniqid();
 
             $systemStrategy = new HmaSimple('101-001-7608904-003', $logPrefix);
             $systemStrategy->accountAvailableMargin = $marginAvailable;

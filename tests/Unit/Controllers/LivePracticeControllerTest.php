@@ -20,7 +20,7 @@ class LivePracticeControllerTest extends TestCase
     public function testBacktestProcessStatsSpecificProcess() {
         $livePracticeController = new LivePracticeController();
 
-        $livePracticeController->emaXAdxConfirmWithMarketIfTouched();
+        $livePracticeController->hmaThirty();
     }
 
     public function testDailyPreviousPriceBreakoutCheck() {

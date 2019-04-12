@@ -234,6 +234,7 @@ class AutomatedBackTestController extends Controller {
         $this->markBackTestGroupStatsComplete();
         $this->logger->logMessage('End Backtest Stats');
         $serverController = new ServersController();
+        $serverController->logger = $this->logger;
         $this->logger->logMessage('Getting Next Server Backtest Group');
         $serverController->getNextBackTestGroupForServer();
         $this->logger->logMessage('Re-calling runAutoBackTestIfFailsUpdate');

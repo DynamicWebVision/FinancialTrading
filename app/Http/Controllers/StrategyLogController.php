@@ -114,8 +114,7 @@ class StrategyLogController extends Controller {
 
     public function getLogIndicators($logId) {
         $indicators = StrategyLogIndicators::where('log_id', '=', $logId)->first(['indicators']);
-        $indicators = json_decode($indicators->indicators);
-        return $indicators;
+        return $indicators->indicators;
     }
 
     public function getLogApi($logId) {
