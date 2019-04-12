@@ -30,7 +30,7 @@ class HighLowSuperSimpleHoldOnePeriod extends \App\ForexStrategy\Strategy  {
         $this->setOpenPosition();
 
         $previousRate = end($this->rates['full']);
-        $this->strategyLogger->logMessage('PreviousRate: '.$previousRate);
+        $this->strategyLogger->logMessage('PreviousRate: '.json_encode($previousRate));
 
         if (!$this->openPosition) {
             $this->stopLossPipAmount = 25;
