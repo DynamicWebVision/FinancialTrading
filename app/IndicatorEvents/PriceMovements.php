@@ -38,7 +38,7 @@ class PriceMovements  {
     }
 
     public function periodsWithoutProfitability($openPosition, $periodCutoff) {
-        if ($openPosition['periodsOpen'] > $periodCutoff && (float) $this->openPosition['gl'] < 0) {
+        if ($openPosition['periodsOpen'] >= $periodCutoff && (float) $openPosition['gl'] < 0) {
             return true;
         }
         else {

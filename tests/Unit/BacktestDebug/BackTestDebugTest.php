@@ -7,6 +7,7 @@ use App\Http\Controllers\AutomatedBackTestController;
 use App\Http\Controllers\BackTestStatsController;
 use App\Http\Controllers\BackTestingController;
 use App\Broker\OandaV20;
+use App\Services\ProcessLogger;
 
 class BackTestDebugTest extends TestCase
 {
@@ -20,10 +21,12 @@ class BackTestDebugTest extends TestCase
 
     //Re-Run Full Process
     public function testFullProcess() {
+        $logger = new ProcessLogger('fx_backtest');
         $backTestingController = new BackTestingController();
         $backTestingController->rollBackServerGroup();
 
         $automatedBackTestController = new AutomatedBackTestController();
+        $automatedBackTestController->logger = $logger;
         $automatedBackTestController->environmentVariableDriveProcess();
 
         $backTestStatsController = new BackTestStatsController();
