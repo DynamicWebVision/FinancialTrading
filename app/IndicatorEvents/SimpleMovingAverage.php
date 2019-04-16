@@ -89,8 +89,10 @@ class SimpleMovingAverage {
         }
     }
 
-//    public function priceCrossedOver($rates, $length) {
-//        $ema = $this->ema($rates, $length);
-//        return $this->eventHelpers->priceCrossoverLine($ema,$rates);
-//    }
+    public function priceCrossedOver($rates, $length) {
+        $currentSma = $this->smaCurrentValue($rates, $length);
+        $previousSma = $this->smaCurrentValue($this->utility->removeLastValueInArray($rates), $length);
+
+        return $this->eventHelpers->priceCrossoverLine([$previousSma, $currentSma], $rates);
+    }
 }

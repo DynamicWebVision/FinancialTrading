@@ -36,7 +36,7 @@ class StrategyController extends Controller {
         mkdir(env('APP_ROOT').'app/ForexStrategy/'.$strategyFileName);
         //chmod(env('APP_ROOT').'app/Strategy/'.$strategyFileName);
 
-        $backTestFilePath = env('APP_ROOT').'app/ForexBackTest/BackTestToBeProcessed/Strategy/'.$strategyFileName;
+        $backTestFilePath = env('APP_ROOT').'app/ForexBackTest/BackTestToBeProcessed/ForexStrategy/'.$strategyFileName;
         mkdir($backTestFilePath, 0777, true);
         //shell_exec('sudo chmod -R 777 '.env('APP_ROOT').'app/BackTest/BackTestToBeProcessed/Strategy/');
         //chmod(env('APP_ROOT').'app/BackTest/BackTestToBeProcessed/Strategy/'.$strategyFileName);
@@ -45,12 +45,12 @@ class StrategyController extends Controller {
         $fileHandler->filePath = env('APP_ROOT').'app/Http/Controllers/AutomatedBackTestController.php';
 
         $fileHandler->findLineOfTextInFile('END OF Backtest Declarations');
-        $fileHandler->addLineToLineGroup("use App\\BackTest\\BackTestToBeProcessed\\Strategy\\".$strategyFileName."\\".$strategyFileName."BackTestToBeProcessed;");
+        $fileHandler->addLineToLineGroup("use App\\ForexBackTest\\BackTestToBeProcessed\\ForexStrategy\\".$strategyFileName."\\".$strategyFileName."BackTestToBeProcessed;");
 
         $fileHandler->addLinesAboveText('END OF Backtest Declarations');
 
-        $fileHandler->addLineToLineGroup("elseif (\$server->current_back_test_strategy == '".$post['back_test_strategy_variable']."') {");
-        $fileHandler->addLineToLineGroup("\$backTestStrategy = new ".$strategyFileName."BackTestToBeProcessed(\$processId, \$server);", 1);
+        $fileHandler->addLineToLineGroup("elseif (\$this->server->current_back_test_strategy == '".$post['back_test_strategy_variable']."') {");
+        $fileHandler->addLineToLineGroup("\$backTestStrategy = new ".$strategyFileName."BackTestToBeProcessed(\$processId, \$this->server, \$this->logger);", 1);
         $fileHandler->addLineToLineGroup("\$backTestStrategy->callProcess();", 1);
         $fileHandler->addLineToLineGroup("}");
 

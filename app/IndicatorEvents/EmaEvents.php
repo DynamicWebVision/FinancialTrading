@@ -116,4 +116,20 @@ class EmaEvents {
 
         return $this->eventHelpers->lineCrossedOverLine($fastEma, $slowEma);
     }
+
+    public function fastAboveSlowCheck($rates, $fastLength, $slowLength)
+    {
+        $fastEma = $this->indicators->ema($rates, $fastLength);
+        $slowEma = $this->indicators->ema($rates, $slowLength);
+
+        $currentFastEma = end($fastEma);
+        $currentSlowEma = end($slowEma);
+
+        if ($currentFastEma > $currentSlowEma) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

@@ -22,4 +22,29 @@ class SimpleMovingAverageTest extends TestCase
 
         $de=1;
     }
+
+    public function testPriceCrossover() {
+        $simpleMovingAverage = new SimpleMovingAverage();
+
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2019-2-28 13:00');
+
+        $expectedCrossedBelow = $simpleMovingAverage->priceCrossedOver($rates, 5);
+
+        $this->assertEquals('crossedBelow', $expectedCrossedBelow);
+
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2019-2-28 7:00');
+
+        $expectedCrossedAbove = $simpleMovingAverage->priceCrossedOver($rates, 5);
+
+        $this->assertEquals('crossedAbove', $expectedCrossedAbove);
+
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2019-2-28 2:00');
+
+        $expectedNone = $simpleMovingAverage->priceCrossedOver($rates, 5);
+
+        $this->assertEquals('none', $expectedNone);
+    }
 }

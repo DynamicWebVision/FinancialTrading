@@ -1,8 +1,8 @@
-<?php namespace App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\AmazingCrossover;
+<?php namespace App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\SmaPriceCrossover;
 
 /**********************
-AmazingCrossover Backtest Variable Definitions
-Created at: 04/10/19by Brian O'Neill
+SmaPriceCrossover Backtest Variable Definitions
+Created at: 04/14/19by Brian O'Neill
 ***********************/
 
 use \DB;
@@ -10,9 +10,10 @@ use App\Model\Exchange;
 use \App\ForexBackTest\TakeProfitStopLossTest;
 use \App\Services\StrategyLogger;
 
+use \App\ForexStrategy\SmaPriceCrossover\SmaPriceXBasic;
 //END STRATEGY DECLARATIONS
 
-class AmazingCrossoverBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBeProcessed\Base
+class SmaPriceCrossoverBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBeProcessed\Base
 {
 
     public function callProcess() {
@@ -45,6 +46,24 @@ class AmazingCrossoverBackTestToBeProcessed extends \App\ForexBackTest\BackTestT
         ******************************/
         if (1==2) {
 
+        }
+        elseif ($this->server->strategy_iteration == 'SMA_PRICE_X_BASIC') {
+            $backTest->rateLevel = 'both';
+        
+            $strategy = new SmaPriceXBasic(1,1,true);
+        
+            //$strategy->orderType = 'MARKET_IF_TOUCHED';
+            $strategy->smaLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->periodsOpenCutoff = intval($this->backTestToBeProcessed->variable_2);
+
+            $strategy->takeProfitPipAmount = 0;
+            $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
+        intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
+        
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
         }
         //END OF SYSTEM STRATEGY IFS
 

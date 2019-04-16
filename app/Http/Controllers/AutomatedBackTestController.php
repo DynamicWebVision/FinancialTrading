@@ -22,7 +22,7 @@ use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\HmaReversal\HmaReversa
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\RsiPullback\RsiPullbackBackTestToBeProcessed;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\HmaPricePoint\HmaPricePointBackTestToBeProcessed;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\EmaPriceCross\EmaPriceCrossBackTestToBeProcessed;
-use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\AmazingCrossover\AmazingCrossoverBackTestToBeProcessed;
+use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\SmaPriceCrossover\SmaPriceCrossoverBackTestToBeProcessed;
 //END OF Backtest Declarations
 
 use \Log;
@@ -406,7 +406,11 @@ class AutomatedBackTestController extends Controller {
             $backTestStrategy = new EmaPriceCrossBackTestToBeProcessed($processId, $this->server, $this->logger);
         }
         elseif ($this->server->current_back_test_strategy == 'AMAZING_CROSSOVER') {
-            $backTestStrategy = new AmazingCrossoverBackTestToBeProcessed($processId, $server);
+            $backTestStrategy = new AmazingCrossoverBackTestToBeProcessed($processId, $this->server, $this->logger);
+            $backTestStrategy->callProcess();
+        }
+        elseif ($this->server->current_back_test_strategy == 'SMA_PRICE_CROSS') {
+            $backTestStrategy = new SmaPriceCrossoverBackTestToBeProcessed($processId, $this->server, $this->logger);
             $backTestStrategy->callProcess();
         }
         $backTestStrategy->callProcess();

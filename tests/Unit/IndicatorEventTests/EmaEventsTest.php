@@ -111,4 +111,24 @@ class EmaEventsTest extends TestCase
 
         $this->assertEquals($cross, 'crossedAbove');
     }
+
+    public function testFastAboveSlow() {
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,5,1000,'2019-3-20 0:00');
+
+        $emaEvents = new EmaEvents();
+
+        $test = $emaEvents->fastAboveSlowCheck($rates, 5, 10);
+
+        $this->assertTrue($test);
+
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,5,1000,'2018-10-25 0:00');
+
+        $emaEvents = new EmaEvents();
+
+        $test = $emaEvents->fastAboveSlowCheck($rates, 5, 10);
+
+        $this->assertFalse($test);
+    }
 }
