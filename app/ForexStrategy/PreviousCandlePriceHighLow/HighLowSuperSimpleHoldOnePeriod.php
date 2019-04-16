@@ -34,20 +34,20 @@ class HighLowSuperSimpleHoldOnePeriod extends \App\ForexStrategy\Strategy  {
 
         if (!$this->openPosition) {
             $this->stopLossPipAmount = 25;
-            $this->marketIfTouchedOrderPrice = $previousRate->highMid + $this->exchange->pip;
+            $this->marketIfTouchedOrderPrice = $previousRate->highMid;
             $this->newLongPosition();
 
-            $this->marketIfTouchedOrderPrice = $previousRate->lowMid - $this->exchange->pip;
+            $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
             $this->newShortPosition();
         }
         else {
             $this->closePosition();
 
             $this->stopLossPipAmount = 25;
-            $this->marketIfTouchedOrderPrice = $previousRate->highMid + $this->exchange->pip;
+            $this->marketIfTouchedOrderPrice = $previousRate->highMid;
             $this->newLongPosition();
 
-            $this->marketIfTouchedOrderPrice = $previousRate->lowMid - $this->exchange->pip;
+            $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
             $this->newShortPosition();
         }
     }

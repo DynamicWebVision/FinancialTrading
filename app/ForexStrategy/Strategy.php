@@ -871,7 +871,6 @@ abstract class Strategy  {
                     $this->openPosition['periodsOpen'] = sizeof($rates);
                 }
             }
-
         }
     }
 
