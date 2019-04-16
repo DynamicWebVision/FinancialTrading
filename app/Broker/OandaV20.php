@@ -280,6 +280,7 @@ class OandaV20 extends \App\Broker\Base  {
         if ($response->position->long->units > 0) {
             $openPosition['side'] = 'long';
             $openPosition['gl'] = $response->position->long->unrealizedPL;
+            $openPosition['units'] = $response->position->long->units;
 
             if (isset($response->position->long->tradeIDs)) {
                 foreach ($response->position->long->tradeIDs as $tradeId) {
@@ -302,6 +303,7 @@ class OandaV20 extends \App\Broker\Base  {
         elseif ($response->position->short->units < 0) {
             $openPosition['side'] = 'short';
             $openPosition['gl'] = $response->position->short->unrealizedPL;
+            $openPosition['units'] = abs($response->position->short->units);
 
             if (isset($response->position->short->tradeIDs)) {
                 foreach ($response->position->short->tradeIDs as $tradeId) {

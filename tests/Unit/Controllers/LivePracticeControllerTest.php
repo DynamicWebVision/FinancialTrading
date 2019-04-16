@@ -20,7 +20,7 @@ class LivePracticeControllerTest extends TestCase
     public function testBacktestProcessStatsSpecificProcess() {
         $livePracticeController = new LivePracticeController();
 
-        $livePracticeController->hmaThirty();
+        $livePracticeController->hmaHour();
     }
 
     public function testDailyPreviousPriceBreakoutCheck() {
