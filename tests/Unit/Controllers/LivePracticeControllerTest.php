@@ -26,7 +26,7 @@ class LivePracticeControllerTest extends TestCase
     public function testDailyPreviousPriceBreakoutCheck() {
         $livePracticeController = new LivePracticeController();
 
-        $livePracticeController->dailyPreviousPriceBreakout();
+        $livePracticeController->fourHourPriceBreakout();
     }
 
     public function testDailyPreviousPriceBreakout() {

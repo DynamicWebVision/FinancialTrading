@@ -1004,7 +1004,7 @@ class LivePracticeController extends Controller {
             }
 
             $systemStrategy->exchange = $exchange;
-            $systemStrategy->oanda->frequency = '4H';
+            $systemStrategy->oanda->frequency = 'H4';
 
             $systemStrategy->rateCount = 1000;
 
