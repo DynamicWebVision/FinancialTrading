@@ -242,14 +242,18 @@ class OandaV20 extends \App\Broker\Base  {
 
         $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/pricing";
 
+        $this->strategyLogger->logApiRequestStart($this->apiUrl, '', 'current_price');
+
         $response = $this->apiGetRequest();
+
+        $this->strategyLogger->logApiRequestResponse($response);
 
         $bidAskObject = new \StdClass();
 
         try {
             $bidAskObject->bid =  (float) $response->prices[0]->bids[0]->price;
             $bidAskObject->ask =  (float) $response->prices[0]->asks[0]->price;
-            $bidAskObject->mid =  ($bidAskObject->bid + $bidAskObject->ask)/2;
+            $bidAskObject->mid =  ($bidAskObject->bid + $bidAskObject->ask)/2;;
 
             return $bidAskObject;
         }
