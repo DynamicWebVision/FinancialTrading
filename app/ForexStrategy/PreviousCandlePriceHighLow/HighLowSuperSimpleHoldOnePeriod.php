@@ -20,6 +20,7 @@ namespace App\ForexStrategy\PreviousCandlePriceHighLow;
 use \Log;
 use App\IndicatorEvents\HullMovingAverage;
 use App\IndicatorEvents\RsiEvents;
+use \App\IndicatorEvents\EmaEvents;
 use \App\IndicatorEvents\EventHelpers;
 use \App\IndicatorEvents\AdxEvents;
 use \App\IndicatorEvents\TrueRange;
@@ -27,6 +28,11 @@ use \App\IndicatorEvents\TrueRange;
 class HighLowSuperSimpleHoldOnePeriod extends \App\ForexStrategy\Strategy  {
 
     public function checkForNewPosition() {
+        $emaEvents = new \App\IndicatorEvents\EmaEvents;
+        $emaEvents->strategyLogger = $this->strategyLogger;
+
+        $decisionIndicators['emaPriceAboveBelow'] = $emaEvents->priceAboveBelowEma($this->rates['simple'], 200);
+
         $this->setOpenPosition();
 
         $previousRate = end($this->rates['full']);
@@ -34,21 +40,27 @@ class HighLowSuperSimpleHoldOnePeriod extends \App\ForexStrategy\Strategy  {
 
         if (!$this->openPosition) {
             $this->stopLossPipAmount = 25;
-            $this->marketIfTouchedOrderPrice = $previousRate->highMid;
-            $this->newLongPosition();
-
-            $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
-            $this->newShortPosition();
+            if ($decisionIndicators['emaPriceAboveBelow'] == 'above') {
+                $this->marketIfTouchedOrderPrice = $previousRate->highMid;
+                $this->newLongPosition();
+            }
+            elseif ($decisionIndicators['emaPriceAboveBelow'] == 'below') {
+                $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
+                $this->newShortPosition();
+            }
         }
         else {
             $this->closePosition();
-
             $this->stopLossPipAmount = 25;
-            $this->marketIfTouchedOrderPrice = $previousRate->highMid;
-            $this->newLongPosition();
 
-            $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
-            $this->newShortPosition();
+            if ($decisionIndicators['emaPriceAboveBelow'] == 'above') {
+                $this->marketIfTouchedOrderPrice = $previousRate->highMid;
+                $this->newLongPosition();
+            }
+            elseif ($decisionIndicators['emaPriceAboveBelow'] == 'below') {
+                $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
+                $this->newShortPosition();
+            }
         }
     }
 }

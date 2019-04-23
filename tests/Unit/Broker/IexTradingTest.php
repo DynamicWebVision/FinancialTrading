@@ -35,4 +35,10 @@ class IexTradingTest extends TestCase
         $iexTrading = new StocksFinancialsController();
         $iexTrading->pullOneStockAnnual();
     }
+
+    public function testGetFullRates()
+    {
+        $iexTrading = new IexTrading();
+        $iexTrading->getFullRates('XOM');
+    }
 }

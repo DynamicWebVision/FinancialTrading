@@ -74,4 +74,28 @@ class IexTrading extends \App\Broker\Base  {
         $response = $this->apiGetRequest();
         return $response;
     }
+
+    public function getBothRates($symbol) {
+        $rates = $this->getFiveYearRates($symbol);
+
+        $bothRates = [];
+
+        $bothRates['full'] = array_map(function($rate) {
+            $stdRate = new \StdClass();
+
+            $stdRate->highMid = (float) $rate->high;
+            $stdRate->closeMid = (float) $rate->close;
+            $stdRate->lowMid = (float) $rate->low;
+            $stdRate->openMid = (float) $rate->open;
+            $stdRate->dateTime = $rate->date;
+            $stdRate->dateUnixTime = strtotime($rate->date);
+            $stdRate->volume = (float) $rate->volume;
+            return $stdRate;
+        }, $rates);
+
+        $bothRates['simple'] = array_map(function($rate) {
+            return $rate->close;
+        }, $rates);
+        return $bothRates;
+    }
 }
