@@ -22,4 +22,10 @@ class StockTechnicalCheckControllerTest extends TestCase
         $stockTechnicalCheckController->logger = new ProcessLogger('stc_hma_rev');
         $stockTechnicalCheckController->hmaReversalCheck(33);
     }
+
+    public function testFlushOldTechnicalCheckResults() {
+        $stockTechnicalCheckController = new StockTechnicalCheckController();
+        $stockTechnicalCheckController->logger = new ProcessLogger('stc_hma_rev');
+        $stockTechnicalCheckController->flushOldTechnicalCheckResults();
+    }
 }
