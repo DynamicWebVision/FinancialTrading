@@ -13,6 +13,7 @@ use App\Http\Controllers\ServersController;
 use App\Model\Stocks\Stocks;
 use Illuminate\Support\Facades\Config;
 use App\Broker\OandaV20;
+use App\Services\ProcessLogger;
 
 class StocksBookControllerTest extends TestCase
 {

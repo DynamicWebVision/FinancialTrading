@@ -83,6 +83,18 @@ class IexTrading extends \App\Broker\Base  {
         $bothRates['full'] = array_map(function($rate) {
             $stdRate = new \StdClass();
 
+            if (!isset($rate->high)) {
+                $rate->high = $rate->close;
+            }
+
+            if (!isset($rate->low)) {
+                $rate->low = $rate->close;
+            }
+
+            if (!isset($rate->open)) {
+                $rate->open = $rate->close;
+            }
+
             $stdRate->highMid = (float) $rate->high;
             $stdRate->closeMid = (float) $rate->close;
             $stdRate->lowMid = (float) $rate->low;

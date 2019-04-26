@@ -195,5 +195,8 @@ class HullMovingAverage {
         if ($slopeSameDirection && $hmaChangeDirection != 'none') {
             return $hmaChangeDirection;
         }
+        else {
+            return false;
+        }
     }
 }
