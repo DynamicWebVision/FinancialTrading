@@ -15,8 +15,8 @@ class StockTechnicalCheckController extends Controller {
 
     public function hmaReversalCheck($stockId) {
         $hmaReversal = new HmaReversal($stockId, $this->logger);
-        $hmaReversal->hmaChangeDirPeriods = 3;
-        $hmaReversal->hmaLength = 9;
+        $hmaReversal->hmaChangeDirPeriods = 2;
+        $hmaReversal->hmaLength = 5;
         $hmaReversal->check();
     }
 
