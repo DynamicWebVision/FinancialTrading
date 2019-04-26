@@ -34,7 +34,7 @@ class StockTechnicalCheckController extends Controller {
             foreach ($stocks as $stock) {
                 $processQueue = new ProcessQueue();
                 $processQueue->process_id = $stockTechnicalCheck->process_id;
-                $processQueue->variable_id = $stock->stock_id;
+                $processQueue->variable_id = $stock->id;
                 $processQueue->priority = 8;
 
                 $processQueue->save();

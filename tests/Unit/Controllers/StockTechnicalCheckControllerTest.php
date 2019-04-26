@@ -28,4 +28,9 @@ class StockTechnicalCheckControllerTest extends TestCase
         $stockTechnicalCheckController->logger = new ProcessLogger('stc_hma_rev');
         $stockTechnicalCheckController->flushOldTechnicalCheckResults();
     }
+
+    public function testCreateStockProcessQueueRecords() {
+        $stockTechnicalCheckController = new StockTechnicalCheckController();
+        $stockTechnicalCheckController->createStockProcessQueueRecords();
+    }
 }

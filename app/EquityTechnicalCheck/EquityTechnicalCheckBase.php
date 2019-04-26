@@ -27,6 +27,9 @@ abstract class EquityTechnicalCheckBase  {
 
     public function getStockInfo() {
         $stock = Stocks::find($this->stockId);
+
+        $this->logger->logMessage('Starting '.get_class($this).' check for stock '.$stock->symbol.' - '.$stock->name.'.');
+
         $this->symbol = $stock->symbol;
     }
 
@@ -39,9 +42,11 @@ abstract class EquityTechnicalCheckBase  {
         $technicalCheckResult->stock_id = $this->stockId;
 
         if ($this->result == 'long') {
+            $this->logger->logMessage('Result of Long');
             $technicalCheckResult->result_id = 1;
         }
         elseif ($this->result == 'short') {
+            $this->logger->logMessage('Result of Short');
             $technicalCheckResult->result_id = -1;
         }
         else {
