@@ -94,6 +94,7 @@ class StockSearch  {
         $this->sectorCriteria();
         $this->industryCriteria();
         $this->symbolCriteria();
+        $this->technicalCheckCriteria();
         $this->nameCriteria();
         $this->setOrderDirection();
     }
@@ -107,6 +108,14 @@ class StockSearch  {
     protected function industryCriteria() {
         if ($this->criteria['industry'] > 0) {
             $this->searchObject->where('stocks_industry.id', '=', $this->criteria['industry']);
+        }
+    }
+
+    protected function technicalCheckCriteria() {
+        if ($this->criteria['technicalCheck'] != 0) {
+            $this->searchObject->join('stocks_technical_check_result', 'stocks.id', '=', 'stocks_technical_check_result.stock_id');
+
+            $this->searchObject->where('stocks_technical_check_result.result_id', '=', $this->criteria['technicalCheck']);
         }
     }
 

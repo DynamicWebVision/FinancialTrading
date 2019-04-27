@@ -36,6 +36,7 @@
     <script src="/js/factory/stock-search.js"></script>
     <script src="/js/factory/stock-industry.js"></script>
     <script src="/js/factory/stock-sector.js"></script>
+    <script src="/js/factory/stock-technical-check.js"></script>
     <script src="/js/service/utility.js"></script>
     <script src="/js/Chart_2.6.js"></script>
     <script src="/js/angular-chart.js"></script>

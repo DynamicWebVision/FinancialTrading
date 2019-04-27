@@ -41,4 +41,9 @@ class StockTechnicalCheckController extends Controller {
             }
         }
     }
+
+    public function index() {
+        $technicalChecks = StocksTechnicalCheck::get()->toArray();
+        return $technicalChecks;
+    }
 }

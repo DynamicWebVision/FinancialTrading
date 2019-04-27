@@ -5,7 +5,8 @@
         .module('app')
         .controller('StocksMainController', StocksMainController);
 
-    function StocksMainController($timeout, Stock, StockSearch, SweetAlert, StockIndustry, StockSector, StockRates, UtilityService) {
+    function StocksMainController($timeout, Stock, StockSearch, SweetAlert, StockIndustry,
+                                StockSector, StockRates, UtilityService, StockTechnicalCheck) {
         var vm = this;
         vm.processing = false;
         vm.submit = false;
@@ -13,6 +14,7 @@
         vm.stockSearch = StockSearch;
         vm.stockIndustry = StockIndustry;
         vm.stockSector = StockSector;
+        vm.stockTechnicalCheck = StockTechnicalCheck;
         vm.utilityService = UtilityService;
         vm.currentTable = 'main';
         vm.tableDisplays = ['main', 'fundamental'];

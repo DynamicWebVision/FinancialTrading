@@ -18,6 +18,7 @@ app.factory('StockSearch', function($http, $q) {
     service.resetSearchParams = function() {
         service.searchCriteria.industry = -1;
         service.searchCriteria.sector = -1;
+        service.searchCriteria.technicalCheck = 0;
     }
 
     service.pageChanged = function() {

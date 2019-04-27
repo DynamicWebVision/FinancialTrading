@@ -48,6 +48,15 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Technical Check</label>
+                            <div class="col-md-9">
+                                <select name="strategy" class="form-control input-large margin-top-five" ng-required="true"
+                                        ng-model="sh.stockSearch.searchCriteria.technicalCheck" ng-fade
+                                        ng-options="technicalCheck.code as technicalCheck.name for technicalCheck in sh.stockTechnicalCheck.technicalChecks">
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-12">
