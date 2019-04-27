@@ -4,6 +4,7 @@ use \Log;
 use App\Broker\IexTrading;
 use App\Model\Stocks\Stocks;
 use App\Model\Stocks\StocksTechnicalCheckResult;
+use App\Services\ProcessLogger;
 
 
 abstract class EquityTechnicalCheckBase  {
@@ -16,8 +17,8 @@ abstract class EquityTechnicalCheckBase  {
 
     public $result;
 
-    public function __construct($stockId, $processLogger) {
-        $this->logger = $processLogger;
+    public function __construct($stockId) {
+        $this->logger = new ProcessLogger('stc_hma_rev');
         $this->stockId = $stockId;
 
         $this->broker = new IexTrading();
