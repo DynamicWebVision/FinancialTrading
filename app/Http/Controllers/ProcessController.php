@@ -103,7 +103,7 @@ class ProcessController extends Controller
         $stillRunningProcesses = ProcessLog::whereNull('end_date_time')->where('server_id', '=', $this->serverController->serverId)
             ->distinct(['linux_pid'])->get()->toArray();
 
-        $this->logger->logMessage('stillRunningProcessPids :'.json_encode($stillRunningProcesses));
+        $this->logger->logMessage('stillRunningProcessPids :'. substr(json_encode($stillRunningProcesses), 0, 20000));
 
         $processesRunningCount = 0;
 
