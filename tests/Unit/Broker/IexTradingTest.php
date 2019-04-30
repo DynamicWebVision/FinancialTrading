@@ -39,6 +39,6 @@ class IexTradingTest extends TestCase
     public function testGetFullRates()
     {
         $iexTrading = new IexTrading();
-        $iexTrading->getFullRates('XOM');
+        $iexTrading->getBothRates('ARLO');
     }
 }

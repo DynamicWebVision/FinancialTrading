@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Config;
 use \App\Services\Utility;
 use \App\Services\AwsService;
 use App\Model\ProcessLog\Process;
-use App\Http\Controllers\ServersController;
 
 class ProcessLogger  {
 
