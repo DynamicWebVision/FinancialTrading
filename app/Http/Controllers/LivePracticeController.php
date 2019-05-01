@@ -23,6 +23,7 @@ use \App\ForexStrategy\HullMovingAverage\HmaSimple;
 use \App\ForexStrategy\PreviousCandlePriceHighLow\HighLowSuperSimpleHoldOnePeriod;
 use \App\ForexStrategy\MarketIfTouched\MarketIfTouchedReturnToOpen;
 use \App\ForexStrategy\AmazingCrossover\AmazingCrossoverTS;
+use \App\ForexStrategy\HmaReversal\HmaRevAfterPeriodsHold;
 Use App\Services\ProcessLogger;
 
 class LivePracticeController extends Controller {
@@ -1098,6 +1099,53 @@ class LivePracticeController extends Controller {
 
             $systemStrategy->positionMultiplier = 5;
 
+            $systemStrategy->orderType = 'LIMIT';
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+            $systemStrategy->setCurrentPrice();
+            $logger->logMessage('Checking for New Position '.$exchange->exchange);
+
+            $systemStrategy->checkForNewPosition();
+        }
+    }
+
+    public function hmaHourSetHoldPeriods() {
+        $this->utility->sleepUntilAtLeastFiveSeconds();
+
+        $strategy = new HmaRevAfterPeriodsHold('101-001-7608904-014', 'initialload');
+        $logger = new ProcessLogger('lp_hma_period_hold');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logger->logMessage('Starting Exchange '.$exchange->exchange);
+            $logPrefix = "hmaHourSetHoldPeriods-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new HmaRevAfterPeriodsHold('101-001-7608904-014', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'hmaHourSetHoldPeriods';
+            $strategyLogger->oanda_account_id = 17;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'H1';
+
+            $systemStrategy->rateCount = 1000;
+            $systemStrategy->stopLossPipAmount = 100;
+            $systemStrategy->hmaLength = 5;
+            $systemStrategy->hmaChangeDirPeriods = 2;
+            $systemStrategy->periodsOpenMultiplier = 1;
+            $systemStrategy->hmaSlopeMin = 0;
+
+            $systemStrategy->positionMultiplier = 5;
             $systemStrategy->orderType = 'LIMIT';
 
             $systemStrategy->rates = $systemStrategy->getRates('both', true);
