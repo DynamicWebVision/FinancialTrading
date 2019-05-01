@@ -66,13 +66,15 @@ class Kernel extends ConsoleKernel
             $schedule->command('schedule_process historical_fx_rates 3')->hourly();
             $schedule->command('schedule_process fx_practice_transactions 3')->cron($this->everyFifteenMinutesInterval);
 
+            $schedule->call('App\Http\Controllers\LivePracticeController@hmaHourSetHoldPeriods')->hourly();
+
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
 
             $schedule->call('App\Http\Controllers\LivePracticeController@amazingCrossoverTrailingStop')->hourly();
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouchedHr')->hourly();
-            $schedule->call('App\Http\Controllers\LivePracticeController@hmaHour')->hourly();
+
 
             //
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('21:00');
