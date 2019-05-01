@@ -1202,4 +1202,31 @@ class LivePracticeController extends Controller {
             $systemStrategy->checkForNewPosition();
         }
     }
+
+    public function dailyRatesCheck() {
+        $strategy = new HmaRevAfterPeriodsHold('101-001-7608904-015', 'initialload');
+
+        $exchanges = \App\Model\Exchange::get();
+
+        $exchange = $exchanges[0];
+
+        $strategy->exchange = $exchange;
+        $strategy->oanda->frequency = 'D';
+
+        $rates = $strategy->getRates('both', true);
+
+        $lastRate = end($rates['full']);
+
+        $testDayRate = new \App\Model\DailyRatesDebug();
+
+        $testDayRate->low_mid = $lastRate->lowMid;
+        $testDayRate->open_mid = $lastRate->openMid;
+        $testDayRate->high_mid = $lastRate->highMid;
+        $testDayRate->close_mid = $lastRate->closeMid;
+
+        $testDayRate->rate_date_time = $lastRate->dateTime;
+        $testDayRate->volume = $lastRate->volume;
+
+        $testDayRate->save();
+    }
 }

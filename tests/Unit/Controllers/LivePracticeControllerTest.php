@@ -34,4 +34,10 @@ class LivePracticeControllerTest extends TestCase
 
         $livePracticeController->hma4HSetHoldPeriods();
     }
+
+    public function testSDFSDF() {
+        $livePracticeController = new LivePracticeController();
+
+        $livePracticeController->dailyRatesCheck();
+    }
 }

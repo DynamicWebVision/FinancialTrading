@@ -74,6 +74,7 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@amazingCrossoverTrailingStop')->hourly();
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouchedHr')->hourly();
+            $schedule->call('App\Http\Controllers\LivePracticeController@dailyRatesCheck')->hourly();
 
 
             //
