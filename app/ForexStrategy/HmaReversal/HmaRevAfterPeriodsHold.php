@@ -72,12 +72,12 @@ class HmaRevAfterPeriodsHold extends \App\ForexStrategy\Strategy  {
 //            if ( $this->decisionIndicators['hmaSlope'] == 'short' || $this->decisionIndicators['periodsOpenCutoff']) {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
-            }
 
-            if (
-                $this->decisionIndicators['hmaRevAfterXPeriods'] == 'reversedDown'
-            ) {
-                $this->newShortPosition();
+                if (
+                    $this->decisionIndicators['hmaRevAfterXPeriods'] == 'reversedDown'
+                ) {
+                    $this->newShortPosition();
+                }
             }
         }
         elseif ($this->openPosition['side'] == 'short') {
@@ -85,14 +85,13 @@ class HmaRevAfterPeriodsHold extends \App\ForexStrategy\Strategy  {
 //            if ( $this->decisionIndicators['hmaSlope'] == 'long' || $this->decisionIndicators['periodsOpenCutoff']) {
                 $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
                 $this->closePosition();
-            }
 
-            if (
-                $this->decisionIndicators['hmaRevAfterXPeriods'] == 'reversedUp'
-            ) {
-                $this->newLongPosition();
+                if (
+                    $this->decisionIndicators['hmaRevAfterXPeriods'] == 'reversedUp'
+                ) {
+                    $this->newLongPosition();
+                }
             }
-
         }
     }
     public function checkForNewPosition() {

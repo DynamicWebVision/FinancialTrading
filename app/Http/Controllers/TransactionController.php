@@ -270,7 +270,7 @@ class TransactionController extends Controller {
 
         $trades = OandaTrades::where('open_date_time', '>', $lastDayPreviousMonth)
                        ->where('oanda_account_id', '=', $oandaAccountId)
-                       ->orderBy('id', 'desc')
+                       ->orderBy('open_date_time', 'desc')
                        ->get()
                        ->toArray();
 
