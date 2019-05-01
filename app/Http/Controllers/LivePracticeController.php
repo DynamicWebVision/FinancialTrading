@@ -1155,4 +1155,51 @@ class LivePracticeController extends Controller {
             $systemStrategy->checkForNewPosition();
         }
     }
+
+    public function hma4HSetHoldPeriods() {
+        $this->utility->sleepUntilAtLeastFiveSeconds();
+
+        $strategy = new HmaRevAfterPeriodsHold('101-001-7608904-015', 'initialload');
+        $logger = new ProcessLogger('lp_hma4h_period_hold');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logger->logMessage('Starting Exchange '.$exchange->exchange);
+            $logPrefix = "hma4HSetHoldPeriods-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new HmaRevAfterPeriodsHold('101-001-7608904-015', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'hma4HSetHoldPeriods';
+            $strategyLogger->oanda_account_id = 18;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'H4';
+
+            $systemStrategy->rateCount = 1000;
+            $systemStrategy->stopLossPipAmount = 100;
+            $systemStrategy->hmaLength = 5;
+            $systemStrategy->hmaChangeDirPeriods = 2;
+            $systemStrategy->periodsOpenMultiplier = 4;
+            $systemStrategy->hmaSlopeMin = 0;
+
+            $systemStrategy->positionMultiplier = 5;
+            $systemStrategy->orderType = 'LIMIT';
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+            $systemStrategy->setCurrentPrice();
+            $logger->logMessage('Checking for New Position '.$exchange->exchange);
+
+            $systemStrategy->checkForNewPosition();
+        }
+    }
 }

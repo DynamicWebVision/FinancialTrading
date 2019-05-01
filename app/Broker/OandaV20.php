@@ -494,6 +494,7 @@ class OandaV20 extends \App\Broker\Base  {
         foreach ($response->accounts as $account) {
             $this->apiUrl = $this->oandaApiUrl."accounts/".$account->id."/summary";
 
+            sleep(2);
             $accountResponse = $this->apiGetRequest();
             $accounts[] = $accountResponse->account;
         }
