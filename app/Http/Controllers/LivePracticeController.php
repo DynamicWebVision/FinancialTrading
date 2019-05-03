@@ -1213,20 +1213,29 @@ class LivePracticeController extends Controller {
         $strategy->exchange = $exchange;
         $strategy->oanda->frequency = 'D';
 
-        $rates = $strategy->getRates('both', true);
+        $ratesCount = 0;
 
-        $lastRate = end($rates['full']);
+        while ($ratesCount <= 60) {
+            $rates = $strategy->getRates('both', true);
 
-        $testDayRate = new \App\Model\DailyRatesDebug();
+            $lastRate = end($rates['full']);
 
-        $testDayRate->low_mid = $lastRate->lowMid;
-        $testDayRate->open_mid = $lastRate->openMid;
-        $testDayRate->high_mid = $lastRate->highMid;
-        $testDayRate->close_mid = $lastRate->closeMid;
+            $testDayRate = new \App\Model\DailyRatesDebug();
 
-        $testDayRate->rate_date_time = $lastRate->dateTime;
-        $testDayRate->volume = $lastRate->volume;
+            $testDayRate->low_mid = $lastRate->lowMid;
+            $testDayRate->open_mid = $lastRate->openMid;
+            $testDayRate->high_mid = $lastRate->highMid;
+            $testDayRate->close_mid = $lastRate->closeMid;
 
-        $testDayRate->save();
+            $testDayRate->rate_date_time = $lastRate->dateTime;
+            $testDayRate->volume = $lastRate->volume;
+
+            $testDayRate->save();
+
+            $ratesCount = $ratesCount + 1;
+            sleep(60);
+        }
+
+
     }
 }
