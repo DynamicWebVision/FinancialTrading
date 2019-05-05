@@ -47,4 +47,33 @@ class SimpleMovingAverageTest extends TestCase
 
         $this->assertEquals('none', $expectedNone);
     }
+
+    public function testPriceCrossoverAfterXPeriods() {
+        $simpleMovingAverage = new SimpleMovingAverage();
+
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2019-4-26 13:00');
+
+        $expectedCrossedBelow = $simpleMovingAverage->priceCrossedOverFirstTimeInXPeriods($rates, 50, 5);
+
+        $this->assertEquals('crossedAbove', $expectedCrossedBelow);
+
+        $simpleMovingAverage = new SimpleMovingAverage();
+
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2019-4-23 12:00');
+
+        $expectedCrossedBelow = $simpleMovingAverage->priceCrossedOverFirstTimeInXPeriods($rates, 50, 5);
+
+        $this->assertEquals('none', $expectedCrossedBelow);
+
+        $simpleMovingAverage = new SimpleMovingAverage();
+
+        $historicalRates = new \App\Model\HistoricalRates();
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2019-4-23 00:00');
+
+        $expectedCrossedBelow = $simpleMovingAverage->priceCrossedOverFirstTimeInXPeriods($rates, 50, 5);
+
+        $this->assertEquals('crossedBelow', $expectedCrossedBelow);
+    }
 }

@@ -305,7 +305,7 @@ class TransactionController extends Controller {
         $oneMonthAgo = date('Y-m-d', strtotime('-30 day', time()));
 
         if (!$post['pastThisMonth']) {
-            $trades = OandaTrades::where('open_date_time', '>', $oneMonthAgo)->orderBy('id', 'desc');
+            $trades = OandaTrades::where('oanda_account_id', '=', $post['account'])->where('open_date_time', '>', $oneMonthAgo)->orderBy('open_date_time', 'desc');
         }
         else {
             $trades = new OandaTrades();
@@ -316,7 +316,7 @@ class TransactionController extends Controller {
         }
 
         if (isset($post['account'])) {
-            $trades = $trades->where('oanda_account_id', '=', $post['account'])->orderBy('id', 'desc');
+            $trades = $trades->where('oanda_account_id', '=', $post['account'])->orderBy('open_date_time', 'desc');
         }
 
         $trades = $trades->orderBy('id', 'desc')

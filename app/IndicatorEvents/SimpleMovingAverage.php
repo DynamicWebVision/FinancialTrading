@@ -95,4 +95,38 @@ class SimpleMovingAverage {
 
         return $this->eventHelpers->priceCrossoverLine([$previousSma, $currentSma], $rates);
     }
+
+    public function multipleSmaPoints($rates, $smaLength, $periods) {
+        $arraySets = $this->utility->getMultipleArraySets($rates, $smaLength, $periods);
+
+        $sma = [];
+
+        foreach ($arraySets as $array) {
+            $sma[] = $this->smaCurrentValue($array, $smaLength);
+        }
+        return $sma;
+    }
+
+    public function priceCrossedOverFirstTimeInXPeriods($rates, $length, $periodCutoff) {
+        $arraySets = $this->utility->getMultipleArraySets($rates, $length+1, $periodCutoff);
+
+        $crossovers = [];
+
+        $lastIndex = sizeof($arraySets) - 1;
+        foreach ($arraySets as $index => $array) {
+            if ($index == $lastIndex) {
+                $currentCrossover = $this->priceCrossedOver($array, $length);
+            }
+            else {
+                $crossovers[] = $this->priceCrossedOver($array, $length);
+            }
+        }
+
+        if (count(array_unique($crossovers)) === 1 && end($crossovers) === 'none') {
+            return $currentCrossover;
+        }
+        else {
+            return 'none';
+        }
+    }
 }
