@@ -1109,11 +1109,13 @@ class LivePracticeController extends Controller {
         }
     }
 
-    public function hmaHourSetHoldPeriods() {
+
+    public function marketIfTouchedReturnToOpenHour() {
+
         $this->utility->sleepUntilAtLeastFiveSeconds();
 
-        $strategy = new HmaRevAfterPeriodsHold('101-001-7608904-014', 'initialload');
-        $logger = new ProcessLogger('lp_hma_period_hold');
+        $strategy = new MarketIfTouchedReturnToOpen('101-001-7608904-014', 'initialload');
+        $logger = new ProcessLogger('lp_return_open_mkt_touch');
 
         $marginAvailable = $strategy->getAvailableMargin();
 
@@ -1122,14 +1124,14 @@ class LivePracticeController extends Controller {
 
         foreach ($exchanges as $exchange) {
             $logger->logMessage('Starting Exchange '.$exchange->exchange);
-            $logPrefix = "hmaHourSetHoldPeriods-".$exchange->exchange."-".uniqid();
+            $logPrefix = "MarketIfTouchedReturnToOpen-".$exchange->exchange."-".uniqid();
 
-            $systemStrategy = new HmaRevAfterPeriodsHold('101-001-7608904-014', $logPrefix);
+            $systemStrategy = new MarketIfTouchedReturnToOpen('101-001-7608904-014', $logPrefix);
             $systemStrategy->accountAvailableMargin = $marginAvailable;
 
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;
-            $strategyLogger->method = 'hmaHourSetHoldPeriods';
+            $strategyLogger->method = 'marketIfTouchedReturnToOpen';
             $strategyLogger->oanda_account_id = 17;
 
             $strategyLogger->newStrategyLog();
@@ -1139,14 +1141,10 @@ class LivePracticeController extends Controller {
             $systemStrategy->oanda->frequency = 'H1';
 
             $systemStrategy->rateCount = 1000;
-            $systemStrategy->stopLossPipAmount = 100;
-            $systemStrategy->hmaLength = 5;
-            $systemStrategy->hmaChangeDirPeriods = 2;
-            $systemStrategy->periodsOpenMultiplier = 1;
-            $systemStrategy->hmaSlopeMin = 0;
 
             $systemStrategy->positionMultiplier = 5;
-            $systemStrategy->orderType = 'LIMIT';
+
+            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
 
             $systemStrategy->rates = $systemStrategy->getRates('both', true);
             $systemStrategy->setCurrentPrice();
