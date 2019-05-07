@@ -77,10 +77,16 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouchedHr')->hourly();
 
             //
-            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('21:00');
+            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('21:02');
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyRatesCheck')->dailyAt('21:00');
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpen')->dailyAt('13:00');
 
+            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('1:02');
+            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('5:02');
+            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('9:02');
+            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('13:02');
+            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('17:02');
+            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('21:02');
 
             $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('1:00');
             $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('5:00');
@@ -89,12 +95,7 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('17:00');
             $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('21:00');
 
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('1:00');
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('5:00');
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('9:00');
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('13:00');
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('17:00');
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('21:00');
+
 
         }
         elseif (env('APP_ENV') == 'utility') {

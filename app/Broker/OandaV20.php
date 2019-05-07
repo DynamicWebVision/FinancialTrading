@@ -58,6 +58,12 @@ class OandaV20 extends \App\Broker\Base  {
         $this->oandaApiUrl = $oandaApiUrl;
     }
 
+    public function logRatesInfo($rates) {
+        $lastRate = end($rates);
+        $minuteDifference = round(time() - $lastRate->time/60);
+        $this->strategyLogger->logMessage('For frequency '.$this->frequency.' server time '.time().' last rate time '.$lastRate->time.' with minute difference '.$minuteDifference);
+    }
+
     public function getRates() {
         $this->getVariables['granularity'] = $this->frequency;
         $this->getVariables['count'] = $this->rateCount;
@@ -72,6 +78,7 @@ class OandaV20 extends \App\Broker\Base  {
         $response = $this->apiGetRequest();
 
        if (isset($response->candles)) {
+            $this->logRatesInfo($response->candles);
             return $response->candles;
         }
         else {

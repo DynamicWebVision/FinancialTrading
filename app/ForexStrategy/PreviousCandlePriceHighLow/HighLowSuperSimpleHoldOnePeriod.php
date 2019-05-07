@@ -40,27 +40,31 @@ class HighLowSuperSimpleHoldOnePeriod extends \App\ForexStrategy\Strategy  {
 
         if (!$this->openPosition) {
             $this->stopLossPipAmount = 25;
-            if ($decisionIndicators['emaPriceAboveBelow'] == 'above') {
-                $this->marketIfTouchedOrderPrice = $previousRate->highMid;
-                $this->newLongPosition();
-            }
-            elseif ($decisionIndicators['emaPriceAboveBelow'] == 'below') {
-                $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
-                $this->newShortPosition();
-            }
+
+            $this->marketIfTouchedOrderPrice = $previousRate->highMid;
+            $this->newLongPosition();
+
+            $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
+            $this->newShortPosition();
+
+//            if ($decisionIndicators['emaPriceAboveBelow'] == 'above') {
+//                $this->marketIfTouchedOrderPrice = $previousRate->highMid;
+//                $this->newLongPosition();
+//            }
+//            elseif ($decisionIndicators['emaPriceAboveBelow'] == 'below') {
+//                $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
+//                $this->newShortPosition();
+//            }
         }
         else {
             $this->closePosition();
             $this->stopLossPipAmount = 25;
 
-            if ($decisionIndicators['emaPriceAboveBelow'] == 'above') {
-                $this->marketIfTouchedOrderPrice = $previousRate->highMid;
-                $this->newLongPosition();
-            }
-            elseif ($decisionIndicators['emaPriceAboveBelow'] == 'below') {
-                $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
-                $this->newShortPosition();
-            }
+            $this->marketIfTouchedOrderPrice = $previousRate->highMid;
+            $this->newLongPosition();
+
+            $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
+            $this->newShortPosition();
         }
     }
 }
