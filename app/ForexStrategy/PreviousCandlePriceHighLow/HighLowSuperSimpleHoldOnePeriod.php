@@ -39,7 +39,6 @@ class HighLowSuperSimpleHoldOnePeriod extends \App\ForexStrategy\Strategy  {
         $this->strategyLogger->logMessage('PreviousRate: '.json_encode($previousRate));
 
         if (!$this->openPosition) {
-            $this->stopLossPipAmount = 25;
 
             $this->marketIfTouchedOrderPrice = $previousRate->highMid;
             $this->newLongPosition();
@@ -47,18 +46,9 @@ class HighLowSuperSimpleHoldOnePeriod extends \App\ForexStrategy\Strategy  {
             $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
             $this->newShortPosition();
 
-//            if ($decisionIndicators['emaPriceAboveBelow'] == 'above') {
-//                $this->marketIfTouchedOrderPrice = $previousRate->highMid;
-//                $this->newLongPosition();
-//            }
-//            elseif ($decisionIndicators['emaPriceAboveBelow'] == 'below') {
-//                $this->marketIfTouchedOrderPrice = $previousRate->lowMid;
-//                $this->newShortPosition();
-//            }
         }
         else {
             $this->closePosition();
-            $this->stopLossPipAmount = 25;
 
             $this->marketIfTouchedOrderPrice = $previousRate->highMid;
             $this->newLongPosition();

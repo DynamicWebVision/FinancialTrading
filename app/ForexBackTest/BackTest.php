@@ -221,7 +221,6 @@ abstract class BackTest  {
 
     //Saves the Positions For a Record
     public function savePositions() {
-            $debug = 1;
             if (isset($this->strategy->backTestPositions[0])) {
                 $lastPosition = end($this->strategy->backTestPositions);
 

@@ -281,67 +281,67 @@ class LivePracticeController extends Controller {
 //        Log::info('EmaMomentum15TPSL: END');
 //    }
 
-    public function fifteenEmaFiveTenAfter() {
-        Log::info('fifteenEmaFiveTenAfter: START LivePracticeController->emaMomentumAdx15MinutesTPSL');
-
-        $strategy = new Strategy();
-        //Need to Change
-        $exchanges = \App\Model\Exchange::get();
-
-        foreach ($exchanges as $exchange) {
-
-            $logPrefix = "fifteenEmaFiveTenAfter-".$exchange->exchange."-".uniqid();
-
-            $fiftyOneHundredEma = new EmaMomentumDifferenceSlope('101-001-7608904-012', $logPrefix);
-
-            $strategyLogger = new StrategyLogger();
-            $strategyLogger->exchange_id = $exchange->id;
-            $strategyLogger->method = 'fifteenEmaFiveTenAfter';
-            $strategyLogger->oanda_account_id = 14;
-
-            $strategyLogger->newStrategyLog();
-            $fiftyOneHundredEma->setLogger($strategyLogger);
-
-            if ($exchange->exchange == 'EUR_USD') {
-                $fiftyOneHundredEma->logDbRates = true;
-            }
-
-            $fiftyOneHundredEma->exchange = $exchange;
-            $fiftyOneHundredEma->oanda->frequency = 'M15';
-
-            $fiftyOneHundredEma->rateCount = 200;
-            $fiftyOneHundredEma->addCurrentPriceToRates = true;
-
-            $fiftyOneHundredEma->rates = $fiftyOneHundredEma->getRates('both');
-
-            $fiftyOneHundredEma->exchange = $exchange;
-            $fiftyOneHundredEma->strategyId = 5;
-            $fiftyOneHundredEma->strategyDesc = 'EmaMomentumFifteenMinutes';
-            $fiftyOneHundredEma->positionMultiplier = 10;
-
-            $fiftyOneHundredEma->maxPositions = 3;
-            $fiftyOneHundredEma->stopLossPipAmount = 15;
-            $fiftyOneHundredEma->takeProfitPipAmount = 30;
-
-            $fiftyOneHundredEma->fastEmaLength = 20;
-            $fiftyOneHundredEma->slowEmaLength = 35;
-
-            $fiftyOneHundredEma->adxCutoff = 20;
-            $fiftyOneHundredEma->adxPeriodLength = 14;
-
-            $fiftyOneHundredEma->slopeDiffLength = 3;
-            $fiftyOneHundredEma->slopeCutoff = 1.25;
-
-            $fiftyOneHundredEma->linearRegressionLength = 3;
-
-            $fiftyOneHundredEma->orderType = 'LIMIT';
-
-            $fiftyOneHundredEma->checkForNewPosition();
-            $strategyLogger->logStrategyEnd();
-
-        }
-        Log::info('fifteenEmaFiveTenAfter: END');
-    }
+//    public function fifteenEmaFiveTenAfter() {
+//        Log::info('fifteenEmaFiveTenAfter: START LivePracticeController->emaMomentumAdx15MinutesTPSL');
+//
+//        $strategy = new Strategy();
+//        //Need to Change
+//        $exchanges = \App\Model\Exchange::get();
+//
+//        foreach ($exchanges as $exchange) {
+//
+//            $logPrefix = "fifteenEmaFiveTenAfter-".$exchange->exchange."-".uniqid();
+//
+//            $fiftyOneHundredEma = new EmaMomentumDifferenceSlope('101-001-7608904-012', $logPrefix);
+//
+//            $strategyLogger = new StrategyLogger();
+//            $strategyLogger->exchange_id = $exchange->id;
+//            $strategyLogger->method = 'fifteenEmaFiveTenAfter';
+//            $strategyLogger->oanda_account_id = 14;
+//
+//            $strategyLogger->newStrategyLog();
+//            $fiftyOneHundredEma->setLogger($strategyLogger);
+//
+//            if ($exchange->exchange == 'EUR_USD') {
+//                $fiftyOneHundredEma->logDbRates = true;
+//            }
+//
+//            $fiftyOneHundredEma->exchange = $exchange;
+//            $fiftyOneHundredEma->oanda->frequency = 'M15';
+//
+//            $fiftyOneHundredEma->rateCount = 200;
+//            $fiftyOneHundredEma->addCurrentPriceToRates = true;
+//
+//            $fiftyOneHundredEma->rates = $fiftyOneHundredEma->getRates('both');
+//
+//            $fiftyOneHundredEma->exchange = $exchange;
+//            $fiftyOneHundredEma->strategyId = 5;
+//            $fiftyOneHundredEma->strategyDesc = 'EmaMomentumFifteenMinutes';
+//            $fiftyOneHundredEma->positionMultiplier = 10;
+//
+//            $fiftyOneHundredEma->maxPositions = 3;
+//            $fiftyOneHundredEma->stopLossPipAmount = 15;
+//            $fiftyOneHundredEma->takeProfitPipAmount = 30;
+//
+//            $fiftyOneHundredEma->fastEmaLength = 20;
+//            $fiftyOneHundredEma->slowEmaLength = 35;
+//
+//            $fiftyOneHundredEma->adxCutoff = 20;
+//            $fiftyOneHundredEma->adxPeriodLength = 14;
+//
+//            $fiftyOneHundredEma->slopeDiffLength = 3;
+//            $fiftyOneHundredEma->slopeCutoff = 1.25;
+//
+//            $fiftyOneHundredEma->linearRegressionLength = 3;
+//
+//            $fiftyOneHundredEma->orderType = 'LIMIT';
+//
+//            $fiftyOneHundredEma->checkForNewPosition();
+//            $strategyLogger->logStrategyEnd();
+//
+//        }
+//        Log::info('fifteenEmaFiveTenAfter: END');
+//    }
 
     public function fifteenEmaFiveTenBefore() {
         Log::info('fifteenEmaFiveTenBefore: START LivePracticeController->emaMomentumAdx15MinutesTPSL');
@@ -948,6 +948,7 @@ class LivePracticeController extends Controller {
 
             $systemStrategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-013', $logPrefix);
             $systemStrategy->accountAvailableMargin = $marginAvailable;
+            $systemStrategy->stopLossPipAmount = 25;
 
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;
@@ -991,6 +992,7 @@ class LivePracticeController extends Controller {
 
             $systemStrategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-006', $logPrefix);
             $systemStrategy->accountAvailableMargin = $marginAvailable;
+            $systemStrategy->stopLossPipAmount = 10;
 
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;
@@ -1196,6 +1198,47 @@ class LivePracticeController extends Controller {
             $systemStrategy->rates = $systemStrategy->getRates('both', true);
             $systemStrategy->setCurrentPrice();
             $logger->logMessage('Checking for New Position '.$exchange->exchange);
+
+            $systemStrategy->checkForNewPosition();
+        }
+    }
+
+
+    public function priceBreakoutHourly() {
+
+        $this->utility->sleepUntilAtLeastFiveSeconds();
+
+        $strategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-012', 'initialload');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logPrefix = "priceBreakoutHourly-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-012', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+            $systemStrategy->stopLossPipAmount = 5;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'priceBreakoutHourly';
+            $strategyLogger->oanda_account_id = 14;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'H1';
+
+            $systemStrategy->rateCount = 1000;
+
+            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+            $systemStrategy->setCurrentPrice();
 
             $systemStrategy->checkForNewPosition();
         }

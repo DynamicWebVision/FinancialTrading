@@ -3,65 +3,54 @@ use \Log;
 use App\Model\Stocks\StocksBackTestPositions;
 use App\Model\Stocks\Stocks;
 use App\Services\Utility;
-
+use App\Broker\IexTrading;
 
 class EquityBackTestBroker {
-    public $currentAccountTotalValue = 50000;
-    public $openPositions = [];
-    public $currentAccountAvailableCapital = 50000;
-    public $positionId = 0;
+    public $stockId;
+    public $fiveYearRates;
+    public $symbol;
 
-    public $backTestIterationId;
+    public $currentRateIndex;
+    public $rateCount;
 
-    public $utility;
+    public $lastRate = false;
+    public $lastRatesIndex;
 
-    public function __construct() {
+    public function __construct($stockId, $indicatorRateMin) {
+        $stock = Stocks::find($stockId);
+        $this->symbol = $stock->symbol;
 
+        $this->loadAllRates();
+        $this->findFirstRateIndex($indicatorRateMin);
     }
 
-    public function newLongPosition($rate, $symbol, $shareCount, $stopLossRate) {
-        $this->newPosition($rate, $symbol, $shareCount, 1, $stopLossRate);
+    public function loadAllRates() {
+        $iexTrading = new IexTrading();
+        $this->fiveYearRates = $iexTrading->getFiveYearRates($this->symbol);
+        $rates = $this->fiveYearRates;
+        end($rates);         // move the internal pointer to the end of the array
+        $this->lastRatesIndex = key($array);
     }
 
-    public function newShortPosition($rate, $symbol, $shareCount, $stopLossRate) {
-        $this->newPosition($rate, $symbol, $shareCount, -1, $stopLossRate);
+    public function findFirstRateIndex($indicatorRateMin) {
+        $this->rateCount = $indicatorRateMin;
+        $count = 0;
+        foreach ($this->fiveYearRates as $index=>$rate) {
+            $count = $count + 1;
+            if ($count == $indicatorRateMin) {
+                $this->currentRateIndex = $index;
+            }
+        }
     }
 
-    public function newPosition($rate, $symbol, $shareCount, $side, $stopLossRate) {
-        $this->positionId = $this->positionId + 1;
+    public function getRates() {
+        $this->currentRateIndex = $this->currentRateIndex + 1;
 
-        $stock = Stocks::where('symbol', '=', $symbol)->first();
-
-        $newBackTestPosition = new StocksBackTestPositions();
-
-        $newBackTestPosition->stocks_back_test_iteration_id = $this->backTestIterationId;
-
-        $newBackTestPosition->stock_id = $stock->id;
-        $newBackTestPosition->shares_count = $shareCount;
-        $newBackTestPosition->open_date = $rate->dateTime;
-        $newBackTestPosition->open_price = $rate->closeMid;
-
-        $newBackTestPosition->stop_loss_rate = $stopLossRate;
-
-        $newBackTestPosition->position_type = $side;
-
-        $newBackTestPosition->save();
+        if (($this->currentRateIndex + 1) == $this->lastRatesIndex) {
+            $this->lastRatesIndex = true;
+        }
+        return array_slice($this->fiveYearRates,$this->currentRateIndex - $this->rateCount,$this->rateCount);
     }
 
-    public function closePosition($id) {
 
-    }
-
-    public function setAccountInfo() {
-        $openPositions = StocksBackTestPositions::where('stocks_back_test_iteration_id', '=', $this->backTestIterationId)
-                            ->where('close_price', '=', 0)
-                            ->get()
-                            ->toArray();
-
-        $this->openPositions = $openPositions;
-    }
-
-    public function endPeriod() {
-
-    }
 }

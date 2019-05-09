@@ -3,25 +3,17 @@
 use \App\Model\HistoricalRates;
 use App\ForexStrategy\EmaSimpleMomentum;
 use \DB;
-use \App\ForexStrategy\FiftyOneHundredMomentum;
+use App\EquityBacktest\EquityBackTestBroker;
 use \Log;
 
-class TakeProfitStopLossTest extends \App\ForexBackTest\BackTest  {
+class EquityBacktest extends \App\ForexBackTest\BackTest  {
 
     public function run() {
-        Log::debug('Started Running');
-
         $this->getInitialRates();
-
-        $this->currentRatesProcessed = $this->rateCount;
-
-        $this->setLastId();
-
-        $this->startNewPeriod();
 
         //Calling Strategy
         while(!$this->lastIdCheck()) {
-            //Due all the tasks for starting a new period, getting current rates, price data, etc.
+
             $this->startNewPeriod();
 
             $this->strategy->checkForNewPosition($this->currentRates);
