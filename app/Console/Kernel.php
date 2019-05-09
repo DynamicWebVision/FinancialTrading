@@ -95,9 +95,7 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('13:00');
             $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('17:00');
             $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('21:00');
-
-
-
+            
         }
         elseif (env('APP_ENV') == 'utility') {
             $schedule->call('App\Http\Controllers\ProcessController@serverRunCheck')->hourly();
