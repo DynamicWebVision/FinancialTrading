@@ -20,7 +20,7 @@ class StockTechnicalCheckControllerTest extends TestCase
     public function testKeepRunning() {
         $stockTechnicalCheckController = new StockTechnicalCheckController();
         $stockTechnicalCheckController->logger = new ProcessLogger('stc_hma_rev');
-        $stockTechnicalCheckController->hmaReversalCheck(3657);
+        $stockTechnicalCheckController->hmaReversalCheck(145);
     }
 
     public function testFlushOldTechnicalCheckResults() {

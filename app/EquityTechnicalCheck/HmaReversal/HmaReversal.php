@@ -12,6 +12,12 @@ class HmaReversal extends EquityTechnicalCheckBase {
 
     public function check() {
         $hmaEvents = new \App\IndicatorEvents\HullMovingAverage;
+
+        if (sizeof($this->rates['simple']) < 50) {
+            $this->logger->logMessage("Not Enough Rates");
+            return;
+        }
+
         $this->decisionIndicators['hmaRevAfterXPeriods'] = $hmaEvents->hmaChangeDirectionForFirstTimeInXPeriods($this->rates['simple'], $this->hmaLength, $this->hmaChangeDirPeriods);
 
         if ($this->decisionIndicators['hmaRevAfterXPeriods'] == 'reversedUp') {
