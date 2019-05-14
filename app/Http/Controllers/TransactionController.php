@@ -21,10 +21,16 @@ class TransactionController extends Controller {
         ini_set('memory_limit', '-1');
 
         if ($account) {
-            $account = OandaAccounts::find($account);
-            $id = $account->oanda_id;
-            $dbAccountId = $account->id;
-            $lastProcessedId = $account->last_order_id;
+            $nextAccount = OandaAccounts::where('live_trading', '=', $this->liveTrading)
+                ->where('active', '=', 1)
+                ->where('id', '=', $account)
+                ->orderBy('last_transaction_pull')
+                ->take(1)
+                ->get();
+
+            $id = $nextAccount[0]->oanda_id;
+            $dbAccountId = $nextAccount[0]->id;
+            $lastProcessedId = $nextAccount[0]->last_order_id;
         }
         else {
             $nextAccount = OandaAccounts::where('live_trading', '=', $this->liveTrading)
@@ -142,6 +148,13 @@ class TransactionController extends Controller {
         $this->environment = 'practice';
         $this->liveTrading = 0;
         $this->getOandaTransactions();
+    }
+
+    public function savePracticeTransactionsSpecificAccount($account) {
+        $this->logger = new ProcessLogger('fx_practice_transactions');
+        $this->environment = 'practice';
+        $this->liveTrading = 0;
+        $this->getOandaTransactions($account);
     }
 
 //    public function getUnsavedTransactions() {

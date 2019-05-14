@@ -142,5 +142,20 @@ class EventHelpers {
             return "none";
         }
     }
+
+    public function lineGoesfromNegativePositive($line) {
+        $currentPoint = end($line);
+        $previousPoint = $this->utility->getXFromLastValue($line, 1);
+
+        if ($previousPoint < 0 && $currentPoint > 0) {
+            return "crossedAbove";
+        }
+        elseif ($previousPoint > 0 && $currentPoint < 0) {
+            return "crossedBelow";
+        }
+        else {
+            return "none";
+        }
+    }
 }
 

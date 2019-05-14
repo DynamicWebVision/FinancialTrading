@@ -948,7 +948,7 @@ class LivePracticeController extends Controller {
 
             $systemStrategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-013', $logPrefix);
             $systemStrategy->accountAvailableMargin = $marginAvailable;
-            $systemStrategy->stopLossPipAmount = 25;
+            $systemStrategy->stopLossPipAmount = 10;
 
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;

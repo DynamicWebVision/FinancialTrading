@@ -23,6 +23,7 @@ use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\RsiPullback\RsiPullbac
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\HmaPricePoint\HmaPricePointBackTestToBeProcessed;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\EmaPriceCross\EmaPriceCrossBackTestToBeProcessed;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\SmaPriceCrossover\SmaPriceCrossoverBackTestToBeProcessed;
+use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\MacdHistogramX\MacdHistogramXBackTestToBeProcessed;
 //END OF Backtest Declarations
 
 use \Log;
@@ -414,6 +415,10 @@ class AutomatedBackTestController extends Controller {
             $backTestStrategy->callProcess();
         }
         $backTestStrategy->callProcess();
+        elseif ($this->server->current_back_test_strategy == 'MACD_HISTOGRAM_X') {
+            $backTestStrategy = new MacdHistogramXBackTestToBeProcessed($processId, $this->server, $this->logger);
+            $backTestStrategy->callProcess();
+        }
         //END OF STRATEGY IFS
     }
 }

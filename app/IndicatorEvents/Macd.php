@@ -63,4 +63,10 @@ class Macd {
             'histogram'=>$histogram
         ];
     }
+
+    public function histogramCrossover($rates, $shortPeriod, $longPeriod, $signalPeriod) {
+        $macd = $this->macd($rates, $shortPeriod, $longPeriod, $signalPeriod);
+
+        return $this->eventHelpers->lineGoesfromNegativePositive($macd['histogram']);
+    }
 }

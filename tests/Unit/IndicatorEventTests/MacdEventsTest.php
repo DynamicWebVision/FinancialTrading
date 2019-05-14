@@ -15,12 +15,21 @@ class MacdEventsTest extends TestCase
     public function testMacd() {
         $historicalRates = new \App\Model\HistoricalRates();
         //$rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 3:00:00');
-        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2018-12-24 8:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2019-3-8 4:00:00');
 
         $macd = new Macd();
 
-        $values = $macd->macd($rates, 12, 26, 9);
+        $expectedCrossedAbove = $macd->histogramCrossover($rates, 12, 26, 9);
 
-        dd($values);
+        dd($expectedCrossedAbove);
+
+        //$rates = $historicalRates->getRatesSpecificTimeSimpleInPips(1,3,1000,'2018-10-09 3:00:00');
+        $rates = $historicalRates->getRatesSpecificTimeSimple(1,3,1000,'2019-3-8 3:00:00');
+
+        $macd = new Macd();
+
+        $expectedCrossedAbove = $macd->histogramCrossover($rates, 12, 26, 9);
+
+        dd($expectedCrossedAbove);
     }
 }

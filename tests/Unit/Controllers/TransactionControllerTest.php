@@ -28,6 +28,11 @@ class TransactionControllerTest extends TestCase
         $transactionController->savePracticeTransactions();
     }
 
+    public function testSavePracticeTransactionsSpecific() {
+        $transactionController = new TransactionController();
+        $transactionController->savePracticeTransactionsSpecificAccount(14);
+    }
+
     public function testAAA() {
         $test = env('alksdfjaksldfjks');
     }

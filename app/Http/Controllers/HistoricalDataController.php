@@ -179,6 +179,7 @@ class HistoricalDataController extends Controller {
         $currencyInfo = Exchange::find($historicalRate->currency_id);
 
         $oanda = new OandaV20();
+        $oanda->strategyLogger = $this->logger;
 
         $oanda->exchange = $currencyInfo->exchange;
         $oanda->frequency = $frequencyInfo->oanda_code;
