@@ -412,13 +412,11 @@ class AutomatedBackTestController extends Controller {
         }
         elseif ($this->server->current_back_test_strategy == 'SMA_PRICE_CROSS') {
             $backTestStrategy = new SmaPriceCrossoverBackTestToBeProcessed($processId, $this->server, $this->logger);
-            $backTestStrategy->callProcess();
         }
-        $backTestStrategy->callProcess();
         elseif ($this->server->current_back_test_strategy == 'MACD_HISTOGRAM_X') {
             $backTestStrategy = new MacdHistogramXBackTestToBeProcessed($processId, $this->server, $this->logger);
-            $backTestStrategy->callProcess();
         }
+        $backTestStrategy->callProcess();
         //END OF STRATEGY IFS
     }
 }
