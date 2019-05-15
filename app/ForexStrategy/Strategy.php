@@ -190,11 +190,11 @@ abstract class Strategy  {
                     $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->ask, $this->exchange->pip);
 
                     if (isset($this->takeProfitPipAmount)) {
-                        $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateLongTakeProfit($this->ask), $this->exchange->pip);
+                        $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateLongTakeProfit($this->currentPriceData->ask), $this->exchange->pip);
                     }
 
                     if (isset($this->stopLossPipAmount)) {
-                        $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($this->calculateLongStopLoss($this->ask), $this->exchange->pip);
+                        $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($this->calculateLongStopLoss($this->currentPriceData->ask), $this->exchange->pip);
                     }
                 }
                 else {
@@ -499,11 +499,11 @@ abstract class Strategy  {
                     $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->bid, $this->exchange->pip);
 
                     if (isset($this->takeProfitPipAmount)) {
-                        $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateShortTakeProfit($this->bid), $this->exchange->pip);
+                        $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateShortTakeProfit($this->currentPriceData->bid), $this->exchange->pip);
                     }
 
                     if (isset($this->stopLossPipAmount)) {
-                        $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($this->calculateShortStopLoss($this->bid), $this->exchange->pip);
+                        $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($this->calculateShortStopLoss($this->currentPriceData->bid), $this->exchange->pip);
                     }
                 }
                 else {
