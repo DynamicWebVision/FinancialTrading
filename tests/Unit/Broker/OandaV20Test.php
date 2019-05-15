@@ -36,5 +36,18 @@ class OandaV20Test extends TestCase
 
         $debug=1;
     }
+    public function testGetCurrentPriceData() {
+        $oandaV20 = new OandaV20('practice');
+        $strategyLogger = new StrategyLogger();
+
+        $oandaV20->accountId = '101-001-7608904-007';
+        $oandaV20->exchange = 'EUR_USD';
+        $oandaV20->frequency = 'D';
+        $oandaV20->strategyLogger = $strategyLogger;
+
+        $test = $oandaV20->currentPrice();
+
+        $debug=1;
+    }
 
 }

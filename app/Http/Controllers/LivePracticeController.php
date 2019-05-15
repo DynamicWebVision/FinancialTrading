@@ -1245,7 +1245,7 @@ class LivePracticeController extends Controller {
         }
     }
 
-    public function dailyRatesCheck() {
+    public function hourlyRatesCheck() {
         $strategy = new HmaRevAfterPeriodsHold('101-001-7608904-015', 'initialload');
 
         $exchanges = \App\Model\Exchange::get();
@@ -1253,11 +1253,13 @@ class LivePracticeController extends Controller {
         $exchange = $exchanges[0];
 
         $strategy->exchange = $exchange;
-        $strategy->oanda->frequency = 'D';
+        $strategy->oanda->frequency = 'H1';
 
         $ratesCount = 0;
 
-        while ($ratesCount <= 60) {
+        $startTime = time();
+
+        while ((time() - $startTime) < 180) {
             $rates = $strategy->getRates('both', true);
 
             $lastRate = end($rates['full']);
@@ -1275,7 +1277,7 @@ class LivePracticeController extends Controller {
             $testDayRate->save();
 
             $ratesCount = $ratesCount + 1;
-            sleep(60);
+            sleep(5);
         }
 
 

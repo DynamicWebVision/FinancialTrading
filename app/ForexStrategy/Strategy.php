@@ -188,19 +188,27 @@ abstract class Strategy  {
                 if ($this->currentPriceData->ask >= $this->marketIfTouchedOrderPrice) {
                     $params['type'] = 'LIMIT';
                     $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->ask, $this->exchange->pip);
+
+                    if (isset($this->takeProfitPipAmount)) {
+                        $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateLongTakeProfit($this->ask), $this->exchange->pip);
+                    }
+
+                    if (isset($this->stopLossPipAmount)) {
+                        $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($this->calculateLongStopLoss($this->ask), $this->exchange->pip);
+                    }
                 }
                 else {
                     $params['type'] = 'MARKET_IF_TOUCHED';
                     $params['marketIfTouchedOrderPrice'] = $this->oanda->getOandaPrecisionPrice($this->marketIfTouchedOrderPrice, $this->exchange->pip);
                     $this->strategyLogger->logMessage('Long MARKET_IF_TOUCHED Order with mkt if touched Price '.$params['marketIfTouchedOrderPrice'].' good until '.$params['gtdTime'], 1);
-                }
 
-                if (isset($this->takeProfitPipAmount)) {
-                    $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateLongTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
-                }
+                    if (isset($this->takeProfitPipAmount)) {
+                        $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateLongTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
+                    }
 
-                if (isset($this->stopLossPipAmount)) {
-                    $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($this->calculateLongStopLoss($this->marketIfTouchedOrderPrice), $this->exchange->pip);
+                    if (isset($this->stopLossPipAmount)) {
+                        $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($this->calculateLongStopLoss($this->marketIfTouchedOrderPrice), $this->exchange->pip);
+                    }
                 }
             }
             else {
@@ -486,23 +494,31 @@ abstract class Strategy  {
                 }
             }
             elseif ($this->orderType == 'MARKET_IF_TOUCHED') {
-                if ($this->currentPriceData->mid <= $this->marketIfTouchedOrderPrice) {
+                if ($this->currentPriceData->bid <= $this->marketIfTouchedOrderPrice) {
                     $params['type'] = 'LIMIT';
-                    $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->mid, $this->exchange->pip);
+                    $params['limitPrice'] = $this->oanda->getOandaPrecisionPrice($this->currentPriceData->bid, $this->exchange->pip);
+
+                    if (isset($this->takeProfitPipAmount)) {
+                        $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateShortTakeProfit($this->bid), $this->exchange->pip);
+                    }
+
+                    if (isset($this->stopLossPipAmount)) {
+                        $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($this->calculateShortStopLoss($this->bid), $this->exchange->pip);
+                    }
                 }
                 else {
                     $params['type'] = 'MARKET_IF_TOUCHED';
                     $params['marketIfTouchedOrderPrice'] = $this->oanda->getOandaPrecisionPrice($this->marketIfTouchedOrderPrice, $this->exchange->pip);
 
                     $this->strategyLogger->logMessage('Short MARKET_IF_TOUCHED Order with MIT Price '.$params['marketIfTouchedOrderPrice'].' good until '.$params['gtdTime'], 1);
-                }
 
-                if (isset($this->takeProfitPipAmount)) {
-                    $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateShortTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
-                }
+                    if (isset($this->takeProfitPipAmount)) {
+                        $this->oanda->takeProfit = $this->oanda->getOandaPrecisionPrice($this->calculateShortTakeProfit($this->marketIfTouchedOrderPrice), $this->exchange->pip);
+                    }
 
-                if (isset($this->stopLossPipAmount)) {
-                    $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($this->calculateShortStopLoss($this->marketIfTouchedOrderPrice), $this->exchange->pip);
+                    if (isset($this->stopLossPipAmount)) {
+                        $this->oanda->stopLoss = $this->oanda->getOandaPrecisionPrice($this->calculateShortStopLoss($this->marketIfTouchedOrderPrice), $this->exchange->pip);
+                    }
                 }
             }
             else {
