@@ -24,7 +24,7 @@ class OandaV20 extends \App\Broker\Base  {
 
     public $addCurrentPriceToRates;
 
-    public $strategyLogger;
+    public $strategyLogger = false;
 
     public $oandaApiUrl;
 
@@ -59,9 +59,11 @@ class OandaV20 extends \App\Broker\Base  {
     }
 
     public function logRatesInfo($rates) {
-        $lastRate = end($rates);
-        $minuteDifference = round(time() - $lastRate->time/60);
-        $this->strategyLogger->logMessage('For frequency '.$this->frequency.' server time '.time().' last rate time '.$lastRate->time.' with minute difference '.$minuteDifference);
+        if ($this->strategyLogger) {
+            $lastRate = end($rates);
+            $minuteDifference = round(time() - $lastRate->time/60);
+            $this->strategyLogger->logMessage('For frequency '.$this->frequency.' server time '.time().' last rate time '.$lastRate->time.' with minute difference '.$minuteDifference);
+        }
     }
 
     public function getRates() {

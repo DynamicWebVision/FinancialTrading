@@ -1259,6 +1259,13 @@ class LivePracticeController extends Controller {
 
         $startTime = time();
 
+        $strategyLogger = new StrategyLogger();
+        $strategyLogger->exchange_id = $exchange->id;
+        $strategyLogger->method = 'priceBreakoutHourly';
+        $strategyLogger->oanda_account_id = 14;
+
+        $strategy->strategyLogger = $strategyLogger;
+
         while ((time() - $startTime) < 180) {
             $rates = $strategy->getRates('both', true);
 
