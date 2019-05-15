@@ -27,6 +27,7 @@ class HistoricalDataController extends Controller {
         $this->logger = new ProcessLogger('historical_fx_rates');
 
         $historicalDataPopulate = new \App\Services\HistoricalDataPopulate();
+        $historicalDataPopulate->logger = $this->logger;
         $historicalDataPopulate->getHistoricalData();
 
         $this->logger->processEnd();

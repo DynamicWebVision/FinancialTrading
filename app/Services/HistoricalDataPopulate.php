@@ -14,6 +14,7 @@ class HistoricalDataPopulate  {
     public $broker;
     public $frequencyInfo;
     public $currencyInfo;
+    public $logger;
 
     public function __construct() {
         $this->broker = new OandaV20();
@@ -21,6 +22,8 @@ class HistoricalDataPopulate  {
     }
 
     public function getHistoricalData($data = false) {
+        $this->broker->strategyLogger = $this->logger;
+
        Log::info('Get Historical Data START');
 
        if (!$data) {
