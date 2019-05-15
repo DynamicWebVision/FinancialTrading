@@ -72,10 +72,10 @@
 
         function decodeTransactionReason(reason) {
             if (reason == 'STOP_LOSS_ORDER') {
-                return '<span class="red">SL</span>';
+                return 'S';
             }
             else {
-                return '<span class="red">MK</span>';
+                return 'C';
             }
         }
 
