@@ -82,6 +82,7 @@
                                 <th>Open</th>
                                 <th>Price</th>
                                 <th>Close</th>
+                                <th>Reason</th>
                                 <th>Price</th>
                                 <th></th>
                                 <th>Update</th>
@@ -97,6 +98,7 @@
                                 <td>{{transaction.price}}</td>
                                 <td>{{transaction.close_date_time}}</td>
                                 <td>{{transaction.close_price}}</td>
+                                <td>{{main.decodeTransactionReason(transaction.close_reason)}}</td>
                                 <td class="text-center table-icon">
                                     <i class="fa fa-angle-double-up" ng-show="transaction.side == 1" aria-hidden="true"></i>
                                     <i class="fa fa-angle-double-down" ng-show="transaction.side == -1" aria-hidden="true"></i>

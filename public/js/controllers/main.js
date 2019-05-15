@@ -26,6 +26,7 @@
         vm.fiftyOpacityOffset = fiftyOpacityOffset;
         vm.gainLossClass = gainLossClass;
         vm.loadAllAccountTransactions = loadAllAccountTransactions;
+        vm.decodeTransactionReason = decodeTransactionReason;
 
         $http.get('/frequencies_exchanges').success(function(data){
             vm.frequencies = data.frequencies;
@@ -67,6 +68,15 @@
         function loadAllAccountTransactions() {
             vm.transactionParameters.exchange = 'ALL';
             loadTransactions();
+        }
+
+        function decodeTransactionReason(reason) {
+            if (reason == 'STOP_LOSS_ORDER') {
+                return '<span class="red">SL</span>';
+            }
+            else {
+                return '<span class="red">MK</span>';
+            }
         }
 
         document.title = 'Oanda Positions';
