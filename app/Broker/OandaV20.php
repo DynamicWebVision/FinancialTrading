@@ -232,7 +232,8 @@ class OandaV20 extends \App\Broker\Base  {
         }
 
         if (isset($this->trailingStop)) {
-            $postStructure->order->trailingStopLossOnFill = $this->trailingStop;
+            $postStructure->order->trailingStopLossOnFill = new \StdClass();
+            $postStructure->order->trailingStopLossOnFill->distance = $this->trailingStop;
         }
 
         $this->apiUrl = $this->oandaApiUrl.'accounts/'.$this->accountId.'/orders';

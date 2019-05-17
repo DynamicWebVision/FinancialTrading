@@ -304,7 +304,7 @@ class LivePracticeController extends Controller {
 //
 //            if ($exchange->exchange == 'EUR_USD') {
 //                $fiftyOneHundredEma->logDbRates = true;
-//            }
+//            }v
 //
 //            $fiftyOneHundredEma->exchange = $exchange;
 //            $fiftyOneHundredEma->oanda->frequency = 'M15';
@@ -1221,7 +1221,7 @@ class LivePracticeController extends Controller {
 
             $systemStrategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-012', $logPrefix);
             $systemStrategy->accountAvailableMargin = $marginAvailable;
-            $systemStrategy->stopLossPipAmount = 5;
+            $systemStrategy->trailingStopPipAmount = 10;
 
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;
