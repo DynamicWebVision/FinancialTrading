@@ -291,18 +291,45 @@ abstract class Strategy  {
     }
 
     public function calculateLongStopLoss($buyPrice) {
+        if ($this->orderType == 'MARKET_IF_TOUCHED') {
+            $buyPrice = $this->marketIfTouchedOrderPrice;
+        }
+        else {
+            $buyPrice = $this->currentPriceData->ask;
+        }
         return $buyPrice - ($this->exchange->pip * $this->stopLossPipAmount);
     }
 
     public function calculateShortStopLoss($price) {
+        if ($this->orderType == 'MARKET_IF_TOUCHED') {
+            $price = $this->marketIfTouchedOrderPrice;
+        }
+        else {
+            $price = $this->currentPriceData->bid;
+        }
+
         return $price + ($this->exchange->pip * $this->stopLossPipAmount);
     }
 
     public function calculateLongTakeProfit($price) {
+        if ($this->orderType == 'MARKET_IF_TOUCHED') {
+            $price = $this->marketIfTouchedOrderPrice;
+        }
+        else {
+            $price = $this->currentPriceData->ask;
+        }
+
         return $price + ($this->exchange->pip * $this->takeProfitPipAmount);
     }
 
     public function calculateShortTakeProfit($price) {
+        if ($this->orderType == 'MARKET_IF_TOUCHED') {
+            $price = $this->marketIfTouchedOrderPrice;
+        }
+        else {
+            $price = $this->currentPriceData->bid;
+        }
+
         return $price - ($this->exchange->pip * $this->takeProfitPipAmount);
     }
 

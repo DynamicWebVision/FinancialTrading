@@ -29,7 +29,7 @@ class StockTechnicalCheckControllerTest extends TestCase
         $stockTechnicalCheckController->flushOldTechnicalCheckResults();
     }
 
-    public function testCreateStockProcessQueueRecords() {
+    public function testCreateStockPerocessQueueRecords() {
         $stockTechnicalCheckController = new StockTechnicalCheckController();
         $stockTechnicalCheckController->createStockProcessQueueRecords();
     }
