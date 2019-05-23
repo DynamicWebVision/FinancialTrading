@@ -29,10 +29,10 @@ class OandaV20Test extends TestCase
 
         $oandaV20->accountId = '101-001-7608904-007';
         $oandaV20->exchange = 'EUR_USD';
-        $oandaV20->frequency = 'D';
+        $oandaV20->frequency = 'W';
         $oandaV20->strategyLogger = $strategyLogger;
 
-        $test = $oandaV20->fullRates();
+        $test = $oandaV20->fullRates(false);
 
         $debug=1;
     }

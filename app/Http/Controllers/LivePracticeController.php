@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Model\OandaAccounts;
 use App\Model\Strategy;
 use App\Services\Utility;
 use View;
@@ -1245,6 +1246,46 @@ class LivePracticeController extends Controller {
         }
     }
 
+
+    public function weeklyPriceBreakout() {
+
+        $strategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-017', 'initialload');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logPrefix = "priceBreakoutWeekly-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-017', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+            $systemStrategy->trailingStopPipAmount = 10;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'priceBreakoutWeekly';
+            $strategyLogger->oanda_account_id = 20;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'W';
+            $systemStrategy->stopLossPipAmount = 100;
+
+            $systemStrategy->rateCount = 1000;
+
+            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', false);
+            $systemStrategy->setCurrentPrice();
+
+            $systemStrategy->checkForNewPosition();
+        }
+    }
+
     public function hourlyRatesCheck() {
         $strategy = new HmaRevAfterPeriodsHold('101-001-7608904-015', 'initialload');
 
@@ -1286,7 +1327,73 @@ class LivePracticeController extends Controller {
             $ratesCount = $ratesCount + 1;
             sleep(5);
         }
+    }
 
+    public function closeWeeklyAccounts() {
+        $weeklyAccounts = [19, 20];
 
+        foreach ($weeklyAccounts as $weeklyAccount) {
+            $account = OandaAccounts::find($weeklyAccount);
+
+            $exchanges = \App\Model\Exchange::get();
+
+            foreach ($exchanges as $exchange) {
+                $logPrefix = "priceBreakoutWeekly-".$exchange->exchange."-".uniqid();
+
+                $systemStrategy = new HighLowSuperSimpleHoldOnePeriod($account->oanda_id, $logPrefix);
+
+                $strategyLogger = new StrategyLogger();
+                $strategyLogger->exchange_id = $exchange->id;
+                $strategyLogger->method = 'WeeklyCloseouts';
+                $strategyLogger->oanda_account_id = $weeklyAccount;
+
+                $systemStrategy->strategyLogger = $strategyLogger;
+                $systemStrategy->oanda->strategyLogger = $strategyLogger;
+
+                $systemStrategy->exchange = $exchange;
+
+                $systemStrategy->closeIfOpen();
+            }
+        }
+    }
+
+    public function marketIfTouchedReturnToOpenWeekly() {
+
+        $strategy = new MarketIfTouchedReturnToOpen('101-001-7608904-016', 'initialload');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logPrefix = "MarketIfTouchedReturnToOpen-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new MarketIfTouchedReturnToOpen('101-001-7608904-016', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'marketIfTouchedReturnToOpen';
+            $strategyLogger->oanda_account_id = 19;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'W';
+
+            $systemStrategy->rateCount = 1000;
+
+            $systemStrategy->positionMultiplier = 3;
+            $systemStrategy->stopLossPipAmount = 100;
+
+            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', false);
+            $systemStrategy->setCurrentPrice();
+
+            $systemStrategy->checkForNewPosition();
+        }
     }
 }

@@ -445,7 +445,7 @@ abstract class Strategy  {
 
     public function closeIfOpen() {
         $openPosition = $this->checkOpenPosition();
-        if ($openPosition['side']) {
+        if ($openPosition) {
             $this->closePosition();
         }
     }

@@ -42,6 +42,8 @@ class Kernel extends ConsoleKernel
     public $everyFifteenMinuteEarlyInterval = '59,14,29,44 * * * * *';
     public $everyFifteenMinutesInterval = '00,15,30,45 * * * * *';
     public $everyHourEarlyInterval = '00 * * * * *';
+    public $fridaysBeforeMarketsClose = '0 40 21 ? * FRI *';
+    public $sundayMarketsOpen = '0 5 23 ? * SUN *';
 
     /**
      * Define the application's command schedule.
@@ -65,17 +67,20 @@ class Kernel extends ConsoleKernel
             $schedule->command('schedule_process fx_live_transactions 3')->hourly();
             $schedule->command('schedule_process historical_fx_rates 3')->hourly();
             $schedule->command('schedule_process fx_practice_transactions 3')->cron($this->everyFifteenMinutesInterval);
-
+            $schedule->command('schedule_process fx_practice_transactions 3')->cron($this->everyFifteenMinutesInterval);
+            $schedule->command('schedule_process lp_close_weekly_accounts 9')->cron($this->fridaysBeforeMarketsClose);
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenHour')->hourlyAt(15);
             //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourSetHoldPeriods')->hourly();
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
+            $schedule->call('App\Http\Controllers\LivePracticeController@weeklyPriceBreakout')->cron($this->sundayMarketsOpen);
 
             $schedule->call('App\Http\Controllers\LivePracticeController@priceBreakoutHourly')->hourlyAt(2);
             $schedule->call('App\Http\Controllers\LivePracticeController@amazingCrossoverTrailingStop')->hourly();
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouchedHr')->hourly();
+            $schedule->call('App\Http\Controllers\LivePracticeController@weeklyPriceBreakout')->sundays();
 
             //
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('21:02');

@@ -40,4 +40,10 @@ class LivePracticeControllerTest extends TestCase
 
         $livePracticeController->dailyRatesCheck();
     }
+
+    public function testSDFSDDF() {
+        $livePracticeController = new LivePracticeController();
+
+        $livePracticeController->closeWeeklyAccounts();
+    }
 }
