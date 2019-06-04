@@ -157,5 +157,17 @@ class EventHelpers {
             return "none";
         }
     }
+
+    public function candlDirection($candle) {
+        if ($candle->closeMid > $candle->openMid) {
+            return 'long';
+        }
+        elseif ($candle->closeMid < $candle->openMid) {
+            return 'short';
+        }
+        else {
+            return null;
+        }
+    }
 }
 

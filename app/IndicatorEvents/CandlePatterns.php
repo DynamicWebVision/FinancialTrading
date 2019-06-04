@@ -24,17 +24,27 @@ use \App\IndicatorEvents\EventHelpers;
 
 class CandlePatterns {
     public $utility;
+    public $eventHelpers;
 
     public function __construct() {
         $this->utility = new Utility();
+        $this->eventHelpers = new EventHelpers();
     }
 
-    public function haramiCheck($rates) {
+    public function harami($rates) {
         $currentCandle = end($rates);
+        $currentCandleDirection = $this->eventHelpers->candlDirection($currentCandle);
         $previousCandle = $this->utility->getXFromLastValue($rates, 1);
+        $previousCandleDirection = $this->eventHelpers->candlDirection($previousCandle);
+
 
         if ($previousCandle->highMid >= $currentCandle->highMid && $previousCandle->lowMid <= $currentCandle->lowMid) {
-            return true;
+            if ($previousCandleDirection == 'short' && $currentCandleDirection == 'long') {
+                return 'long';
+            }
+            elseif ($previousCandleDirection == 'long' && $currentCandleDirection == 'short') {
+                return 'short';
+            }
         }
         else {
             return false;
@@ -67,5 +77,14 @@ class CandlePatterns {
             }
         }
         return false;
+    }
+
+    public function previousWickStopLoss($currentPriceData, $previousRate, $direction, $pip) {
+        if ($direction == 'long') {
+            return round(($currentPriceData->open - $previousRate->lowMid)/$pip);
+        }
+        elseif ($direction == 'short') {
+            return round(($previousRate->highMid - $currentPriceData->open)/$pip);
+        }
     }
 }

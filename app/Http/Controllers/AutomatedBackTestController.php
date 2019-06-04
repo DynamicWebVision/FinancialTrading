@@ -24,6 +24,7 @@ use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\HmaPricePoint\HmaPrice
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\EmaPriceCross\EmaPriceCrossBackTestToBeProcessed;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\SmaPriceCrossover\SmaPriceCrossoverBackTestToBeProcessed;
 use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\MacdHistogramX\MacdHistogramXBackTestToBeProcessed;
+use App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\CandleStick\CandleStickBackTestToBeProcessed;
 //END OF Backtest Declarations
 
 use \Log;
@@ -416,7 +417,10 @@ class AutomatedBackTestController extends Controller {
         elseif ($this->server->current_back_test_strategy == 'MACD_HISTOGRAM_X') {
             $backTestStrategy = new MacdHistogramXBackTestToBeProcessed($processId, $this->server, $this->logger);
         }
-        $backTestStrategy->callProcess();
+        elseif ($this->server->current_back_test_strategy == 'CANDLE_STICK') {
+            $backTestStrategy = new CandleStickBackTestToBeProcessed($processId, $this->server, $this->logger);
+        }
         //END OF STRATEGY IFS
+        $backTestStrategy->callProcess();
     }
 }
