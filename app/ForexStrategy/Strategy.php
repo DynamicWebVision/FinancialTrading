@@ -95,6 +95,7 @@ abstract class Strategy  {
     public $accountAvailableMargin;
 
     public $openPosition;
+    public $limitEndSeconds;
 
     public function __construct($accountId = 1, $runId = 1, $backtesting = false) {
         $this->oanda = new \App\Broker\OandaV20();
@@ -334,8 +335,13 @@ abstract class Strategy  {
     }
 
     public function calculateLimitEndTime() {
-        $frequency = DecodeFrequency::where('oanda_code', '=', $this->oanda->frequency)->first();
-        return time() + ($frequency->frequency_seconds - 60);
+        if (isset($this->limitEndSeconds)) {
+            return time() + $this->limitEndSeconds;
+        }
+        else {
+            $frequency = DecodeFrequency::where('oanda_code', '=', $this->oanda->frequency)->first();
+            return time() + ($frequency->frequency_seconds - 60);
+        }
     }
 
     public function modifyLongStopLoss($openPosition) {

@@ -32,7 +32,7 @@ class LivePracticeControllerTest extends TestCase
     public function testDailyPreviousPriceBreakout() {
         $livePracticeController = new LivePracticeController();
 
-        $livePracticeController->hma4HSetHoldPeriods();
+        $livePracticeController->marketIfTouchedReturnToOpenWeekly();
     }
 
     public function testSDFSDF() {

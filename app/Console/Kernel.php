@@ -44,6 +44,7 @@ class Kernel extends ConsoleKernel
     public $everyHourEarlyInterval = '00 * * * * *';
     public $fridaysBeforeMarketsClose = '0 40 21 ? * FRI *';
     public $sundayMarketsOpen = '0 5 23 ? * SUN *';
+    public $tuesdayBeforeNewYorkOpens = '0 28 9 ? * TUE *';
 
     /**
      * Define the application's command schedule.
@@ -74,7 +75,9 @@ class Kernel extends ConsoleKernel
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
+
             $schedule->call('App\Http\Controllers\LivePracticeController@weeklyPriceBreakout')->cron($this->sundayMarketsOpen);
+            $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenWeekly')->cron($this->tuesdayBeforeNewYorkOpens);
 
             $schedule->call('App\Http\Controllers\LivePracticeController@priceBreakoutHourly')->hourlyAt(2);
             $schedule->call('App\Http\Controllers\LivePracticeController@amazingCrossoverTrailingStop')->hourly();

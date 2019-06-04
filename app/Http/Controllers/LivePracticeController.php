@@ -1267,6 +1267,7 @@ class LivePracticeController extends Controller {
             $strategyLogger->exchange_id = $exchange->id;
             $strategyLogger->method = 'priceBreakoutWeekly';
             $strategyLogger->oanda_account_id = 20;
+            $systemStrategy->limitEndSeconds = 340000;
 
             $strategyLogger->newStrategyLog();
             $systemStrategy->setLogger($strategyLogger);
@@ -1279,7 +1280,7 @@ class LivePracticeController extends Controller {
 
             $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
 
-            $systemStrategy->rates = $systemStrategy->getRates('both', false);
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
             $systemStrategy->setCurrentPrice();
 
             $systemStrategy->checkForNewPosition();
@@ -1384,13 +1385,14 @@ class LivePracticeController extends Controller {
             $systemStrategy->oanda->frequency = 'W';
 
             $systemStrategy->rateCount = 1000;
+            $systemStrategy->limitEndSeconds = 258000;
 
             $systemStrategy->positionMultiplier = 3;
             $systemStrategy->stopLossPipAmount = 100;
 
             $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
 
-            $systemStrategy->rates = $systemStrategy->getRates('both', false);
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
             $systemStrategy->setCurrentPrice();
 
             $systemStrategy->checkForNewPosition();
