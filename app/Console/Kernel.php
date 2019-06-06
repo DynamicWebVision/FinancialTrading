@@ -69,15 +69,16 @@ class Kernel extends ConsoleKernel
             $schedule->command('schedule_process historical_fx_rates 3')->hourly();
             $schedule->command('schedule_process fx_practice_transactions 3')->cron($this->everyFifteenMinutesInterval);
             $schedule->command('schedule_process fx_practice_transactions 3')->cron($this->everyFifteenMinutesInterval);
-            $schedule->command('schedule_process lp_close_weekly_accounts 9')->cron($this->fridaysBeforeMarketsClose);
+
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenHour')->hourlyAt(15);
             //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourSetHoldPeriods')->hourly();
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
 
-            $schedule->call('App\Http\Controllers\LivePracticeController@weeklyPriceBreakout')->cron($this->sundayMarketsOpen);
-            $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenWeekly')->cron($this->tuesdayBeforeNewYorkOpens);
+//            $schedule->command('schedule_process lp_close_weekly_accounts 9')->cron($this->fridaysBeforeMarketsClose);
+//            $schedule->call('App\Http\Controllers\LivePracticeController@weeklyPriceBreakout')->cron($this->sundayMarketsOpen);
+//            $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenWeekly')->cron($this->tuesdayBeforeNewYorkOpens);
 
             $schedule->call('App\Http\Controllers\LivePracticeController@priceBreakoutHourly')->hourlyAt(2);
             $schedule->call('App\Http\Controllers\LivePracticeController@amazingCrossoverTrailingStop')->hourly();
