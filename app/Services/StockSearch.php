@@ -96,6 +96,7 @@ class StockSearch  {
         $this->symbolCriteria();
         $this->technicalCheckCriteria();
         $this->nameCriteria();
+        $this->orderByWhereCriteria();
         $this->setOrderDirection();
     }
 
@@ -146,6 +147,12 @@ class StockSearch  {
 
     public function getSkip() {
         return ($this->currentPage-1)*self::RESULT_COUNT;
+    }
+
+    protected function orderByWhereCriteria() {
+        if ($this->criteria['orderBy'] == 'stocks_fundamental.pe_ratio') {
+            $this->searchObject->where('stocks_fundamental.pe_ratio', '>', 0);
+        }
     }
 
     public function getCurrentResult() {
