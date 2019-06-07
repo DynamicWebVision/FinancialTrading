@@ -949,12 +949,57 @@ class LivePracticeController extends Controller {
 
             $systemStrategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-013', $logPrefix);
             $systemStrategy->accountAvailableMargin = $marginAvailable;
-            $systemStrategy->stopLossPipAmount = 10;
+            $systemStrategy->stopLossPipAmount = 15;
 
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;
             $strategyLogger->method = 'hmaHour';
             $strategyLogger->oanda_account_id = 13;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            if ($exchange->exchange == 'EUR_USD') {
+                $systemStrategy->logDbRates = true;
+            }
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'D';
+
+            $systemStrategy->rateCount = 1000;
+
+            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+            $systemStrategy->setCurrentPrice();
+
+            $systemStrategy->checkForNewPosition();
+        }
+    }
+
+    public function dailyPreviousPriceBreakoutTpSl() {
+
+        $this->utility->sleepUntilAtLeastFiveSeconds();
+
+        $strategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-003', 'initialload');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logPrefix = "dailyPreviousPriceBreakout-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-003', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+            $systemStrategy->stopLossPipAmount = 15;
+            $systemStrategy->takeProfitPipAmount = 25;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'hmaHour';
+            $strategyLogger->oanda_account_id = 2;
 
             $strategyLogger->newStrategyLog();
             $systemStrategy->setLogger($strategyLogger);
@@ -1054,6 +1099,52 @@ class LivePracticeController extends Controller {
             $systemStrategy->rateCount = 1000;
 
             $systemStrategy->positionMultiplier = 3;
+
+            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+            $systemStrategy->setCurrentPrice();
+            $logger->logMessage('Checking for New Position '.$exchange->exchange);
+
+            $systemStrategy->checkForNewPosition();
+        }
+    }
+
+    public function marketIfTouchedReturnToOpenTpSl() {
+
+        $this->utility->sleepUntilAtLeastFiveSeconds();
+
+        $strategy = new MarketIfTouchedReturnToOpen('101-001-7608904-004', 'initialload');
+        $logger = new ProcessLogger('lp_return_open_mkt_touch');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logger->logMessage('Starting Exchange '.$exchange->exchange);
+            $logPrefix = "MarketIfTouchedReturnToOpen-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new MarketIfTouchedReturnToOpen('101-001-7608904-004', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'marketIfTouchedReturnToOpen';
+            $strategyLogger->oanda_account_id = 1;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'D';
+
+            $systemStrategy->rateCount = 1000;
+            $systemStrategy->stopLossPipAmount = 15;
+            $systemStrategy->takeProfitPipAmount = 25;
+
+            $systemStrategy->positionMultiplier = 5;
 
             $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
 

@@ -88,7 +88,9 @@ class Kernel extends ConsoleKernel
 
             //
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('21:02');
+            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakoutTpSl')->dailyAt('21:02');
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpen')->dailyAt('13:00');
+            $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenTpSl')->dailyAt('13:00');
 
             $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('1:02');
             $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('5:02');
