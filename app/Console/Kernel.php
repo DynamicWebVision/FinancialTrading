@@ -76,9 +76,9 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
 
-//            $schedule->command('schedule_process lp_close_weekly_accounts 9')->cron($this->fridaysBeforeMarketsClose);
-//            $schedule->call('App\Http\Controllers\LivePracticeController@weeklyPriceBreakout')->cron($this->sundayMarketsOpen);
-//            $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenWeekly')->cron($this->tuesdayBeforeNewYorkOpens);
+            $schedule->command('schedule_process lp_close_weekly_accounts 9')->weeklyOn(5, '21:40');
+            $schedule->call('App\Http\Controllers\LivePracticeController@weeklyPriceBreakout')->weeklyOn(0, '23:05');
+            $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenWeekly')->weeklyOn(2, '9:28');
 
             $schedule->call('App\Http\Controllers\LivePracticeController@priceBreakoutHourly')->hourlyAt(2);
             $schedule->call('App\Http\Controllers\LivePracticeController@amazingCrossoverTrailingStop')->hourly();
