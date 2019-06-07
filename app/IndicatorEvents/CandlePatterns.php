@@ -52,6 +52,8 @@ class CandlePatterns {
     }
 
     public function hammerShootingStarCheck($rates) {
+        //Hammer = Long
+        // Shooting Star = Short
         $currentCandle = end($rates);
 
         $gainLoss = $currentCandle->closeMid - $currentCandle->openMid;

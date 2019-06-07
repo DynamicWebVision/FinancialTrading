@@ -11,6 +11,8 @@ use \App\ForexBackTest\TakeProfitStopLossTest;
 use \App\Services\StrategyLogger;
 
 use \App\ForexStrategy\CandleStick\SSHammerwHma;
+use \App\ForexStrategy\CandleStick\ShootingStarRsi;
+use \App\ForexStrategy\CandleStick\CandHaramRsi;
 //END STRATEGY DECLARATIONS
 
 class CandleStickBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBeProcessed\Base
@@ -56,6 +58,44 @@ class CandleStickBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBePr
             $strategy->hmaSlopeMin = intval($this->backTestToBeProcessed->variable_2);
             $strategy->takeProfitMultiplier = intval($this->backTestToBeProcessed->variable_3);
 
+            $strategy->takeProfitPipAmount = 0;
+            $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
+        intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
+        
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'SS_RSI') {
+            $backTest->rateLevel = 'both';
+        
+            $strategy = new ShootingStarRsi(1,1,true);
+        
+            //$strategy->orderType = 'MARKET_IF_TOUCHED';
+            $strategy->rsiLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->rsiCutoff = intval($this->backTestToBeProcessed->variable_2);
+            $strategy->rsiInPositionCutoff = intval($this->backTestToBeProcessed->variable_3);
+        
+            $strategy->takeProfitPipAmount = 0;
+            $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
+        intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
+        
+            //Values for Getting Rates
+            $backTest->rateCount = intval($multiplyValue)*10;
+            $backTest->rateIndicatorMin = intval($multiplyValue)*3;
+            $backTest->currentRatesProcessed = $backTest->rateCount;
+        }
+        elseif ($this->server->strategy_iteration == 'CAND_HARAMI_RSI') {
+            $backTest->rateLevel = 'both';
+        
+            $strategy = new CandHaramRsi(1,1,true);
+        
+            //$strategy->orderType = 'MARKET_IF_TOUCHED';
+            $strategy->X = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->rsiLength = intval($this->backTestToBeProcessed->variable_2);
+            $strategy->rsiCutoff = intval($this->backTestToBeProcessed->variable_3);
+        
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
         intval($this->backTestToBeProcessed->variable_3), intval($this->backTestToBeProcessed->variable_4), intval($this->backTestToBeProcessed->variable_5)]);
