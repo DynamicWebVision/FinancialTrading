@@ -69,7 +69,6 @@ class Kernel extends ConsoleKernel
             $schedule->command('schedule_process historical_fx_rates 3')->hourly();
             $schedule->command('schedule_process stck_historical 3')->hourly();
             $schedule->command('schedule_process fx_practice_transactions 3')->cron($this->everyFifteenMinutesInterval);
-            $schedule->command('schedule_process fx_practice_transactions 3')->cron($this->everyFifteenMinutesInterval);
 
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenHour')->hourlyAt(15);
             //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourSetHoldPeriods')->hourly();
@@ -92,20 +91,6 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakoutTpSl')->dailyAt('21:02');
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpen')->dailyAt('13:00');
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenTpSl')->dailyAt('13:00');
-
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('1:02');
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('5:02');
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('9:02');
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('13:02');
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('17:02');
-            $schedule->call('App\Http\Controllers\LivePracticeController@fourHourPriceBreakout')->dailyAt('21:02');
-
-            $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('1:00');
-            $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('5:00');
-            $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('9:00');
-            $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('13:00');
-            $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('17:00');
-            $schedule->call('App\Http\Controllers\LivePracticeController@hma4HSetHoldPeriods')->dailyAt('21:00');
 
             $schedule->call('App\Http\Controllers\LivePracticeController@hourlyRatesCheck')->hourly();
             

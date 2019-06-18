@@ -15,7 +15,6 @@ abstract class Base  {
         if ($setGet) {
             $getQueryString = http_build_query($this->getVariables);
             $this->apiUrl = $this->apiUrl."?".$getQueryString;
-            $this->apiUrl = 'https://cloud.iexapis.com/v1/stock/XOM/chart/5Y?token=sk_151e3d1400954c39a1b425156ac80cf5';
         }
 
         curl_setopt($this->curl,CURLOPT_POST, 0);
