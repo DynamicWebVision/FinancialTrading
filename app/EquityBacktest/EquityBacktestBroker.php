@@ -16,6 +16,10 @@ class EquityBackTestBroker {
     public $lastRate = false;
     public $lastRatesIndex;
 
+    public $openPosition = false;
+
+    public $currentPriceData;
+
     public function __construct($stockId, $indicatorRateMin) {
         $stock = Stocks::find($stockId);
         $this->symbol = $stock->symbol;
@@ -52,5 +56,9 @@ class EquityBackTestBroker {
         return array_slice($this->fiveYearRates,$this->currentRateIndex - $this->rateCount,$this->rateCount);
     }
 
+
+    public function endPeriodTasks() {
+
+    }
 
 }

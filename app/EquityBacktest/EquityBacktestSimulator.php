@@ -26,16 +26,10 @@ class EquityBackTestBase {
     }
 
     public function run() {
-        while (!$this->broker->lastRate) {
+        while (!$this->broker->lastRatesIndex) {
             $rates = $this->broker->getRates();
 
-            if (!$this->openPosition) {
-                $this->equityCheck->check();
-                $this->newPositionCheck();
-            }
-            else {
-
-            }
+            $this->broker->endPeriodTasks();
         }
     }
 }

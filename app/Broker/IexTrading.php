@@ -6,7 +6,7 @@ use App\Model\ApiErrorLog;
 
 class IexTrading extends \App\Broker\Base  {
 
-    public $baseUrl = 'https://api.iextrading.com/1.0/';
+    public $baseUrl = 'https://cloud.iexapis.com/';
     public $processLogger;
 
     public function __construct()
@@ -15,6 +15,8 @@ class IexTrading extends \App\Broker\Base  {
         //curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.env('TD_AMERITRADE_REFRESH_TOKEN') ));
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+
+        $this->getVariables[] = ['token'=>env('IEX_API_TOKEN')];
     }
 
     public function getCompanyProfile($symbol) {

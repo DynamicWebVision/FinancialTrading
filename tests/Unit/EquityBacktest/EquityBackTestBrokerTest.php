@@ -17,6 +17,18 @@ class EquityBackTestBrokerTest extends TestCase
         $equityBacktest = new EquityBackTestBroker(4542);
         $equityBacktest->loadAllRates('XOM');
     }
+
+    public function testGetNextRates()
+    {
+        $equityBacktest = new EquityBackTestBroker(4542, 50);
+
+        $equityBacktest->getRates();
+        $equityBacktest->getRates();
+        $equityBacktest->getRates();
+
+
+    }
+
     public function testABc()
     {
         $file_contets = file_get_contents('http://52.3.236.190/laravel-2019-05-16.log');

@@ -67,6 +67,7 @@ class Kernel extends ConsoleKernel
             $schedule->command('schedule_process fx_delete_dev_bts 2')->tuesdays();
             $schedule->command('schedule_process fx_live_transactions 3')->hourly();
             $schedule->command('schedule_process historical_fx_rates 3')->hourly();
+            $schedule->command('schedule_process stck_historical 3')->hourly();
             $schedule->command('schedule_process fx_practice_transactions 3')->cron($this->everyFifteenMinutesInterval);
             $schedule->command('schedule_process fx_practice_transactions 3')->cron($this->everyFifteenMinutesInterval);
 
