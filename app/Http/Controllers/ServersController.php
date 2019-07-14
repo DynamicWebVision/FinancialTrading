@@ -276,7 +276,6 @@ class ServersController extends Controller {
     }
 
     public function createEnvironmentVariableFile() {
-        $this->createEnvironmentVariableFile();
         $environmentVariables = ServerEnvironmentDef::where('type', '=', 'worker')->get()->toArray();
 
         $fileHandler = new FileHandler();
