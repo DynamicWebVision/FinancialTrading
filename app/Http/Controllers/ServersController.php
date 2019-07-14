@@ -322,12 +322,10 @@ class ServersController extends Controller {
 
     public function updateEnvironmentDBHost() {
         \Log::emergency("updateEnvironmentDBHost");
-        if(!DB::connection()->getDatabaseName())
-        {
-            $dbHost = $this->getCurrentDBHostFromAws();
-            $this->setConfigDBHost($dbHost);
-            $this->updateEnvDBRecord($dbHost);
-        }
+        $dbHost = $this->getCurrentDBHostFromAws();
+        $this->setConfigDBHost($dbHost);
+        $this->updateEnvDBRecord($dbHost);
+
         $this->createEnvironmentVariableFile($dbHost);
     }
 
