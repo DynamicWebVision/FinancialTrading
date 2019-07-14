@@ -116,6 +116,7 @@ class ServersControllerTest extends TestCase
 
     public function testRecreateStuff() {
         $serversController = new ServersController();
-        $serversController->createEnvironmentVariableFile();
+        $test = $serversController->updateEnvironmentDBHost();
+        $this->assertEquals('currency', $test);
     }
 }

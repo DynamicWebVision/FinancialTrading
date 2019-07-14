@@ -275,38 +275,62 @@ class ServersController extends Controller {
         fclose($handle);
     }
 
-    public function createEnvironmentVariableFile() {
+    public function createEnvironmentVariableFile($dbHost = false) {
         $environmentVariables = ServerEnvironmentDef::where('type', '=', 'worker')->get()->toArray();
 
         $fileHandler = new FileHandler();
         $fileHandler->filePath = env('APP_ROOT').'.env';
 
         foreach ($environmentVariables as $variable) {
-            $fileHandler->addLineToLineGroup($variable['env_variable'].'='.$variable['env_variable_value']);
+            if ($variable['env_variable'] == 'DB_HOST') {
+                if ($dbHost) {
+                    $this->setConfigDBHost($dbHost);
+                }
+                else {
+                    $dbHost = $variable['env_variable_value'];
+                }
+                $fileHandler->addLineToLineGroup($variable['env_variable'].'='.$dbHost);
+            }
+            else {
+                $fileHandler->addLineToLineGroup($variable['env_variable'].'='.$variable['env_variable_value']);
+            }
         }
         $fileHandler->clearFileAndWriteNewText();
     }
 
+    public function setConfigDBHost($dbHost) {
+        config(['database.connections.mysql.host' => $dbHost]);
+    }
+
+    public function getCurrentDBHostFromAws() {
+        $awsService = new AwsService();
+        $instances = $awsService->getAllInstances();
+
+        $dbIpAddress = $awsService->getReservationIPWithTag($instances, 'finance_db');
+        return $dbIpAddress;
+    }
+
+    public function updateEnvDBRecord($newDBRecord) {
+        $environmentVariables = ServerEnvironmentDef::where('env_variable', '=', 'DB_HOST')->get()->toArray();
+
+        foreach ($environmentVariables as $envVariable) {
+            $updateEnvVar = ServerEnvironmentDef::find($envVariable->id);
+            $updateEnvVar->env_variable_value = $newDBRecord;
+            $updateEnvVar->save();
+        }
+    }
+
     public function updateEnvironmentDBHost() {
         \Log::emergency("updateEnvironmentDBHost");
-
         $this->createEnvironmentVariableFile();
 
         if(!DB::connection()->getDatabaseName())
         {
-            $utility = new Utility();
-            $awsService = new AwsService();
-            $instances = $awsService->getAllInstances();
+            $dbHost = $this->getCurrentDBHostFromAws();
 
-            $dbIpAddress = $awsService->getReservationIPWithTag($instances, 'finance_db');
-
-            \Log::emergency("Got DB IP Address ".$dbIpAddress);
-
-            if (strlen($dbIpAddress) > 4) {
-                $utility->writeToLine('/var/www/FinancialTrading/.env',5,'DB_HOST='.$dbIpAddress);
-            }
-
-            \Log::emergency("Wrote Line");
+            $this->updateEnvDBRecord($dbHost);
+            $this->createEnvironmentVariableFile($dbHost);
+            return DB::connection()->getDatabaseName();
         }
     }
 
