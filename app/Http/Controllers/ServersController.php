@@ -282,7 +282,7 @@ class ServersController extends Controller {
         $fileHandler->filePath = env('APP_ROOT').'.env';
 
         foreach ($environmentVariables as $variable) {
-            $fileHandler->addLine($variable['env_variable'].'='.$variable['env_variable_value']);
+            $fileHandler->addLineToLineGroup($variable['env_variable'].'='.$variable['env_variable_value']);
         }
         $fileHandler->clearFileAndWriteNewText();
     }
