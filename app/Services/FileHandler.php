@@ -112,7 +112,7 @@ class FileHandler  {
     }
 
     public function clearFileAndWriteNewText() {
-        $file = fopen($this->filePath);
+        $file = fopen($this->filePath, 'w');
         ftruncate($file, 0);
         file_put_contents( $this->filePath , $this->textToAdd);
         $this->resetTextVariables();
