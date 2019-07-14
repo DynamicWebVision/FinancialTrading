@@ -322,16 +322,13 @@ class ServersController extends Controller {
 
     public function updateEnvironmentDBHost() {
         \Log::emergency("updateEnvironmentDBHost");
-        $this->createEnvironmentVariableFile();
-
         if(!DB::connection()->getDatabaseName())
         {
             $dbHost = $this->getCurrentDBHostFromAws();
-
+            $this->setConfigDBHost($dbHost);
             $this->updateEnvDBRecord($dbHost);
-            $this->createEnvironmentVariableFile($dbHost);
-            return DB::connection()->getDatabaseName();
         }
+        $this->createEnvironmentVariableFile($dbHost);
     }
 
     public function updateGitPullTime() {
