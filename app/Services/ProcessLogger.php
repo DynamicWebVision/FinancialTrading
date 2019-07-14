@@ -45,6 +45,7 @@ class ProcessLogger  {
 
         $this->logId = $newProcessLog->id;
         Config::set('process_log_id', $newProcessLog->id);
+        Config::set('process_id', $process->id);
     }
 
     public function logMessage($message, $type = 4) {

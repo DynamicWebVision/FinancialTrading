@@ -53,13 +53,13 @@ return [
             'engine' => null,
         ],
 
-        'utility_db' => [
+        'stocks_daily_db' => [
             'driver' => 'mysql',
-            'host' => env('UTILITY_DB_HOST', '127.0.0.1'),
+            'host' => env('STOCK_DAILY_DB', '127.0.0.1'),
             'port' => env('UTILITY_DB_PORT', '3306'),
-            'database' => env('UTILITY_DB_DATABASE', 'forge'),
-            'username' => env('UTILITY_DB_USERNAME', 'forge'),
-            'password' => env('UTILITY_DB_PASSWORD', ''),
+            'database' => env('STOCK_DAILY_DB_DATABASE', 'forge'),
+            'username' => env('STOCK_DAILY_DB_USERNAME', 'forge'),
+            'password' => env('STOCK_DAILY_DB_PASSWORD', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',

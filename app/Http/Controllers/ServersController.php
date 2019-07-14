@@ -6,8 +6,10 @@ use \App\Model\Servers;
 use \App\Model\Strategy;
 use \App\Model\StrategySystem;
 use \App\Model\ServerTasks;
+use \App\Model\Servers\ServerEnvironmentDef;
 use App\Model\BackTestToBeProcessed;
 use App\Services\Utility;
+use App\Services\FileHandler;
 use \DB;
 use Illuminate\Support\Str;
 use \Log;
@@ -273,8 +275,24 @@ class ServersController extends Controller {
         fclose($handle);
     }
 
+    public function createEnvironmentVariableFile() {
+        $this->createEnvironmentVariableFile();
+        $environmentVariables = ServerEnvironmentDef::where('type', '=', 'worker')->get()->toArray();
+
+        $fileHandler = new FileHandler();
+        $fileHandler->filePath = env('APP_ROOT').'.env';
+
+        foreach ($environmentVariables as $variable) {
+            $fileHandler->addLine($variable['env_variable'].'='.$variable['env_variable_value']);
+        }
+        $fileHandler->clearFileAndWriteNewText();
+    }
+
     public function updateEnvironmentDBHost() {
         \Log::emergency("updateEnvironmentDBHost");
+
+        $this->createEnvironmentVariableFile();
+
         if(!DB::connection()->getDatabaseName())
         {
             $utility = new Utility();

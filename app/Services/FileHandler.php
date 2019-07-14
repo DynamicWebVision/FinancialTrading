@@ -110,4 +110,11 @@ class FileHandler  {
         $lines[$lineToEdit] = $lines[$lineToEdit].$this->textToAdd;
         file_put_contents( $this->filePath , implode( "\n", $lines ) );
     }
+
+    public function clearFileAndWriteNewText() {
+        $file = fopen($this->filePath);
+        ftruncate($file, 0);
+        file_put_contents( $this->filePath , $this->textToAdd);
+        $this->resetTextVariables();
+    }
 }

@@ -1022,50 +1022,6 @@ class LivePracticeController extends Controller {
         }
     }
 
-    public function fourHourPriceBreakout() {
-
-        $this->utility->sleepUntilAtLeastFiveSeconds();
-
-        $strategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-006', 'initialload');
-
-        $marginAvailable = $strategy->getAvailableMargin();
-
-        //Need to Change
-        $exchanges = \App\Model\Exchange::get();
-
-        foreach ($exchanges as $exchange) {
-            $logPrefix = "fourHourPriceBreakout-".$exchange->exchange."-".uniqid();
-
-            $systemStrategy = new HighLowSuperSimpleHoldOnePeriod('101-001-7608904-006', $logPrefix);
-            $systemStrategy->accountAvailableMargin = $marginAvailable;
-            $systemStrategy->stopLossPipAmount = 10;
-
-            $strategyLogger = new StrategyLogger();
-            $strategyLogger->exchange_id = $exchange->id;
-            $strategyLogger->method = 'fourHourPriceBreakout';
-            $strategyLogger->oanda_account_id = 9;
-
-            $strategyLogger->newStrategyLog();
-            $systemStrategy->setLogger($strategyLogger);
-
-            if ($exchange->exchange == 'EUR_USD') {
-                $systemStrategy->logDbRates = true;
-            }
-
-            $systemStrategy->exchange = $exchange;
-            $systemStrategy->oanda->frequency = 'H4';
-
-            $systemStrategy->rateCount = 1000;
-
-            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
-
-            $systemStrategy->rates = $systemStrategy->getRates('both', true);
-            $systemStrategy->setCurrentPrice();
-
-            $systemStrategy->checkForNewPosition();
-        }
-    }
-
     public function marketIfTouchedReturnToOpen() {
 
         $this->utility->sleepUntilAtLeastFiveSeconds();
@@ -1489,4 +1445,50 @@ class LivePracticeController extends Controller {
             $systemStrategy->checkForNewPosition();
         }
     }
+
+    public function marketIfTouchedHighLowDaily() {
+
+        $this->utility->sleepUntilAtLeastFiveSeconds();
+
+        $strategy = new MarketIfTouchedReturnToOpen('101-001-7608904-011', 'initialload');
+        $logger = new ProcessLogger('lp_return_open_mkt_touch');
+
+        $marginAvailable = $strategy->getAvailableMargin();
+
+        //Need to Change
+        $exchanges = \App\Model\Exchange::get();
+
+        foreach ($exchanges as $exchange) {
+            $logger->logMessage('Starting Exchange '.$exchange->exchange);
+            $logPrefix = "MarketIfTouchedReturnToOpen-".$exchange->exchange."-".uniqid();
+
+            $systemStrategy = new MarketIfTouchedReturnToOpen('101-001-7608904-011', $logPrefix);
+            $systemStrategy->accountAvailableMargin = $marginAvailable;
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'marketIfTouchedReturnToOpen';
+            $strategyLogger->oanda_account_id = 12;
+
+            $strategyLogger->newStrategyLog();
+            $systemStrategy->setLogger($strategyLogger);
+
+            $systemStrategy->exchange = $exchange;
+            $systemStrategy->oanda->frequency = 'D';
+
+            $systemStrategy->rateCount = 1000;
+
+            $systemStrategy->positionMultiplier = 3;
+
+            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+
+            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+            $systemStrategy->setCurrentPrice();
+            $logger->logMessage('Checking for New Position '.$exchange->exchange);
+
+            $systemStrategy->checkForNewPosition();
+        }
+    }
+
+    //
 }

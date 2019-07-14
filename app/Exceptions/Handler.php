@@ -10,6 +10,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\DB;
 use App\Services\TextMessage;
 use App\Model\ProcessLog\ProcessLog;
+use App\Model\ProcessLog\Process;
 use App\Model\ProcessLog\ProcessLogMessage;
 use \Log;
 use App\Model\BackTestToBeProcessed;
@@ -66,17 +67,17 @@ class Handler extends ExceptionHandler
             }
         }
 
-        if (env('APP_ENV') == 'live_trading') {
-            $prodException = new ProdException();
-            $prodException->exception = $exception;
-            $prodException->save();
-
-
-            $textMessage = new TextMessage();
-
-            date('m/d H:m');
-
-        }
+//        if (env('APP_ENV') == 'live_trading') {
+//            $prodException = new ProdException();
+//            $prodException->exception = $exception;
+//            $prodException->save();
+//
+//
+//            $textMessage = new TextMessage();
+//
+//            date('m/d H:m');
+//
+//        }
 
         $processLogId = Config::get('process_log_id');
 
@@ -99,6 +100,14 @@ class Handler extends ExceptionHandler
             $processLogMessage->message_type_id = 4;
             $processLogMessage->message = "Relevant Execption ID :".$processLogRelevantId;
             $processLogMessage->save();
+
+            $processId = Config::get('process_id');
+
+            $process = Process::find($processId);
+
+            $textMessage = new TextMessage();
+            $message = 'Process "'.$process->name.'" had exception '.substr($exception, 0, 100);
+            $textMessage->sendTextMessage($message);
         }
 
         return $reportException;

@@ -177,4 +177,25 @@ class UtilityTest extends TestCase
         $utility->createTableFromJson('stocks_fundamental', $jsonObject);
     }
 
+    public function testGetEvents() {
+        $file = fopen('../../../tmp/event_history.csv',"r");
+
+        while (($data = fgetcsv($file)) !== FALSE) {
+            \DB::table('tbd_aws_activity')->insert(
+                [
+                    'event_id' => $data[0],
+                    'event_time' => $data[1],
+                    'user_name' => $data[2],
+                    'event_name' => $data[3],
+                    'resource_type' => $data[4],
+                    'resource_name' => $data[5],
+                    'aws_access_key' => $data[6],
+                    'aws_region' => $data[7],
+                    'error_code' => $data[8],
+                    'source_ip_address' => $data[9],
+                    'resources' => $data[10],
+                ]);
+        }
+    }
+
 }

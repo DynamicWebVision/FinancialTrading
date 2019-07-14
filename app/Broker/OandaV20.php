@@ -28,6 +28,8 @@ class OandaV20 extends \App\Broker\Base  {
 
     public $oandaApiUrl;
 
+    public $marketIfTouchedOrders;
+
     public function __construct($environment = false) {
         if (!$environment) {
             $oandaAuthToken = env('OANDA_AUTHORIZATION_TOKEN');
@@ -272,6 +274,23 @@ class OandaV20 extends \App\Broker\Base  {
             \Log::error('Current Price Exception '.$e);
             $this->strategyLogger->logApiRequestResponse($e);
         }
+
+    }
+
+    public function getMarketIfTouchedOrders() {
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/orders";
+
+        $this->strategyLogger->logApiRequestStart($this->apiUrl, '', 'orders');
+
+        $response = $this->apiGetRequest();
+
+        foreach ($response->orders as $order) {
+            if ($order->type == "MARKET_IF_TOUCHED") {
+                $this->marketIfTouchedOrders[] = $order;
+            }
+        }
+
+        $this->strategyLogger->logApiRequestResponse($response);
 
     }
 

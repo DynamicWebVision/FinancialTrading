@@ -213,4 +213,13 @@ class Utility  {
         $secondsToSleep = $minutes*60;
         sleep($secondsToSleep);
     }
+
+    public function addZero($val) {
+        if (strlen($val) == 1) {
+            return '0'.$val;
+        }
+        else {
+            return $val;
+        }
+    }
 }

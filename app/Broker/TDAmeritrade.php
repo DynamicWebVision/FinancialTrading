@@ -26,7 +26,7 @@ class TDAmeritrade extends \App\Broker\Base  {
     public $strategyLogger;
 
     public $accessToken;
-
+    public $logger;
 
     public function __construct() {
 
@@ -62,7 +62,11 @@ class TDAmeritrade extends \App\Broker\Base  {
 
         $this->getVariables = $parameters;
 
+        $this->logger->logMessage('TD_AMER API URL: '.$this->apiUrl);
+        $this->logger->logMessage('TD_AMER API GET PARAM: '.json_encode($this->getVariables));
+
         $response = $this->apiGetRequest();
+
         return $response;
     }
 

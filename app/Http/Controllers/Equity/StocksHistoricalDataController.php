@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\Config;
 use App\Model\Stocks\StocksDump;
 use App\Model\Stocks\Stocks;
 use App\Model\Stocks\StocksDailyPrice;
-use App\Model\Servers;
-use App\Services\Csv;
+use \App\Services\ProcessLogger;
 
 class StocksHistoricalDataController extends Controller {
 
@@ -23,30 +22,37 @@ class StocksHistoricalDataController extends Controller {
     public $keepRunningCheck = true;
     public $lastPullTime = 0;
     public $keepRunningStartTime = 0;
+    public $logger;
+
+    protected $tdAmeritrade;
 
     public function __construct() {
         set_time_limit(0);
         ini_set('memory_limit', '-1');
 
         $serverController = new ServersController();
-
         $serverController->setServerId();
     }
 
     public function keepRunning() {
-        Log::emergency('Keep Running Start');
         $serverController = new ServersController();
         $lastGitPullTime = $serverController->getLastGitPullTime();
+        $this->logger = new ProcessLogger('stck_historical');
+
+        $this->tdAmeritrade = new TDAmeritrade();
+        $this->tdAmeritrade->logger = $this->logger;
+
         Config::set('last_git_pull_time', $lastGitPullTime);
         $this->keepRunningStartTime = time();
-        Log::emergency('Keep Running Start Time '.$this->keepRunningStartTime);
 
         while ($this->keepRunningCheck) {
             if ($this->lastPullTime == time()) {
                 sleep(2);
             }
             $this->lastPullTime = time();
+            $this->checkCurrentStock();
             $this->getStockData();
+            $this->checkStockInitialComplete();
 
             $lastGitPullTime = $serverController->getLastGitPullTime();
             $configLastGitPullTime = Config::get('last_git_pull_time');
@@ -62,16 +68,6 @@ class StocksHistoricalDataController extends Controller {
     }
 
     public function getStockData() {
-
-        if (!$this->symbol) {
-            $this->setStockSymbol();
-        }
-
-        //Year Stuff
-        $this->getYear();
-
-        $tdAmeritrade = new TDAmeritrade();
-
         $startDate = strtotime('1/1/'.$this->year)*1000;
         $endDate = strtotime('12/10/'.$this->year)*1000;
 
@@ -83,9 +79,13 @@ class StocksHistoricalDataController extends Controller {
             'endDate'=>$endDate
         ];
 
-        $response = $tdAmeritrade->getStockPriceHistory($this->symbol, $params);
+        $response = $this->tdAmeritrade->getStockPriceHistory($this->symbol, $params);
 
-        foreach ($response->candles as $candle) {
+        $this->saveCandles($response->candles);
+    }
+
+    public function saveCandles($candles) {
+        foreach ($candles as $candle) {
 
             $stockPriceRecord = new StocksDailyPrice();
             $stockPriceRecord->stock_id = $this->stockId;
@@ -102,78 +102,66 @@ class StocksHistoricalDataController extends Controller {
         }
     }
 
-    public function setStockSymbol() {
-        $serverId = Config::get('server_id');
-        $server = Servers::find($serverId);
+    public function checkCurrentStock() {
+        if (!$this->stockId) {
+            $this->logger->logMessage('Stock Not Set Resetting');
+            $stock = Stocks::where('current_daily_load', '=', 1)->first();
+            $this->symbol = $stock->symbol;
+            $this->stockId = $stock->id;
+        }
 
-        $maxRateUnixTime = StocksDailyPrice::where('stock_id', '=', $server->stock_id)->max('date_time_unix');
+        $this->logger->logMessage('Running Process for '.$this->symbol.' with stock id '.$this->stockId);
+
+        $maxRateUnixTime = StocksDailyPrice::where('stock_id', '=', $this->stockId)->max('date_time_unix');
 
         $serverStockYear = date('Y', $maxRateUnixTime);
 
         if ($serverStockYear == date("Y")) {
-
-            $updatePullStock = Stocks::find($this->stockId);
-
-            $updatePullStock->last_price_pull = time();
-
-            $updatePullStock->save();
-
-            $this->getNextServerStock();
-
-            $server->stock_id = $this->stockId;
-            $server->save();
-        }
-        else {
-            $stock = Stocks::find($server->stock_id);
-
-            $this->symbol = $stock->symbol;
-            $this->stockId = $stock->id;
+            $this->logger->logMessage('Stock '.$this->symbol.' max rate year '.$serverStockYear.' is equal to current year, marking complete');
+            $this->markStockInitalLoadComplete();
+            $this->getNextStock();
         }
     }
 
-    public function getNextServerStock() {
-        $nextStock = Stocks::where('price_populate_year', '=', 0)
+    public function markStockInitalLoadComplete() {
+        $currentStock = Stocks::find($this->stockId);
+
+        $currentStock->initial_daily_load = 1;
+        $currentStock->current_daily_load = 0;
+        $currentStock->last_price_pull = time();
+
+        $currentStock->save();
+    }
+
+    public function getNextStock() {
+        $nextStock = Stocks::where('initial_daily_load', '=', 0)
             ->where('market_cap', '>', 0)
-            ->where('ipo_year', '!=', 'n/a')
             ->first();
 
+        $this->logger->logMessage('Got Next Stock '.$this->symbol.' with ID '.$this->stockId);
 
         $this->symbol = $nextStock->symbol;
         $this->stockId = $nextStock->id;
 
-        $serverId = Config::get('server_id');
-        $server = Servers::find($serverId);
-        $server->stock_id = $nextStock->id;
-        $server->save();
+        $nextStock->current_daily_load = 1;
+        $nextStock->save();
     }
 
     public function getYear() {
         $currentStock = Stocks::find($this->stockId);
 
         if ($currentStock->price_populate_year == 0) {
-            $serverId = Config::get('server_id');
-            $server = Servers::find($serverId);
-            $stock = Stocks::find($server->task_id);
-            $this->year = $stock->ipo_year;
-        }
-        else {
-            $nextYear = $currentStock->price_populate_year + 1;
-
-            if ($nextYear > date('Y', time())) {
-                $serverId = Config::get('server_id');
-                $server = Servers::find($serverId);
-
-                $this->getNextServerStock();
-
-                $server->stock_id = $this->stockId;
-                $server->save();
-
-                $stock = Stocks::find($this->stockId);
-
-                $this->year = $stock = $stock->ipo_year;
+            if ($currentStock->ipo_year == 'n/a') {
+                $this->logger->logMessage('IPO Year is n/a, setting as 2010.');
+                $this->year = '2010';
+            }
+            elseif ((int) trim($currentStock->ipo_year) < 2010) {
+                $this->logger->logMessage('IPO Year less than 2010, setting as 2010');
+                $this->year = '2010';
             }
             else {
-                $this->year = $nextYear;
+                $this->logger->logMessage('Setting as IP Year');
+                $this->year = $currentStock->ipo_year;
             }
         }
 
