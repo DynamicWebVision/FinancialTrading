@@ -314,7 +314,7 @@ class ServersController extends Controller {
         $environmentVariables = ServerEnvironmentDef::where('env_variable', '=', 'DB_HOST')->get()->toArray();
 
         foreach ($environmentVariables as $envVariable) {
-            $updateEnvVar = ServerEnvironmentDef::find($envVariable->id);
+            $updateEnvVar = ServerEnvironmentDef::find($envVariable['id']);
             $updateEnvVar->env_variable_value = $newDBRecord;
             $updateEnvVar->save();
         }
