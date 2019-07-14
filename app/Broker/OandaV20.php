@@ -25,6 +25,7 @@ class OandaV20 extends \App\Broker\Base  {
     public $addCurrentPriceToRates;
 
     public $strategyLogger = false;
+    public $logger = false;
 
     public $oandaApiUrl;
 
@@ -295,12 +296,17 @@ class OandaV20 extends \App\Broker\Base  {
     }
 
     public function checkOpenPosition() {
-        $this->strategyLogger->logApiRequestStart($this->apiUrl, '', 'check_position');
+        if ($this->strategyLogger) {
+            $this->strategyLogger->logApiRequestStart($this->apiUrl, '', 'check_position');
+        }
+
 
         $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/positions/".$this->exchange;
         $response = $this->apiGetRequest();
 
-        $this->strategyLogger->logApiRequestResponse($response);
+        if ($this->strategyLogger) {
+            $this->strategyLogger->logApiRequestResponse($response);
+        }
 
         if (!isset($response->position)) {
             return false;
@@ -442,9 +448,24 @@ class OandaV20 extends \App\Broker\Base  {
             }
             $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/positions/".$this->exchange."/close";
 
-            $this->strategyLogger->logApiRequestStart($this->apiUrl, $data, 'close_position');
+            if ($this->strategyLogger) {
+                $this->strategyLogger->logApiRequestStart($this->apiUrl, $data, 'close_position');
+            }
+
+            if ($this->logger) {
+                $this->logger->logMessage('Oanda Close Position Attempt');
+                $this->logger->logMessage('Oanda API URL: '.$this->apiUrl.' data: '.json_encode($data));
+            }
+
             $response = $this->apiPatchRequest($data);
-            $this->strategyLogger->logApiRequestResponse($response);
+            if ($this->strategyLogger) {
+                $this->strategyLogger->logApiRequestResponse($response);
+            }
+
+            if ($this->logger) {
+                $this->logger->logMessage('Close Position Response: '.substr(json_encode($response), 200));
+            }
+
         }
     }
 

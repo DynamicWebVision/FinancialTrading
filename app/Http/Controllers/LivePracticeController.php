@@ -23,6 +23,7 @@ use \App\ForexStrategy\EmaMomentum\EmaXAdxConfirmWithMarketIfTouched;
 use \App\ForexStrategy\HullMovingAverage\HmaSimple;
 use \App\ForexStrategy\PreviousCandlePriceHighLow\HighLowSuperSimpleHoldOnePeriod;
 use \App\ForexStrategy\MarketIfTouched\MarketIfTouchedReturnToOpen;
+use \App\ForexStrategy\MarketIfTouched\MarketIfTouchedReturnToHighLow;
 use \App\ForexStrategy\AmazingCrossover\AmazingCrossoverTS;
 use \App\ForexStrategy\HmaReversal\HmaRevAfterPeriodsHold;
 Use App\Services\ProcessLogger;
@@ -1450,8 +1451,8 @@ class LivePracticeController extends Controller {
 
         $this->utility->sleepUntilAtLeastFiveSeconds();
 
-        $strategy = new MarketIfTouchedReturnToOpen('101-001-7608904-011', 'initialload');
-        $logger = new ProcessLogger('lp_return_open_mkt_touch');
+        $strategy = new MarketIfTouchedReturnToOpen('101-001-7608904-006', 'initialload');
+        $logger = new ProcessLogger('lp_mit_h_l_d');
 
         $marginAvailable = $strategy->getAvailableMargin();
 
@@ -1460,15 +1461,15 @@ class LivePracticeController extends Controller {
 
         foreach ($exchanges as $exchange) {
             $logger->logMessage('Starting Exchange '.$exchange->exchange);
-            $logPrefix = "MarketIfTouchedReturnToOpen-".$exchange->exchange."-".uniqid();
+            $logPrefix = "marketIfTouchedHighLowDaily-".$exchange->exchange."-".uniqid();
 
-            $systemStrategy = new MarketIfTouchedReturnToOpen('101-001-7608904-011', $logPrefix);
+            $systemStrategy = new MarketIfTouchedReturnToHighLow('101-001-7608904-011', $logPrefix);
             $systemStrategy->accountAvailableMargin = $marginAvailable;
 
             $strategyLogger = new StrategyLogger();
             $strategyLogger->exchange_id = $exchange->id;
-            $strategyLogger->method = 'marketIfTouchedReturnToOpen';
-            $strategyLogger->oanda_account_id = 12;
+            $strategyLogger->method = 'marketIfTouchedHighLowDaily';
+            $strategyLogger->oanda_account_id = 9;
 
             $strategyLogger->newStrategyLog();
             $systemStrategy->setLogger($strategyLogger);
@@ -1476,9 +1477,9 @@ class LivePracticeController extends Controller {
             $systemStrategy->exchange = $exchange;
             $systemStrategy->oanda->frequency = 'D';
 
-            $systemStrategy->rateCount = 1000;
+            $systemStrategy->rateCount = 20;
 
-            $systemStrategy->positionMultiplier = 3;
+            $systemStrategy->positionMultiplier = 6;
 
             $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
 
@@ -1486,9 +1487,7 @@ class LivePracticeController extends Controller {
             $systemStrategy->setCurrentPrice();
             $logger->logMessage('Checking for New Position '.$exchange->exchange);
 
-            $systemStrategy->checkForNewPosition();
+            $systemStrategy->getEntryDecision();
         }
     }
-
-    //
 }

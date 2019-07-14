@@ -32,6 +32,7 @@ class BackTestDebugTest extends TestCase
 
 
     public $daysBesidesSundaySaturday = [1,2,3,4,5];
+    public $allDays = [0,1,2,3,4,5, 6];
 
     public function testCreateDefTimes() {
         $id = 1;
@@ -64,6 +65,23 @@ class BackTestDebugTest extends TestCase
 
                 $def_time->save();
 
+        }
+    }
+
+    public function testCreateEveryHourSixMinutesAfterHour() {
+        $id = 3;
+
+        foreach ($this->allDays as $day) {
+            foreach ($this->allDayHours as $hour) {
+                $def_time = new ProcessScheduleDefTimes();
+
+                $def_time->process_schedule_def_id = $id;
+                $def_time->day_of_week = $day;
+                $def_time->hours = $hour;
+                $def_time->minutes = '06';
+
+                $def_time->save();
+            }
         }
     }
 

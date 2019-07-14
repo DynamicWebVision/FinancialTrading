@@ -27,30 +27,4 @@ class MarketIfTouchedReturnToHighLow extends \App\ForexStrategy\Strategy  {
             $this->newLongPosition();
         }
     }
-
-    public function inPositionDecision() {
-        $this->closePosition();
-
-        $lastClose = end($this->rates['full']);
-        $this->marketIfTouchedOrderPrice = $lastClose->closeMid;
-
-        if ($this->currentPriceData->mid > $lastClose->closeMid) {
-            $this->strategyLogger->logMessage("this->currentPriceData->mid is greater than lastClose->closeMid, new short MIT");
-            $this->newShortPosition();
-        }
-        elseif ($this->currentPriceData->mid < $lastClose->closeMid) {
-            $this->strategyLogger->logMessage("this->currentPriceData->mid is less than lastClose->closeMid, new long MIT");
-            $this->newLongPosition();
-        }
-    }
-    public function checkForNewPosition() {
-        $this->setOpenPosition();
-
-        if (!$this->openPosition) {
-            $this->decision = $this->getEntryDecision();
-        }
-        else {
-            $this->inPositionDecision();
-        }
-    }
 }

@@ -44,6 +44,6 @@ class LivePracticeControllerTest extends TestCase
     public function testSDFSDDF() {
         $livePracticeController = new LivePracticeController();
 
-        $livePracticeController->closeWeeklyAccounts();
+        $livePracticeController->marketIfTouchedHighLowDaily();
     }
 }

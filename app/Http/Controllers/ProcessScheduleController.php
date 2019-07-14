@@ -84,7 +84,7 @@ class ProcessScheduleController extends Controller
 
         $nextTime = $this->getNextRunTime($definition['day_of_week'], $definition['hours'], $definition['minutes']);
 
-        $scheduleDefToUpdate->next_time_id = $definition->id;
+        $scheduleDefToUpdate->next_time_id = $definition['id'];
         $scheduleDefToUpdate->next_time = $nextTime;
 
         $scheduleDefToUpdate->save();
