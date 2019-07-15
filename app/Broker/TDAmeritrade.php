@@ -67,6 +67,8 @@ class TDAmeritrade extends \App\Broker\Base  {
 
         $response = $this->apiGetRequest();
 
+        $this->logger->logMessage('TD_AMER API Response: '.json_encode($response));
+
         return $response;
     }
 
