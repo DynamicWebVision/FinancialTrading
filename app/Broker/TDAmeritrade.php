@@ -58,6 +58,7 @@ class TDAmeritrade extends \App\Broker\Base  {
     }
 
     public function getStockPriceHistory($symbol, $parameters) {
+        $this->validateAccessToken();
         $this->apiUrl = $this->tdAmeritradeBaseUrl."marketdata/".$symbol."/pricehistory";
 
         $this->getVariables = $parameters;
@@ -73,6 +74,7 @@ class TDAmeritrade extends \App\Broker\Base  {
     }
 
     public function getStockFundamentalData($symbol) {
+        $this->validateAccessToken();
         $this->apiUrl = $this->tdAmeritradeBaseUrl."instruments";
 
         $parameters = [
