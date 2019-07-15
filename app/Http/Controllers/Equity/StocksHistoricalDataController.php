@@ -68,6 +68,8 @@ class StocksHistoricalDataController extends Controller {
     }
 
     public function getStockData() {
+        $this->getYear();
+
         $startDate = strtotime('1/1/'.$this->year)*1000;
         $endDate = strtotime('12/10/'.$this->year)*1000;
 
