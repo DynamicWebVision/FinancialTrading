@@ -6,11 +6,10 @@ use \App\IndicatorEvents\HullMovingAverage;
 
 
 class HmaReversal extends EquityTechnicalCheckBase {
-
     public $hmaLength;
     public $hmaChangeDirPeriods;
 
-    public function check() {
+    public function longCheck() {
         $hmaEvents = new \App\IndicatorEvents\HullMovingAverage;
 
         if (sizeof($this->rates['simple']) < 50) {
@@ -21,10 +20,8 @@ class HmaReversal extends EquityTechnicalCheckBase {
         $this->decisionIndicators['hmaRevAfterXPeriods'] = $hmaEvents->hmaChangeDirectionForFirstTimeInXPeriods($this->rates['simple'], $this->hmaLength, $this->hmaChangeDirPeriods);
 
         if ($this->decisionIndicators['hmaRevAfterXPeriods'] == 'reversedUp') {
-            $this->result = 'long';
-        }
-        elseif ($this->decisionIndicators['hmaRevAfterXPeriods'] == 'reversedDown') {
-            $this->result = 'short';
+            $this->result = true;
+            $this->resultSide = 'long';
         }
 
         $this->storeResult();

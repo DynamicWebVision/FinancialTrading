@@ -7,22 +7,19 @@ use App\Services\Utility;
 use App\EquityBacktest\EquityBackTestBroker;
 
 
-class EquityBackTestBase {
-    public $equityCheck;
+class EquityBacktestSimulator {
+    public $technicalCheck;
     public $broker;
     public $indicatorMin;
     public $openPosition = false;
     public $daysToHold = 4;
+    
+    public $orderType;
 
-    public function __construct($stockId, $indicatorMin)
+    public function __construct($stockId, $indicatorMin, $technicalCheck)
     {
         $this->broker = new EquityBackTestBroker($stockId, $indicatorMin);
-    }
-
-    public function newPositionCheck() {
-        if ($this->equityCheck->result == 'long') {
-
-        }
+        $this->technicalCheck = $technicalCheck;
     }
 
     public function run() {

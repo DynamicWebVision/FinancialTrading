@@ -14,8 +14,13 @@ abstract class EquityTechnicalCheckBase  {
     public $symbol;
     public $broker;
     public $rates = [];
+    public $decisionIndicators;
+
+
+    public $backTesting;
 
     public $result;
+    public $resultSide;
 
     public function __construct($stockId) {
         $this->logger = new ProcessLogger('stc_hma_rev');
@@ -39,20 +44,22 @@ abstract class EquityTechnicalCheckBase  {
     }
 
     public function storeResult() {
-        $technicalCheckResult = new StocksTechnicalCheckResult();
-        $technicalCheckResult->stock_id = $this->stockId;
+        if (!$this->backTesting) {
+            $technicalCheckResult = new StocksTechnicalCheckResult();
+            $technicalCheckResult->stock_id = $this->stockId;
 
-        if ($this->result == 'long') {
-            $this->logger->logMessage('Result of Long');
-            $technicalCheckResult->result_id = 1;
+            if ($this->result == 'long') {
+                $this->logger->logMessage('Result of Long');
+                $technicalCheckResult->result_id = 1;
+            }
+            elseif ($this->result == 'short') {
+                $this->logger->logMessage('Result of Short');
+                $technicalCheckResult->result_id = -1;
+            }
+            else {
+                $technicalCheckResult->result_id = 0;
+            }
+            $technicalCheckResult->save();
         }
-        elseif ($this->result == 'short') {
-            $this->logger->logMessage('Result of Short');
-            $technicalCheckResult->result_id = -1;
-        }
-        else {
-            $technicalCheckResult->result_id = 0;
-        }
-        $technicalCheckResult->save();
     }
 }

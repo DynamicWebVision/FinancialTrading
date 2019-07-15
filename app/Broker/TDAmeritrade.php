@@ -123,6 +123,8 @@ class TDAmeritrade extends \App\Broker\Base  {
 
         $response = $this->apiPostRequestHttpFields($data);
 
+        $this->logger->logMessage('TD_AMER API Response: '.json_encode($response));
+
         $tdAmeritradeAccount->access_token_expiration = time() + $response->expires_in - 60;
         $tdAmeritradeAccount->access_token = $response->access_token;
 
