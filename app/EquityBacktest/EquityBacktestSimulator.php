@@ -26,8 +26,15 @@ class EquityBackTestBase {
     }
 
     public function run() {
-        while (!$this->broker->lastRatesIndex) {
+        while (!$this->broker->backtestComplete) {
             $rates = $this->broker->getRates();
+
+            if ($this->broker->openPosition) {
+
+            }
+            else {
+
+            }
 
             $this->broker->endPeriodTasks();
         }

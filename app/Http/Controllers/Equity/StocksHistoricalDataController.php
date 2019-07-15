@@ -52,7 +52,7 @@ class StocksHistoricalDataController extends Controller {
             $this->lastPullTime = time();
             $this->checkCurrentStock();
             $this->getStockData();
-            $this->checkStockInitialComplete();
+            //$this->checkStockInitialComplete();
 
             $lastGitPullTime = $serverController->getLastGitPullTime();
             $configLastGitPullTime = Config::get('last_git_pull_time');

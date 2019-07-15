@@ -48,8 +48,4 @@ class RsiPbHmaSLBe extends \App\ForexStrategy\Strategy  {
 
         $this->decisionIndicators['emaPriceAboveBelow'] = $emaEvents->priceAboveBelowEma($this->rates['simple'], $this->emaLength);
     }
-
-    public function shortCheck($rates) {
-
-    }
 }
