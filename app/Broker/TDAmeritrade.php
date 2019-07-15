@@ -28,13 +28,14 @@ class TDAmeritrade extends \App\Broker\Base  {
     public $accessToken;
     public $logger;
 
-    public function __construct() {
+    public function __construct($logger) {
 
 //        curl_setopt( $this->curl, CURLOPT_FOLLOWLOCATION, 1);
 //        curl_setopt( $this->curl, CURLOPT_VERBOSE, 1);
         //curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
 
         $this->tdAmeritradeBaseUrl = 'https://api.tdameritrade.com/v1/';
+        $this->logger = $logger;
 
         $this->curl = curl_init();
         //curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.env('TD_AMERITRADE_REFRESH_TOKEN') ));
@@ -123,6 +124,7 @@ class TDAmeritrade extends \App\Broker\Base  {
 
         $response = $this->apiPostRequestHttpFields($data);
 
+        $this->logger->logMessage('TD_AMER API URL: '.$this->apiUrl);
         $this->logger->logMessage('TD_AMER API Response: '.json_encode($response));
 
         $tdAmeritradeAccount->access_token_expiration = time() + $response->expires_in - 60;

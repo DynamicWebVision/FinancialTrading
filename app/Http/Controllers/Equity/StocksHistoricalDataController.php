@@ -39,8 +39,7 @@ class StocksHistoricalDataController extends Controller {
         $lastGitPullTime = $serverController->getLastGitPullTime();
         $this->logger = new ProcessLogger('stck_historical');
 
-        $this->tdAmeritrade = new TDAmeritrade();
-        $this->tdAmeritrade->logger = $this->logger;
+        $this->tdAmeritrade = new TDAmeritrade($this->logger);
 
         Config::set('last_git_pull_time', $lastGitPullTime);
         $this->keepRunningStartTime = time();

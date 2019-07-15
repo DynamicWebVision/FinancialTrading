@@ -71,7 +71,7 @@ class StockFundamentalDataController extends Controller {
     }
 
     public function updateFundamentalData($stock) {
-        $tdAmeritrade = new TDAmeritrade();
+        $tdAmeritrade = new TDAmeritrade($this->logger);
         $this->logger->logMessage('Getting Fund Data for id: '.$stock->id.' symbol: '.$stock->symbol);
         $response = $tdAmeritrade->getStockFundamentalData($stock->symbol);
 
