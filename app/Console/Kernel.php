@@ -71,7 +71,6 @@ class Kernel extends ConsoleKernel
 
             $schedule->call('App\Http\Controllers\ProcessScheduleController@checkForDueProcesses')->everyMinute();
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenHour')->hourlyAt(15);
-            //$schedule->call('App\Http\Controllers\LivePracticeController@hmaHourSetHoldPeriods')->hourly();
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
             $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
