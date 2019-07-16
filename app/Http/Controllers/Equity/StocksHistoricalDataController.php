@@ -88,7 +88,10 @@ class StocksHistoricalDataController extends Controller {
     public function saveCandles($candles) {
         foreach ($candles as $candle) {
 
-            $stockPriceRecord = new StocksDailyPrice();
+            $stockPriceRecord = StocksDailyPrice::where('stock_id', '=', $this->stockId)
+                                        ->where('date_time_unix', '=', round($candle->datetime/1000))
+                                        ->firstOrNew();
+
             $stockPriceRecord->stock_id = $this->stockId;
             $stockPriceRecord->open = $candle->open;
             $stockPriceRecord->high = $candle->high;

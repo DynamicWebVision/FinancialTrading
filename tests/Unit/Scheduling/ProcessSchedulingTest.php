@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Http\Controllers\AutomatedBackTestController;
 use App\Http\Controllers\BackTestStatsController;
 use App\Http\Controllers\ProcessScheduleController;
+use App\Model\ProcessScheduleDefinition;
 use App\Http\Controllers\BackTestingController;
 use App\Broker\OandaV20;
 use App\Services\ProcessLogger;
@@ -89,5 +90,12 @@ class BackTestDebugTest extends TestCase
         $processScheduleController = new ProcessScheduleController();
 
         $processScheduleController->checkForDueProcesses();
+    }
+
+    public function testGetNextTime() {
+        $schedule = ProcessScheduleDefinition::find(3)->toArray();
+        $processScheduleController = new ProcessScheduleController();
+
+        $processScheduleController->createNextScheduleTime($schedule);
     }
 }
