@@ -64,6 +64,9 @@ class StockFundamentalDataController extends Controller {
 
     public function pullOneStock($currentDay) {
         $stockApi = StocksApiJobs::where('last_fundamental_pull', '!=', $currentDay)->first();
+        if (is_null($stockApi)) {
+            return;
+        }
         $stock = Stocks::find($stockApi->stock_id);
         $this->updateFundamentalData($stock);
         $stockApi->last_fundamental_pull = $currentDay;
