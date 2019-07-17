@@ -45,9 +45,8 @@ class StocksHistoricalDataController extends Controller {
         $this->keepRunningStartTime = time();
 
         while ($this->keepRunningCheck) {
-            if ($this->lastPullTime == time()) {
-                sleep(2);
-            }
+            sleep(2);
+
             $this->lastPullTime = time();
             $this->checkCurrentStock();
             $this->getStockData();
