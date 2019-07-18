@@ -30,6 +30,7 @@ class BackTestDebugTest extends TestCase
     public $allDayHours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
     public $marketMoverHours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 23];
 
+    public $offEveryFifteenMinutes = ['06', '21', '36', '51'];
 
 
     public $daysBesidesSundaySaturday = [1,2,3,4,5];
@@ -97,5 +98,24 @@ class BackTestDebugTest extends TestCase
         $processScheduleController = new ProcessScheduleController();
 
         $processScheduleController->createNextScheduleTime($schedule);
+    }
+
+    public function testCreateWithMinutes() {
+        $id = 4;
+
+        foreach ($this->allDays as $day) {
+            foreach ($this->allDayHours as $hour) {
+                foreach($this->offEveryFifteenMinutes as $minute) {
+                    $def_time = new ProcessScheduleDefTimes();
+
+                    $def_time->process_schedule_def_id = $id;
+                    $def_time->day_of_week = $day;
+                    $def_time->hours = $hour;
+                    $def_time->minutes = $minute;
+
+                    $def_time->save();
+                }
+            }
+        }
     }
 }
