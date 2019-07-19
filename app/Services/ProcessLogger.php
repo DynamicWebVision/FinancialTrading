@@ -57,6 +57,14 @@ class ProcessLogger  {
             $logMessage->save();
     }
 
+    public function logJsonApiResponse($response, $characters = 250) {
+        $this->logMessage('API Response: '.substr(json_decode($response), $characters));
+    }
+
+    public function logJson($label, $jsonObject) {
+        $this->logMessage($label.': '.json_decode($jsonObject));
+    }
+
     public function processEnd() {
         $logStrategy = ProcessLog::find($this->logId);
         $logStrategy->end_date_time = $this->utility->mysqlDateTime();
