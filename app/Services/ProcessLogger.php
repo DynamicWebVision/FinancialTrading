@@ -58,11 +58,11 @@ class ProcessLogger  {
     }
 
     public function logJsonApiResponse($response, $characters = 250) {
-        $this->logMessage('API Response: '.substr(json_decode($response), $characters));
+        $this->logMessage('API Response: '.substr(json_encode($response), $characters));
     }
 
     public function logJson($label, $jsonObject) {
-        $this->logMessage($label.': '.json_decode($jsonObject));
+        $this->logMessage($label.': '.json_encode($jsonObject));
     }
 
     public function processEnd() {
