@@ -169,7 +169,7 @@ class StocksHistoricalDataController extends Controller {
             }
         }
         else {
-            $this->year = $currentStock->ipo_year + 1;
+            $this->year = $currentStock->price_populate_year + 1;
         }
 
         $stockUpdate = Stocks::find($this->stockId);
