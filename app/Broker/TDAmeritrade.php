@@ -67,7 +67,10 @@ class TDAmeritrade extends \App\Broker\Base  {
         $this->validateAccessToken();
         $this->apiUrl = $this->tdAmeritradeBaseUrl."marketdata/".$symbol."/pricehistory";
 
+        //$parameters = json_decode('{"frequencyType":"daily","frequency":1,"periodType":"year","startDate":1609459200000,"endDate":1639094400000}');
         $this->getVariables = $parameters;
+
+        //$this->apiUrl = 'https://api.tdameritrade.com/v1/marketdata/TPNL/pricehistory?frequencyType=daily&frequency=1&periodType=year&startDate=1609459200000&endDate=1639094400000';
 
         $this->logger->logMessage('TD_AMER API URL: '.$this->apiUrl);
         $this->logger->logMessage('TD_AMER API GET PARAM: '.json_encode($this->getVariables));

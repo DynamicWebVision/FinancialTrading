@@ -118,9 +118,15 @@ class StocksHistoricalDataController extends Controller {
 
         $maxRateUnixTime = StocksDailyPrice::where('stock_id', '=', $this->stockId)->max('date_time_unix');
 
-        $serverStockYear = date('Y', $maxRateUnixTime);
+        if (is_null($maxRateUnixTime)) {
+            $stock = Stocks::find($this->stockId);
+            $serverStockYear = $stock->price_populate_year;
+        }
+        else {
+            $serverStockYear = date('Y', $maxRateUnixTime);
+        }
 
-        if ($serverStockYear == date("Y")) {
+        if ($serverStockYear >= date("Y")) {
             $this->logger->logMessage('Stock '.$this->symbol.' max rate year '.$serverStockYear.' is equal to current year, marking complete');
             $this->markStockInitalLoadComplete();
             $this->getNextStock();
