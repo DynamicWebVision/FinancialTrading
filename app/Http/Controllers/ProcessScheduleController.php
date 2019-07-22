@@ -55,12 +55,13 @@ class ProcessScheduleController extends Controller
 
         if ($current_day_of_week != $day) {
             $next_day_of_week = $this->dayOfWeekDays[$day];
-            if ($day < $current_day_of_week) {
-                $nextTime = strtotime($next_day_of_week.' next week '.$this->utility->addZero($hour).':'.$this->utility->addZero($minute));
-            }
-            else {
-                $nextTime = strtotime($next_day_of_week.' '.$this->utility->addZero($hour).':'.$this->utility->addZero($minute));
-            }
+//            if ($day < $current_day_of_week) {
+//                $nextTime = strtotime($next_day_of_week.' next week '.$this->utility->addZero($hour).':'.$this->utility->addZero($minute));
+//            }
+//            else {
+//                $nextTime = strtotime($next_day_of_week.' '.$this->utility->addZero($hour).':'.$this->utility->addZero($minute));
+//            }
+            $nextTime = strtotime($next_day_of_week.' '.$this->utility->addZero($hour).':'.$this->utility->addZero($minute));
         }
         else {
             $nextTime = strtotime('today '.$this->utility->addZero($hour).':'.$this->utility->addZero($minute));
