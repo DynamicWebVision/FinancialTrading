@@ -170,58 +170,6 @@ class LivePracticeController extends Controller {
 
 
 
-    public function hmaHourlyBeforeHour() {
-        Log::info('hmaHourlyBeforeHour: START LivePracticeController->hmaHourlyAfterHour');
-
-        //Need to Change
-        $exchanges = \App\Model\Exchange::get();
-
-        foreach ($exchanges as $exchange) {
-
-            $logPrefix = "hmaHourlyBeforeHour-".$exchange->exchange."-".uniqid();
-
-            $twoTierStrategy = new HmaStayInDifferentEntryExitAdx('101-001-7608904-011', $logPrefix);
-
-            /*** LOGGING ***/
-            $strategyLogger = new StrategyLogger();
-            $strategyLogger->exchange_id = $exchange->id;
-            $strategyLogger->method = 'hmaHourlyBeforeHour';
-            $strategyLogger->oanda_account_id = 12;
-
-            $strategyLogger->newStrategyLog();
-            $twoTierStrategy->setLogger($strategyLogger);
-
-            if ($exchange->exchange == 'EUR_USD') {
-                $twoTierStrategy->logDbRates = true;
-            }
-
-            $twoTierStrategy->exchange = $exchange;
-            $twoTierStrategy->oanda->frequency = 'H1';
-
-            $twoTierStrategy->rateCount = 200;
-            $twoTierStrategy->addCurrentPriceToRates = true;
-
-            $twoTierStrategy->rates = $twoTierStrategy->getRates('both');
-
-            $twoTierStrategy->positionMultiplier = 5;
-
-            $twoTierStrategy->maxPositions = 3;
-            $twoTierStrategy->stopLossPipAmount = 200;
-
-            $twoTierStrategy->hullLength = 9;
-            $twoTierStrategy->adxPeriodLength = 14;
-            $twoTierStrategy->adxCutOff = 20;
-
-            $twoTierStrategy->hmaLinRegCutoff = 10;
-            $twoTierStrategy->hmaCloseLinRegCutoff = 8;
-
-            $twoTierStrategy->orderType = 'LIMIT';
-
-            $twoTierStrategy->checkForNewPosition();
-            $strategyLogger->logStrategyEnd();
-        }
-        Log::info('hmaHourlyBeforeHour: END');
-    }
 
 //    public function fifteenEarly() {
 //        Log::info('EmaMomentum15TPSL: START LivePracticeController->emaMomentumAdx15MinutesTPSL');
@@ -1451,7 +1399,7 @@ class LivePracticeController extends Controller {
 
         $this->utility->sleepUntilAtLeastFiveSeconds();
 
-        $strategy = new MarketIfTouchedReturnToOpen('101-001-7608904-006', 'initialload');
+        $strategy = new MarketIfTouchedReturnToHighLow('101-001-7608904-006', 'initialload');
         $logger = new ProcessLogger('lp_mit_h_l_d');
 
         $marginAvailable = $strategy->getAvailableMargin();
@@ -1463,7 +1411,7 @@ class LivePracticeController extends Controller {
             $logger->logMessage('Starting Exchange '.$exchange->exchange);
             $logPrefix = "marketIfTouchedHighLowDaily-".$exchange->exchange."-".uniqid();
 
-            $systemStrategy = new MarketIfTouchedReturnToHighLow('101-001-7608904-011', $logPrefix);
+            $systemStrategy = new MarketIfTouchedReturnToHighLow('101-001-7608904-006', $logPrefix);
             $systemStrategy->accountAvailableMargin = $marginAvailable;
 
             $strategyLogger = new StrategyLogger();
