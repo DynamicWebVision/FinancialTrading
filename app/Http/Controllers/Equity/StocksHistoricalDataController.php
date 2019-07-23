@@ -87,22 +87,32 @@ class StocksHistoricalDataController extends Controller {
     public function saveCandles($candles) {
         foreach ($candles as $candle) {
 
-            $stockPriceRecord = StocksDailyPrice::firstOrNew([
-                                            'stock_id'=> $this->stockId,
-                                            'date_time_unix' => round($candle->datetime/1000)
-                                        ]);
+            try {
+                $stockPriceRecord = StocksDailyPrice::firstOrNew([
+                    'stock_id'=> $this->stockId,
+                    'date_time_unix' => round($candle->datetime/1000)
+                ]);
 
-            $stockPriceRecord->stock_id = $this->stockId;
-            $stockPriceRecord->open = $candle->open;
-            $stockPriceRecord->high = $candle->high;
-            $stockPriceRecord->low = $candle->low;
-            $stockPriceRecord->close = $candle->close;
-            $stockPriceRecord->volume = $candle->volume;
+                $stockPriceRecord->stock_id = $this->stockId;
+                $stockPriceRecord->open = $candle->open;
+                $stockPriceRecord->high = $candle->high;
+                $stockPriceRecord->low = $candle->low;
+                $stockPriceRecord->close = $candle->close;
+                $stockPriceRecord->volume = $candle->volume;
 
-            $stockPriceRecord->date_time_unix = round($candle->datetime/1000);
-            $stockPriceRecord->price_date_time = date('Y-m-d', round($candle->datetime/1000));
+                $stockPriceRecord->date_time_unix = round($candle->datetime/1000);
+                $stockPriceRecord->price_date_time = date('Y-m-d', round($candle->datetime/1000));
 
-            $stockPriceRecord->save();
+                $stockPriceRecord->save();
+            }
+            catch (\Exception $e) {
+                $errorStock = Stocks::find($this->stockId);
+                $errorStock->price_error = 1;
+                $errorStock->save();
+
+                $this->logger->logMessage('Stock '.$this->stockId.'-'.$this->symbol.' ran into save price error with message '.$e->getMessage());
+            }
+
         }
     }
 
