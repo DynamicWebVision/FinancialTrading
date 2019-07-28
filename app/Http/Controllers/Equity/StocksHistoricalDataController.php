@@ -81,7 +81,12 @@ class StocksHistoricalDataController extends Controller {
 
         $response = $this->tdAmeritrade->getStockPriceHistory($this->symbol, $params);
 
-        $this->saveCandles($response->candles);
+        if (isset($response->candles)) {
+            $this->saveCandles($response->candles);
+        }
+        else {
+            $this->logger->logMessage('Stock '.$this->stockId.'-'.$this->symbol.' did not have candle set.');
+        }
     }
 
     public function saveCandles($candles) {
@@ -128,13 +133,12 @@ class StocksHistoricalDataController extends Controller {
 
         $maxRateUnixTime = StocksDailyPrice::where('stock_id', '=', $this->stockId)->max('date_time_unix');
 
-        if (is_null($maxRateUnixTime)) {
-            $stock = Stocks::find($this->stockId);
-            $serverStockYear = $stock->price_populate_year;
-        }
-        else {
-            $serverStockYear = date('Y', $maxRateUnixTime);
-        }
+        $stock = Stocks::find($this->stockId);
+        $stockTableYear = $stock->price_populate_year;
+
+        $serverStockYear = date('Y', $maxRateUnixTime);
+
+        $serverStockYear = max([$stockTableYear, $serverStockYear]);
 
         if ($serverStockYear >= date("Y")) {
             $this->logger->logMessage('Stock '.$this->symbol.' max rate year '.$serverStockYear.' is equal to current year, marking complete');
