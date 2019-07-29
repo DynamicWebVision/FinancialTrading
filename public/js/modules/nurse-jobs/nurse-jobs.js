@@ -50,12 +50,27 @@
 
             var filter_text_reg_exp = new RegExp(vm.search_text.toUpperCase(), 'g');
 
-            if (job.state.toUpperCase().match(filter_text_reg_exp) || job.city.toUpperCase().match(filter_text_reg_exp)) {
+            if (vm.search_text.length == 0) {
                 return true;
             }
-            else {
-                return false;
+            else if (vm.search_text.length == 2) {
+                if (job.state.toUpperCase().match(filter_text_reg_exp)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
+            else {
+                if (job.city.toUpperCase().match(filter_text_reg_exp)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+
+
         }
     }
 })();
