@@ -24,7 +24,7 @@
         <div class="panel-body" ng-controller="LoginController">
 
             <h3 class="text-center m-t-0 m-b-30">
-                <span class="">Moose Collection</span>
+                <span class="">Operation PJ Party</span>
             </h3>
 
             <form class="form-horizontal m-t-20" name="login_form" novalidate ng-submit="logonAttempt()">

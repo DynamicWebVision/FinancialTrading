@@ -67,6 +67,7 @@
     <script type="text/javascript" src="js/modules/strategy-system-create/strategy-system-create.js"></script>
     <script type="text/javascript" src="js/modules/indicators/indicators-management.js"></script>
     <script type="text/javascript" src="js/modules/stocks/stocks-main/stocks-main.js"></script>
+    <script type="text/javascript" src="js/modules/nurse-jobs/nurse-jobs.js"></script>
 @stop
 
 @section('side_nav')
@@ -130,6 +131,12 @@
                 <a href="#indicator_management" class="waves-effect">
                     <i class="fas fa-align"></i>
                     <span> Indicator Management </span> <span class="pull-right"></span>
+                </a>
+            </li>
+            <li>
+                <a href="#nurse_jobs_view" class="waves-effect">
+                    <i class="fas fa-align"></i>
+                    <span> Nursing Contracts </span> <span class="pull-right"></span>
                 </a>
             </li>
         </ul>

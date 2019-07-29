@@ -20,10 +20,10 @@ class UserController extends Controller {
 
     public function createUser() {
         $user = new User([
-            'first_name' => 'Brian',
-            'last_name' => 'ONeill',
-            'email' => 'briantamu6@gmail.com',
-            'password' => bcrypt('People96321')
+            'first_name' => 'Emilia',
+            'last_name' => 'Barton',
+            'email' => 'emibarton@gmail.com',
+            'password' => bcrypt('GoldenDoodle1028')
         ]);
 
         $user->save();

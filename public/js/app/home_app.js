@@ -98,4 +98,9 @@ app.config(function($routeProvider) {
             controller : "ProcessLoggerController",
             controllerAs: 'pl'
         })
+        .when("/nurse_jobs_view", {
+            templateUrl : "js/modules/nurse-jobs/nurse-jobs.html",
+            controller : "NurseJobsController",
+            controllerAs: 'nj'
+        })
 });

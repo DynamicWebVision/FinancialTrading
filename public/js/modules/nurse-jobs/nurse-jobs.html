@@ -1,0 +1,43 @@
+<div class="panel panel-primary" ng-class="pl.fiftyOpacity(pl.processing)">
+    <div class="panel-heading">
+        <h3 class="panel-title">Nurse Jobs</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-hover content-table" >
+                    <thead>
+                    <tr>
+                        <th class="cursor-pointer">Location</th>
+                        <th class="cursor-pointer">Weeks</th>
+                        <th class="cursor-pointer">Population</th>
+                        <th class="cursor-pointer">Crime</th>
+                        <th class="cursor-pointer">Images</th>
+                        <th class="cursor-pointer">Restaurants</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="job in nj.jobs">
+                        <td>
+                            <a ng-href="{{nj.googleMapsLink(job)}}" target="_blank">{{job.city}}, {{job.state}}</a>
+                        </td>
+                        <td>{{job.weeks}}</td>
+                        <td>
+                            <a ng-href="{{nj.googlePopulationLink(job)}}" target="_blank">Pop</a>
+                        </td>
+                        <td>
+                            <a ng-href="{{nj.googleCrimeLink(job)}}" target="_blank">Crime</a>
+                        </td>
+                        <td>
+                            <a ng-href="{{nj.googleImagesLink(job)}}" target="_blank">Images</a>
+                        </td>
+                        <td>
+                            <a ng-href="{{nj.yelpLink(job)}}" target="_blank">Restaurants</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

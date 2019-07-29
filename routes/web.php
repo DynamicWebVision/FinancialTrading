@@ -250,6 +250,10 @@ Route::get('testrates', function() {
     }
 });
 
+Route::get('/nurse_jobs', function () {
+    return \App\Model\NurseJobs::orderBy('state')->get()->toArray();
+});
+
 Route::get('debug_aws_servers', 'ServersController@updateEnvironmentDBHost');
 
 Route::auth();
