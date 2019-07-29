@@ -4,6 +4,12 @@
     </div>
     <div class="panel-body">
         <div class="row">
+        <div class="col-md-3">
+            <input type="text" class="input-med form-control m-b-5" name="search_text"
+                   placeholder="Filter City/State" ng-model="nj.search_text" style="">
+        </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
                 <table class="table table-hover content-table" >
                     <thead>
@@ -14,10 +20,11 @@
                         <th class="cursor-pointer">Crime</th>
                         <th class="cursor-pointer">Images</th>
                         <th class="cursor-pointer">Restaurants</th>
+                        <th class="cursor-pointer">Rentals</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="job in nj.jobs">
+                    <tr ng-repeat="job in nj.jobs | filter:nj.filterCityState">
                         <td>
                             <a ng-href="{{nj.googleMapsLink(job)}}" target="_blank">{{job.city}}, {{job.state}}</a>
                         </td>
@@ -33,6 +40,9 @@
                         </td>
                         <td>
                             <a ng-href="{{nj.yelpLink(job)}}" target="_blank">Restaurants</a>
+                        </td>
+                        <td>
+                            <a ng-href="{{nj.rentalsLink(job)}}" target="_blank">Rentals</a>
                         </td>
                     </tr>
                     </tbody>

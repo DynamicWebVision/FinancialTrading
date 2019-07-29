@@ -413,62 +413,6 @@ class LivePracticeController extends Controller {
 //        Log::info('hourlyStochPullback: END');
 //    }
 
-    public function fifteenMinuteStochPullback() {
-        Log::info('fifteenMinuteStochPullback: START LivePracticeController->fifteenMinuteStochPullback');
-
-        $strategy = new Strategy();
-        //Need to Change
-        $exchanges = \App\Model\Exchange::get();
-
-        foreach ($exchanges as $exchange) {
-
-            $logPrefix = "fifteenMinuteStochPullback-".$exchange->exchange."-".uniqid();
-
-            $systemStrategy = new SingleHmaMomentumTpSl('101-001-7608904-005', $logPrefix);
-
-            $strategyLogger = new StrategyLogger();
-            $strategyLogger->exchange_id = $exchange->id;
-            $strategyLogger->method = 'fifteenMinuteStochPullback';
-            $strategyLogger->oanda_account_id = 3;
-
-            $strategyLogger->newStrategyLog();
-            $systemStrategy->setLogger($strategyLogger);
-
-            if ($exchange->exchange == 'EUR_USD') {
-                $systemStrategy->logDbRates = true;
-            }
-
-            $systemStrategy->exchange = $exchange;
-            $systemStrategy->oanda->frequency = 'M15';
-
-            $systemStrategy->rateCount = 625;
-
-            $systemStrategy->rates = $systemStrategy->getRates('both');
-            $systemStrategy->setCurrentPrice();
-
-            $systemStrategy->exchange = $exchange;
-            $systemStrategy->strategyId = 5;
-            $systemStrategy->strategyDesc = 'fifteenMinuteStochPullback';
-            $systemStrategy->positionMultiplier = 15;
-
-            $systemStrategy->maxPositions = 3;
-            $systemStrategy->stopLossPipAmount = 10;
-            $systemStrategy->takeProfitPipAmount = 20;
-
-            //Specific Strategy Variables
-            $systemStrategy->hmaLength = 125;
-            $systemStrategy->hmaSlopeMin = 0;
-
-            $systemStrategy->kLength = 25;
-            $systemStrategy->smoothingSlow = 3;
-            $systemStrategy->smoothingFull = 3;
-
-            $systemStrategy->orderType = 'LIMIT';
-
-            $systemStrategy->checkForNewPosition();
-        }
-        Log::info('hourlyStochPullback: END');
-    }
 
     //StochFastOppositeSlow-Hourly 101-001-7608904-007
     public function hourStochFastOppositeSlow() {

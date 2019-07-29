@@ -53,17 +53,17 @@ class BackTestDebugTest extends TestCase
         }
     }
 
-    public function testCreateMarketCloseBeforeNYOpen() {
-        $id = 2;
+    public function testCreateDaily() {
+        $id = 5;
 
-        foreach ($this->daysBesidesSundaySaturday as $day) {
+        foreach ($this->allDays as $day) {
 
                 $def_time = new ProcessScheduleDefTimes();
 
                 $def_time->process_schedule_def_id = $id;
                 $def_time->day_of_week = $day;
-                $def_time->hours = 11;
-                $def_time->minutes = 59;
+                $def_time->hours = 2;
+                $def_time->minutes = 27;
 
                 $def_time->save();
 

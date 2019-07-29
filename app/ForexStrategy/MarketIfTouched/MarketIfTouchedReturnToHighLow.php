@@ -18,7 +18,6 @@ class MarketIfTouchedReturnToHighLow extends \App\ForexStrategy\Strategy  {
             $this->marketIfTouchedOrderPrice = $lastClose->highMid;
 
             $this->strategyLogger->logMessage("this->currentPriceData->mid is greater than lastClose->closeMid, new short MIT");
-
             $this->newShortPosition();
         }
         elseif ($this->currentPriceData->mid < $lastClose->lowMid) {
