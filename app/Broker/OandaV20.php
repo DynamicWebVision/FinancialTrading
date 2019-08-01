@@ -29,6 +29,7 @@ class OandaV20 extends \App\Broker\Base  {
 
     public $oandaApiUrl;
 
+    protected $openPositions = [];
     public $marketIfTouchedOrders;
 
     public function __construct($environment = false) {
@@ -281,8 +282,6 @@ class OandaV20 extends \App\Broker\Base  {
     public function getMarketIfTouchedOrders() {
         $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/orders";
 
-        $this->strategyLogger->logApiRequestStart($this->apiUrl, '', 'orders');
-
         $response = $this->apiGetRequest();
 
         foreach ($response->orders as $order) {
@@ -291,8 +290,40 @@ class OandaV20 extends \App\Broker\Base  {
             }
         }
 
-        $this->strategyLogger->logApiRequestResponse($response);
+    }
 
+    public function getOpenPositions() {
+        $this->apiUrl = $this->oandaApiUrl."accounts/".$this->accountId."/openPositions";
+
+        $response = $this->apiGetRequest();
+
+        foreach ($response->positions as $position) {
+            $this->openPositions[] = $position;
+        }
+    }
+
+    public function noExistingOpenOrderOrPositionOnPair($exchange) {
+        $noOpenOrdersOrPosition = true;
+
+        $this->strategyLogger->logMessage('noExistingOpenOrderOrPositionOnPairfor Exchange '.$exchange);
+        $this->strategyLogger->logMessage('Open Positions: '.json_encode($this->openPositions));
+        $this->strategyLogger->logMessage('Open Orders: '.json_encode($this->marketIfTouchedOrders));
+
+
+
+        foreach ($this->openPositions as $position) {
+            if ($position->instrument == $exchange) {
+                $noOpenOrdersOrPosition = false;
+            }
+        }
+
+        foreach ($this->marketIfTouchedOrders as $order) {
+            if ($order->instrument == $exchange) {
+                $noOpenOrdersOrPosition = false;
+            }
+        }
+        $this->strategyLogger->logMessage('Result: '.$noOpenOrdersOrPosition);
+        return $noOpenOrdersOrPosition;
     }
 
     public function checkOpenPosition() {

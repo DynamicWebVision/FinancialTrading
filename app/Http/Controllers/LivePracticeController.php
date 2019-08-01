@@ -1340,46 +1340,21 @@ class LivePracticeController extends Controller {
     }
 
     public function marketIfTouchedHighLowDaily() {
+        $oandaAccount = OandaAccounts::find(9);
 
         $this->utility->sleepUntilAtLeastFiveSeconds();
 
-        $strategy = new MarketIfTouchedReturnToHighLow('101-001-7608904-006', 'initialload');
+        $strategy = new MarketIfTouchedReturnToHighLow($oandaAccount->oanda_id, 'initialload');
+        $strategy->oanda->frequency = 'D';
+        $strategy->oandaAccountId = $oandaAccount->id;
+        $strategy->rateCount = 20;
+        $strategy->positionMultiplier = 6;
+        $strategy->stopLossPipAmount = 25;
+        $strategy->orderType = 'MARKET_IF_TOUCHED';
+
         $logger = new ProcessLogger('lp_mit_h_l_d');
+        $strategy->logger = $logger;
 
-        $marginAvailable = $strategy->getAvailableMargin();
-
-        //Need to Change
-        $exchanges = \App\Model\Exchange::get();
-
-        foreach ($exchanges as $exchange) {
-            $logger->logMessage('Starting Exchange '.$exchange->exchange);
-            $logPrefix = "marketIfTouchedHighLowDaily-".$exchange->exchange."-".uniqid();
-
-            $systemStrategy = new MarketIfTouchedReturnToHighLow('101-001-7608904-006', $logPrefix);
-            $systemStrategy->accountAvailableMargin = $marginAvailable;
-
-            $strategyLogger = new StrategyLogger();
-            $strategyLogger->exchange_id = $exchange->id;
-            $strategyLogger->method = 'marketIfTouchedHighLowDaily';
-            $strategyLogger->oanda_account_id = 9;
-
-            $strategyLogger->newStrategyLog();
-            $systemStrategy->setLogger($strategyLogger);
-
-            $systemStrategy->exchange = $exchange;
-            $systemStrategy->oanda->frequency = 'D';
-
-            $systemStrategy->rateCount = 20;
-
-            $systemStrategy->positionMultiplier = 6;
-
-            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
-
-            $systemStrategy->rates = $systemStrategy->getRates('both', true);
-            $systemStrategy->setCurrentPrice();
-            $logger->logMessage('Checking for New Position '.$exchange->exchange);
-
-            $systemStrategy->getEntryDecision();
-        }
+        $strategy->checkEntryForPairs();
     }
 }

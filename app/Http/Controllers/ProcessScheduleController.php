@@ -35,7 +35,7 @@ class ProcessScheduleController extends Controller
     }
 
     public function createProcessRecords($dueSchedule) {
-        $processes = Process::where('schedule_def_id', '=', $dueSchedule['id'])->get()->toArray();
+        $processes = Process::where('schedule_def_id', '=', $dueSchedule['id'])->where('active','=',1)->get()->toArray();
 
         foreach ($processes as $process) {
             if ($process['single_process_record'] == 1) {

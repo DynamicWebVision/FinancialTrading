@@ -23,15 +23,22 @@ class EquityBacktestSimulator {
     }
 
     public function run() {
+        $this->broker->getInitialRates();
         while (!$this->broker->backtestComplete) {
-            $rates = $this->broker->getRates();
+            $rates = $this->broker->getCurrentRates();
 
-            if ($this->broker->openPosition) {
+//            if ($this->broker->openPosition) {
+//
+//            }
+//            else {
+//
+//            }
+            $lastCurrentRate = end($rates['full']);
 
-            }
-            else {
+            echo 'LastCurrentRate: '.json_encode($lastCurrentRate)."<BR>";
+            echo 'Current Rate: '.json_encode($this->broker->currentRate)."<BR>";
 
-            }
+            echo '--------------------------------------------------------<BR><BR>';
 
             $this->broker->endPeriodTasks();
         }

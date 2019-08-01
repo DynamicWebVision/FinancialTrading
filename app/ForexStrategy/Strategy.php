@@ -3,9 +3,11 @@
 use \Log;
 use \App\ForexBackTest\BackTestHelpers;
 use \App\Services\TransactionAmountHelpers;
+use \App\Services\StrategyLogger;
 use \App\Model\DecisionInputRatesLogs;
 use \App\Model\OandaOpenPositions;
 use \App\Model\DecodeFrequency;
+use \App\Model\Exchange;
 
 abstract class Strategy  {
 
@@ -14,11 +16,13 @@ abstract class Strategy  {
     public $strategyDesc = 'TEST';
 
     public $accountId = '';
+    public $oandaAccountId = '';
 
     public $task;
 
     public $takeProfit;
     public $takeProfitPipAmount;
+    public $logger;
 
     public $accountPercentToRisk;
 
@@ -932,6 +936,42 @@ abstract class Strategy  {
             if ($this->currentPriceData->ask >= $this->marketIfTouchedOrderPrice) {
 
             }
+        }
+    }
+
+    public function checkEntryForPairs() {
+        //Need to Change
+        $exchanges = Exchange::get();
+
+        $this->accountAvailableMargin = $this->getAvailableMargin();
+        $this->oanda->getOpenPositions();
+
+        if ($this->orderType == 'MARKET_IF_TOUCHED') {
+            $this->oanda->getMarketIfTouchedOrders();
+        }
+
+        $this->logger->logMessage('Available Margin: '.$this->accountAvailableMargin);
+
+        foreach ($exchanges as $exchange) {
+            $this->logger->logMessage('Starting Currency Pair '.$exchange->exchange);
+
+            $strategyLogger = new StrategyLogger();
+            $strategyLogger->exchange_id = $exchange->id;
+            $strategyLogger->method = 'marketIfTouchedHighLowDaily';
+            $strategyLogger->oanda_account_id = $this->oandaAccountId;
+
+            $strategyLogger->newStrategyLog();
+            $this->setLogger($strategyLogger);
+
+            $this->exchange = $exchange;
+
+            $this->rates = $this->getRates('both', true);
+
+            $this->setCurrentPrice();
+
+            $this->strategyLogger->logMessage('Checking for New Position '.$exchange->exchange);
+
+            $this->checkForNewPosition();
         }
     }
 }

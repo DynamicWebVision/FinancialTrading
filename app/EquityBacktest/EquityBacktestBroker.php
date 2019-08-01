@@ -81,25 +81,42 @@ class EquityBackTestBroker {
     }
 
     public function getCurrentRate() {
-        return StocksDailyPrice::where('stock_id', '=', $this->stockId)
-            ->where('id', '>', $this->currentRate['id'])
-            ->orderBy('date_time_unix')
-            ->first()
-            ->toArray();
+        if ($this->currentRate['id'] >= $this->lastRateId) {
+            $this->backtestComplete = true;
+            return null;
+        }
+        else {
+            return StocksDailyPrice::where('stock_id', '=', $this->stockId)
+                ->where('id', '>', $this->currentRate['id'])
+                ->orderBy('date_time_unix')
+                ->first()
+                ->toArray();
+        }
     }
 
     public function getCurrentRates() {
-        $rates = StocksDailyPrice::where('stock_id', '=', $this->stockId)
+        try {
+            $rates = StocksDailyPrice::where('stock_id', '=', $this->stockId)
                 ->where('id', '<', $this->currentRate['id'])
-            ->orderBy('date_time_unix', 'desc')
-            ->take($this->rateTakeCount)
-            ->get()
-            ->toArray();
+                ->orderBy('date_time_unix', 'desc')
+                ->take($this->rateTakeCount)
+                ->get()
+                ->toArray();
+        }
+        catch (\Exception $e) {
+            $debug=1;
+        }
 
         return $this->convertToBothRates($rates);
     }
 
     public function endPeriodTasks() {
         $this->currentRate = $this->getCurrentRate();
+
+        if (is_null($this->currentRate)) {
+            $debug=1;
+        }
+
+
     }
 }

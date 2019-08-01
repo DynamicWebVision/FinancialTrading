@@ -47,9 +47,7 @@
         }
 
         function filterCityState(job) {
-
             var filter_text_reg_exp = new RegExp(vm.search_text.toUpperCase(), 'g');
-
             if (vm.search_text.length == 0) {
                 return true;
             }
