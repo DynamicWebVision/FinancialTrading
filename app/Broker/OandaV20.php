@@ -302,23 +302,23 @@ class OandaV20 extends \App\Broker\Base  {
         }
     }
 
-    public function noExistingOpenOrderOrPositionOnPair($exchange) {
+    public function noExistingOpenOrderOrPositionOnPair() {
         $noOpenOrdersOrPosition = true;
 
-        $this->strategyLogger->logMessage('noExistingOpenOrderOrPositionOnPairfor Exchange '.$exchange);
+        $this->strategyLogger->logMessage('noExistingOpenOrderOrPositionOnPairfor Exchange '.$this->exchange);
         $this->strategyLogger->logMessage('Open Positions: '.json_encode($this->openPositions));
         $this->strategyLogger->logMessage('Open Orders: '.json_encode($this->marketIfTouchedOrders));
 
 
 
         foreach ($this->openPositions as $position) {
-            if ($position->instrument == $exchange) {
+            if ($position->instrument == $this->exchange) {
                 $noOpenOrdersOrPosition = false;
             }
         }
 
         foreach ($this->marketIfTouchedOrders as $order) {
-            if ($order->instrument == $exchange) {
+            if ($order->instrument == $this->exchange) {
                 $noOpenOrdersOrPosition = false;
             }
         }
