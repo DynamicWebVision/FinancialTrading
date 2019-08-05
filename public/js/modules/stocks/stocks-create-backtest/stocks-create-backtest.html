@@ -1,0 +1,95 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header-title">
+            <h4 class="pull-left page-title">Create Backtest Group</h4>
+            <ol class="breadcrumb pull-right">
+                <li><a href="#home">Home</a></li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Basic example -->
+    <div class="col-md-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title">New Back Test Group</h3></div>
+            <div class="panel-body">
+                <form name="scb.create_form" class="form-horizontal" novalidate ng-submit="scb.create()">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Name</label>
+                        <div class="col-md-9">
+                            <input type="text" class="input-med form-control m-b-5" name="back_test_name" placeholder="Group Name"
+                                   ng-model="scb.data.name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Technical Check</label>
+                        <div class="col-md-9">
+                            <select name="technical_check" class="form-control input-large margin-top-five" ng-required="true"
+                                    ng-model="scb.data.technical_check" ng-fade
+                                    ng-options="techCheck.id as techCheck.name for techCheck in scb.stockTechnicalCheck.all" ng-change="scb.getTcVariables()">
+                            </select>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Take Profit</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" rows="2"
+                                      name="variable_1_values" ng-model="cbg.newBacktestGroup.take_profit"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Stop Loss</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" rows="2"
+                                      name="variable_1_values" ng-model="cbg.newBacktestGroup.stop_loss"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Trailing Stop</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" rows="2"
+                                      name="variable_1_values" ng-model="cbg.newBacktestGroup.trailing_stop"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Dev/Testing Only</label>
+                        <div class="col-md-9">
+                            <input type="checkbox" class="input-med form-control m-b-5" name="dev_testing_only"
+                                   ng-model="cbg.newBacktestGroup.dev_testing_only">
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div ng-show="cbg.newBacktestGroup.processing" class="form-loader">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+
+                    <div class="submit-contain pull-right">
+                        <button class = 'btn-success btn'>Submit</button>
+                    </div>
+
+                    {{cbg.create_form.$error}}
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+</div>
+
+<!--<strategy-note-view></strategy-note-view>-->

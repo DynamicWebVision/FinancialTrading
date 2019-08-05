@@ -93,6 +93,11 @@ app.config(function($routeProvider) {
             controller : "StocksMainController",
             controllerAs: 'sh'
         })
+        .when("/stocks/create_backtest", {
+            templateUrl : "js/modules/stocks/stocks-create-backtest/stocks-create-backtest.html",
+            controller : "StocksCreateBacktest",
+            controllerAs: 'scb'
+        })
         .when("/process_logger", {
             templateUrl : "js/modules/process-log/process-log.html",
             controller : "ProcessLoggerController",

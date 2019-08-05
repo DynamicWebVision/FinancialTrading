@@ -222,4 +222,11 @@ class Utility  {
             return $val;
         }
     }
+
+    public function xWeekRange($date) {
+    $ts = strtotime($date);
+    $start = (date('w', $ts) == 0) ? $ts : strtotime('last sunday', $ts);
+    return array(date('Y-m-d', $start),
+                 date('Y-m-d', strtotime('next saturday', $start)));
+    }
 }

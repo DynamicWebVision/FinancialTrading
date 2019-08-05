@@ -15,6 +15,7 @@
         vm.exchanges = [];
         vm.strategies = [];
         vm.oandaAccounts = [];
+        vm.sumTotals = [];
 
         vm.transactions = [];
 
@@ -42,7 +43,8 @@
         function loadTransactions() {
             vm.loadingTransactions = true;
             $http.post('/load_transactions', vm.transactionParameters).success(function(response){
-                vm.transactions = response;
+                vm.transactions = response.trades;
+                vm.sumTotals = response.sumTotals;
                 vm.loadingTransactions = false;
             });
         }
@@ -58,10 +60,13 @@
 
         function gainLossClass(gl) {
             if (parseFloat(gl) > 0) {
-                return 'positive-green'
+                return 'positive-green';
+            }
+            else if (parseFloat(gl) < 0) {
+                return 'negative-red';
             }
             else {
-                return 'negative-red'
+                return '';
             }
         }
 

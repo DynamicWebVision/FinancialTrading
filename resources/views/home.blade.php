@@ -36,7 +36,6 @@
     <script src="/js/factory/stock-search.js"></script>
     <script src="/js/factory/stock-industry.js"></script>
     <script src="/js/factory/stock-sector.js"></script>
-    <script src="/js/factory/stock-technical-check.js"></script>
     <script src="/js/service/utility.js"></script>
     <script src="/js/Chart_2.6.js"></script>
     <script src="/js/angular-chart.js"></script>
@@ -67,6 +66,8 @@
     <script type="text/javascript" src="js/modules/strategy-system-create/strategy-system-create.js"></script>
     <script type="text/javascript" src="js/modules/indicators/indicators-management.js"></script>
     <script type="text/javascript" src="js/modules/stocks/stocks-main/stocks-main.js"></script>
+    <script type="text/javascript" src="js/modules/stocks/stocks-create-backtest/stocks-create-backtest.js"></script>
+    <script type="text/javascript" src="js/modules/stocks/factory/stocks-technical-check.js"></script>
     <script type="text/javascript" src="js/modules/nurse-jobs/nurse-jobs.js"></script>
 @stop
 
@@ -79,12 +80,24 @@
                     <span> Main </span> <span class="pull-right"></span>
                 </a>
             </li>
-            <li>
-                <a href="#stocks_main" class="waves-effect">
-                    <i class="fa fa-home" aria-hidden="true"></i>
-                    <span> Stocks </span> <span class="pull-right"></span>
+            <li ng-class="{'active': openUrl == 'stocks'}">
+
+                <a href="#/stocks_main" class="waves-effect"
+                   ng-click="openUrl = 'stocks'">
+                    <i class="fa fa-bell-o" aria-hidden="true"></i>
+                    <span> Stocks</span> <span class="pull-right"></span>
                 </a>
+                <ul ng-cloak class="list-unstyled" ng-show="openUrl == 'stocks'">
+                    <li>
+                        <a href="#/stocks/create_backtest" class="waves-effect">
+                            <i class="fa fa-undo" aria-hidden="true"></i>
+                            <span> Create Backtest </span>
+                            <span class="pull-right"></span>
+                        </a>
+                    </li>
+                </ul>
             </li>
+
             <li>
                 <a href="#back_test_home" class="waves-effect">
                     <i class="fa fa-undo" aria-hidden="true"></i>

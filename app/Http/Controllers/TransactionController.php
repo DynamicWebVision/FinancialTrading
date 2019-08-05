@@ -309,11 +309,7 @@ class TransactionController extends Controller {
     public function loadTransactions() {
         $post = Request::all();
 
-        $account = OandaAccounts::where('oanda_id', '=', $post['account'])->firstOrFail();
-
-//        if ((time() - $account->last_transaction_pull) < (60*60*30)) {
-//            $this->getOandaTransactions($account->id);
-//        }
+        $utility = new Utility();
 
         $oneMonthAgo = date('Y-m-d', strtotime('-30 day', time()));
 
@@ -332,11 +328,92 @@ class TransactionController extends Controller {
             $trades = $trades->where('oanda_account_id', '=', $post['account'])->orderBy('open_date_time', 'desc');
         }
 
+        $today = date('Y-m-d');
+
+        $sumTotals = [];
+
+        $currentWeekRange = $utility->xWeekRange($today);
+
+        $oneWeekAgoTodaySum = OandaTrades::where('oanda_account_id', '=', $post['account'])
+            ->where('open_date_time', '>=', $currentWeekRange[0])
+            ->where('open_date_time', '<=', $currentWeekRange[1])
+            ->sum('profit_loss');
+        $sumTotals[] = [
+            'label'=>   date('m/d', strtotime($currentWeekRange[0]))." - ".date('m/d', strtotime($currentWeekRange[1])),
+            'profit_loss' => $oneWeekAgoTodaySum
+        ];
+
+        $oneWeekAgoToday = date('Y-m-d', strtotime($today.' -7 days'));
+
+        $lastWeekRange = $utility->xWeekRange($oneWeekAgoToday);
+
+        $oneWeekSum = OandaTrades::where('oanda_account_id', '=', $post['account'])
+            ->where('open_date_time', '>=', $lastWeekRange[0])
+            ->where('open_date_time', '<=', $lastWeekRange[1])
+            ->sum('profit_loss');
+
+        $sumTotals[] = [
+            'label'=>   date('m/d', strtotime($lastWeekRange[0]))." - ".date('m/d', strtotime($lastWeekRange[1])),
+            'profit_loss' => $oneWeekSum
+        ];
+
+        $twoWeeksAgoToday = date('Y-m-d', strtotime($today.' -14 days'));
+
+        $twoWeeksAgoRangeWeekRange = $utility->xWeekRange($twoWeeksAgoToday);
+
+        $twoWeekSum = OandaTrades::where('oanda_account_id', '=', $post['account'])
+            ->where('open_date_time', '>=', $twoWeeksAgoRangeWeekRange[0])
+            ->where('open_date_time', '<=', $twoWeeksAgoRangeWeekRange[1])
+            ->sum('profit_loss');
+        $sumTotals[] = [
+            'label'=>   date('m/d', strtotime($twoWeeksAgoRangeWeekRange[0]))." - ".date('m/d', strtotime($twoWeeksAgoRangeWeekRange[1])),
+            'profit_loss' => $twoWeekSum
+        ];
+
+        $threeWeeksAgoToday = date('Y-m-d', strtotime($today.' -21 days'));
+
+        $threeWeeksAgoRangeWeekRange = $utility->xWeekRange($threeWeeksAgoToday);
+
+
+        $threeWeekSum = OandaTrades::where('oanda_account_id', '=', $post['account'])
+            ->where('open_date_time', '>=', $threeWeeksAgoRangeWeekRange[0])
+            ->where('open_date_time', '<=', $threeWeeksAgoRangeWeekRange[1])
+            ->sum('profit_loss');
+
+        $sumTotals[] = [
+            'label'=>   date('m/d', strtotime($threeWeeksAgoRangeWeekRange[0]))." - ".date('m/d', strtotime($threeWeeksAgoRangeWeekRange[1])),
+            'profit_loss' => $threeWeekSum
+        ];
+
+        $fourWeeksAgoToday = date('Y-m-d', strtotime($today.' -28 days'));
+
+        $fourWeeksAgoRangeWeekRange = $utility->xWeekRange($fourWeeksAgoToday);
+
+
+        $fourWeekSum = OandaTrades::where('oanda_account_id', '=', $post['account'])
+            ->where('open_date_time', '>=', $fourWeeksAgoRangeWeekRange[0])
+            ->where('open_date_time', '<=', $fourWeeksAgoRangeWeekRange[1])
+            ->sum('profit_loss');
+
+        $sumTotals[] = [
+            'label'=>   date('m/d', strtotime($fourWeeksAgoRangeWeekRange[0]))." - ".date('m/d', strtotime($fourWeeksAgoRangeWeekRange[1])),
+            'profit_loss' => $fourWeekSum
+        ];
+
+        $lastMonthSum = OandaTrades::where('oanda_account_id', '=', $post['account'])
+            ->where('open_date_time', '>=', $oneMonthAgo)
+            ->sum('profit_loss');
+
+        $sumTotals[] = [
+            'label'=>   'Last 30',
+            'profit_loss' => $lastMonthSum
+        ];
+
         $trades = $trades->orderBy('id', 'desc')
             ->get()
             ->toArray();
 
-        return $trades;
+        return ['trades'=> $trades, 'sumTotals'=> $sumTotals];
 
     }
 

@@ -43,7 +43,12 @@ class StockTechnicalCheckController extends Controller {
     }
 
     public function index() {
-        $technicalChecks = StocksTechnicalCheck::get()->toArray();
+        $technicalChecks = StocksTechnicalCheck::orderBy('name')->get()->toArray();
         return $technicalChecks;
+    }
+
+    public function getVariables($technicalCheckId) {
+        return StocksTechnicalCheckVariables::where('technical_check_id', '=', $technicalCheckId)
+                ->get()->toArray();
     }
 }

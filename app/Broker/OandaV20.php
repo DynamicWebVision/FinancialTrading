@@ -30,7 +30,7 @@ class OandaV20 extends \App\Broker\Base  {
     public $oandaApiUrl;
 
     protected $openPositions = [];
-    public $marketIfTouchedOrders;
+    public $marketIfTouchedOrders = [];
 
     public function __construct($environment = false) {
         if (!$environment) {
@@ -308,8 +308,6 @@ class OandaV20 extends \App\Broker\Base  {
         $this->strategyLogger->logMessage('noExistingOpenOrderOrPositionOnPairfor Exchange '.$this->exchange);
         $this->strategyLogger->logMessage('Open Positions: '.json_encode($this->openPositions));
         $this->strategyLogger->logMessage('Open Orders: '.json_encode($this->marketIfTouchedOrders));
-
-
 
         foreach ($this->openPositions as $position) {
             if ($position->instrument == $this->exchange) {

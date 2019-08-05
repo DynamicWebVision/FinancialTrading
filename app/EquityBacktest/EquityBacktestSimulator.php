@@ -12,8 +12,6 @@ class EquityBacktestSimulator {
     public $broker;
     public $indicatorMin;
     public $openPosition = false;
-    public $daysToHold = 4;
-    
     public $orderType;
 
     public function __construct($stockId, $indicatorMin, $technicalCheck)
@@ -33,6 +31,7 @@ class EquityBacktestSimulator {
 //            else {
 //
 //            }
+
             $lastCurrentRate = end($rates['full']);
 
             echo 'LastCurrentRate: '.json_encode($lastCurrentRate)."<BR>";

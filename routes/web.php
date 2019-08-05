@@ -181,6 +181,7 @@ Route::get('stocks_historical_data', 'Equity\StocksHistoricalDataController@getS
 Route::get('stocks/industry', 'Equity\StockIndustryController@index');
 Route::get('stocks/sectors', 'Equity\StockSectorController@index');
 Route::get('stocks/technical_checks', 'Equity\StockTechnicalCheckController@index');
+Route::get('stocks/technical_check_variables/{technicalCheckId}', 'Equity\StockTechnicalCheckController@getVariables');
 Route::get('stocks/company_profile/{stockId}', 'Equity\StocksCompanyProfileController@getProfile');
 Route::get('stocks/financial/{stockId}', 'Equity\StockSectorController@getFinancial');
 Route::get('stocks/rates/{symbol}/{chartPeriod}', 'Equity\StockRatesController@getChart');

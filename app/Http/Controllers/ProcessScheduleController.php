@@ -29,7 +29,6 @@ class ProcessScheduleController extends Controller
 
         foreach ($dueSchedules as $dueSchedule) {
             $this->createProcessRecords($dueSchedule);
-
             $this->createNextScheduleTime($dueSchedule);
         }
     }
@@ -61,6 +60,7 @@ class ProcessScheduleController extends Controller
 //            else {
 //                $nextTime = strtotime($next_day_of_week.' '.$this->utility->addZero($hour).':'.$this->utility->addZero($minute));
 //            }
+
             $nextTime = strtotime($next_day_of_week.' '.$this->utility->addZero($hour).':'.$this->utility->addZero($minute));
         }
         else {
