@@ -123,13 +123,10 @@ class ServersController extends Controller {
             }))->where('server', '=', Config::get('server_id'))->orderBy('priority', 'desc')->first();
         }
         else {
-            DB::enableQueryLog();
             $backTestGroup = BackTestGroup::where((function ($query) {
                 $query->where('server', '=', 0)
                     ->orWhere('server', '=', 6);
             }))->where('strategy_system_id', '!=', 0)->where('dev_testing_only', '!=', 1)->orderBy('priority', 'desc')->first();
-
-            $qLog = DB::getQueryLog();
         }
 
         if (is_null($backTestGroup)) {
