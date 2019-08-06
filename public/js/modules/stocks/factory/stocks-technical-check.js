@@ -1,7 +1,8 @@
 app.factory('StockTechnicalCheck', function($http) {
 
     var stockTechnicalChecks = {};
-    stockTechnicalChecks.all = [];
+    stockTechnicalChecks.allTechnicalChecks = [];
+    stockTechnicalChecks.technicalCheckVariables = [];
 
     stockTechnicalChecks.loadAllTechnicalChecks = loadAllTechnicalChecks;
     stockTechnicalChecks.getTechnicalCheckVariables = getTechnicalCheckVariables;
@@ -9,16 +10,13 @@ app.factory('StockTechnicalCheck', function($http) {
     function loadAllTechnicalChecks() {
         var allTechnicalChecks  = $http.get('/stocks/technical_checks');
         allTechnicalChecks.then(function(response){
-            return response;
+            stockTechnicalChecks.allTechnicalChecks = response.data;
         });
         return allTechnicalChecks;
     }
 
     function getTechnicalCheckVariables(technical_check_id) {
         var technicalCheckVariables  = $http.get('/stocks/technical_check_variables/'+technical_check_id);
-        technicalCheckVariables.then(function(response){
-            return response;
-        });
         return technicalCheckVariables;
     }
 

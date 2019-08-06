@@ -33,11 +33,13 @@ class TransactionController extends Controller {
             $lastProcessedId = $nextAccount[0]->last_order_id;
         }
         else {
+            \DB::enableQueryLog();
             $nextAccount = OandaAccounts::where('live_trading', '=', $this->liveTrading)
                 ->where('active', '=', 1)
                 ->orderBy('last_transaction_pull')
                 ->take(1)
                 ->get();
+            $q = \DB::getQueryLog();
 
             $id = $nextAccount[0]->oanda_id;
             $dbAccountId = $nextAccount[0]->id;

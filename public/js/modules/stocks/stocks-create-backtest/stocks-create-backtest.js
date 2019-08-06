@@ -8,6 +8,7 @@
     function StocksCreateBacktest(StockTechnicalCheck, $http, SweetAlert) {
         var vm = this;
         vm.data = {};
+        vm.data.technicalCheckVariables = [];
 
         vm.stockTechnicalCheck = StockTechnicalCheck;
 
@@ -17,7 +18,9 @@
         StockTechnicalCheck.loadAllTechnicalChecks();
 
         function getTcVariables() {
-            StockTechnicalCheck.getTechnicalCheckVariables(vm.data.technical_check);
+            StockTechnicalCheck.getTechnicalCheckVariables(vm.data.technical_check).then(function(response) {
+                vm.data.technicalCheckVariables = response.data;
+            });
         }
 
         function createBacktest() {

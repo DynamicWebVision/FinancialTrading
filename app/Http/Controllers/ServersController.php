@@ -133,27 +133,28 @@ class ServersController extends Controller {
         }
 
         if (is_null($backTestGroup)) {
-            $this->logger->logMessage('Next Backtest Group is null. Killing Process');
-            die();
+            $this->logger->logMessage('Next Backtest Group is null. Sleeping for 1 minute.');
+            sleep(60);
         }
+        else {
+            $strategy = Strategy::find($backTestGroup->strategy_id);
+            $strategySystem = StrategySystem::find($backTestGroup->strategy_system_id);
 
-        $strategy = Strategy::find($backTestGroup->strategy_id);
-        $strategySystem = StrategySystem::find($backTestGroup->strategy_system_id);
+            $server->current_back_test_group_id = $backTestGroup->id;
+            $server->current_back_test_strategy = $strategy->back_test_strategy_variable;
+            $server->strategy_iteration = $strategySystem->strategy_iteration_variable;
+            $server->rate_unix_time_start = $backTestGroup->rate_unix_time_start;
 
-        $server->current_back_test_group_id = $backTestGroup->id;
-        $server->current_back_test_strategy = $strategy->back_test_strategy_variable;
-        $server->strategy_iteration = $strategySystem->strategy_iteration_variable;
-        $server->rate_unix_time_start = $backTestGroup->rate_unix_time_start;
+            $server->save();
 
-        $server->save();
+            $serverBackTestGroup = BackTestGroup::find($backTestGroup->id);
 
-        $serverBackTestGroup = BackTestGroup::find($backTestGroup->id);
+            $serverBackTestGroup->server = Config::get('server_id');
 
-        $serverBackTestGroup->server = Config::get('server_id');
+            $serverBackTestGroup->save();
 
-        $serverBackTestGroup->save();
-
-        return $serverBackTestGroup;
+            return $serverBackTestGroup;
+        }
     }
 
     public function updateSingleServer() {

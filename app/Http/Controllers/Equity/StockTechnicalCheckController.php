@@ -6,6 +6,7 @@ use App\EquityTechnicalCheck\HmaReversal\HmaReversal;
 use App\Model\Stocks\StocksTechnicalCheckResult;
 use App\Model\Stocks\StocksTechnicalCheck;
 use App\Model\Stocks\Stocks;
+use App\Model\Stocks\StocksTechnicalCheckVariables;
 use App\Model\ProcessLog\ProcessQueue;
 
 

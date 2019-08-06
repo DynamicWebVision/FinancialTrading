@@ -30,18 +30,18 @@
                         <div class="col-md-9">
                             <select name="technical_check" class="form-control input-large margin-top-five" ng-required="true"
                                     ng-model="scb.data.technical_check" ng-fade
-                                    ng-options="techCheck.id as techCheck.name for techCheck in scb.stockTechnicalCheck.all" ng-change="scb.getTcVariables()">
+                                    ng-options="techCheck.id as techCheck.name for techCheck in scb.stockTechnicalCheck.allTechnicalChecks"
+                                    ng-change="scb.getTcVariables()">
                             </select>
                         </div>
                     </div>
-
 
 
                     <div class="form-group">
                         <label class="col-md-3 control-label">Take Profit</label>
                         <div class="col-md-9">
                             <textarea class="form-control" rows="2"
-                                      name="variable_1_values" ng-model="cbg.newBacktestGroup.take_profit"></textarea>
+                                      name="variable_1_values" ng-model="scb.data.take_profit"></textarea>
                         </div>
                     </div>
 
@@ -50,7 +50,7 @@
                         <label class="col-md-3 control-label">Stop Loss</label>
                         <div class="col-md-9">
                             <textarea class="form-control" rows="2"
-                                      name="variable_1_values" ng-model="cbg.newBacktestGroup.stop_loss"></textarea>
+                                      name="variable_1_values" ng-model="scb.data.stop_loss"></textarea>
                         </div>
                     </div>
 
@@ -59,7 +59,20 @@
                         <label class="col-md-3 control-label">Trailing Stop</label>
                         <div class="col-md-9">
                             <textarea class="form-control" rows="2"
-                                      name="variable_1_values" ng-model="cbg.newBacktestGroup.trailing_stop"></textarea>
+                                      name="variable_1_values" ng-model="scb.data.trailing_stop"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-repeat="technicalVariable in scb.data.technicalCheckVariables">
+                        <label class="col-md-3 control-label">{{technicalVariable.variable_name}}</label>
+                        <div class="col-md-9">
+
+                            <textarea class="form-control" rows="3"
+                                      name="variable_values" ng-model="technicalVariable.variable_default_values"></textarea>
+
+                            <button type="button" class="btn-info btn-xs pull-right m-t-5"
+                                            ng-click="technicalVariable.variable_default_values = ''"
+                                            >Clear</button>
                         </div>
                     </div>
 
@@ -68,12 +81,12 @@
                         <label class="col-md-3 control-label">Dev/Testing Only</label>
                         <div class="col-md-9">
                             <input type="checkbox" class="input-med form-control m-b-5" name="dev_testing_only"
-                                   ng-model="cbg.newBacktestGroup.dev_testing_only">
+                                   ng-model="scb.data.dev_testing_only">
                         </div>
                     </div>
 
                     <div class="col-md-12">
-                        <div ng-show="cbg.newBacktestGroup.processing" class="form-loader">
+                        <div ng-show="scb.data.processing" class="form-loader">
                             <div class="line"></div>
                             <div class="line"></div>
                             <div class="line"></div>
