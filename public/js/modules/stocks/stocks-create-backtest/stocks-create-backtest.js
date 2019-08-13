@@ -11,6 +11,7 @@
         vm.data.technicalCheckVariables = [];
 
         vm.stockTechnicalCheck = StockTechnicalCheck;
+        vm.stocks = [];
 
         vm.createBacktest = createBacktest;
         vm.getTcVariables = getTcVariables;
@@ -24,13 +25,13 @@
         }
 
         function createBacktest() {
-            vm.newBacktestGroup.submit = true;
+            vm.data.submit = true;
             if (vm.create_form.$valid) {
-                vm.newBacktestGroup.processing = true;
+                vm.data.processing = true;
 
-                $http.post('/back_test/create_group', vm.newBacktestGroup).success(function(response){
+                $http.post('stocks/back_test', vm.data).success(function(response){
 
-                    vm.newBacktestGroup.processing = false;
+                    vm.data.processing = false;
                     SweetAlert.swal({
                             title: "New Back Test Group Successfully Created with id #"+response.back_test_group_id,
                             text: "Click Clear Form to Clear Form or Cancel to Use Variables for Another Group",
@@ -42,11 +43,16 @@
                         function(){
                             //setNewBackTestObject();
                         });
-
                 });
             }
         }
 
-
+        // function loadStocks() {
+        //     $http.get('/stocks/rates_profile').then(function(response) {
+        //         vm.stocks = response.data;
+        //     });
+        // }
+        //
+        // loadStocks();
     }
 })();

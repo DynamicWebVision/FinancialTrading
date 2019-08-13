@@ -5,6 +5,7 @@ use App\Model\Stocks\Stocks;
 use App\Model\Stocks\StocksDailyPrice;
 use App\Services\Utility;
 use App\Broker\IexTrading;
+use \DB;
 
 class EquityBackTestBroker {
     public $stockId;
@@ -19,19 +20,24 @@ class EquityBackTestBroker {
 
     public $openPosition = false;
 
-    public $currentRate;
+    public $currentRate = [];
     public $currentId;
 
     public $rateTakeCount;
 
-    public function __construct($stockId, $indicatorRateMin) {
+    public $accountValue = 10000;
+
+    public $iteration_id;
+
+    public function __construct($stockId, $indicatorRateMin, $iteration_id) {
         $stock = Stocks::find($stockId);
         $this->symbol = $stock->symbol;
         $this->stockId = $stockId;
         $this->rateTakeCount = $indicatorRateMin;
+        $this->iteration_id = $iteration_id;
 
         $this->getFirstAndLastId();
-        $this->getInitialRates();
+        $this->getInitialRate();
     }
 
     public function getFirstAndLastId() {
@@ -39,24 +45,15 @@ class EquityBackTestBroker {
                                 ->max('id');
     }
 
-    public function getInitialRates() {
-        $rates = StocksDailyPrice::where('stock_id', '=', $this->stockId)
-                            ->orderBy('date_time_unix', 'desc')
-                            ->take($this->rateTakeCount)
-                            ->get()
-                            ->toArray();
+    public function getInitialRate() {
 
-        $lastRate = end($rates);
+        $rate_count = $this->rateTakeCount + 5;
 
-        $this->currentRate = StocksDailyPrice::where('stock_id', '=', $this->stockId)
-                            ->where('id', '>', $lastRate['id'])
-                            ->orderBy('date_time_unix')
-                            ->first()
-                            ->toArray();
+        $firstRate = DB::select( DB::raw("SELECT * FROM stocks_daily_prices WHERE stock_id = :stock_id ORDER BY date_time_unix LIMIT :rate_min, 1"),
+            ['stock_id'=>$this->stockId, 'rate_min'=>$rate_count]
+        );
 
-        $bothRates = $this->convertToBothRates($rates);
-
-        return $bothRates;
+        $this->currentRate['id'] = $firstRate[0]->id;
     }
 
     public function convertToBothRates($rates) {
@@ -116,7 +113,54 @@ class EquityBackTestBroker {
         if (is_null($this->currentRate)) {
             $debug=1;
         }
-
-
     }
+
+    public function newLongPosition() {
+        $newBackTestPosition = new StocksBackTestPositions();
+
+        $newBackTestPosition->stocks_back_test_iteration_id = $this->iteration_id;
+
+        $newBackTestPosition->position_type = 1;
+
+        $newBackTestPosition->stock_id = $this->stockId;
+
+        //CHANGE LATER!!!
+        $newBackTestPosition->shares_count = 100;
+
+        $newBackTestPosition->open_date = $this->currentRate['price_date_time'];
+
+        $newBackTestPosition->open_date_date = date("Y-m-d H:i:s", $this->currentRate['date_time_unix']);
+
+        $newBackTestPosition->open_price = $this->currentRate['open'];
+
+        $newBackTestPosition->save();
+
+        $this->openPosition = $newBackTestPosition;
+    }
+
+    public function closePosition() {
+        $this->openPosition->close_date = $this->currentRate['price_date_time'];
+
+        $this->openPosition->close_date_date = date("Y-m-d H:i:s", $this->currentRate['date_time_unix']);
+
+        $this->openPosition->close_price = $this->currentRate['open'];
+
+        $this->openPosition->gain_loss = $this->getGainLoss();
+
+        $this->openPosition->save();
+
+        $this->openPosition = false;
+    }
+
+    protected function getGainLoss() {
+        if ($this->openPosition->position_type == 1) {
+            $open_close_diff = $this->openPosition->close_price - $this->openPosition->open_price;
+            return round($open_close_diff/$this->openPosition->open_price, 5);
+        }
+        else {
+            $open_close_diff = $this->openPosition->open_price - $this->openPosition->close_price;
+            round($open_close_diff/$this->openPosition->close_price, 5);
+        }
+    }
+
 }

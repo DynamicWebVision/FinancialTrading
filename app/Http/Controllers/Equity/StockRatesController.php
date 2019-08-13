@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Config;
 use App\Broker\IexTrading;
 use App\Model\Stocks\Stocks;
 use App\Model\Stocks\StockIexDailyRates;
+use App\Model\Stocks\VwStocksWithRateCount;
 
 class StockRatesController extends Controller {
     public function getChart($symbol, $chartPeriod) {
@@ -32,5 +33,17 @@ class StockRatesController extends Controller {
             }
         }
         return ['rates'=>$rates, 'labels'=>$labels];
+    }
+
+    public function ratesProfile() {
+        $stocks = VwStocksWithRateCount::get()->toArray();
+
+        $stocks = array_map(function($stock) {
+            $stock['selected'] = false;
+            $stock['market_cap'] = number_format($stock['market_cap']);
+            $stock['rate_count'] = number_format($stock['rate_count']);
+            return $stock;
+        }, $stocks);
+        return $stocks;
     }
 }

@@ -14,23 +14,35 @@ class EquityBacktestSimulator {
     public $openPosition = false;
     public $orderType;
 
-    public function __construct($stockId, $indicatorMin, $technicalCheck)
+    public function __construct($stockId, $indicatorMin, $technicalCheck, $iteration_id)
     {
-        $this->broker = new EquityBackTestBroker($stockId, $indicatorMin);
+        $this->broker = new EquityBackTestBroker($stockId, $indicatorMin, $iteration_id);
         $this->technicalCheck = $technicalCheck;
+
     }
 
     public function run() {
-        $this->broker->getInitialRates();
         while (!$this->broker->backtestComplete) {
             $rates = $this->broker->getCurrentRates();
+            $this->technicalCheck->rates = $rates;
 
-//            if ($this->broker->openPosition) {
-//
-//            }
-//            else {
-//
-//            }
+            if ($this->broker->openPosition) {
+                $this->technicalCheck->openPositionCheck();
+
+                if ($this->technicalCheck->result) {
+                    if ($this->technicalCheck->resultSide == 'close') {
+                        $this->broker->closePosition();
+                    }
+                }
+            }
+            else {
+                $this->technicalCheck->newPositionCheck();
+                if ($this->technicalCheck->result) {
+                    if ($this->technicalCheck->resultSide == 'long') {
+                        $this->broker->newLongPosition();
+                    }
+                }
+            }
 
             $lastCurrentRate = end($rates['full']);
 

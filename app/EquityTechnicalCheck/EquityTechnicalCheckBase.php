@@ -40,7 +40,7 @@ abstract class EquityTechnicalCheckBase  {
     }
 
     public function getBothRates() {
-        $this->rates = $this->broker->getBothRates($this->symbol);
+        //$this->rates = $this->broker->getBothRates($this->symbol);
     }
 
     public function storeResult() {
