@@ -1,4 +1,5 @@
 <?php namespace App\EquityBacktest;
+
 use \Log;
 use App\Model\Stocks\StocksBackTestPositions;
 use App\Model\Stocks\Stocks;

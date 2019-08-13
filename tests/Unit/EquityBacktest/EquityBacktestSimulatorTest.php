@@ -14,9 +14,14 @@ use \App\EquityBacktest\EquityBacktestSimulator;
 class EquityBacktestSimulatorTest extends TestCase
 {
 
-    public function testGetCompanyProfile()
-    {
-        $equityBacktest = new EquityBacktestSimulator(4542, 20, false);
-        $equityBacktest->run();
+//    public function testGetCompanyProfile()
+//    {
+//        $equityBacktest = new EquityBacktestSimulator(4542, 20, false);
+//        $equityBacktest->run();
+//    }
+
+    public function testProcessQueue() {
+        $controller = new \App\Http\Controllers\Equity\StockBacktestController();
+        $controller->processStockBacktest(4);
     }
 }
