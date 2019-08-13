@@ -24,7 +24,7 @@ class ForexDailyCloseouts {
                 $oandaBroker->accountId = $account['oanda_id'];
                 $oandaBroker->exchange = $exchange->exchange;
 
-                $this->logger->logMessage('Close Position Check for account '.$account['account_name'].'-'.$account['oanda_id']);
+                $this->logger->logMessage('Close Position Check for account '.$account['account_name'].'-'.$account['oanda_id'].' and exchange '.$exchange->exchange);
                 $oandaBroker->closePosition();
             }
         }

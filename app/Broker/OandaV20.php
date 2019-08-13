@@ -466,6 +466,10 @@ class OandaV20 extends \App\Broker\Base  {
 
         $openPosition = $this->checkOpenPosition();
 
+        if ($this->logger) {
+            $this->logger->logMessage('Open Position response '.json_encode($openPosition));
+        }
+
         if ($openPosition) {
             $data = new \StdClass();
 
