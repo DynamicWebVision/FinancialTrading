@@ -4,7 +4,7 @@ use \Log;
 use App\Model\Stocks\StocksBackTestPositions;
 use App\Model\Stocks\Stocks;
 use App\Services\Utility;
-use App\EquityBacktest\EquityBackTestBroker;
+use \App\EquityBacktest\EquityBackTestBroker;
 
 
 class EquityBacktestSimulator {
@@ -16,7 +16,7 @@ class EquityBacktestSimulator {
 
     public function __construct($stockId, $indicatorMin, $technicalCheck, $iteration_id)
     {
-        $this->broker = new EquityBackTestBroker($stockId, $indicatorMin, $iteration_id);
+        $this->broker = new \App\EquityBacktest\EquityBackTestBroker($stockId, $indicatorMin, $iteration_id);
         $this->technicalCheck = $technicalCheck;
 
     }
