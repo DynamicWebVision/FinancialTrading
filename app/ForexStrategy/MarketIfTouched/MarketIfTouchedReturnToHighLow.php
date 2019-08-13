@@ -30,5 +30,6 @@ class MarketIfTouchedReturnToHighLow extends \App\ForexStrategy\Strategy  {
                 $this->newLongPosition();
             }
         }
+        $this->strategyLogger->logMessage("No new position for Price Data ".json_encode($this->currentPriceData)."and last close ".json_encode($lastClose));
     }
 }
