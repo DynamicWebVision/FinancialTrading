@@ -22,13 +22,34 @@ class Scraper {
         return $resp;
     }
 
-    public function getLinksInClass($html, $class) {
+    public function getLinksWithClass($html, $class) {
         $urls = [];
         while (strpos($html, $class) !== false) {
             $htmlToEndFromClass = substr($html, strpos($html, $class));
             $urlEndpoint = $this->getNextHref($htmlToEndFromClass);
             $urls[] = $this->baseUrl.$urlEndpoint;
             $html = substr($htmlToEndFromClass, strpos($htmlToEndFromClass, "href=")+6);
+        }
+        return $urls;
+    }
+
+    public function getAllLinksBetweenText($text, $start, $end) {
+        $text = $this->getInBetween($text, $start, $end);
+        return $this->getAllLinksInText($text);
+    }
+
+    public function getLinkBetweenText($text, $start, $end) {
+        $text = $this->getInBetween($text, $start, $end);
+        return $this->getNextHref($text);
+    }
+
+    public function getAllLinksInText($text) {
+        $urls = [];
+        $text = strtolower($text);
+        while (strpos($text, 'href') !== false) {
+            $urlEndpoint = $this->getNextHref($text);
+            $urls[] = $this->baseUrl.$urlEndpoint;
+            $text = substr($text, strpos($text, '</a>') + 3);
         }
         return $urls;
     }
@@ -107,6 +128,20 @@ class Scraper {
                 $text = substr($text, strpos(strtoupper($text), 'CONTACT')+7);
             }
         }
+    }
+
+    public function getNextTextBetweenTagsThatHasString($needle, $haystack) {
+        $positionOfNeedle = strpos($haystack, $needle);
+        $textUntilNeedle = substr($haystack, 0, $positionOfNeedle);
+
+        $textUntilNeedleReversed = strrev($textUntilNeedle);
+        $textUntilTagReversed = substr($textUntilNeedleReversed, 0, strpos($textUntilNeedleReversed, '>'));
+        $textUntilTag = strrev($textUntilTagReversed);
+
+        $textAfterNeedle = substr($haystack, $positionOfNeedle);
+        $textAfterNeedle = substr($textAfterNeedle, 0, strpos($textAfterNeedle, '<'));
+        return $textUntilTag.$textAfterNeedle;
+
     }
 
     public function getUrlFromAnchor($anchor) {
@@ -229,5 +264,17 @@ class Scraper {
 
         // $headers = curl_getinfo($this->curl, CURLINFO_HEADER_OUT);
         return json_decode($resp);
+    }
+
+    public function sleepRandomSeconds($starEnd = [5, 45]) {
+        sleep(rand($starEnd[0], $starEnd[1]));
+    }
+
+    public function getTextBeforeString($needle, $haystack) {
+        return substr($haystack,0, strpos($haystack, $needle));
+    }
+
+    public function getTextAfterString($needle, $haystack) {
+        return substr($haystack,strpos($haystack, $needle)+1);
     }
 }

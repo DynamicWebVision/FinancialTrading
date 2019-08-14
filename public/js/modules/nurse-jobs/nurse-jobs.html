@@ -21,6 +21,7 @@
                         <th class="cursor-pointer">Images</th>
                         <th class="cursor-pointer">Restaurants</th>
                         <th class="cursor-pointer">Rentals</th>
+                        <th class="cursor-pointer">Agency</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -43,6 +44,10 @@
                         </td>
                         <td>
                             <a ng-href="{{nj.rentalsLink(job)}}" target="_blank">Rentals</a>
+                        </td>
+                        </td>
+                        <td>
+                            {{job.agency}}
                         </td>
                     </tr>
                     </tbody>
