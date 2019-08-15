@@ -63,6 +63,8 @@ class MedproController extends Controller {
     }
 
     public function loadFromFile() {
+        NurseJobs::where('agency', '=', 'Medpro')->delete();
+
         //Load medpro by going to search/post, then view source
         $text = file_get_contents(public_path().'/temp/medpro.html');
 

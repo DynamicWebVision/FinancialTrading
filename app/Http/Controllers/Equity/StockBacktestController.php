@@ -29,19 +29,27 @@ class StockBacktestController extends Controller {
                                 ->get()
                                 ->toArray();
 
+        $indicatorValues = [];
         foreach ($backTestVariables as $backTestVariable) {
             $variableValue = StocksBackTestIterationVariables::where('stocks_back_test_iteration_id', '=', $iteration_id)
                                 ->where('variable_number', '=', $backTestVariable['variable_number'])
                                 ->first();
 
+            $indicatorValues[] = $variableValue->variable_value;
             $technicalCheck->{$backTestVariable['variable_name']} = $variableValue->variable_value;
         }
 
         //!!!!Need more Logic down the road!!!!
-        $indicatorMin = 50;
+        $indicatorMin = max($indicatorValues)*3;
+
+        $backTestIteration->start = 1;
+        $backTestIteration->save();
 
         $equityBacktestSimulator = new EquityBacktestSimulator($backTestIteration->stock_id, $indicatorMin, $technicalCheck, $iteration_id);
         $equityBacktestSimulator->run();
+
+        $backTestIteration->finish = 1;
+        $backTestIteration->save();
     }
 
     public function createBacktest() {
