@@ -36,6 +36,7 @@
     <script src="/js/factory/stock-search.js"></script>
     <script src="/js/factory/stock-industry.js"></script>
     <script src="/js/factory/stock-sector.js"></script>
+    <script src="/js/modules/stocks/factory/stocks-backtest-groups.js"></script>
     <script src="/js/service/utility.js"></script>
     <script src="/js/Chart_2.6.js"></script>
     <script src="/js/angular-chart.js"></script>
@@ -55,6 +56,7 @@
     <script type="text/javascript" src="js/controllers/back_test/historical_data.js"></script>
     <script type="text/javascript" src="js/controllers/back_test/create_backtest_group.js"></script>
     <script type="text/javascript" src="js/controllers/back_test/high_low_analysis.js"></script>
+    <script type="text/javascript" src="js/modules/stocks/stocks-backtest-list/stocks-backtest-list.js"></script>
     <script type="text/javascript" src="js/controllers/servers.js"></script>
     <script type="text/javascript" src="js/modules/historical_rates/run-historical-rates/run-historical-rates.js"></script>
     <script type="text/javascript" src="js/modules/strategy-log/strategy-log.js"></script>
@@ -92,6 +94,13 @@
                         <a href="#/stocks/create_backtest" class="waves-effect">
                             <i class="fa fa-undo" aria-hidden="true"></i>
                             <span> Create Backtest </span>
+                            <span class="pull-right"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/stocks/backtest_list" class="waves-effect">
+                            <i class="fa fa-undo" aria-hidden="true"></i>
+                            <span> Backtest Results</span>
                             <span class="pull-right"></span>
                         </a>
                     </li>

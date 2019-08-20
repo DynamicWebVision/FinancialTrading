@@ -26,6 +26,9 @@ class StocksHistoricalDataController extends Controller {
 
     protected $tdAmeritrade;
 
+    public $startDate;
+    public $endDate;
+
     public function __construct() {
         set_time_limit(0);
         ini_set('memory_limit', '-1');
@@ -65,18 +68,50 @@ class StocksHistoricalDataController extends Controller {
         }
     }
 
-    public function getStockData() {
-        $this->getYear();
+    public function convertDateToUnixTime($date) {
+        return strtotime($date)*1000;
+    }
 
-        $startDate = strtotime('1/1/'.$this->year)*1000;
-        $endDate = strtotime('12/10/'.$this->year)*1000;
+    public function runAllStocksforCurrentRateData() {
+        $this->logger = new ProcessLogger('stck_day_rates');
+
+        $this->tdAmeritrade = new TDAmeritrade($this->logger);
+
+        \DB::table('stocks')->update(array('current_daily_load' => 0));
+
+        $stocks = Stocks::where('initial_daily_load', '=', 1)
+                            ->where('current_daily_load', '=', 0)
+                            ->get(['id', 'symbol'])->toArray();
+
+        foreach ($stocks as $stock) {
+            $this->symbol = $stock['symbol'];
+            $this->stockId = $stock['id'];
+            $this->logger->logMessage('Starting Stock: '.$this->stockId.'-'.$this->symbol);
+
+            $max_unix_time = StocksDailyPrice::where('stock_id', '=', $stock['id'])
+                                ->max('date_time_unix');
+
+            $this->startDate = $max_unix_time*1000;
+            $this->endDate = time()*1000;
+
+            $this->getStockData();
+
+            $stockUpdate = Stocks::find($stock['id']);
+            $stockUpdate->current_daily_load = 1;
+            $stockUpdate->save();
+            sleep(2);
+        }
+    }
+
+    public function getStockData() {
+        //$this->getYear();
 
         $params = [
             'frequencyType'=>'daily',
             'frequency'=>1,
             'periodType'=>'year',
-            'startDate'=>$startDate,
-            'endDate'=>$endDate
+            'startDate'=>$this->startDate,
+            'endDate'=>$this->endDate
         ];
 
         $response = $this->tdAmeritrade->getStockPriceHistory($this->symbol, $params);

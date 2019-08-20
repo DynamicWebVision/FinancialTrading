@@ -108,4 +108,9 @@ app.config(function($routeProvider) {
             controller : "NurseJobsController",
             controllerAs: 'nj'
         })
+        .when("/stocks/backtest_list", {
+            templateUrl : "js/modules/stocks/stocks-backtest-list/stocks-backtest-list.html",
+            controller : "StocksBacktestListCtrl",
+            controllerAs: 'bl'
+        })
 });
