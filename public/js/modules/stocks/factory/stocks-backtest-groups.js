@@ -8,7 +8,7 @@ app.factory('StockBacktestGroups', function($http) {
     function loadBacktestGroups() {
         var allTechnicalChecks  = $http.get('/stocks/backtest_groups');
         allTechnicalChecks.then(function(response){
-            stockTechnicalChecks.allTechnicalChecks = response.data;
+            stockBackTestGroups.backtestGroups = response.data;
         });
         return allTechnicalChecks;
     }

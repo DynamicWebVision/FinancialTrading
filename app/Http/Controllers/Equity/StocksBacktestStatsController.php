@@ -68,4 +68,21 @@ class StocksBacktestStatsController extends Controller {
             $this->analyzeBacktest($iteration['id']);
         }
     }
+
+    public function getBacktestIterationResults($groupId) {
+        $iterations = StocksBackTestIteration::where('stocks_back_test_group_id', '=', $groupId)
+                                                ->with('stock')
+                                                ->get()
+                                                ->toArray();
+        foreach ($iterations as $index=>$iteration) {
+            $iterations[$index]['variable_info'] = DB::table('stocks_back_test_iteration_variables')
+                                            ->join('stocks_back_test_group_variable_definitions', 'stocks_back_test_iteration_variables.variable_number', '=', 'stocks_back_test_group_variable_definitions.variable_number')
+                                            ->where('stocks_back_test_iteration_variables.stocks_back_test_iteration_id', '=', $iteration['id'])
+                                            ->get(['stocks_back_test_group_variable_definitions.variable_name',
+                                                   'stocks_back_test_iteration_variables.variable_value'])
+                                            ->toArray();
+        }
+
+        return $iterations;
+    }
 }

@@ -72,15 +72,11 @@ class StockSearch  {
         'stocks_book.close',
         'stocks_book.high',
         'stocks_book.low',
-        'stocks_book.latest_price',
         'stocks_book.latest_volume',
-        'stocks_book.change_price',
         'stocks_book.change_percent',
-        'stocks_book.avg_total_volume',
-        'stocks_book.market_cap',
-        'stocks_book.week52_high',
-        'stocks_book.week52_low',
-        'stocks_book.ytd_change'
+        'stocks_book.ytd_change',
+        'stocks_book.week_change',
+        'stocks_book.month_change'
         ];
 
     public function setQuery() {

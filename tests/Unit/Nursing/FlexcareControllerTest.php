@@ -28,7 +28,7 @@ class FlexcareControllerTest extends TestCase
         $controller->tempFlexcareUrls();
     }
 
-    public function testTemsp() {
+    public function testMedproLoad() {
         $controller = new MedproController();
         $controller->loadFromFile();
     }

@@ -140,6 +140,10 @@ class Utility  {
         return max($array) > 0;
     }
 
+    public function unixToMysqlDate($unix_timestamp) {
+        return date("Y-m-d H:i:s", $unix_timestamp);
+    }
+
     public function mysqlDateTime() {
         return date('Y-m-d H:i:s');
     }
@@ -243,4 +247,6 @@ class Utility  {
         }
         return $result;
     }
+
+
 }

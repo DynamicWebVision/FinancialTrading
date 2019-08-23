@@ -7,13 +7,44 @@
 
     function StocksBacktestListCtrl(StockTechnicalCheck, $http, SweetAlert, StockBacktestGroups) {
         var vm = this;
-        vm.data = {};
-        vm.data.technicalCheckVariables = [];
+        vm.dataParams = {};
+
+        vm.orderBy = 'final_account_value';
 
         vm.stockTechnicalCheck = StockTechnicalCheck;
         vm.stocks = [];
 
-        StockBacktestGroups.loadBacktestGroups();
+        vm.backTestGroupsFactory = StockBacktestGroups;
 
+        vm.getGroupIterations = getGroupIterations;
+        vm.orderByButtonClass = orderByButtonClass;
+        vm.sortBackTestList = sortBackTestList;
+
+        vm.iterations = [];
+
+        function getGroupIterations() {
+            console.log(vm.dataParams.selectedGroup);
+            $http.get('stocks/backtest_group_iterations/'+vm.dataParams.selectedGroup.id).then(function(response) {
+                vm.iterations = response.data;
+                console.log(response);
+            });
+        }
+
+        function orderByButtonClass(val) {
+            if (vm.orderBy == val) {
+                return 'btn-success';
+            }
+            else {
+                return 'btn-default';
+            }
+        }
+
+        function sortBackTestList(back_test) {
+            if (vm.orderBy == 'final_account_value') {
+                return -back_test.final_account_value;
+            }
+        }
+
+        StockBacktestGroups.loadBacktestGroups();
     }
 })();

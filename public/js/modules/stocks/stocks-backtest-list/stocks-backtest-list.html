@@ -11,5 +11,100 @@
 </div>
 
 
-<!--<strategy-note-view></strategy-note-view>-->
-{{bl.hh}}
+<div class="panel panel-primary" ng-class="pl.fiftyOpacity(pl.processing)">
+    <div class="panel-heading">
+        <h3 class="panel-title">Backtest Groups</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <ui-select ng-model="bl.dataParams.selectedGroup" on-select="bl.loadIterations()">
+                        <ui-select-match>
+                            <span ng-bind="$select.selected.name" ></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="backTestGroup in (bl.backTestGroupsFactory.backtestGroups | filter: $select.search) track by backTestGroup.id"
+                                           refresh="bl.getGroupIterations($select.search)"
+                                           refresh-delay="0">
+                            <div ng-bind-html="backTestGroup.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="btn-group">
+                        <button type="button" class="btn waves-effect" ng-class="bl.orderByButtonClass('final_account_value')"
+                                ng-click="bl.orderBy = 'final_account_value'">Final Acct Value</button>
+                        <button type="button" class="btn waves-effect">Middle</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="col-md-12" ng-repeat="iteration in bl.iterations | orderBy : bl.sortBackTestList">
+    <div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Iteration ID iteration.id</h3>
+    </div>
+    <div class="panel-body">
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th colspan="2">Variables</th>
+                </tr>
+                </thead>
+                <tr ng-repeat="variable in iteration.variable_info">
+                    <td>{{variable.variable_name}}</td>
+                    <td>{{variable.variable_value}}</td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th colspan="2">Stocks</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td>{{iteration.stock.id}}</td>
+                </tr>
+                <tr>
+                    <td>{{iteration.stock.name}}</td>
+                </tr>
+                <tr>
+                    <td>{{iteration.stock.symbol}}</td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th colspan="2">Stats</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td>Final Acct Value</td>
+                    <td>{{iteration.final_account_value}}</td>
+                </tr>
+                <tr>
+                    <td>Position Average</td>
+                    <td>{{iteration.position_average}}</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    </div>
+
+</div>

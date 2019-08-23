@@ -188,6 +188,8 @@ Route::get('stocks/rates/{symbol}/{chartPeriod}', 'Equity\StockRatesController@g
 Route::get('stocks/rates_profile', 'Equity\StockRatesController@ratesProfile');
 Route::post('stocks/search', 'Equity\StockSearchController@index');
 Route::post('stocks/back_test', 'Equity\StockBacktestController@createBacktest');
+Route::get('stocks/backtest_groups', 'Equity\StockBacktestController@backtestGroups');
+Route::get('stocks/backtest_group_iterations/{groupId}', 'Equity\StocksBacktestStatsController@getBacktestIterationResults');
 
 
 /******************************

@@ -137,4 +137,8 @@ class StockBacktestController extends Controller {
             }
         }
     }
+
+    public function backtestGroups() {
+        return StocksBackTestGroup::get()->toArray();
+    }
 }
