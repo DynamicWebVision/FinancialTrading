@@ -106,7 +106,7 @@
                     </th>
 
                 </tr>
-                </thead>positiveNegativeClass
+                </thead>
                 <tbody>
                 <tr ng-repeat="stock in sh.stockSearch.results" ng-click="sh.openFinancial(stock)">
                     <td>{{stock.id}}</td>
@@ -116,10 +116,10 @@
                     <td>{{sh.utilityService.numberWithCommas(stock.market_cap)}}</td>
                     <td>{{stock.sector_name}}</td>
                     <td>{{stock.industry_name}}</td>
-                    <td>{{sh.utilityService.positiveNegativeClass(stock.ytd_change)}}</td>
-                    <td>{{sh.utilityService.positiveNegativeClass(stock.month_change)}}</td>
-                    <td>{{sh.utilityService.positiveNegativeClass(stock.week_change)}}</td>
-                    <td>{{sh.utilityService.positiveNegativeClass(stock.change_percent)}}</td>
+                    <td ng-class="sh.utilityService.positiveNegativeClass(stock.ytd_change)">{{stock.ytd_change}}</td>
+                    <td ng-class="sh.utilityService.positiveNegativeClass(stock.month_change)">{{stock.month_change}}</td>
+                    <td ng-class="sh.utilityService.positiveNegativeClass(stock.week_change)">{{stock.week_change}}</td>
+                    <td ng-class="sh.utilityService.positiveNegativeClass(stock.change_percent)">{{stock.change_percent}}</td>
                     <td>
                         <h4 class="blue-text"><a ng-href="https://finance.yahoo.com/quote/{{stock.symbol}}/financials?p={{stock.symbol}}" target="_blank">F</a></h4>
                         <h4 class="text-success" ng-click="sh.openChart(stock)">C</h4>

@@ -35,6 +35,7 @@ class BackTestDebugTest extends TestCase
 
     public $daysBesidesSundaySaturday = [1,2,3,4,5];
     public $allDays = [0,1,2,3,4,5, 6];
+    public $marketOpenDays = [1,2,3,4,5];
 
     public function testCreateDefTimes() {
         $id = 1;
@@ -54,16 +55,16 @@ class BackTestDebugTest extends TestCase
     }
 
     public function testCreateDaily() {
-        $id = 5;
+        $id = 6;
 
-        foreach ($this->allDays as $day) {
+        foreach ($this->marketOpenDays as $day) {
 
                 $def_time = new ProcessScheduleDefTimes();
 
                 $def_time->process_schedule_def_id = $id;
                 $def_time->day_of_week = $day;
-                $def_time->hours = 2;
-                $def_time->minutes = 27;
+                $def_time->hours = 21;
+                $def_time->minutes = 03;
 
                 $def_time->save();
 

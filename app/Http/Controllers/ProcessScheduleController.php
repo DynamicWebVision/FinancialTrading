@@ -90,4 +90,13 @@ class ProcessScheduleController extends Controller
 
         $scheduleDefToUpdate->save();
     }
+
+    public function createQueueRecord($code) {
+        $process = Process::where('code','=', $code)->first();
+
+        $newProcessQueue = new ProcessQueue();
+        $newProcessQueue->process_id = $process->id;
+        $newProcessQueue->priority = $process->priority;
+        $newProcessQueue->save();
+    }
 }

@@ -6,6 +6,7 @@ use \Log;
 use Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ServersController;
+use App\Http\Controllers\ProcessScheduleController;
 use App\Broker\TDAmeritrade;
 use Illuminate\Support\Facades\Config;
 
@@ -101,6 +102,10 @@ class StocksHistoricalDataController extends Controller {
             $stockUpdate->save();
             sleep(2);
         }
+
+        $scheduleController = new ProcessScheduleController();
+
+        $scheduleController->createQueueRecord('eq_book_iex');
     }
 
     public function getStockData() {
