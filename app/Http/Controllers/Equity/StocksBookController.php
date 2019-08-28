@@ -140,6 +140,7 @@ class StocksBookController extends Controller {
         $book->latest_volume = $this->currentStockPrice->volume;
 
         $book->save();
+
         $this->logger->logMessage('Successful Save '.$this->stock->id.' symbol: '.$this->stock->symbol);
     }
 }

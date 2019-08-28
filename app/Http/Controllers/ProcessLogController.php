@@ -11,7 +11,8 @@ use \App\Model\ProcessLog\ProcessLogMessageType;
 use \App\Model\ProcessLog\ProcessLogMessage;
 use \App\Model\Servers;
 
-use App\Services\ProcessLogFilter;
+use App\Services\ProcessLog\ProcessLogFilter;
+use App\Services\ProcessLog\ProcessLogMessagesFilter;
 
 class ProcessLogController extends Controller {
 
@@ -66,7 +67,27 @@ class ProcessLogController extends Controller {
         return ['logs'=>$logs, 'count'=>$count];
     }
 
-    public function getLog($logId) {
-        return ProcessLogMessage::where('process_log_id', '=', $logId)->get()->toArray();
+    public function getLogMessages() {
+        $data = Request::all();
+        $response = [];
+
+        $messagesFilter = new ProcessLogMessagesFilter();
+        $messagesFilter->criteria = $data;
+        $messagesFilter->setQuery();
+
+        if (!$data['total_count']) {
+            $response['total_count'] = $messagesFilter->getResultTotalCount();
+        }
+        else {
+            $response['total_count'] = $data['total_count'];
+        }
+
+        \DB::enableQueryLog();
+
+        $response['messages'] = $messagesFilter->getCurrentResult();
+
+        $logs = \DB::getQueryLog();
+
+        return $response;
     }
 }

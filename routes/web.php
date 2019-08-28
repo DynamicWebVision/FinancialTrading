@@ -189,7 +189,7 @@ Route::get('stocks/rates_profile', 'Equity\StockRatesController@ratesProfile');
 Route::post('stocks/search', 'Equity\StockSearchController@index');
 Route::post('stocks/back_test', 'Equity\StockBacktestController@createBacktest');
 Route::get('stocks/backtest_groups', 'Equity\StockBacktestController@backtestGroups');
-Route::get('stocks/backtest_group_iterations/{groupId}', 'Equity\StocksBacktestStatsController@getBacktestIterationResults');
+Route::get('stocks/backtest_group_iterations/{groupId}', 'Equity\StocksBacktestStatsControllerf@getBacktestIterationResults');
 
 
 /******************************
@@ -205,6 +205,7 @@ Route::get('strategy_logger/log_history_subset/{pageNumber}/{account}/{exchange}
 Route::get('process_logger', 'ProcessLogController@index');
 Route::post('process_logger/load_logs', 'ProcessLogController@getLogs');
 Route::get('process_log/{logId}', 'ProcessLogController@getLog');
+Route::post('process_log_messages', 'ProcessLogController@getLogMessages');
 
 //Route::resource('strategy', 'StrategyController');
 Route::resource('indicator', 'IndicatorsController');

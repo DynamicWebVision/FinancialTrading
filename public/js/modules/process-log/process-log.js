@@ -21,6 +21,7 @@
         vm.currentPage = 1;
         vm.logMessagesSet = [];
         vm.logMessages = [];
+        vm.logMessagesCount = 0;
         vm.logIndicators;
         vm.logApi;
         vm.onlyEvents = false;
@@ -38,6 +39,11 @@
 
         vm.activeLog = {};
 
+        vm.logMessagesParams = {};
+        vm.logMessagesParams.search_text = '';
+        vm.logMessagesParams.error_check = false;
+        vm.logMessagesParams.processing = false;
+
         vm.loadLog = loadLog;
         vm.fiftyOpacity = fiftyOpacity;
         vm.changeLogSet = changeLogSet;
@@ -50,6 +56,8 @@
         vm.changeOrderBy = changeOrderBy;
         vm.openFullLog = openFullLog;
         vm.dangerClass = dangerClass;
+        vm.messagesPageChanged = messagesPageChanged;
+        vm.searchLogs = searchLogs;
 
         $http.get('/process_logger').success(function(data){
             vm.processes = data.processes;
@@ -186,9 +194,39 @@
 
         function openFullLog(log) {
             vm.currentLog = log;
-            $http.get('process_log/'+log.id).then(function(response) {
-                vm.logMessages = response.data;
+            vm.logMessagesParams.current_page = 1;
+            vm.logMessagesParams.log_id = log.id;
+            vm.logMessagesParams.total_count = false;
+
+            vm.logMessagesParams.processing = true;
+            loadLogMessages().then(function() {
                 $("#process-log-modal").modal('toggle');
+                vm.logMessagesParams.processing = false;
+            });
+        }
+
+        function searchLogs(log) {
+            vm.logMessagesParams.current_page = 1;
+            vm.logMessagesParams.total_count = false;
+
+            vm.logMessagesParams.processing = true;
+            loadLogMessages().then(function() {
+                vm.logMessagesParams.processing = false;
+            });
+        }
+
+        function loadLogMessages() {
+            return $http.post('process_log_messages', vm.logMessagesParams).then(function(response) {
+                vm.logMessagesCount = response.data.total_count;
+                vm.logMessagesCurrentPage = response.data.total_count;
+                vm.logMessages = response.data.messages;
+            });
+        }
+
+        function messagesPageChanged() {
+            vm.logMessagesParams.processing = true;
+            loadLogMessages().then(function() {
+                vm.logMessagesParams.processing = false;
             });
         }
 

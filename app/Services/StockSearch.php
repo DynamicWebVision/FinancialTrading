@@ -76,7 +76,8 @@ class StockSearch  {
         'stocks_book.change_percent',
         'stocks_book.ytd_change',
         'stocks_book.week_change',
-        'stocks_book.month_change'
+        'stocks_book.month_change',
+        'stocks_book.updated_at as book_update'
         ];
 
     public function setQuery() {

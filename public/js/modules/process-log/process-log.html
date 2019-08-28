@@ -81,7 +81,26 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Log #{{pl.currentLog.id}} {{pl.currentLog.server_name}}  {{sl.currentLog.process_name}} Messages</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" ng-class="pl.fiftyOpacity(pl.logMessagesParams.processing)">
+                <div class="col-md-12">
+                    <div class="col-md-5">
+                        <label class="col-md-3 control-label">Search</label>
+                        <div class="col-md-9">
+                            <input type="text" class="input-med form-control m-b-5" name="priority" placeholder="Search"
+                                   ng-model="pl.logMessagesParams.search_text">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label class="col-md-3 control-label">Error</label>
+                        <div class="col-md-9">
+                            <input type="checkbox" class="input-med form-control m-b-5" name="priority"
+                                   ng-model="pl.logMessagesParams.error_check">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-success btn-sm pull-right" ng-click="pl.searchLogs()">Search</button>
+                    </div>
+                </div>
                 <div class="row m-t-10" ng-repeat="message in pl.logMessages"
                      ng-class="pl.dangerClass(message.message_type_id)"
                      >
@@ -90,6 +109,13 @@
                     <div class="col-md-2">{{message.created_at}}</div>
                     <hr>
                 </div>
+
+                <pagination total-items="pl.logMessagesCount"
+                            ng-model="pl.logMessagesParams.current_page"
+                            items-per-page="10"
+                            boundary-links="false"
+                            max-size="3"
+                            ng-change="pl.messagesPageChanged()"></pagination>
             </div>
 
             <div class="modal-footer">

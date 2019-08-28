@@ -93,7 +93,6 @@
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">ID</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Symbol</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks.name')">Name</th>
-                    <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.close')">Price</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_fundamental.market_cap')">Mkt Cap</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Sector</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('id')">Industry</th>
@@ -101,6 +100,7 @@
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.month_change')">Month Change</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.week_change')">Week Change</th>
                     <th class="cursor-pointer" ng-click="sh.stockSearch.orderByChange('stocks_book.change_percent')">Daily Change</th>
+                    <th class="cursor-pointer">Refresh</th>
                     <th class="cursor-pointer">
 
                     </th>
@@ -112,7 +112,6 @@
                     <td>{{stock.id}}</td>
                     <td>{{stock.symbol}}</td>
                     <td>{{stock.name}}</td>
-                    <td>{{stock.close}}</td>
                     <td>{{sh.utilityService.numberWithCommas(stock.market_cap)}}</td>
                     <td>{{stock.sector_name}}</td>
                     <td>{{stock.industry_name}}</td>
@@ -120,6 +119,7 @@
                     <td ng-class="sh.utilityService.positiveNegativeClass(stock.month_change)">{{stock.month_change}}</td>
                     <td ng-class="sh.utilityService.positiveNegativeClass(stock.week_change)">{{stock.week_change}}</td>
                     <td ng-class="sh.utilityService.positiveNegativeClass(stock.change_percent)">{{stock.change_percent}}</td>
+                    <td>{{stock.book_update}}</td>
                     <td>
                         <h4 class="blue-text"><a ng-href="https://finance.yahoo.com/quote/{{stock.symbol}}/financials?p={{stock.symbol}}" target="_blank">F</a></h4>
                         <h4 class="text-success" ng-click="sh.openChart(stock)">C</h4>

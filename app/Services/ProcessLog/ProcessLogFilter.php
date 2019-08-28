@@ -1,4 +1,4 @@
-<?php namespace App\Services;
+<?php namespace App\Services\ProcessLog;
 
 use \App\Model\ProcessLog\ProcessLog;
 use \App\Model\ProcessLog\ProcessLogMessage;
