@@ -6,6 +6,7 @@ use \Log;
 use Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ServersController;
+use App\Http\Controllers\ProcessScheduleController;
 use App\Broker\IexTrading;
 use Illuminate\Support\Facades\Config;
 
@@ -15,6 +16,7 @@ use App\Model\Stocks\StocksApiJobs;
 use App\Model\Stocks\StocksBook;
 use App\Model\Stocks\StocksDailyPrice;
 use App\Model\Stocks\StocksHistoryBook;
+use App\Model\ProcessLog\ProcessQueue;
 use App\Model\Stocks\StocksTags;
 use App\Model\Stocks\StocksIndustry;
 use App\Model\Stocks\StocksFundamentalData;
@@ -177,6 +179,13 @@ class StocksBookController extends Controller {
 
             $this->currentStockDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->where('price_date_time', '>', $this->currentStockDate)->min('price_date_time');
         }
+    }
 
+    public function createHistoricalStockBookProcesses() {
+        $stocks = Stocks::where('initial_daily_load', '=', 1)->get(['id'])->toArray();
+        $variableIds = array_column($stocks,'id');
+
+        $processScheduleController = new ProcessScheduleController();
+        $processScheduleController->createQueueRecordsWithVariableIds('stck_book_hist_1_stck', $variableIds);
     }
 }

@@ -71,6 +71,19 @@ class BackTestDebugTest extends TestCase
         }
     }
 
+    public function testCreateWeekly() {
+        $id = 7;
+
+        $def_time = new ProcessScheduleDefTimes();
+
+        $def_time->process_schedule_def_id = $id;
+        $def_time->day_of_week = 6;
+        $def_time->hours = 23;
+        $def_time->minutes = 29;
+
+        $def_time->save();
+    }
+
     public function testCreateEveryHourSixMinutesAfterHour() {
         $id = 3;
 

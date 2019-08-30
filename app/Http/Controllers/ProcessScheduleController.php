@@ -99,4 +99,20 @@ class ProcessScheduleController extends Controller
         $newProcessQueue->priority = $process->priority;
         $newProcessQueue->save();
     }
+
+    public function createQueueRecordsWithVariableIds($code, $variableIds) {
+        $process = Process::where('code', '=', $code)->first();
+
+        $insertRecords = [];
+
+        foreach ($variableIds as $variableId) {
+            $insertRecords[] = [
+                'process_id'=> $process->id,
+                'variable_id'=> $variableId,
+                'priority'=> $process->priority
+            ];
+        }
+
+        ProcessQueue::insert($insertRecords);
+    }
 }
