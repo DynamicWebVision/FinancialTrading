@@ -14,6 +14,7 @@ use App\Model\Stocks\Stocks;
 use App\Model\Stocks\StocksApiJobs;
 use App\Model\Stocks\StocksBook;
 use App\Model\Stocks\StocksDailyPrice;
+use App\Model\Stocks\StocksHistoryBook;
 use App\Model\Stocks\StocksTags;
 use App\Model\Stocks\StocksIndustry;
 use App\Model\Stocks\StocksFundamentalData;
@@ -103,44 +104,79 @@ class StocksBookController extends Controller {
         return round($difference/$start_price, 5);
     }
 
-    public function updateBook() {
-        $this->logger->logMessage('Getting Book Calculations for id: '.$this->stock->id.' symbol: '.$this->stock->symbol);
+    protected function getStockBook() {
+        $stockBook = [];
 
-        $this->currentStockDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->max('price_date_time');
         $this->currentStockPrice = StocksDailyPrice::where('stock_id','=', $this->stock->id)
-                                        ->where('price_date_time', '=', $this->currentStockDate)
-                                        ->first();
+            ->where('price_date_time', '=', $this->currentStockDate)
+            ->first();
 
         $oneYearAgoDate = strtotime($this->currentStockDate.' -1 year');
         $oneYearAgoPriceRecord = $this->getClosestPriceDate($oneYearAgoDate);
 
-        $book = StocksBook::firstOrNew(['stock_id'=> $this->stock->id]);
-
-        $book->ytd_change = $this->getPercentChange($oneYearAgoPriceRecord->close, $this->currentStockPrice->close);
+        $stockBook['ytd_change'] = $this->getPercentChange($oneYearAgoPriceRecord->close, $this->currentStockPrice->close);
 
         $oneWeekAgoDate = strtotime($this->currentStockDate.' -1 week');
         $oneWeekAgoDatePriceRecord = $this->getClosestPriceDate($oneWeekAgoDate);
 
-        $book->week_change = $this->getPercentChange($oneWeekAgoDatePriceRecord->close, $this->currentStockPrice->close);
+        $stockBook['week_change'] = $this->getPercentChange($oneWeekAgoDatePriceRecord->close, $this->currentStockPrice->close);
 
         $oneMonthAgoDate = strtotime($this->currentStockDate.' -1 month');
         $oneMonthAgoDatePriceRecord = $this->getClosestPriceDate($oneMonthAgoDate);
 
-        $book->month_change = $this->getPercentChange($oneMonthAgoDatePriceRecord->close, $this->currentStockPrice->close);
+        $stockBook['month_change'] = $this->getPercentChange($oneMonthAgoDatePriceRecord->close, $this->currentStockPrice->close);
 
         $oneDayAgoPrice = StocksDailyPrice::where('stock_id','=', $this->stock->id)->where('price_date_time', '<', $this->currentStockDate)->orderBy('price_date_time', 'desc')
-                                    ->first();
+            ->first();
 
-        $book->change_percent = $this->getPercentChange($oneDayAgoPrice->close, $this->currentStockPrice->close);
+        $stockBook['change_percent'] = $this->getPercentChange($oneDayAgoPrice->close, $this->currentStockPrice->close);
 
-        $book->open = $this->currentStockPrice->open;
-        $book->close = $this->currentStockPrice->close;
-        $book->high = $this->currentStockPrice->high;
-        $book->low = $this->currentStockPrice->low;
-        $book->latest_volume = $this->currentStockPrice->volume;
+        return $stockBook;
+    }
 
-        $book->save();
+    public function updateBook() {
+        $this->logger->logMessage('Getting Book Calculations for id: '.$this->stock->id.' symbol: '.$this->stock->symbol);
+
+        $this->currentStockDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->max('price_date_time');
+
+        $stockBook = $this->getStockBook();
+
+        StocksBook::firstOrNew(['stock_id'=> $this->stock->id])->update($stockBook);
 
         $this->logger->logMessage('Successful Save '.$this->stock->id.' symbol: '.$this->stock->symbol);
+    }
+
+    public function getInitialHistoricalBookDate() {
+        $minDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->min('price_date_time');
+
+        $oneYearAfterMinDate = strtotime($minDate.' +1 year');
+
+        $dailyStockRate = $this->getClosestPriceDate($oneYearAfterMinDate);
+
+        return $dailyStockRate->price_date_time;
+    }
+
+    public function createHistoricalStockBooks($stockId) {
+        $this->stock = Stocks::find($stockId);
+
+        $mostRecentStockDate = StocksHistoryBook::where('stock_id','=', $this->stock->id)->max('book_date');
+
+        if (is_null($mostRecentStockDate)) {
+            $this->currentStockDate = $this->getInitialHistoricalBookDate();
+        }
+        else {
+            $this->currentStockDate = $mostRecentStockDate;
+        }
+
+        while (!is_null($this->currentStockDate)) {
+            $stockBook = $this->getStockBook();
+            $stockBook['book_date_unix'] = strtotime($this->currentStockDate);
+            $stockBook['stock_id'] = $this->stock->id;
+            $stockBook['book_date'] = $this->currentStockDate;
+            StocksHistoryBook::firstOrCreate($stockBook);
+
+            $this->currentStockDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->where('price_date_time', '>', $this->currentStockDate)->min('price_date_time');
+        }
+
     }
 }

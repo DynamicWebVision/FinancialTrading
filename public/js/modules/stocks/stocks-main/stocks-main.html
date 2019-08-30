@@ -110,7 +110,7 @@
                 <tbody>
                 <tr ng-repeat="stock in sh.stockSearch.results" ng-click="sh.openFinancial(stock)">
                     <td>{{stock.id}}</td>
-                    <td>{{stock.symbol}}</td>
+                    <td class="event-text" ng-click="sh.copySymbol(stock.symbol)">{{stock.symbol}}</td>
                     <td>{{stock.name}}</td>
                     <td>{{sh.utilityService.numberWithCommas(stock.market_cap)}}</td>
                     <td>{{stock.sector_name}}</td>
@@ -146,7 +146,7 @@
                 <tbody>
                 <tr ng-repeat="stock in sh.stockSearch.results">
                     <td>{{stock.id}}</td>
-                    <td>{{stock.symbol}}</td>
+                    <td class="event-text" ng-click="sh.copySymbol(stock.symbol)">{{stock.symbol}}</td>
                     <td>{{stock.name}}</td>
                     <td>{{stock.pe_ratio}}</td>
                     <td>{{stock.peg_ratio}}</td>

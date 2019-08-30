@@ -408,6 +408,19 @@ label {
 	cursor: pointer;
 }
 
+.event-text {
+	cursor: pointer;
+}
+
+.event-text:hover {
+	font-weight: bold;
+}
+
+.event-text:active {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
 .flex {
 	display: flex;
 }

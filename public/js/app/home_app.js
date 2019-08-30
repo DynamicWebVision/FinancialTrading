@@ -4,7 +4,8 @@
  */
 
 var app = angular.module('app', ['ngRoute','ngAnimate','utility.directives','oitozero.ngSweetAlert',
-    'chart.js', 'angularUtils.directives.dirPagination', 'jsonFormatter', 'ui.bootstrap', 'ui.select', 'ngSanitize']);
+    'chart.js', 'angularUtils.directives.dirPagination', 'jsonFormatter', 'ui.bootstrap', 'ui.select', 'ngSanitize',
+'ngClipboard']);
 
 app.config(function($routeProvider) {
     $routeProvider

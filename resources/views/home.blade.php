@@ -38,6 +38,7 @@
     <script src="/js/factory/stock-sector.js"></script>
     <script src="/js/modules/stocks/factory/stocks-backtest-groups.js"></script>
     <script src="/js/service/utility.js"></script>
+    <script src="/js/service/clipboard.js"></script>
     <script src="/js/Chart_2.6.js"></script>
     <script src="/js/angular-chart.js"></script>
     <script src="/bower_components/angularUtils-pagination/dirPagination.js"></script>

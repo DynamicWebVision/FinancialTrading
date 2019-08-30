@@ -6,7 +6,7 @@
         .controller('StocksMainController', StocksMainController);
 
     function StocksMainController($timeout, Stock, StockSearch, SweetAlert, StockIndustry,
-                                StockSector, StockRates, UtilityService, StockTechnicalCheck) {
+                                StockSector, StockRates, UtilityService, StockTechnicalCheck, ngClipboard) {
         var vm = this;
         vm.processing = false;
         vm.submit = false;
@@ -23,6 +23,7 @@
         vm.tableType = tableType;
         vm.openFinancial = openFinancial;
         vm.openProfile = openProfile;
+        vm.copySymbol = copySymbol;
 
         function openFinancial(stock) {
             $("#stock-financial").modal('toggle');
@@ -46,6 +47,10 @@
                 return 'btn-danger';
             }
             return 'btn-success';
+        }
+
+        function copySymbol(symbol) {
+            ngClipboard.toClipboard(symbol);
         }
     }
 })();
