@@ -151,6 +151,11 @@ class StocksBookController extends Controller {
     public function getInitialHistoricalBookDate() {
         $minDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->min('price_date_time');
 
+        if (is_null($minDate)) {
+            $this->logger->logMessage('No Rates for '.$this->stock->id.' symbol: '.$this->stock->symbol.' CANCELLING');
+            return false;
+        }
+
         $oneYearAfterMinDate = strtotime($minDate.' +1 year');
 
         $dailyStockRate = $this->getClosestPriceDate($oneYearAfterMinDate);
@@ -170,15 +175,19 @@ class StocksBookController extends Controller {
             $this->currentStockDate = $mostRecentStockDate;
         }
 
-        while (!is_null($this->currentStockDate)) {
-            $stockBook = $this->getStockBook();
-            $stockBook['book_date_unix'] = strtotime($this->currentStockDate);
-            $stockBook['stock_id'] = $this->stock->id;
-            $stockBook['book_date'] = $this->currentStockDate;
-            StocksHistoryBook::firstOrCreate($stockBook);
+        if ($this->currentStockDate) {
+            while (!is_null($this->currentStockDate)) {
+                $stockBook = $this->getStockBook();
+                $stockBook['book_date_unix'] = strtotime($this->currentStockDate);
+                $stockBook['stock_id'] = $this->stock->id;
+                $stockBook['book_date'] = $this->currentStockDate;
+                StocksHistoryBook::firstOrCreate($stockBook);
 
-            $this->currentStockDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->where('price_date_time', '>', $this->currentStockDate)->min('price_date_time');
+                $this->currentStockDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->where('price_date_time', '>', $this->currentStockDate)->min('price_date_time');
+            }
         }
+
+
     }
 
     public function createHistoricalStockBookProcesses() {
