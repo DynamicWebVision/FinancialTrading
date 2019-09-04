@@ -152,7 +152,7 @@ class StocksBookController extends Controller {
         $minDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->min('price_date_time');
 
         if (is_null($minDate)) {
-            $this->logger->logMessage('No Rates for '.$this->stock->id.' symbol: '.$this->stock->symbol.' CANCELLING');
+            //$this->logger->logMessage('No Rates for '.$this->stock->id.' symbol: '.$this->stock->symbol.' CANCELLING');
             return false;
         }
 
