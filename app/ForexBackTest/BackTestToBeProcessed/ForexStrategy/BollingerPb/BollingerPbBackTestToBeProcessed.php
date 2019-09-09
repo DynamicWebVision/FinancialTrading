@@ -1,8 +1,8 @@
-<?php namespace App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\MacdHistogramX;
+<?php namespace App\ForexBackTest\BackTestToBeProcessed\ForexStrategy\BollingerPb;
 
 /**********************
-MacdHistogramX Backtest Variable Definitions
-Created at: 05/11/19by Brian O'Neill
+BollingerPb Backtest Variable Definitions
+Created at: 09/06/19by Brian O'Neill
 ***********************/
 
 use \DB;
@@ -10,10 +10,10 @@ use App\Model\Exchange;
 use \App\ForexBackTest\TakeProfitStopLossTest;
 use \App\Services\StrategyLogger;
 
-use \App\ForexStrategy\MacdHistogramX\MacdHistTest;
+use \App\ForexStrategy\BollingerPb\bollingerCloseOutside;
 //END STRATEGY DECLARATIONS
 
-class MacdHistogramXBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBeProcessed\Base
+class BollingerPbBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBeProcessed\Base
 {
 
     public function callProcess() {
@@ -47,15 +47,14 @@ class MacdHistogramXBackTestToBeProcessed extends \App\ForexBackTest\BackTestToB
         if (1==2) {
 
         }
-        elseif ($this->server->strategy_iteration == 'MACD_TEST') {
+        elseif ($this->server->strategy_iteration == 'BOL_CLOSE_OUTSIDE') {
             $backTest->rateLevel = 'both';
         
-            $strategy = new MacdHistTest(1,1,true);
+            $strategy = new bollingerCloseOutside(1,1,true);
         
             //$strategy->orderType = 'MARKET_IF_TOUCHED';
-            $strategy->$macdShortPeriod = intval($this->backTestToBeProcessed->variable_1);
-            $strategy->$macdLongPeriod = intval($this->backTestToBeProcessed->variable_2);
-            $strategy->$macdSignalPeriod = intval($this->backTestToBeProcessed->variable_3);
+            $strategy->bollingerLength = intval($this->backTestToBeProcessed->variable_1);
+            $strategy->bollingerSdMultiplier = intval($this->backTestToBeProcessed->variable_2);
         
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 

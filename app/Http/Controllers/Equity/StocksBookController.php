@@ -186,8 +186,6 @@ class StocksBookController extends Controller {
                 $this->currentStockDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->where('price_date_time', '>', $this->currentStockDate)->min('price_date_time');
             }
         }
-
-
     }
 
     public function createHistoricalStockBookProcesses() {

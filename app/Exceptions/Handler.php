@@ -107,7 +107,7 @@ class Handler extends ExceptionHandler
 
             $textMessage = new TextMessage();
             $message = 'Process "'.$process->name.'" had exception '.substr($exception, 0, 100);
-            $textMessage->sendTextMessage($message);
+            //$textMessage->sendTextMessage($message);
         }
 
         return $reportException;

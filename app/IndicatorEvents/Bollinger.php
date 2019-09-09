@@ -102,4 +102,19 @@ class Bollinger {
             return 'none';
         }
     }
+
+    public function bollingerCloseOutside($array, $length, $standardDeviationMultiplier, $fullRates) {
+        $currentFullRate = end($fullRates);
+        $bollingerBands = $this->bollingerBands($array, $length, $standardDeviationMultiplier);
+
+        if ($bollingerBands['high'] < $currentFullRate->closeMid) {
+            return 'above';
+        }
+        elseif ($bollingerBands['low'] > $currentFullRate->closeMid) {
+            return 'below';
+        }
+        else {
+            return 'none';
+        }
+    }
 }

@@ -93,4 +93,23 @@ class BollingerEventsTest extends TestCase
 
         $this->assertEquals($bollingerCross, 'long');
     }
+
+    public function testBollingerCloseAboveBelow() {
+        $historicalRates = new \App\Model\HistoricalRates();
+        $bollinger = new Bollinger();
+
+        //CROSSED BELOW EVENT
+        $rates = $historicalRates->getRatesSpecificTimeBoth(1,3,1000,'2019-08-05 10:00:00');
+
+        $bollingerCross = $bollinger->bollingerCloseOutside($rates['simple'], 200, 1, $rates['full']);
+
+        $this->assertEquals($bollingerCross, 'above');
+
+        //CROSSED BELOW EVENT
+        $rates = $historicalRates->getRatesSpecificTimeBoth(1,3,1000,'2019-07-19 19:00:00');
+
+        $bollingerCross = $bollinger->bollingerCloseOutside($rates['simple'], 200, 1, $rates['full']);
+
+        $this->assertEquals($bollingerCross, 'below');
+    }
 }
