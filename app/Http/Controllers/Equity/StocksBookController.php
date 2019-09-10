@@ -35,7 +35,7 @@ class StocksBookController extends Controller {
     public $logger;
     protected $utility;
 
-    protected $currentStockDate;
+    public $currentStockDate;
     protected $currentStockPrice;
 
     public function __construct() {
@@ -106,34 +106,40 @@ class StocksBookController extends Controller {
         return round($difference/$start_price, 5);
     }
 
-    protected function getStockBook() {
+    public function getStockBook() {
         $stockBook = [];
 
-        $this->currentStockPrice = StocksDailyPrice::where('stock_id','=', $this->stock->id)
-            ->where('price_date_time', '=', $this->currentStockDate)
-            ->first();
+        try {
+            $this->currentStockPrice = StocksDailyPrice::where('stock_id','=', $this->stock->id)
+                ->where('price_date_time', '=', $this->currentStockDate)
+                ->first();
 
-        $oneYearAgoDate = strtotime($this->currentStockDate.' -1 year');
-        $oneYearAgoPriceRecord = $this->getClosestPriceDate($oneYearAgoDate);
+            $oneYearAgoDate = strtotime($this->currentStockDate.' -1 year');
+            $oneYearAgoPriceRecord = $this->getClosestPriceDate($oneYearAgoDate);
 
-        $stockBook['ytd_change'] = $this->getPercentChange($oneYearAgoPriceRecord->close, $this->currentStockPrice->close);
+            $stockBook['ytd_change'] = $this->getPercentChange($oneYearAgoPriceRecord->close, $this->currentStockPrice->close);
 
-        $oneWeekAgoDate = strtotime($this->currentStockDate.' -1 week');
-        $oneWeekAgoDatePriceRecord = $this->getClosestPriceDate($oneWeekAgoDate);
+            $oneWeekAgoDate = strtotime($this->currentStockDate.' -1 week');
+            $oneWeekAgoDatePriceRecord = $this->getClosestPriceDate($oneWeekAgoDate);
 
-        $stockBook['week_change'] = $this->getPercentChange($oneWeekAgoDatePriceRecord->close, $this->currentStockPrice->close);
+            $stockBook['week_change'] = $this->getPercentChange($oneWeekAgoDatePriceRecord->close, $this->currentStockPrice->close);
 
-        $oneMonthAgoDate = strtotime($this->currentStockDate.' -1 month');
-        $oneMonthAgoDatePriceRecord = $this->getClosestPriceDate($oneMonthAgoDate);
+            $oneMonthAgoDate = strtotime($this->currentStockDate.' -1 month');
+            $oneMonthAgoDatePriceRecord = $this->getClosestPriceDate($oneMonthAgoDate);
 
-        $stockBook['month_change'] = $this->getPercentChange($oneMonthAgoDatePriceRecord->close, $this->currentStockPrice->close);
+            $stockBook['month_change'] = $this->getPercentChange($oneMonthAgoDatePriceRecord->close, $this->currentStockPrice->close);
 
-        $oneDayAgoPrice = StocksDailyPrice::where('stock_id','=', $this->stock->id)->where('price_date_time', '<', $this->currentStockDate)->orderBy('price_date_time', 'desc')
-            ->first();
+            $oneDayAgoPrice = StocksDailyPrice::where('stock_id','=', $this->stock->id)->where('price_date_time', '<', $this->currentStockDate)->orderBy('price_date_time', 'desc')
+                ->first();
 
-        $stockBook['change_percent'] = $this->getPercentChange($oneDayAgoPrice->close, $this->currentStockPrice->close);
+            $stockBook['change_percent'] = $this->getPercentChange($oneDayAgoPrice->close, $this->currentStockPrice->close);
 
-        return $stockBook;
+            return $stockBook;
+        }
+        catch (\Exception $e) {
+            $this->logger->logMessage('Error Exception '.$this->stock->id.'-'.$this->stock->symbol.' '.$e->getMessage());
+        }
+
     }
 
     public function updateBook() {
@@ -143,9 +149,10 @@ class StocksBookController extends Controller {
 
         $stockBook = $this->getStockBook();
 
-        StocksBook::firstOrNew(['stock_id'=> $this->stock->id])->update($stockBook);
-
-        $this->logger->logMessage('Successful Save '.$this->stock->id.' symbol: '.$this->stock->symbol);
+        if ($stockBook) {
+            StocksBook::firstOrNew(['stock_id'=> $this->stock->id])->update($stockBook);
+            $this->logger->logMessage('Successful Save '.$this->stock->id.' symbol: '.$this->stock->symbol);
+        }
     }
 
     public function getInitialHistoricalBookDate() {

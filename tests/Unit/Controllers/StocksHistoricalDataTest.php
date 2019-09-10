@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Controllers;
 
+use App\Model\Stocks\Stocks;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -10,6 +11,8 @@ use App\Model\HistoricalRates;
 use App\Model\TmpTestRates;
 use App\Http\Controllers\Equity\StocksHistoricalDataController;
 use App\Http\Controllers\ServersController;
+use \App\Services\ProcessLogger;
+use App\Broker\TDAmeritrade;
 use App\Model\Servers;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -38,6 +41,24 @@ class StocksHistoricalDataTest extends TestCase
     public function testDailyUpdate() {
         $stocksHistoricalDataTest = new StocksHistoricalDataController();
         $stocksHistoricalDataTest->runAllStocksforCurrentRateData();
+    }
+
+    public function testSpecificStockDate() {
+        $stocksHistoricalDataTest = new StocksHistoricalDataController();
+
+        $this->logger = new ProcessLogger('stck_historical');
+
+        $stocksHistoricalDataTest->tdAmeritrade = new TDAmeritrade($this->logger);
+
+        $stockId = 6113;
+        $stock = Stocks::find($stockId);
+        $stocksHistoricalDataTest->symbol = $stock->symbol;
+        $stocksHistoricalDataTest->stockId = $stock->id;
+
+        $stocksHistoricalDataTest->startDate = strtotime('2013-04-22')*1000;
+        $stocksHistoricalDataTest->endDate = strtotime('2013-07-22')*1000;
+
+        $stocksHistoricalDataTest->getStockData();
     }
 
 //    public function testLoadNurseJobs() {

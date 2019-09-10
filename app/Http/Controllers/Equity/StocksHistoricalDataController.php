@@ -25,7 +25,7 @@ class StocksHistoricalDataController extends Controller {
     public $keepRunningStartTime = 0;
     public $logger;
 
-    protected $tdAmeritrade;
+    public $tdAmeritrade;
 
     public $startDate;
     public $endDate;
