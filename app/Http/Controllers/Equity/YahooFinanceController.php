@@ -65,6 +65,7 @@ class YahooFinanceController extends Controller {
             else {
                 $this->logger->logMessage('prices response false');
             }
+            $year++;
         }
 
         $scheduleController = new ProcessScheduleController();
@@ -90,13 +91,14 @@ class YahooFinanceController extends Controller {
             $priceIssue->high = round($price->high, 4);
             $priceIssue->low = round($price->low, 4);
             $priceIssue->close = round($price->close, 4);
+            $priceIssue->volume = round($price->volume, 4);
             $priceIssue->save();
         }
         else {
-            if ($tdPrice->open != $price->open ||
-                $tdPrice->close != $price->close ||
-                $tdPrice->high != $price->high ||
-                $tdPrice->low != $price->low
+            if ($tdPrice->open != round($price->open, 4) ||
+                $tdPrice->close != round($price->close, 4) ||
+                $tdPrice->high != round($price->high, 4) ||
+                $tdPrice->low != round($price->low, 4)
             ) {
                 $priceIssue = new StocksPriceIssues();
                 $priceIssue->stock_id = $this->stock_id;
@@ -106,6 +108,7 @@ class YahooFinanceController extends Controller {
                 $priceIssue->high = round($price->high, 4);
                 $priceIssue->low = round($price->low, 4);
                 $priceIssue->close = round($price->close, 4);
+                $priceIssue->volume = round($price->volume, 4);
                 $priceIssue->save();
             }
         }
