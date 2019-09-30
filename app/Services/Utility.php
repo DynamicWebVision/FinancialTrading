@@ -144,6 +144,10 @@ class Utility  {
         return date("Y-m-d H:i:s", $unix_timestamp);
     }
 
+    public function unixToMysqlDateNoTime($unix_timestamp) {
+        return date("Y-m-d", $unix_timestamp);
+    }
+
     public function mysqlDateTime() {
         return date('Y-m-d H:i:s');
     }

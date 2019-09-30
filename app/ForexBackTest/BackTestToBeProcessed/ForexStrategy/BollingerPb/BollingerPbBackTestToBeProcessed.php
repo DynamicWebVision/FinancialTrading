@@ -50,11 +50,11 @@ class BollingerPbBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBePr
         elseif ($this->server->strategy_iteration == 'BOL_CLOSE_OUTSIDE') {
             $backTest->rateLevel = 'both';
         
-            $strategy = new bollingerCloseOutside(1,1,true);
+            $strategy = new BollingerCloseOutside(1,1,true);
         
             //$strategy->orderType = 'MARKET_IF_TOUCHED';
             $strategy->bollingerLength = intval($this->backTestToBeProcessed->variable_1);
-            $strategy->bollingerSdMultiplier = intval($this->backTestToBeProcessed->variable_2);
+            $strategy->bollingerSdMultiplier = floatval($this->backTestToBeProcessed->variable_2);
         
             $strategy->takeProfitPipAmount = 0;
             $multiplyValue = max([intval($this->backTestToBeProcessed->variable_1), intval($this->backTestToBeProcessed->variable_2), 
@@ -68,6 +68,7 @@ class BollingerPbBackTestToBeProcessed extends \App\ForexBackTest\BackTestToBePr
         //END OF SYSTEM STRATEGY IFS
 
         $strategy->strategyLogger = new StrategyLogger();
+        $strategy->strategyLogger->loggingOn = false;
 
         $strategy->strategyId = 6;
         $strategy->strategyDesc = 'Automated Test';

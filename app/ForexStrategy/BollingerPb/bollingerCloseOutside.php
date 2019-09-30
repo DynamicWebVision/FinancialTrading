@@ -10,7 +10,7 @@ namespace App\ForexStrategy\BollingerPb;
 use \Log;
 use \App\IndicatorEvents\Bollinger;
 
-class bollingerCloseOutside extends \App\ForexStrategy\Strategy  {
+class BollingerCloseOutside extends \App\ForexStrategy\Strategy  {
 
     public $bollingerLength;
     public $bollingerSdMultiplier;
@@ -32,12 +32,12 @@ class bollingerCloseOutside extends \App\ForexStrategy\Strategy  {
         if (
         $this->decisionIndicators['bollingerCloseOutside'] == 'above'
         ) {
-            $this->newLongPosition();
+            $this->newShortPosition();
         }
         elseif (
         $this->decisionIndicators['bollingerCloseOutside'] == 'below'
         ) {
-            $this->newShortPosition();
+            $this->newLongPosition();
         }
     }
 
@@ -52,32 +52,18 @@ class bollingerCloseOutside extends \App\ForexStrategy\Strategy  {
         $this->strategyLogger->logIndicators($this->decisionIndicators);
 
         if ($this->openPosition['side'] == 'long') {
-
-            //A Conditions
-            // $this->decisionIndicators['bollingerCloseOutside'] == 'above'
-            //B Conditions
-            // $this->decisionIndicators['bollingerCloseOutside'] == 'below'
-
-            //if ( CONDITIONS THAT CONTRADICT LONG ) {
-                //$this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
-                //$this->closePosition();
-                //$this->newLongPosition();
-            //}
-            //else {
-                //$this->modifyStopLoss();
-                //$this->newShortPosition();
-            //}
+            if ($this->decisionIndicators['bollingerCloseOutside'] == 'above') {
+                $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
+                $this->closePosition();
+                $this->newShortPosition();
+            }
         }
         elseif ($this->openPosition['side'] == 'short') {
-            //if ( CONDITIONS THAT CONTRADICT SHORT ) {
-                //$this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
-                //$this->closePosition();
-                //$this->newShortPosition();
-            //}
-            //else {
-                //$this->modifyStopLoss();
-                //$this->newLongPosition();
-            //}
+            if ( $this->decisionIndicators['bollingerCloseOutside'] == 'below' ) {
+                $this->strategyLogger->logMessage("WE NEED TO CLOSE", 1);
+                $this->closePosition();
+                $this->newLongPosition();
+            }
         }
     }
     public function checkForNewPosition() {

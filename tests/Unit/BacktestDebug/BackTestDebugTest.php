@@ -30,6 +30,7 @@ class BackTestDebugTest extends TestCase
         $automatedBackTestController->environmentVariableDriveProcess();
 
         $backTestStatsController = new BackTestStatsController();
+        $automatedBackTestController->logger = $logger;
         $backTestStatsController->backtestProcessStats();
     }
 
