@@ -171,6 +171,8 @@ class StocksBookController extends Controller {
     }
 
     public function createHistoricalStockBooks($stockId) {
+        $this->logger = new ProcessLogger('stck_book_hist_1_stck');
+
         $this->stock = Stocks::find($stockId);
 
         $mostRecentStockDate = StocksHistoryBook::where('stock_id','=', $this->stock->id)->max('book_date');
