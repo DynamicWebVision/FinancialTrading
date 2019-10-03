@@ -67,6 +67,9 @@ class YahooFinanceController extends Controller {
             }
             $year++;
         }
+        $stock = Stocks::find($stockId);
+        $stock->yahoo_prices_check = 1;
+        $stock->save();
 
         $scheduleController = new ProcessScheduleController();
 
