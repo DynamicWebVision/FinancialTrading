@@ -9,6 +9,7 @@ use App\Model\ProcessLog\ProcessQueue;
 use App\Http\Controllers\ServersController;
 use App\Http\Controllers\AutomatedBackTestController;
 use App\Services\Utility;
+use App\Services\ProcessLogger;
 use App\Model\ProcessScheduleDefinition;
 
 class ProcessScheduleController extends Controller
@@ -25,9 +26,13 @@ class ProcessScheduleController extends Controller
     }
 
     public function checkForDueProcesses() {
+
+        $this->logger = new ProcessLogger('prc_scheduler');
+
         $dueSchedules = ProcessScheduleDefinition::where('next_time', '<=', time())->get()->toArray();
 
         foreach ($dueSchedules as $dueSchedule) {
+            $this->logger->logMessage('Due Schedule'.$dueSchedule['id'].'-'.$dueSchedule['name']);
             $this->createProcessRecords($dueSchedule);
             $this->createNextScheduleTime($dueSchedule);
         }
@@ -38,6 +43,8 @@ class ProcessScheduleController extends Controller
 
         foreach ($processes as $process) {
             if ($process['single_process_record'] == 1) {
+                $this->logger->logMessage('Creating Queue Record for '.$process['id'].'-'.$process['name']);
+
                 $newProcessQueue = new ProcessQueue();
                 $newProcessQueue->process_id = $process['id'];
                 $newProcessQueue->priority = $process['priority'];
