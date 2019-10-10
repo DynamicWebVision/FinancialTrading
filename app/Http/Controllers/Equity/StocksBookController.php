@@ -150,7 +150,12 @@ class StocksBookController extends Controller {
         $stockBook = $this->getStockBook();
 
         if ($stockBook) {
-            StocksBook::firstOrNew(['stock_id'=> $this->stock->id])->update($stockBook);
+            $stockBookRecord = StocksBook::firstOrNew(['stock_id'=> $this->stock->id]);
+            $stockBookRecord->ytd_change = $stockBook['ytd_change'];
+            $stockBookRecord->week_change = $stockBook['week_change'];
+            $stockBookRecord->month_change = $stockBook['month_change'];
+            $stockBookRecord->change_percent = $stockBook['change_percent'];
+            $stockBookRecord->save();
             $this->logger->logMessage('Successful Save '.$this->stock->id.' symbol: '.$this->stock->symbol);
         }
     }
