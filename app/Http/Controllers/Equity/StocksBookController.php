@@ -160,6 +160,28 @@ class StocksBookController extends Controller {
         }
     }
 
+    public function updateBookSingleStockBook($stockId) {
+        $this->stock = Stocks::find($stockId);
+
+        $this->logger = new ProcessLogger('eq_book_iex');
+
+        $this->logger->logMessage('Getting Book Calculations for id: '.$this->stock->id.' symbol: '.$this->stock->symbol);
+
+        $this->currentStockDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->max('price_date_time');
+
+        $stockBook = $this->getStockBook();
+
+        if ($stockBook) {
+            $stockBookRecord = StocksBook::firstOrNew(['stock_id'=> $this->stock->id]);
+            $stockBookRecord->ytd_change = $stockBook['ytd_change'];
+            $stockBookRecord->week_change = $stockBook['week_change'];
+            $stockBookRecord->month_change = $stockBook['month_change'];
+            $stockBookRecord->change_percent = $stockBook['change_percent'];
+            $stockBookRecord->save();
+            $this->logger->logMessage('Successful Save '.$this->stock->id.' symbol: '.$this->stock->symbol);
+        }
+    }
+
     public function getInitialHistoricalBookDate() {
         $minDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->min('price_date_time');
 

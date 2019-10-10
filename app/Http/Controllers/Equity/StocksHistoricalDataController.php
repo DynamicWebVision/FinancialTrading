@@ -84,6 +84,9 @@ class StocksHistoricalDataController extends Controller {
                             ->where('current_daily_load', '=', 0)
                             ->get(['id', 'symbol'])->toArray();
 
+        $scheduleController = new ProcessScheduleController();
+
+
         foreach ($stocks as $stock) {
             $this->symbol = $stock['symbol'];
             $this->stockId = $stock['id'];
@@ -100,12 +103,10 @@ class StocksHistoricalDataController extends Controller {
             $stockUpdate = Stocks::find($stock['id']);
             $stockUpdate->current_daily_load = 1;
             $stockUpdate->save();
+
+            $scheduleController->createQueueRecordsWithVariableIds('eq_book_iex', [$stock['id']]);
             sleep(2);
         }
-
-        $scheduleController = new ProcessScheduleController();
-
-        $scheduleController->createQueueRecord('eq_book_iex');
     }
 
     public function getStockData() {
