@@ -37,6 +37,5 @@ class YahooFinance  {
             $this->logger->logMessage('Response: '.$historicalRates);
             return false;
         }
-
     }
 }

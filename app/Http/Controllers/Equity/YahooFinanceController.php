@@ -7,6 +7,7 @@ use App\EquityTechnicalCheck\HmaReversal\HmaReversal;
 use App\Model\Stocks\StocksTechnicalCheckResult;
 use App\Model\Stocks\Stocks;
 use App\Model\Stocks\StocksDailyPrice;
+use App\Model\Stocks\StocksDailyPricesYahoo;
 use App\Model\Stocks\StocksPriceIssues;
 use App\Services\YahooFinance;
 use App\Services\Utility;
@@ -33,10 +34,8 @@ class YahooFinanceController extends Controller {
 
         $this->logger->logMessage($stock->id.'-'.$stock->symbol.'-'.$stock->name);
 
-        $minDate = StocksDailyPrice::where('stock_id', '=', $stockId)
-                        ->min('date_time_unix');
 
-        $year = date('Y', $minDate);
+        $year = 2012;
 
         $currentYear = date('Y');
 
@@ -58,7 +57,8 @@ class YahooFinanceController extends Controller {
             if ($prices) {
                 foreach ($prices as $price) {
                     if (isset($price->high)) {
-                        $this->evaluateOnePrice($price);
+                        //$this->evaluateOnePrice($price);
+                        $this->saveOnePrice($price);
                     }
                 }
             }
@@ -78,6 +78,34 @@ class YahooFinanceController extends Controller {
         $stock = Stocks::find($nextStock->id);
         $stock->yahoo_prices_check = 1;
         $stock->save();
+    }
+
+    protected function saveOnePrice($price) {
+        try {
+            $stockPriceRecord = StocksDailyPricesYahoo::firstOrNew([
+                'stock_id'=> $this->stock_id,
+                'date_time_unix' => $price->date
+            ]);
+
+            $stockPriceRecord->stock_id = $this->stock_id;
+            $stockPriceRecord->open = round($price->open, 4);
+            $stockPriceRecord->high = round($price->high, 4);
+            $stockPriceRecord->low = round($price->low, 4);
+            $stockPriceRecord->close = round($price->close, 4);
+            $stockPriceRecord->volume = round($price->volume, 4);
+
+            $stockPriceRecord->date_time_unix = $price->date;
+            $stockPriceRecord->price_date_time = date('Y-m-d', $price->date);
+
+            $stockPriceRecord->save();
+        }
+        catch (\Exception $e) {
+            $errorStock = Stocks::find($this->stock_id);
+            $errorStock->price_error = 1;
+            $errorStock->save();
+
+            $this->logger->logMessage('Stock '.$this->stock_id.'-'.$this->symbol.' ran into save price error with message '.$e->getMessage());
+        }
     }
 
     protected function evaluateOnePrice($price) {
