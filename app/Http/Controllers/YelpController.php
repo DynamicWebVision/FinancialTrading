@@ -47,7 +47,7 @@ class YelpController extends Controller
 
     public function saveBusinesses($businesses, $city_id, $category_id) {
         foreach ($businesses as $business) {
-            $yelpLocation = YelpLocation::firstOrNew(['yelp_id' => $business->id]);
+            $yelpLocation = YelpLocation::firstOrCreate(['yelp_id' => $business->id]);
 
             $yelpLocation->city_id = $city_id;
 
@@ -58,7 +58,7 @@ class YelpController extends Controller
             $yelpLocation->state = $business->location->state;
             $yelpLocation->zip = $business->location->zip_code;
             $yelpLocation->yelp_id = $business->id;
-            $yelpLocation->phone = preg_replace("/[^0-9]/", "", $business->phone );
+            $yelpLocation->phone_no = $business->display_phone;
 
             $yelpLocation->save();
 
@@ -89,6 +89,7 @@ class YelpController extends Controller
         $yelp = new Yelp();
 
         $yelpCityTracker = YelpCityTracker::where('completed','=', NULL)->first();
+        $yelpCityTracker = YelpCityTracker::find($yelpCityTracker['id']);
 
         $category = YelpCategories::find($yelpCityTracker['yelp_category_id']);
 
@@ -101,9 +102,9 @@ class YelpController extends Controller
 
         if (!is_null($yelpCityTracker->total_records)) {
             $first_search = false;
+            $yelp->urlParams['offset'] = $yelpCityTracker->current_offset;
         }
         else {
-            $yelp->urlParams['offset'] = $yelpCityTracker->current_offset;
             $first_search = true;
         }
 
@@ -114,17 +115,18 @@ class YelpController extends Controller
 
             if ($first_search) {
                 $yelpCityTracker->total_records = $response->total;
-                $yelpCityTracker->current_offset = 20;
+                $currentOffset = 20;
             }
             else {
                 $currentOffset = $yelpCityTracker->current_offset + 20;
 
                 if ($currentOffset >= $yelpCityTracker->total_records) {
-                    $yelpCityTracker->current_offset = $yelpCityTracker->total_records;
+                    $currentOffset = $yelpCityTracker->total_records;
                     $yelpCityTracker->completed = 1;
                 }
 
             }
+            $yelpCityTracker->current_offset = $currentOffset;
             $yelpCityTracker->save();
         }
         else {
