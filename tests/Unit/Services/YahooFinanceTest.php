@@ -27,7 +27,7 @@ class YahooFinanceTest extends TestCase
     public function testProcessOneStock() {
         $textMessage = new YahooFinanceController();
 
-        $textMessage->checkPricesOneStock(1);
+        $textMessage->checkPricesOneStock(4542);
     }
 
 }

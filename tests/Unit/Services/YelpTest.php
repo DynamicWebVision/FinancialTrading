@@ -15,5 +15,9 @@ class YelpTest extends TestCase
         $textMessage = new Yelp();
         $textMessage->getUrlList();
     }
+    public function testYelp() {
+        $textMessage = new Yelp();
+        $textMessage->loadUsCities();
+    }
 
 }

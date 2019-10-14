@@ -11,16 +11,69 @@ class Yelp  {
     public $end_date;
     public $logger;
 
-    public function __construct() {
-        $this->scraper = new Scraper();
+    public $urlParams = [];
+
+
+// API constants, you shouldn't have to change these.
+CONST API_HOST = "https://api.yelp.com";
+CONST SEARCH_PATH = "/v3/businesses/search";
+CONST BUSINESS_PATH = "/v3/businesses/";  // Business ID will come after slash.
+
+//// Defaults for our simple example.
+//$DEFAULT_TERM = "dinner";
+//$DEFAULT_LOCATION = "San Francisco, CA";
+//$SEARCH_LIMIT = 3;
+
+
+    public function apiRequest($path, $url_params = array()) {
+        // Send Yelp API Call
+        try {
+            $curl = curl_init();
+            if (FALSE === $curl)
+                throw new Exception('Failed to initialize');
+
+            $url = self::API_HOST . $path . "?" . http_build_query($this->urlParams);
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,  // Capture response.
+                CURLOPT_ENCODING => "",  // Accept gzip/deflate/whatever.
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "authorization: Bearer " . env('YELP_API_KEY'),
+                    "cache-control: no-cache",
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            if (FALSE === $response)
+                throw new Exception(curl_error($curl), curl_errno($curl));
+            $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            if (200 != $http_status)
+                throw new Exception($response, $http_status);
+
+            curl_close($curl);
+        } catch(Exception $e) {
+            trigger_error(sprintf(
+                'Curl failed with error #%d: %s',
+                $e->getCode(), $e->getMessage()),
+                E_USER_ERROR);
+        }
+
+        return json_decode($response);
     }
 
-    public function getUrlList() {
-        $url = 'https://www.yelp.com/search?find_desc=Restaurants&find_loc=San%20Francisco%2C%20CA';
+    public function getBusiness($business_id) {
+        $business_path = self::BUSINESS_PATH . urlencode($business_id);
 
-        $yelp_response = $this->scraper->getCurl($url);
-
-
-
+        $response = $this->apiRequest($business_path);
     }
+
+    function search() {
+        return $this->apiRequest(self::SEARCH_PATH);
+    }
+
 }
