@@ -53,13 +53,13 @@ CONST BUSINESS_PATH = "/v3/businesses/";  // Business ID will come after slash.
             $response = curl_exec($curl);
 
             if (FALSE === $response)
-                throw new Exception(curl_error($curl), curl_errno($curl));
+                throw new \Exception(curl_error($curl), curl_errno($curl));
             $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
             if (200 != $http_status)
-                throw new Exception($response, $http_status);
+                throw new \Exception($response, $http_status);
 
             curl_close($curl);
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             trigger_error(sprintf(
                 'Curl failed with error #%d: %s',
                 $e->getCode(), $e->getMessage()),
