@@ -73,11 +73,15 @@ class YahooFinanceController extends Controller {
 
         $nextStock = Stocks::where('initial_daily_load','=',1)->where('yahoo_prices_check','=',0)->first();
 
-        $scheduleController->createQueueRecordsWithVariableIds('yahoo_price', [$nextStock->id]);
+        if (!is_null($nextStock)) {
+            $scheduleController->createQueueRecordsWithVariableIds('yahoo_price', [$nextStock->id]);
 
-        $stock = Stocks::find($nextStock->id);
-        $stock->yahoo_prices_check = 1;
-        $stock->save();
+            $stock = Stocks::find($nextStock->id);
+            $stock->yahoo_prices_check = 1;
+            $stock->save();
+        }
+
+
     }
 
     protected function saveOnePrice($price) {
