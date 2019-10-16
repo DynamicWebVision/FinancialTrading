@@ -62,7 +62,8 @@ class Kernel extends ConsoleKernel
              * SCHEDULE PROCESS JOBS
              *********************************************************************/
             $schedule->command('schedule_process eq_fundamental_td 3')->dailyAt('23:00');
-            $schedule->command('schedule_process fx_delete_dev_bts 2')->tuesdays();
+            $schedule->command('schedule_process fx_delete_dev_bts 2')->tuesdays()
+                ->at('17:00');
             $schedule->command('schedule_process fx_live_transactions 3')->hourly();
             $schedule->command('schedule_process historical_fx_rates 3')->hourly();
 
@@ -80,7 +81,7 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@amazingCrossoverTrailingStop')->hourly();
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouchedHr')->hourly();
-            $schedule->call('App\Http\Controllers\LivePracticeController@weeklyPriceBreakout')->sundays();
+            $schedule->call('App\Http\Controllers\LivePracticeController@weeklyPriceBreakout')->sundays()->at('17:00');
 
             //
             $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('21:02');

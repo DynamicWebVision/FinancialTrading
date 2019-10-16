@@ -89,6 +89,11 @@ class YelpController extends Controller
         $yelp = new Yelp();
 
         $yelpCityTracker = YelpCityTracker::where('completed','=', NULL)->first();
+
+        if (!$yelpCityTracker) {
+            die();
+        }
+
         $yelpCityTracker = YelpCityTracker::find($yelpCityTracker['id']);
 
         $category = YelpCategories::find($yelpCityTracker['yelp_category_id']);

@@ -53,7 +53,6 @@ class YahooFinanceController extends Controller {
 
             $prices = $yahooFinance->getHistoricalRates($dates);
 
-
             if ($prices) {
                 foreach ($prices as $price) {
                     if (isset($price->high)) {
