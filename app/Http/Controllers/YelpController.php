@@ -91,7 +91,7 @@ class YelpController extends Controller
         $yelpCityTracker = YelpCityTracker::where('completed','=', NULL)->first();
 
         if (!$yelpCityTracker) {
-            die();
+            return;
         }
 
         $yelpCityTracker = YelpCityTracker::find($yelpCityTracker['id']);
