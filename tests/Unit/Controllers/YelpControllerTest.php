@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Config;
 use App\Broker\OandaV20;
 use App\Model\Yelp\Cities;
 use App\Model\Yelp\States;
+use App\Model\Yelp\YelpCategories;
 use App\Model\Yelp\YelpCityTracker;
 
 class YelpControllerTest extends TestCase
@@ -319,7 +320,7 @@ class YelpControllerTest extends TestCase
 
     public function testLoadCategory() {
 
-        $category_id = 463;
+        $category_id = 1187;
 
         $cities = Cities::get()->toArray();
 
@@ -330,6 +331,25 @@ class YelpControllerTest extends TestCase
             $yelpCityTracker->city_id = $city['id'];
 
             $yelpCityTracker->save();
+        }
+    }
+
+    public function testLoadRestaurantsForCity() {
+
+        $restaurantCategories = YelpCategories::where('parent','=', 'restaurants')->get()->toArray();
+
+        $cities = [14,4];
+
+        foreach ($cities as $city) {
+            foreach ($restaurantCategories as $category) {
+                $yelpCityTracker = new YelpCityTracker();
+
+                $yelpCityTracker->yelp_category_id = $category['id'];
+                $yelpCityTracker->city_id = $city;
+
+                $yelpCityTracker->save();
+            }
+
         }
     }
 }

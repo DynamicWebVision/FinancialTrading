@@ -9,6 +9,7 @@ use App\Http\Controllers\ServersController;
 use App\Http\Controllers\AutomatedBackTestController;
 use App\Services\Utility;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use App\Services\ProcessLogger;
 use App\Model\ProcessLog\ProcessLog;
 
@@ -56,7 +57,9 @@ class ProcessController extends Controller
 
     public function processNextJob() {
 
-        $processToBeRun = ProcessQueue::where('server_id', '=', 0)->orderBy('priority')->first();
+        DB::statement("UPDATE process_queue SET server_id = ? where server_id = 0 limit 1", [Config::get('server_id')]);
+
+        $processToBeRun = ProcessQueue::where('server_id', '=', Config::get('server_id'))->whereNull('start_time')->first();
 
         if (is_null($processToBeRun)) {
             $this->logger->logMessage('$processToBeRun is null, kicking off backtest');
