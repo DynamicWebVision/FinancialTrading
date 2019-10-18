@@ -119,7 +119,6 @@ class ProcessScheduleController extends Controller
                 'priority'=> $process->priority
             ];
         }
-
         ProcessQueue::insert($insertRecords);
     }
 }

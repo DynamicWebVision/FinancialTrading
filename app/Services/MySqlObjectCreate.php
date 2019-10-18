@@ -89,13 +89,18 @@ class MySqlObjectCreate  {
         $this->addTextToCreateTable('updated_at datetime,');
     }
 
-    public function createTableFromJson($tableName, $json) {
+    public function createTableFromJson($tableName, $json, $convertCamel = true) {
         $jsonObject = json_decode($json);
 
         $columnDefinitions = [];
 
         foreach ($jsonObject as $label => $value) {
-            $columnName = $this->convertCamelCaseToSnakeCase($label);
+            if ($convertCamel) {
+                $columnName = $this->convertCamelCaseToSnakeCase($label);
+            }
+           else {
+                $columnName = $label;
+           }
             $columnType = $this->getColumnType($value);
             $columnDefinitions[] = [
                 'name'=>$columnName,

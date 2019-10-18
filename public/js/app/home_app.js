@@ -114,4 +114,9 @@ app.config(function($routeProvider) {
             controller : "StocksBacktestListCtrl",
             controllerAs: 'bl'
         })
+        .when("/marketing/rentals", {
+            templateUrl : "js/modules/marketing/rentals/rentals.html",
+            controller : "HarRentalsController",
+            controllerAs: 'vm'
+        })
 });

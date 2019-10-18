@@ -218,6 +218,11 @@ Route::get('load_notes/{strategyId}', 'StrategyNotesController@loadNotes');
 Route::resource('strategy_system', 'StrategySystemController');
 Route::resource('strategy_notes', 'StrategyNotesController');
 
+
+Route::post('/rentals/load', 'Marketing\HarRentalController@load');
+Route::get('/specific_rental_curl', 'Marketing\RentalController@testCurl');
+Route::get('/getListings', 'Marketing\RentalController@getListings');
+
 Route::get('php', function () {
     echo phpinfo();
 });

@@ -72,6 +72,7 @@
     <script type="text/javascript" src="js/modules/stocks/stocks-create-backtest/stocks-create-backtest.js"></script>
     <script type="text/javascript" src="js/modules/stocks/factory/stocks-technical-check.js"></script>
     <script type="text/javascript" src="js/modules/nurse-jobs/nurse-jobs.js"></script>
+    <script type="text/javascript" src="js/modules/marketing/rentals/rentals.js"></script>
 @stop
 
 @section('side_nav')
@@ -161,6 +162,23 @@
                     <i class="fas fa-align"></i>
                     <span> Nursing Contracts </span> <span class="pull-right"></span>
                 </a>
+            </li>
+            <li ng-class="{'active': openUrl == 'marketing'}">
+
+                <a href="#/marketing/rentals" class="waves-effect"
+                   ng-click="openUrl = 'marketing'">
+                    <i class="fa fa-bell-o" aria-hidden="true"></i>
+                    <span> Marketing</span> <span class="pull-right"></span>
+                </a>
+                <ul ng-cloak class="list-unstyled" ng-show="openUrl == 'stocks'">
+                    <li>
+                        <a href="#/marketing/rentals" class="waves-effect">
+                            <i class="fa fa-undo" aria-hidden="true"></i>
+                            <span> Rentals </span>
+                            <span class="pull-right"></span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>
