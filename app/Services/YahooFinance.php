@@ -27,7 +27,6 @@ class YahooFinance  {
         $historicalRates = $this->scraper->getCurl($url);
 
         try {
-
             $inBetween = '[{'.$this->scraper->getInBetween($historicalRates, '"prices":[{', '}]').'}]';
 
             return json_decode($inBetween);

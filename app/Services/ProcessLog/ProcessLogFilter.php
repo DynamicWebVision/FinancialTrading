@@ -27,7 +27,7 @@ class ProcessLogFilter  {
         'process_log.created_at',
         'process_log.server_address',
         'process_log.server_id',
-        'process_log.process_queue_id',
+        //'process_log.process_queue_id',
         'process_log.linux_pid',
         'process_log.forced_end',
         'process_log.has_error',

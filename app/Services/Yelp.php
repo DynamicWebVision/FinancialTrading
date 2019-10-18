@@ -60,10 +60,8 @@ CONST BUSINESS_PATH = "/v3/businesses/";  // Business ID will come after slash.
 
             curl_close($curl);
         } catch(\Exception $e) {
-            trigger_error(sprintf(
-                'Curl failed with error #%d: %s',
-                $e->getCode(), $e->getMessage()),
-                E_USER_ERROR);
+            $this->logger->logMessage($e->getMessage(), 4);
+            return false;
         }
 
         return json_decode($response);

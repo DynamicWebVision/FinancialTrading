@@ -34,7 +34,6 @@ class YahooFinanceController extends Controller {
 
         $this->logger->logMessage($stock->id.'-'.$stock->symbol.'-'.$stock->name);
 
-
         $year = 2012;
 
         $currentYear = date('Y');

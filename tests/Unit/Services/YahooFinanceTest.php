@@ -20,7 +20,6 @@ class YahooFinanceTest extends TestCase
     public function testHistoricalRatesWithDates() {
         $textMessage = new YahooFinance();
         $textMessage->symbol = 'XOM';
-
         $textMessage->getHistoricalRates(['start_date'=>'2016-01-01','end_date'=>'2017-01-01',]);
     }
 
