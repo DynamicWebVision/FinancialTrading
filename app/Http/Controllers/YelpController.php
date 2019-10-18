@@ -91,6 +91,7 @@ class YelpController extends Controller
         $yelpCityTracker = YelpCityTracker::where('completed','=', NULL)->first();
 
         if (!$yelpCityTracker) {
+            $this->logger->logMessage('No non-completed records in Yelp City Tracker');
             return;
         }
 

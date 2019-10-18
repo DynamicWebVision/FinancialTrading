@@ -56,7 +56,6 @@ class ProcessController extends Controller
     }
 
     public function processNextJob() {
-
         DB::statement("UPDATE process_queue SET server_id = ? where server_id = 0 limit 1", [Config::get('server_id')]);
 
         $processToBeRun = ProcessQueue::where('server_id', '=', Config::get('server_id'))->whereNull('start_time')->first();
@@ -69,6 +68,11 @@ class ProcessController extends Controller
             $automatedBacktestController->runOneProcessOrAllBacktestStats();
         }
         else {
+            DB::table('tbd_process_log_debug')->insert(
+                ['server_id' => Config::get('server_id'), 'process_queue_id' => $processToBeRun->id,
+                'created_at'=>$this->utility->mysqlDateTime()]
+            );
+
             $processToBeRun->server_id = Config::get('server_id');
             $processToBeRun->start_time = $this->utility->mysqlDateTime();
 
@@ -88,7 +92,6 @@ class ProcessController extends Controller
             $processToBeRun->save();
         }
         $this->proccessRunCompletion();
-
     }
 
     public function proccessRunCompletion() {
