@@ -26,7 +26,6 @@ class ProcessScheduleController extends Controller
     }
 
     public function checkForDueProcesses() {
-
         $this->logger = new ProcessLogger('prc_scheduler');
 
         $dueSchedules = ProcessScheduleDefinition::where('next_time', '<=', time())->get()->toArray();

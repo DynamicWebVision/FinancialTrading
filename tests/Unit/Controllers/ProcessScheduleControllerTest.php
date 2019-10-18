@@ -28,7 +28,7 @@ class ProcessScheduleControllerTest extends TestCase
 
     public function testCreateMultiRecords() {
         $serversController = new ProcessScheduleController();
-        $serversController->checkForDueProcesses('rental_agent',
+        $serversController->createQueueRecordsWithVariableIds('rental_agent',
             [1,
                 2,
                 3,

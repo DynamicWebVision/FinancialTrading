@@ -491,37 +491,34 @@ class HarRentalController extends Controller {
 
     public function getRentalEmail() {
 
-        $rentalInfo = PossibleRental::where('email_sent', '=', 0)->first();
+        $agentInfo = PossibleRentalAgent::where('email_sent', '=', 0)->first();
 
-        $agentInfo = PossibleRentalAgent::find($rentalInfo->AGENT_ID);
+        $body = $this->buildBody($agentInfo);
 
-        $body = $this->buildBody($rentalInfo, $agentInfo);
+        $agentInfo->email_sent = 1;
 
-        $updateRental = PossibleRental::find($rentalInfo->id);
+        $agentInfo->save();
 
-        $updateRental->email_sent = 1;
-
-        $updateRental->save();
-
-        $updateRental = PossibleRentalAgent::find($rentalInfo->AGENT_ID);
-
-        $updateRental->email_sent = 1;
-
-        $updateRental->save();
-
-        return ['body'=>$body, 'subject'=>'Interested In '.$rentalInfo->FULLSTREETADDRESS,'email'=>$agentInfo->AGENTEMAIL];
+        return ['body'=>$body, 'subject'=>'Beta Templating Application Messgen','email'=>$agentInfo->AGENTEMAIL];
     }
 
     public function buildBody($agentInfo) {
-        $firstName = $this->utility->getStringUntilCharacter($agentInfo->FULLNAME, ' ');
+        $scraper = new Scraper();
+        $firstName = ucfirst(strtolower($scraper->getTextBeforeString(' ', $agentInfo->FULLNAME)));
 
         $bodyText = 'Hello '.$firstName.',%0A%0A';
 
         $bodyText = $bodyText.'I am a software engineer that has created a beta version of a powerful templating application called Messgen (located at messgen.com). It allows you to formulate robust, audience tailored messages in seconds. At this point I only have 20-30 friends using the application, but a couple of them who are finding the tool especially useful are real estate agents, which is why I’m contacting you after getting your information off of har.com.';
 
+        $bodyText = $bodyText.'%0A%0A';
+
         $bodyText = $bodyText.'As I’m in a beta stage, the application will be completely free to use as my primary goal at this stage is to refine the product through feedback. Although I obviously hope to monetize the application at a later date, I promise I will not charge you anything for at least a year from the time you register as appreciation for trying out the new product.';
 
-        $bodyText = $bodyText.'Please do not hesitate if you have any questions for how to use the application. Of course if you use the application I would love your general feedback on the tool as well as any thoughts on how it can help you even more.';
+        $bodyText = $bodyText.'%0A%0A';
+
+        $bodyText = $bodyText.'Please do not hesitate if you have any questions for how to use the application. I would love your general feedback on the tool as well as any thoughts on how it can help you even more.';
+
+        $bodyText = $bodyText.'%0A%0A';
 
         $bodyText = $bodyText.'Best Regards,%0A';
         $bodyText = $bodyText.'Brian';
