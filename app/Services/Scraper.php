@@ -21,6 +21,22 @@ class Scraper {
 
         return $resp;
     }
+    public function getLinksInClass($html, $class, $includeBase = false) {
+        $urls = [];
+        while (strpos($html, $class) !== false) {
+            $htmlToEndFromClass = substr($html, strpos($html, $class));
+            $urlEndpoint = $this->getNextHref($htmlToEndFromClass);
+
+            if ($includeBase) {
+                $urls[] = $this->baseUrl.$urlEndpoint;
+            }
+            else {
+                $urls[] = $urlEndpoint;
+            }
+            $html = substr($htmlToEndFromClass, strpos($htmlToEndFromClass, "href=")+6);
+        }
+        return $urls;
+    }
 
     public function getLinksWithClass($html, $class) {
         $urls = [];

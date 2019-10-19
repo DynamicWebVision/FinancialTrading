@@ -53,13 +53,13 @@ return [
             'engine' => null,
         ],
 
-        'stocks_daily_db' => [
+        'craigslist' => [
             'driver' => 'mysql',
-            'host' => env('STOCK_DAILY_DB', '127.0.0.1'),
-            'port' => env('UTILITY_DB_PORT', '3306'),
-            'database' => env('STOCK_DAILY_DB_DATABASE', 'forge'),
-            'username' => env('STOCK_DAILY_DB_USERNAME', 'forge'),
-            'password' => env('STOCK_DAILY_DB_PASSWORD', ''),
+            'host' => env('CRAIGSLIST_DB', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('CRAIGSLIST_DB_DATABASE', 'forge'),
+            'username' => env('CRAIGSLIST_DB_USERNAME', 'forge'),
+            'password' => env('CRAIGSLIST_DB_PASSWORD', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',

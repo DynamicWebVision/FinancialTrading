@@ -281,7 +281,7 @@ class HarRentalController extends Controller {
             $agentInfo = json_decode($locationDetail)->AGENTINFO;
 
 
-            $newPossibleRentalAgent = PossibleRentalAgent::firstOrNew(['AGENTID' => $agentInfo->AGENTID]);
+            $newPossibleRentalAgent = PossibleRentalAgent::firstOrCreate(['AGENTID' => $agentInfo->AGENTID]);
 
             if (isset($agentInfo->ANSWERS)) {
                 $newPossibleRentalAgent->ANSWERS = $agentInfo->ANSWERS;
