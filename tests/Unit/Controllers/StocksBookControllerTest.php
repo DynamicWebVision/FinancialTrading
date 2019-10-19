@@ -34,10 +34,8 @@ class StocksBookControllerTest extends TestCase
 
     public function testProcessOneStock() {
         $stocksHistoricalDataTest = new StocksBookController();
-        $stocksHistoricalDataTest->logger = new ProcessLogger('eq_book_iex');
 
-        $stocksHistoricalDataTest->stock = Stocks::find(5);
-        $stocksHistoricalDataTest->updateBook();
+        $stocksHistoricalDataTest->updateBookSingleStockBook(1371);
     }
 
     public function testProcessOneStockSpecificTime() {

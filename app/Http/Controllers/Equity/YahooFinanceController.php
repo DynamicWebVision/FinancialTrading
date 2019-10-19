@@ -12,6 +12,7 @@ use App\Model\Stocks\StocksPriceIssues;
 use App\Services\YahooFinance;
 use App\Services\Utility;
 use App\Services\ProcessLogger;
+use App\Services\TextMessage;
 
 class YahooFinanceController extends Controller {
 
@@ -77,6 +78,11 @@ class YahooFinanceController extends Controller {
             $stock = Stocks::find($nextStock->id);
             $stock->yahoo_prices_check = 1;
             $stock->save();
+        }
+        else {
+            $textMessage = new TextMessage();
+            $message = 'All of the Stocks have been processed for Yahoo Price Rates';
+            $textMessage->sendTextMessage($message);
         }
 
 
