@@ -37,6 +37,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\UpdateDBHost',
         'App\Console\Commands\UpdateGitPullTime',
         'App\Console\Commands\ScheduleProcessInQueue',
+        'App\Console\Commands\GetServersRunning',
     ];
 
     public $everyFifteenMinuteEarlyInterval = '59,14,29,44 * * * * *';
