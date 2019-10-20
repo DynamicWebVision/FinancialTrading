@@ -499,7 +499,7 @@ class HarRentalController extends Controller {
 
         $agentInfo->save();
 
-        return ['body'=>$body, 'subject'=>'Beta Templating Application Messgen','email'=>$agentInfo->AGENTEMAIL];
+        return ['body'=>$body, 'subject'=>'Powerful Templating Tool','email'=>$agentInfo->AGENTEMAIL];
     }
 
     public function buildBody($agentInfo) {
