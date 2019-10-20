@@ -497,7 +497,9 @@ class HarRentalController extends Controller {
 
         $agentInfo->email_sent = 1;
 
-        $agentInfo->save();
+        DB::table('possible_rental_agents')
+            ->where('AGENTEMAIL','=', $agentInfo->AGENTEMAIL)
+            ->update(array('email_sent' => 1));
 
         return ['body'=>$body, 'subject'=>'Powerful Templating Tool for Realtors','email'=>$agentInfo->AGENTEMAIL];
     }
