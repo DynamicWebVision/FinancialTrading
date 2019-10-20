@@ -3,13 +3,18 @@
 use Request;
 use App\Services\Scraper;
 use App\Services\CraigslistHelpers;
+use App\Services\ProcessLogger;
 
 use App\Model\Craigslist\Brand;
 use App\Model\Craigslist\Item;
 use App\Model\Craigslist\ArchiveItem;
 use App\Model\Craigslist\ItemImage;
 use App\Model\Craigslist\ArchiveItemImage;
+use App\Model\Craigslist\City;
+use App\Model\Craigslist\BrandCheckTracker;
+use App\Model\Craigslist\Section;
 use App\Services\Utility;
+use App\Http\Controllers\ProcessScheduleController;
 
 class CraigslistController extends \App\Http\Controllers\Controller {
 
@@ -17,16 +22,28 @@ class CraigslistController extends \App\Http\Controllers\Controller {
     public $searchSection = 'fuo';
     public $scraper;
 
-    public function scrapeBrandFurniture() {
+    public $logger;
+
+    public function scrapeBrandFurniture($tracker_id) {
+        $this->logger = new ProcessLogger('craig_scrape');
+
         $this->scraper = new Scraper();
         $savedUrlsFoundInSearch = [];
 
-        $city = 'houston';
+        $brandCityTracker = BrandCheckTracker::find($tracker_id);
+        $brandCityTracker->last_search = time();
 
-        $this->scraper->baseUrl = 'https://'.$city.'.craigslist.org';
-        $this->baseUrl = 'https://'.$city.'.craigslist.org';
+        $city = City::find($brandCityTracker->city_id);
+        $section = Section::find($brandCityTracker->section_id);
 
-        $brand = Brand::orderBy('last_search')->take(1)->get()->toArray()[0];
+        $this->searchSection = $section->craigslist_string;
+
+        $this->scraper->baseUrl = 'https://'.$city->craigslist_string.'.craigslist.org';
+        $this->baseUrl = 'https://'.$city->craigslist_string.'.craigslist.org';
+
+        $brand = Brand::find($brandCityTracker->brand_id)->toArray();
+
+        $this->logger->logMessage('Processing City '.$city->name.' Brand '.$brand['name']);
 
         $brands = Brand::get()->toArray();
 
@@ -42,8 +59,8 @@ class CraigslistController extends \App\Http\Controllers\Controller {
 
         foreach ($responseUrls as $url) {
             $craigslistId = $this->scraper->reverseGetInBetween($url, '.html', '/');
-            $craigslistUrl = $this->scraper->getToEnd($url, '=/fuo/d', '.html');
-            $craigslistDBUrl = $this->scraper->getToEnd($url, 'https://houston.craigslist.org/fuo/d');
+            $craigslistUrl = $this->scraper->getToEnd($url, '=/'.$this->searchSection.'/d', '.html');
+            $craigslistDBUrl = $this->scraper->getToEnd($url, 'https://houston.craigslist.org/'.$this->searchSection.'/d');
 
             if (!in_array(trim($craigslistDBUrl), $alreadySavedItems)) {
                 $newItemCount++;
@@ -59,10 +76,11 @@ class CraigslistController extends \App\Http\Controllers\Controller {
 
                 $deletedByAuthor = $this->scraper->inString($itemHtmlContent, 'This posting has been deleted by its author');
 
-                //Already Saved Check
-                if ($brandCount < 3 && strtoupper($manufacturer) != strtoupper($brand['name']) && !$deletedByAuthor) {
+                $header = trim($this->scraper->getInBetween($itemHtmlContent , '<span id="titletextonly">', "</span>"));
 
-                    $header = $this->scraper->getInBetween($itemHtmlContent , '<span id="titletextonly">', "</span>");
+                //Already Saved Check
+                if ($brandCount < 3 && strtoupper($manufacturer) != strtoupper($brand['name']) && !$deletedByAuthor
+                    && $this->scraper->inString($header, $brand['name'])) {
 
                     $xmlDoc = new \DOMDocument();
                     libxml_use_internal_errors(true);
@@ -106,34 +124,40 @@ class CraigslistController extends \App\Http\Controllers\Controller {
                     $imagesValues = $this->scraper->stripSetsOfValuesWhereSetItemsRelated($imageListText, $imageSearchValues);
 
                     if (!Item::where('craigslist_url', '=', trim($craigslistUrl))->exists()) {
-                        $newItem = new Item();
 
-                        $newItem->brand_id = $brand['id'];
-                        $newItem->title = trim($header);
-                        $newItem->description = trim($description);
-                        $newItem->item_condition = trim($condition);
-                        $newItem->manufacturer = trim($manufacturer);
-                        $newItem->model_name_number = trim($modelName);
-                        $newItem->dimensions = trim($dimensions);
-                        $newItem->craigslist_id = $craigslistId;
-                        $newItem->craigslist_url = trim($craigslistUrl);
-                        $newItem->posted_date = $postedDate;
-                        $newItem->price = $price;
+                        try {
+                            $newItem = new Item();
 
+                            $newItem->brand_id = $brand['id'];
+                            $newItem->title = trim($header);
+                            $newItem->description = trim($description);
+                            $newItem->item_condition = trim($condition);
+                            $newItem->manufacturer = trim($manufacturer);
+                            $newItem->model_name_number = trim($modelName);
+                            $newItem->dimensions = trim($dimensions);
+                            $newItem->craigslist_id = $craigslistId;
+                            $newItem->craigslist_url = trim($craigslistUrl);
+                            $newItem->posted_date = $postedDate;
+                            $newItem->price = $price;
 
-                        $newItem->save();
+                            $newItem->save();
 
-                        $alreadySavedItems[] = trim($craigslistUrl);
+                            $alreadySavedItems[] = trim($craigslistUrl);
 
-                        foreach ($imagesValues as $image) {
-                            $newItemImage = new ItemImage();
+                            foreach ($imagesValues as $image) {
+                                $newItemImage = new ItemImage();
 
-                            $newItemImage->item_id = $newItem->id;
-                            $newItemImage->thumb = $image['thumb'];
-                            $newItemImage->main = $image['full'];
+                                $newItemImage->item_id = $newItem->id;
+                                $newItemImage->thumb = $image['thumb'];
+                                $newItemImage->main = $image['full'];
 
-                            $newItemImage->save();
+                                $newItemImage->save();
+                            }
                         }
+                        catch (\Exception $e) {
+                            $this->logger->logMessage('Error on Save'.$e->getMessage());
+                        }
+
                     }
                 }
             }
@@ -162,11 +186,7 @@ class CraigslistController extends \App\Http\Controllers\Controller {
 
         }
 
-        $brand = Brand::find($brand['id']);
-
-        $brand->last_search = time();
-
-        $brand->save();
+        $this->logger->processEnd();
     }
 
     public function getAllSearchLinks($searchText) {
@@ -189,5 +209,19 @@ class CraigslistController extends \App\Http\Controllers\Controller {
             $start = $start + 120;
         }
         return $searchUrls;
+    }
+
+    public function createProcesses() {
+        $this->logger = new ProcessLogger('craig_scrape');
+
+        $scheduleController = new ProcessScheduleController();
+
+        $trackers = BrandCheckTracker::get()->toArray();
+
+        $processIds = array_column($trackers,'id');
+
+        $scheduleController->createQueueRecordsWithVariableIds('craig_scrape', $processIds);
+
+        $this->logger->processEnd();
     }
 }

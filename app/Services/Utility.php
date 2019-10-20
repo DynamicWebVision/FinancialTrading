@@ -231,6 +231,15 @@ class Utility  {
         }
     }
 
+    public function inString($needle, $haystack) {
+        if (strpos($haystack, $needle) !== false) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     public function xWeekRange($date) {
     $ts = strtotime($date);
     $start = (date('w', $ts) == 0) ? $ts : strtotime('last sunday', $ts);
