@@ -62,13 +62,15 @@ class Kernel extends ConsoleKernel
             /*********************************************************************
              * SCHEDULE PROCESS JOBS
              *********************************************************************/
+            $schedule->call('App\Http\Controllers\ProcessScheduleController@checkForDueProcesses')->everyMinute();
+
             $schedule->command('schedule_process eq_fundamental_td 3')->dailyAt('23:00');
             $schedule->command('schedule_process fx_delete_dev_bts 2')->tuesdays()
                 ->at('17:00');
             $schedule->command('schedule_process fx_live_transactions 3')->hourly();
             $schedule->command('schedule_process historical_fx_rates 3')->hourly();
 
-            $schedule->call('App\Http\Controllers\ProcessScheduleController@checkForDueProcesses')->everyMinute();
+
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenHour')->hourlyAt(15);
 
             $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
