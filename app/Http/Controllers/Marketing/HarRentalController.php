@@ -232,10 +232,6 @@ class HarRentalController extends Controller {
                 $newPossibleRental->LISTPRICE_HTML = $rental->LISTPRICE_HTML;
             }
 
-            if (isset($rental->BLDGSQFT_FORMAT)) {
-                $newPossibleRental->BLDGSQFT_FORMAT = $rental->BLDGSQFT_FORMAT;
-            }
-
             if (isset($rental->LOTSIZE_FORMAT)) {
                 $newPossibleRental->LOTSIZE_FORMAT = $rental->LOTSIZE_FORMAT;
             }
