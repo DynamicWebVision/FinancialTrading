@@ -415,7 +415,7 @@ class HarRentalController extends Controller {
 
             $updateRental = PossibleRental::find($newPossibleRental['id']);
 
-            $updateRental->AGENT_ID = $newPossibleRentalAgent->id;
+            $updateRental->AGENTID = $newPossibleRentalAgent->id;
 
             $updateRental->save();
         }
@@ -436,13 +436,13 @@ class HarRentalController extends Controller {
     }
 
     public function autoLoadAgents() {
-        $noAgentCount = PossibleRental::where('AGENT_ID', '=', 0)->count();
+        $noAgentCount = PossibleRental::where('AGENTID', '=', 0)->count();
 
         while ($noAgentCount > 0) {
             $this->oneRentalAgent();
             $randomSeconds = rand(20, 144);
             sleep($randomSeconds);
-            $noAgentCount = PossibleRental::where('AGENT_ID', '=', 0)->count();
+            $noAgentCount = PossibleRental::where('AGENTID', '=', 0)->count();
         }
     }
 
@@ -486,7 +486,7 @@ class HarRentalController extends Controller {
     }
 
     public function getRentals() {
-        return PossibleRental::where('AGENT_ID', '!=', 0)->orderBy('id')->get();
+        return PossibleRental::where('AGENTID', '!=', 0)->orderBy('id')->get();
     }
 
     public function getRentalEmail() {

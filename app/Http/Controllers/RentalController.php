@@ -405,26 +405,26 @@ class RentalController extends Controller {
 
         $updateRental = PossibleRental::find($newPossibleRental['id']);
 
-        $updateRental->AGENT_ID = $newPossibleRentalAgent->id;
+        $updateRental->AGENTID = $newPossibleRentalAgent->id;
 
         $updateRental->save();
 
     }
 
     public function oneRentalAgent() {
-        $newPossibleRental = PossibleRental::where('AGENT_ID', '=', 0)->first()->toArray();
+        $newPossibleRental = PossibleRental::where('AGENTID', '=', 0)->first()->toArray();
 
         $this->processOneRentalAgent($newPossibleRental);
     }
 
     public function autoLoadAgents() {
-        $noAgentCount = PossibleRental::where('AGENT_ID', '=', 0)->count();
+        $noAgentCount = PossibleRental::where('AGENTID', '=', 0)->count();
 
         while ($noAgentCount > 0) {
             $this->oneRentalAgent();
             $randomSeconds = rand(20, 144);
             sleep($randomSeconds);
-            $noAgentCount = PossibleRental::where('AGENT_ID', '=', 0)->count();
+            $noAgentCount = PossibleRental::where('AGENTID', '=', 0)->count();
         }
     }
 

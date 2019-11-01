@@ -19,6 +19,6 @@ class HarRentalControllerTest extends TestCase
     public function testHarRentalController() {
         $harRentalController = new HarRentalController();
 
-        $harRentalController->oneRentalAgent(4);
+        $harRentalController->oneRentalAgent(1);
     }
 }
