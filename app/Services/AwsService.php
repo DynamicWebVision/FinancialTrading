@@ -20,6 +20,7 @@ class AwsService  {
         $response = $this->ec2Client->describeInstances(['InstanceIds'=>[$instance_id]]);
 
         $this->currentInstance = $response['Reservations'][0]['Instances'][0];
+
     }
 
     public function getAllInstances() {
@@ -57,16 +58,6 @@ class AwsService  {
         $instanceId = file_get_contents("http://instance-data/latest/meta-data/instance-id");
 
         $test = $this->ec2Client->describeInstances(['InstanceIds'=>[$instanceId]]);
-
-        dd($test);
-
-//        $modify_instance = $this->ec2Client->modifyInstanceAttribute(
-//            [
-//                'Attribute'=> 'rootDeviceName',
-//                'InstanceId'=> $instanceId,
-//                'Value'=>$name
-//            ]
-//        );
     }
 
     public function getCurrentInstanceIp() {
@@ -84,6 +75,41 @@ class AwsService  {
         catch (\Exception $e) {
             return 'IP_ERROR';
         }
+    }
 
+    public function requestSpotFleet($requestParams) {
+        $awsResponse = $this->ec2Client->requestSpotFleet([
+                'SpotFleetRequestConfig' => [ // REQUIRED
+                        'AllocationStrategy' => 'lowestPrice',
+                        //'ClientToken' => '<string>',
+                        'FulfilledCapacity' => $requestParams['server_count'],
+        'IamFleetRole' => 'aws-ec2-spot-fleet-tagging-role', // REQUIRED
+        'InstanceInterruptionBehavior' => $requestParams['interruption_behavior'],
+        'LaunchSpecifications' => [
+            [
+                'IamInstanceProfile' => [
+            'Arn' => 'arn:aws:iam::605160916686:role/Ec2Manager',
+            'Name' => 'Ec2Manager',
+        ],
+            'ImageId' => $requestParams['image_id'],
+            'InstanceType' => $requestParams['instance_type']
+        ],
+        'Placement' => [
+            'AvailabilityZone' => 'us-east-1',
+        ],
+               'SecurityGroups' => [
+                   'GroupId' => 'sg-4d724628',
+                   'GroupName' => 'default',
+               ],
+
+            'TagSpecifications' => [
+                'Tags' => $requestParams['tags'],
+        ],
+        ],
+        'OnDemandAllocationStrategy' => 'lowestPrice',
+        'TargetCapacity' => $requestParams['server_count'], // REQUIRED
+        'TerminateInstancesWithExpiration' => true
+    ]
+    ]);
     }
 }

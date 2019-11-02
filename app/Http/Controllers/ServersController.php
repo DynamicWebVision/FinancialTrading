@@ -199,15 +199,30 @@ class ServersController extends Controller {
                 $serverId = Config::get('server_id');
 
                 if (is_null($serverId)) {
-                    \Log::emergency("Attempting to Update AWS Host");
                     $awsService = new AwsService();
-                    $awsService->setCurrentServerAttributes();
+                    $ip_address = $awsService->getCurrentInstanceIp();
+
+                    $server = $user = Servers::firstOrNew([
+                        'ip_address' => $ip_address
+                    ]);
+
+
+
+                    if ($server->exists) {
+                        // user already exists
+                        Config::set('server_id', $this->serverId);
+                    } else {
+                        $awsService->setCurrentServerAttributes();
+                    }
                     $this->serverId = $awsService->getInstanceTagValue('server_id');
-                    \Log::emergency("Got Server Id ".$this->serverId);
 
-                    Config::set('server_id', $this->serverId);
+                    try {
+                        \DB::connection()->getPdo();
+                    } catch (\Exception $e) {
+                        $this->updateEnvironmentDBHost();
+                    }
 
-                    $this->updateEnvironmentDBHost();
+
                 }
                 else {
                     $this->serverId = $serverId;
@@ -320,6 +335,9 @@ class ServersController extends Controller {
 
     public function updateEnvironmentDBHost() {
         \Log::emergency("updateEnvironmentDBHost");
+
+
+
         $dbHost = $this->getCurrentDBHostFromAws();
         $this->setConfigDBHost($dbHost);
         $this->updateEnvDBRecord($dbHost);

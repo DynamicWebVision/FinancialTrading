@@ -23,4 +23,24 @@ class AwsServiceTest extends TestCase
         $instance = $awsService->getCurrentInstanceIp();
         dd($instance);
     }
+
+    public function testCreateSpotRequest()
+    {
+        $awsService = new AwsService();
+
+        $params = [
+            'server_count' => 1,
+            'interruption_behavior'=>'terminate',
+            'image_id' => 'ami-0baa2426cb508d778',
+            'instance_type'=> 't1.micro',
+            'tags'=> [
+                'Key' => 'test_key',
+                'Value' => 'yay',
+            ]
+
+
+        ];
+
+        $awsService->requestSpotFleet($params);
+    }
 }

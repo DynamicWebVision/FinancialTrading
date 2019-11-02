@@ -69,10 +69,6 @@ class ProcessController extends Controller
             $automatedBacktestController->runOneProcessOrAllBacktestStats();
         }
         else {
-//            DB::table('tbd_process_log_debug')->insert(
-//                ['server_id' => Config::get('server_id'), 'process_queue_id' => $processToBeRun->id,
-//                'created_at'=>$this->utility->mysqlDateTime()]
-//            );
 
             $processToBeRun->server_id = Config::get('server_id');
             $processToBeRun->start_time = $this->utility->mysqlDateTime();
