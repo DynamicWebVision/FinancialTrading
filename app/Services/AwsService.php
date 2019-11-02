@@ -82,7 +82,7 @@ class AwsService  {
         try {
             $awsResponse = $this->ec2Client->requestSpotFleet([
                 'SpotFleetRequestConfig' => [ // REQUIRED
-                    'AllocationStrategy' => 'lowestPrice',
+                    'AllocationStrategy' => 'capacityOptimized',
                     //'ClientToken' => '<string>',
                     'IamFleetRole' => 'arn:aws:iam::605160916686:role/aws-service-role/spotfleet.amazonaws.com/AWSServiceRoleForEC2SpotFleet', // REQUIRED
                     'InstanceInterruptionBehavior' => $requestParams['interruption_behavior'],
