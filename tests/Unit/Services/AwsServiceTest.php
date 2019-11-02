@@ -21,7 +21,8 @@ class AwsServiceTest extends TestCase
         $awsService = new AwsService();
 
         $instance = $awsService->getCurrentInstanceIp();
-        dd($instance);
+
+        $this->assertTrue(strlen($instance) > 3);
     }
 
     public function testCreateSpotRequest()
