@@ -32,14 +32,12 @@ class AwsServiceTest extends TestCase
         $params = [
             'server_count' => 1,
             'interruption_behavior'=>'terminate',
-            'image_id' => 'ami-0baa2426cb508d778',
+            'image_id' => 'ami-0bf51fd46fb140e1d',
             'instance_type'=> 't3.nano',
             'tags'=> [
                 'Key' => 'test_key',
                 'Value' => 'yay',
             ]
-
-
         ];
 
         $awsService->requestSpotFleet($params);
