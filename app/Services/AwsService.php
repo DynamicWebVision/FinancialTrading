@@ -78,38 +78,47 @@ class AwsService  {
     }
 
     public function requestSpotFleet($requestParams) {
-        $awsResponse = $this->ec2Client->requestSpotFleet([
-                'SpotFleetRequestConfig' => [ // REQUIRED
-                        'AllocationStrategy' => 'lowestPrice',
-                        //'ClientToken' => '<string>',
-                        'FulfilledCapacity' => $requestParams['server_count'],
-        'IamFleetRole' => 'aws-ec2-spot-fleet-tagging-role', // REQUIRED
-        'InstanceInterruptionBehavior' => $requestParams['interruption_behavior'],
-        'LaunchSpecifications' => [
-            [
-                'IamInstanceProfile' => [
-            'Arn' => 'arn:aws:iam::605160916686:role/Ec2Manager',
-            'Name' => 'Ec2Manager',
-        ],
-            'ImageId' => $requestParams['image_id'],
-            'InstanceType' => $requestParams['instance_type']
-        ],
-        'Placement' => [
-            'AvailabilityZone' => 'us-east-1',
-        ],
-               'SecurityGroups' => [
-                   'GroupId' => 'sg-4d724628',
-                   'GroupName' => 'default',
-               ],
 
-            'TagSpecifications' => [
-                'Tags' => $requestParams['tags'],
-        ],
-        ],
-        'OnDemandAllocationStrategy' => 'lowestPrice',
-        'TargetCapacity' => $requestParams['server_count'], // REQUIRED
-        'TerminateInstancesWithExpiration' => true
-    ]
-    ]);
+        try {
+            $awsResponse = $this->ec2Client->requestSpotFleet([
+                'SpotFleetRequestConfig' => [ // REQUIRED
+                    'AllocationStrategy' => 'lowestPrice',
+                    //'ClientToken' => '<string>',
+                    'FulfilledCapacity' => $requestParams['server_count'],
+                    'IamFleetRole' => 'aws-ec2-spot-fleet-tagging-role', // REQUIRED
+                    'InstanceInterruptionBehavior' => $requestParams['interruption_behavior'],
+                    'LaunchSpecifications' => [
+                        [
+                            'IamInstanceProfile' => [
+                                'Arn' => 'arn:aws:iam::605160916686:role/Ec2Manager',
+                                'Name' => 'Ec2Manager',
+                            ],
+                            'ImageId' => $requestParams['image_id'],
+                            'InstanceType' => $requestParams['instance_type']
+                        ],
+                        'Placement' => [
+                            'AvailabilityZone' => 'us-east-1',
+                        ],
+                        'SecurityGroups' => [
+                            'GroupId' => 'sg-4d724628',
+                            'GroupName' => 'default',
+                        ],
+
+                        'TagSpecifications' => [
+                            'Tags' => $requestParams['tags'],
+                        ],
+                    ],
+                    'OnDemandAllocationStrategy' => 'lowestPrice',
+                    'TargetCapacity' => $requestParams['server_count'], // REQUIRED
+                    'TerminateInstancesWithExpiration' => true
+                ]
+            ]);
+
+            dd($awsResponse);
+        }
+        catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+
     }
 }
