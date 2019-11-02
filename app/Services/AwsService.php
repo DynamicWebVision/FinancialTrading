@@ -89,7 +89,6 @@ class AwsService  {
                     'LaunchSpecifications' => [
                         [
                             'IamInstanceProfile' => [
-                                'Arn' => 'arn:aws:iam::605160916686:role/Ec2Manager',
                                 'Name' => 'Ec2Manager',
                             ],
                             'ImageId' => $requestParams['image_id'],
