@@ -85,7 +85,7 @@ class AwsService  {
                     'AllocationStrategy' => 'lowestPrice',
                     //'ClientToken' => '<string>',
                     'FulfilledCapacity' => $requestParams['server_count'],
-                    'IamFleetRole' => 'aws-ec2-spot-fleet-tagging-role', // REQUIRED
+                    'IamFleetRole' => 'arn:aws:iam::605160916686:role/aws-service-role/spotfleet.amazonaws.com/AWSServiceRoleForEC2SpotFleet', // REQUIRED
                     'InstanceInterruptionBehavior' => $requestParams['interruption_behavior'],
                     'LaunchSpecifications' => [
                         [
