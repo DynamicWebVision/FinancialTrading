@@ -105,8 +105,8 @@ class AwsService  {
                         'TagSpecifications' => [
                             'Tags' => $requestParams['tags'],
                         ],
-                        'UserData' => '#!/bin/bash 
-cd /var/www/FinancialTrading  && git fetch && sudo -u ec2-user git pull origin master && sudo service httpd start && sudo -u ec2-user php artisan update_git_pull_time && sudo -u ec2-user php artisan update_db_host && sudo -u ec2-user php artisan update_server_environment && composer install && php artisan clear-compiled && php artisan optimize',
+                        'UserData' => base64_encode('#!/bin/bash 
+cd /var/www/FinancialTrading  && git fetch && sudo -u ec2-user git pull origin master && sudo service httpd start && sudo -u ec2-user php artisan update_git_pull_time && sudo -u ec2-user php artisan update_db_host && sudo -u ec2-user php artisan update_server_environment && composer install && php artisan clear-compiled && php artisan optimize'),
                     ],
                     'OnDemandAllocationStrategy' => 'lowestPrice',
                     'TargetCapacity' => $requestParams['server_count'], // REQUIRED
