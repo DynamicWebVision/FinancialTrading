@@ -195,7 +195,7 @@ class ServersController extends Controller {
             $this->serverId = 6;
         }
         else {
-            die('got to else');
+
             if (is_null($this->serverId)) {
 
                 $serverId = Config::get('server_id');
