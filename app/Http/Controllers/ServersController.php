@@ -200,9 +200,10 @@ class ServersController extends Controller {
 
                 $serverId = Config::get('server_id');
 
-                die($serverId);
+
 
                 if (is_null($serverId)) {
+                    die('top is null');
                     $awsService = new AwsService();
                     $ip_address = $awsService->getCurrentInstanceIp();
 
