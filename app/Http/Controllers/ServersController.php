@@ -437,5 +437,7 @@ class ServersController extends Controller {
         $awsService = new AwsService();
         $instances = $awsService->getAllInstances();
         $imageId = $awsService->getReservationIdWithTag($instances,'finance_db');
+
+        $awsService->createImage($imageId);
     }
 }

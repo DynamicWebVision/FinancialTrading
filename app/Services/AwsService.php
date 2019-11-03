@@ -61,7 +61,7 @@ class AwsService  {
 
             foreach ($firstInstance['Tags'] as $instanceTag) {
                 if ($instanceTag['Key'] == $tag) {
-                    dd($firstInstance);
+                    return $firstInstance['ImageId'];
                     break;
                 }
             }
