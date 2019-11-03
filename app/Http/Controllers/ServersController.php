@@ -435,6 +435,6 @@ class ServersController extends Controller {
 
     public function backupDbWithImage() {
         $awsService = new AwsService();
-        $awsService->getReservationIdWithTag();
+        $imageId = $awsService->getReservationIdWithTag('finance_db');
     }
 }
