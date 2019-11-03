@@ -189,12 +189,13 @@ class ServersController extends Controller {
     }
 
     public function setServerId() {
-        die('alksdflkjasdfjkasdf');
+
         if (env('APP_ENV') == 'local') {
             Config::set('server_id', 6);
             $this->serverId = 6;
         }
         else {
+            die('got to else');
             if (is_null($this->serverId)) {
 
                 $serverId = Config::get('server_id');
@@ -224,7 +225,7 @@ class ServersController extends Controller {
                     }
                 }
                 else {
-                    die('server id set');
+
                     $this->serverId = $serverId;
                 }
 
