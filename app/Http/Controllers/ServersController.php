@@ -438,13 +438,21 @@ class ServersController extends Controller {
         $instances = $awsService->getAllInstances();
         $imageId = $awsService->getReservationIdWithTag($instances,'finance_db');
 
-//        try {
-//            $awsService->createImage($imageId);
-//        }
-//        catch (\Exception $e) {
-//            die($e->getMessage());
-//        }
+        try {
+            $awsService->createImage($imageId);
+        }
+        catch (\Exception $e) {
+            die($e->getMessage());
+        }
 
-        $images = $awsService->getImages();
+        //$images = $awsService->getImages();
+
+        sleep(300);
+
+        $ip_address = $awsService->getReservationIPWithTag($instances,'finance_db');
+
+        shell_exec("runCommandOnRemoteServer ".$ip_address." 'sudo service mysqld start'");
+
+        
     }
 }
