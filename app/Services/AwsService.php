@@ -105,7 +105,9 @@ class AwsService  {
                         'TagSpecifications' => [
                             'Tags' => $requestParams['tags'],
                         ],
-                        'UserData' => 'IyEvYmluL2Jhc2gKY2QgL3Zhci93d3cvRmluYW5jaWFsVHJhZGluZyAgJiYgZ2l0IGZldGNoICYmIHN1ZG8gLXUgZWMyLXVzZXIgZ2l0IHB1bGwgb3JpZ2luIG1hc3RlciAmJiBzdWRvIHNlcnZpY2UgaHR0cGQgc3RhcnQgJiYgc3VkbyAtdSBlYzItdXNlciBwaHAgYXJ0aXNhbiB1cGRhdGVfZ2l0X3B1bGxfdGltZSAmJiBzdWRvIC11IGVjMi11c2VyIHBocCBhcnRpc2FuIHVwZGF0ZV9kYl9ob3N0ICYmIHN1ZG8gLXUgZWMyLXVzZXIgcGhwIGFydGlzYW4gdXBkYXRlX3NlcnZlcl9lbnZpcm9ubWVudCAmJiBjb21wb3NlciBpbnN0YWxsICYmIHBocCBhcnRpc2FuIGNsZWFyLWNvbXBpbGVkICYmIHBocCBhcnRpc2FuIG9wdGltaXpl',
+                        'UserData' =>
+                            ['test'=>'IyEvYmluL2Jhc2gKY2QgL3Zhci93d3cvRmluYW5jaWFsVHJhZGluZyAgJiYgZ2l0IGZldGNoICYmIHN1ZG8gLXUgZWMyLXVzZXIgZ2l0IHB1bGwgb3JpZ2luIG1hc3RlciAmJiBzdWRvIHNlcnZpY2UgaHR0cGQgc3RhcnQgJiYgc3VkbyAtdSBlYzItdXNlciBwaHAgYXJ0aXNhbiB1cGRhdGVfZ2l0X3B1bGxfdGltZSAmJiBzdWRvIC11IGVjMi11c2VyIHBocCBhcnRpc2FuIHVwZGF0ZV9kYl9ob3N0ICYmIHN1ZG8gLXUgZWMyLXVzZXIgcGhwIGFydGlzYW4gdXBkYXRlX3NlcnZlcl9lbnZpcm9ubWVudCAmJiBjb21wb3NlciBpbnN0YWxsICYmIHBocCBhcnRpc2FuIGNsZWFyLWNvbXBpbGVkICYmIHBocCBhcnRpc2FuIG9wdGltaXpl',
+                    ]
                     ],
                     'OnDemandAllocationStrategy' => 'lowestPrice',
                     'TargetCapacity' => $requestParams['server_count'], // REQUIRED
