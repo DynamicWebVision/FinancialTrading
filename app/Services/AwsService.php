@@ -88,25 +88,32 @@ class AwsService  {
                     'InstanceInterruptionBehavior' => $requestParams['interruption_behavior'],
                     'LaunchSpecifications' => [
                         [
-                            'IamInstanceProfile' => [
-                                'Name' => 'Ec2Manager',
-                            ],
-                            'ImageId' => $requestParams['image_id'],
-                            'InstanceType' => $requestParams['instance_type']
+//                            'IamInstanceProfile' => [
+//                                'Name' => 'Ec2Manager',
+//                            ],
+//                            'ImageId' => $requestParams['image_id'],
+//                            'InstanceType' => $requestParams['instance_type']
                         ],
                         'Placement' => [
                             'AvailabilityZone' => 'us-east-1',
                         ],
-                        'SecurityGroups' => [
-                            'GroupId' => 'sg-4d724628',
-                            'GroupName' => 'default',
-                        ],
 
-                        'TagSpecifications' => [
-                            'Tags' => $requestParams['tags'],
-                        ],
-                        'UserData' => 'IyEvYmluL2Jhc2gKY2QgL3Zhci93d3cvRmluYW5jaWFsVHJhZGluZyAgJiYgZ2l0IGZldGNoICYmIHN1ZG8gLXUgZWMyLXVzZXIgZ2l0IHB1bGwgb3JpZ2luIG1hc3RlciAmJiBzdWRvIHNlcnZpY2UgaHR0cGQgc3RhcnQgJiYgc3VkbyAtdSBlYzItdXNlciBwaHAgYXJ0aXNhbiB1cGRhdGVfZ2l0X3B1bGxfdGltZSAmJiBzdWRvIC11IGVjMi11c2VyIHBocCBhcnRpc2FuIHVwZGF0ZV9kYl9ob3N0ICYmIHN1ZG8gLXUgZWMyLXVzZXIgcGhwIGFydGlzYW4gdXBkYXRlX3NlcnZlcl9lbnZpcm9ubWVudCAmJiBjb21wb3NlciBpbnN0YWxsICYmIHBocCBhcnRpc2FuIGNsZWFyLWNvbXBpbGVkICYmIHBocCBhcnRpc2FuIG9wdGltaXpl'
+//                        'TagSpecifications' => [
+//                            'Tags' => $requestParams['tags'],
+//                        ],
+//                        'UserData' =>
+//                            ['Value'=>'IyEvYmluL2Jhc2gKY2QgL3Zhci93d3cvRmluYW5jaWFsVHJhZGluZyAgJiYgZ2l0IGZldGNoICYmIHN1ZG8gLXUgZWMyLXVzZXIgZ2l0IHB1bGwgb3JpZ2luIG1hc3RlciAmJiBzdWRvIHNlcnZpY2UgaHR0cGQgc3RhcnQgJiYgc3VkbyAtdSBlYzItdXNlciBwaHAgYXJ0aXNhbiB1cGRhdGVfZ2l0X3B1bGxfdGltZSAmJiBzdWRvIC11IGVjMi11c2VyIHBocCBhcnRpc2FuIHVwZGF0ZV9kYl9ob3N0ICYmIHN1ZG8gLXUgZWMyLXVzZXIgcGhwIGFydGlzYW4gdXBkYXRlX3NlcnZlcl9lbnZpcm9ubWVudCAmJiBjb21wb3NlciBpbnN0YWxsICYmIHBocCBhcnRpc2FuIGNsZWFyLWNvbXBpbGVkICYmIHBocCBhcnRpc2FuIG9wdGltaXpl',
+//                    ]
                     ],
+                    'LaunchTemplateConfigs' => [
+                            [
+                                'LaunchTemplateSpecification' => [
+                                    'LaunchTemplateId' => 'lt-0475ccdd820c0e2d8'
+                                ]
+                // ...
+                        ],
+                 ],
+            // ...
                     'OnDemandAllocationStrategy' => 'lowestPrice',
                     'TargetCapacity' => $requestParams['server_count'], // REQUIRED
                     'TerminateInstancesWithExpiration' => true
