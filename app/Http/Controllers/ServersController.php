@@ -206,8 +206,6 @@ class ServersController extends Controller {
                         'ip_address' => $ip_address
                     ]);
 
-
-
                     if ($server->exists) {
                         // user already exists
                         Config::set('server_id', $this->serverId);
@@ -221,8 +219,6 @@ class ServersController extends Controller {
                     } catch (\Exception $e) {
                         $this->updateEnvironmentDBHost();
                     }
-
-
                 }
                 else {
                     $this->serverId = $serverId;
@@ -237,11 +233,7 @@ class ServersController extends Controller {
     public function setServerEnvironment() {
         $awsService = new AwsService();
         $awsService->setCurrentServerAttributes();
-        $this->serverId = $awsService->getInstanceTagValue('server_id');
-
-        $server = Servers::find($this->serverId);
-        $server->ip_address = $awsService->currentInstance['PublicIpAddress'];
-        $server->save();
+        $this->setServerId();
     }
 
     public function reWriteServerIpLocal() {
