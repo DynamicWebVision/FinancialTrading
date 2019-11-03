@@ -432,4 +432,9 @@ class ServersController extends Controller {
         $stringHelpers = new StringHelpers();
         return $stringHelpers->stringContainsString($output, $pid);
     }
+
+    public function backupDbWithImage() {
+        $awsService = new AwsService();
+        $awsService->getReservationIdWithTag();
+    }
 }
