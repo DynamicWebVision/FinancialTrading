@@ -151,4 +151,10 @@ class AwsService  {
 
         return $result;
     }
+
+    public function getImages() {
+        $result = $this->ec2Client->describeImages();
+
+        dd($result);
+    }
 }

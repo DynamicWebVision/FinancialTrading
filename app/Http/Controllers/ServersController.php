@@ -433,16 +433,18 @@ class ServersController extends Controller {
         return $stringHelpers->stringContainsString($output, $pid);
     }
 
-    public function backupDbWithImage() {
+    public function backupDbWithImageDeleteOld() {
         $awsService = new AwsService();
         $instances = $awsService->getAllInstances();
         $imageId = $awsService->getReservationIdWithTag($instances,'finance_db');
 
-        try {
-            $awsService->createImage($imageId);
-        }
-        catch (\Exception $e) {
-            die($e->getMessage());
-        }
+//        try {
+//            $awsService->createImage($imageId);
+//        }
+//        catch (\Exception $e) {
+//            die($e->getMessage());
+//        }
+
+        $images = $awsService->getImages();
     }
 }
