@@ -225,7 +225,7 @@ class ServersController extends Controller {
                     }
                 }
                 else {
-
+                    die('eeeee');
                     $this->serverId = $serverId;
                 }
 
