@@ -93,6 +93,9 @@ class Kernel extends ConsoleKernel
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenTpSl')->dailyAt('13:00');
             
         }
+        elseif (env('APP_ENV') == 'fin_master') {
+
+        }
         elseif (env('APP_ENV') == 'utility') {
             $schedule->call('App\Http\Controllers\ProcessController@serverRunCheck')->hourly();
 

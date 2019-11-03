@@ -54,6 +54,20 @@ class AwsService  {
         }
     }
 
+    public function getReservationIdWithTag($reservations, $tag) {
+
+        foreach ($reservations as $reservation) {
+            $firstInstance = $reservation['Instances'][0];
+
+            foreach ($firstInstance['Tags'] as $instanceTag) {
+                if ($instanceTag['Key'] == $tag) {
+                    dd($firstInstance);
+                    break;
+                }
+            }
+        }
+    }
+
     public function modifyInstanceName($name) {
         $instanceId = file_get_contents("http://instance-data/latest/meta-data/instance-id");
 
@@ -127,5 +141,14 @@ class AwsService  {
             dd($e->getMessage());
         }
 
+    }
+
+    public function createImage($instance_id) {
+        $result = $this->ec2Client->createImage([
+                'InstanceId' => $instance_id,
+                'Name' => 'FIN_DB_BACKUP_'.date('Y-m-d')
+            ]);
+
+        return $result;
     }
 }
