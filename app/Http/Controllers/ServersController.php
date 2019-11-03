@@ -451,8 +451,29 @@ class ServersController extends Controller {
 
         $ip_address = $awsService->getReservationIPWithTag($instances,'finance_db');
 
-        shell_exec("runCommandOnRemoteServer ".$ip_address." 'sudo service mysqld start'");
+        shell_exec("cd /home/ec2-user/keys && ssh -i Currency.pem ec2-user@".$ip_address." 'sudo service mysqld start'");
+
+    }
+
+    public function requestSmallMiniFleetFor3Hours() {
+        $awsService = new AwsService();
+        $utility = new Utility();
 
 
+        $validUntil = time() + $utility->hoursInSeconds(3);
+
+        $params = [
+            'server_count' => 1,
+            'interruption_behavior'=>'terminate',
+            'image_id' => 'ami-0bf51fd46fb140e1d',
+            'template_id'=> 'lt-05bf893a7ea53c6b7',
+            'tags'=> [
+                'Key' => 'server_type',
+                'Value' => 'utility',
+            ],
+            'valid_until' => $validUntil
+        ];
+
+        $awsService->requestSpotFleet($params);
     }
 }

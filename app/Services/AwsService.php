@@ -131,7 +131,8 @@ class AwsService  {
             // ...
                     'OnDemandAllocationStrategy' => 'lowestPrice',
                     'TargetCapacity' => $requestParams['server_count'], // REQUIRED
-                    'TerminateInstancesWithExpiration' => true
+                    'TerminateInstancesWithExpiration' => true,
+                    'ValidUntil' => $requestParams['valid_until'],
                 ]
             ]);
 

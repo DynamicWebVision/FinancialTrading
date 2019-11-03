@@ -222,6 +222,14 @@ class Utility  {
         sleep($secondsToSleep);
     }
 
+    public function hoursInSeconds($hours) {
+        return $hours*60*60;
+    }
+
+    public function daysInSeconds($hours) {
+        return $hours*60*60*24;
+    }
+
     public function addZero($val) {
         if (strlen($val) == 1) {
             return '0'.$val;
