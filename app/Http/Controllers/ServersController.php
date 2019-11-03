@@ -22,7 +22,7 @@ class ServersController extends Controller {
 
     const MINUTE_RUN_THRESHOLD = 60;
 
-    public $serverId;
+    public $serverId = null;
     public $logger;
 
     public function index() {
@@ -223,6 +223,7 @@ class ServersController extends Controller {
                     }
                 }
                 else {
+                    die('server id set');
                     $this->serverId = $serverId;
                 }
 
