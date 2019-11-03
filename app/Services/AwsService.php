@@ -108,7 +108,7 @@ class AwsService  {
                     'LaunchTemplateConfigs' => [
                             [
                                 'LaunchTemplateSpecification' => [
-                                    'LaunchTemplateId' => 'lt-03ab3382c18952387',
+                                    'LaunchTemplateId' => $requestParams['template_id'],
                                     'Version' => '1',
                                 ]
                 // ...

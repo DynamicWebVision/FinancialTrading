@@ -33,7 +33,7 @@ class AwsServiceTest extends TestCase
             'server_count' => 1,
             'interruption_behavior'=>'terminate',
             'image_id' => 'ami-0bf51fd46fb140e1d',
-            'instance_type'=> 't3.nano',
+            'template_id'=> 'lt-05bf893a7ea53c6b7',
             'tags'=> [
                 'Key' => 'server_type',
                 'Value' => 'utility',
