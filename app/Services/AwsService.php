@@ -6,6 +6,7 @@ class AwsService  {
 
     protected $ec2Client;
     public $currentInstance;
+    public $logger;
 
     public function __construct() {
         $this->ec2Client = new Aws\Ec2\Ec2Client([
@@ -136,7 +137,7 @@ class AwsService  {
                 ]
             ]);
 
-            dd($awsResponse);
+            return $awsResponse;
         }
         catch (\Exception $e) {
             dd($e->getMessage());

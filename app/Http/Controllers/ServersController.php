@@ -17,6 +17,7 @@ use Request;
 use App\Services\AwsService;
 use Illuminate\Support\Facades\Config;
 use App\Services\StringHelpers;
+use App\Services\ProcessLogger;
 
 class ServersController extends Controller {
 
@@ -456,14 +457,17 @@ class ServersController extends Controller {
     }
 
     public function requestSmallMiniFleetFor3Hours() {
+        $this->logger = new ProcessLogger('create_mini_utility');
+
         $awsService = new AwsService();
+        $awsService->logger = $this->logger;
         $utility = new Utility();
 
 
         $validUntil = time() + $utility->hoursInSeconds(3);
 
         $params = [
-            'server_count' => 1,
+            'server_count' => 10,
             'interruption_behavior'=>'terminate',
             'image_id' => 'ami-0bf51fd46fb140e1d',
             'template_id'=> 'lt-05bf893a7ea53c6b7',
