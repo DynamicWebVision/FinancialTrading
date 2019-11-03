@@ -108,7 +108,9 @@ class AwsService  {
                     'LaunchTemplateConfigs' => [
                             [
                                 'LaunchTemplateSpecification' => [
-                                    'LaunchTemplateId' => 'lt-0475ccdd820c0e2d8'
+                                    'LaunchTemplateId' => 'lt-0475ccdd820c0e2d8',
+                                    'LaunchTemplateName' => 'UtilityTemplate',
+                                    'Version' => '1',
                                 ]
                 // ...
                         ],
