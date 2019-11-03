@@ -200,24 +200,26 @@ class ServersController extends Controller {
 
                 $serverId = Config::get('server_id');
 
-
-
                 if (is_null($serverId)) {
-                    die('top is null');
+
                     $awsService = new AwsService();
                     $ip_address = $awsService->getCurrentInstanceIp();
 
-                    $server = $user = Servers::firstOrNew([
+                    $server = Servers::firstOrNew([
                         'ip_address' => $ip_address
                     ]);
 
                     if ($server->exists) {
                         // user already exists
-                        Config::set('server_id', $this->serverId);
+                        Config::set('server_id', $server->id);
                     } else {
+                        $server->save();
+
+                        Config::set('server_id', $server->id);
+
                         $awsService->setCurrentServerAttributes();
                     }
-                    $this->serverId = $awsService->getInstanceTagValue('server_id');
+                    $this->serverId = $server->id;
 
                     try {
                         \DB::connection()->getPdo();
@@ -226,7 +228,6 @@ class ServersController extends Controller {
                     }
                 }
                 else {
-                    die('eeeee');
                     $this->serverId = $serverId;
                 }
 
