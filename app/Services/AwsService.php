@@ -146,7 +146,7 @@ class AwsService  {
     public function createImage($instance_id) {
         $result = $this->ec2Client->createImage([
                 'InstanceId' => $instance_id,
-                'Name' => 'FIN_DB_BACKUP_'.date('Y-m-d')
+                'Name' => 'FIN_DB_BACKUP_'.date('Y-m-d').'_'.time()
             ]);
 
         return $result;
