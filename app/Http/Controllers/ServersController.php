@@ -438,6 +438,11 @@ class ServersController extends Controller {
         $instances = $awsService->getAllInstances();
         $imageId = $awsService->getReservationIdWithTag($instances,'finance_db');
 
-        $awsService->createImage($imageId);
+        try {
+            $awsService->createImage($imageId);
+        }
+        catch (\Exception $e) {
+            die($e->getMessage());
+        }
     }
 }
