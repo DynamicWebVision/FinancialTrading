@@ -114,9 +114,14 @@ class ServersControllerTest extends TestCase
 //        }
 //    }
 
-    public function testRecreateStuff() {
+//    public function testRecreateStuff() {
+//        $serversController = new ServersController();
+//        $test = $serversController->updateEnvironmentDBHost();
+//        $this->assertEquals('currency', $test);
+//    }
+
+    public function testSetServerId() {
         $serversController = new ServersController();
-        $test = $serversController->updateEnvironmentDBHost();
-        $this->assertEquals('currency', $test);
+        $test = $serversController->setServerId();
     }
 }
