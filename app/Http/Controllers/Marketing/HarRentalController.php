@@ -274,10 +274,12 @@ class HarRentalController extends Controller {
         }
 
         try {
+
+            $this->logger->logMessage('Har Response: '.substr($locationDetail, 0, 140));
             $agentInfo = json_decode($locationDetail)->AGENTINFO;
 
 
-            $newPossibleRentalAgent = PossibleRentalAgent::firstOrCreate(['AGENTID' => $agentInfo->AGENTID]);
+            $newPossibleRentalAgent = PossibleRentalAgent::firstOrCreate(['AGENTKEY' => $agentInfo->AGENTKEY]);
 
             if (isset($agentInfo->ANSWERS)) {
                 $newPossibleRentalAgent->ANSWERS = $agentInfo->ANSWERS;
