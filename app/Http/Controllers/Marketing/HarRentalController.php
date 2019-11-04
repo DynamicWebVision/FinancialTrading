@@ -278,138 +278,141 @@ class HarRentalController extends Controller {
             $this->logger->logMessage('Har Response: '.substr($locationDetail, 0, 140));
             $agentInfo = json_decode($locationDetail)->AGENTINFO;
 
+            $newPossibleRentalAgent = PossibleRentalAgent::where(['AGENTEMAIL' => strtoupper($agentInfo->AGENTEMAIL)])->first();
 
-            $newPossibleRentalAgent = PossibleRentalAgent::firstOrCreate(['AGENTKEY' => $agentInfo->AGENTKEY]);
+            if (is_null($newPossibleRentalAgent)) {
+                $newPossibleRentalAgent = new PossibleRentalAgent();
 
-            if (isset($agentInfo->ANSWERS)) {
-                $newPossibleRentalAgent->ANSWERS = $agentInfo->ANSWERS;
+                if (isset($agentInfo->ANSWERS)) {
+                    $newPossibleRentalAgent->ANSWERS = $agentInfo->ANSWERS;
+                }
+
+                if (isset($agentInfo->AGENTKEY)) {
+                    $newPossibleRentalAgent->AGENTKEY = $agentInfo->AGENTKEY;
+                }
+
+                if (isset($agentInfo->AGENTID)) {
+                    $newPossibleRentalAgent->AGENTID = $agentInfo->AGENTID;
+                }
+
+                if (isset($agentInfo->MEMBER_NUMBER)) {
+                    $newPossibleRentalAgent->MEMBER_NUMBER = $agentInfo->MEMBER_NUMBER;
+                }
+
+                if (isset($agentInfo->MLSORGID)) {
+                    $newPossibleRentalAgent->MLSORGID = $agentInfo->MLSORGID;
+                }
+
+                if (isset($agentInfo->AGENTNAME)) {
+                    $newPossibleRentalAgent->AGENTNAME = $agentInfo->AGENTNAME;
+                }
+
+                if (isset($agentInfo->FULLNAME)) {
+                    $newPossibleRentalAgent->FULLNAME = $agentInfo->FULLNAME;
+                }
+
+                if (isset($agentInfo->AGENTEMAIL)) {
+                    $newPossibleRentalAgent->AGENTEMAIL = strtoupper($agentInfo->AGENTEMAIL);
+                }
+
+                if (isset($agentInfo->AGENTPHONE)) {
+                    $newPossibleRentalAgent->AGENTPHONE = $agentInfo->AGENTPHONE;
+                }
+
+                if (isset($agentInfo->AGENTWEBSITE)) {
+                    $newPossibleRentalAgent->AGENTWEBSITE = $agentInfo->AGENTWEBSITE;
+                }
+
+                if (isset($agentInfo->TOTAL)) {
+                    $newPossibleRentalAgent->TOTAL = $agentInfo->TOTAL;
+                }
+
+                if (isset($agentInfo->AGENTPHOTO)) {
+                    $newPossibleRentalAgent->AGENTPHOTO = $agentInfo->AGENTPHOTO;
+                }
+
+                if (isset($agentInfo->LEADCALLPHONE)) {
+                    $newPossibleRentalAgent->LEADCALLPHONE = $agentInfo->LEADCALLPHONE;
+                }
+
+                if (isset($agentInfo->ACCEPTPHONEFROM)) {
+                    $newPossibleRentalAgent->ACCEPTPHONEFROM = $agentInfo->ACCEPTPHONEFROM;
+                }
+
+                if (isset($agentInfo->ACCEPTPHONETO)) {
+                    $newPossibleRentalAgent->ACCEPTPHONETO = $agentInfo->ACCEPTPHONETO;
+                }
+
+                if (isset($agentInfo->HIDEMYLISTING)) {
+                    $newPossibleRentalAgent->HIDEMYLISTING = $agentInfo->HIDEMYLISTING;
+                }
+
+                if (isset($agentInfo->BROKERCODE)) {
+                    $newPossibleRentalAgent->BROKERCODE = $agentInfo->BROKERCODE;
+                }
+
+                if (isset($agentInfo->OFFICE_NUMBER)) {
+                    $newPossibleRentalAgent->OFFICE_NUMBER = $agentInfo->OFFICE_NUMBER;
+                }
+
+                if (isset($agentInfo->OFFICE_NAME)) {
+                    $newPossibleRentalAgent->OFFICE_NAME = $agentInfo->OFFICE_NAME;
+                }
+
+                if (isset($agentInfo->OFFICE_EMAIL)) {
+                    $newPossibleRentalAgent->OFFICE_EMAIL = $agentInfo->OFFICE_EMAIL;
+                }
+
+                if (isset($agentInfo->OFFICE_PHONE)) {
+                    $newPossibleRentalAgent->OFFICE_PHONE = $agentInfo->OFFICE_PHONE;
+                }
+
+                if (isset($agentInfo->OFFICE_WEBSITE)) {
+                    $newPossibleRentalAgent->OFFICE_WEBSITE = $agentInfo->OFFICE_WEBSITE;
+                }
+
+                if (isset($agentInfo->OFFICE_PHOTO)) {
+                    $newPossibleRentalAgent->OFFICE_PHOTO = $agentInfo->OFFICE_PHOTO;
+                }
+
+                if (isset($agentInfo->OFFICE_ADDRESS)) {
+                    $newPossibleRentalAgent->OFFICE_ADDRESS = $agentInfo->OFFICE_ADDRESS;
+                }
+
+                if (isset($agentInfo->OFFICEADDRESS2)) {
+                    $newPossibleRentalAgent->OFFICEADDRESS2 = $agentInfo->OFFICEADDRESS2;
+                }
+
+                if (isset($agentInfo->OFFICE_FULLADDRESS)) {
+                    $newPossibleRentalAgent->OFFICE_FULLADDRESS = $agentInfo->OFFICE_FULLADDRESS;
+                }
+
+                if (isset($agentInfo->OFFICE_NAME_NOQUOTE)) {
+                    $newPossibleRentalAgent->OFFICE_NAME_NOQUOTE = $agentInfo->OFFICE_NAME_NOQUOTE;
+                }
+
+                if (isset($agentInfo->OFFICE_CITY)) {
+                    $newPossibleRentalAgent->OFFICE_CITY = $agentInfo->OFFICE_CITY;
+                }
+
+                if (isset($agentInfo->OFFICE_STATE)) {
+                    $newPossibleRentalAgent->OFFICE_STATE = $agentInfo->OFFICE_STATE;
+                }
+
+                if (isset($agentInfo->OFFICE_ZIP)) {
+                    $newPossibleRentalAgent->OFFICE_ZIP = $agentInfo->OFFICE_ZIP;
+                }
+
+                if (isset($agentInfo->REGIONID)) {
+                    $newPossibleRentalAgent->REGIONID = $agentInfo->REGIONID;
+                }
+
+                if (isset($agentInfo->MLS_PREMIUM)) {
+                    $newPossibleRentalAgent->MLS_PREMIUM = $agentInfo->MLS_PREMIUM;
+                }
+
+                $newPossibleRentalAgent->save();
             }
-
-            if (isset($agentInfo->AGENTKEY)) {
-                $newPossibleRentalAgent->AGENTKEY = $agentInfo->AGENTKEY;
-            }
-
-            if (isset($agentInfo->AGENTID)) {
-                $newPossibleRentalAgent->AGENTID = $agentInfo->AGENTID;
-            }
-
-            if (isset($agentInfo->MEMBER_NUMBER)) {
-                $newPossibleRentalAgent->MEMBER_NUMBER = $agentInfo->MEMBER_NUMBER;
-            }
-
-            if (isset($agentInfo->MLSORGID)) {
-                $newPossibleRentalAgent->MLSORGID = $agentInfo->MLSORGID;
-            }
-
-            if (isset($agentInfo->AGENTNAME)) {
-                $newPossibleRentalAgent->AGENTNAME = $agentInfo->AGENTNAME;
-            }
-
-            if (isset($agentInfo->FULLNAME)) {
-                $newPossibleRentalAgent->FULLNAME = $agentInfo->FULLNAME;
-            }
-
-            if (isset($agentInfo->AGENTEMAIL)) {
-                $newPossibleRentalAgent->AGENTEMAIL = $agentInfo->AGENTEMAIL;
-            }
-
-            if (isset($agentInfo->AGENTPHONE)) {
-                $newPossibleRentalAgent->AGENTPHONE = $agentInfo->AGENTPHONE;
-            }
-
-            if (isset($agentInfo->AGENTWEBSITE)) {
-                $newPossibleRentalAgent->AGENTWEBSITE = $agentInfo->AGENTWEBSITE;
-            }
-
-            if (isset($agentInfo->TOTAL)) {
-                $newPossibleRentalAgent->TOTAL = $agentInfo->TOTAL;
-            }
-
-            if (isset($agentInfo->AGENTPHOTO)) {
-                $newPossibleRentalAgent->AGENTPHOTO = $agentInfo->AGENTPHOTO;
-            }
-
-            if (isset($agentInfo->LEADCALLPHONE)) {
-                $newPossibleRentalAgent->LEADCALLPHONE = $agentInfo->LEADCALLPHONE;
-            }
-
-            if (isset($agentInfo->ACCEPTPHONEFROM)) {
-                $newPossibleRentalAgent->ACCEPTPHONEFROM = $agentInfo->ACCEPTPHONEFROM;
-            }
-
-            if (isset($agentInfo->ACCEPTPHONETO)) {
-                $newPossibleRentalAgent->ACCEPTPHONETO = $agentInfo->ACCEPTPHONETO;
-            }
-
-            if (isset($agentInfo->HIDEMYLISTING)) {
-                $newPossibleRentalAgent->HIDEMYLISTING = $agentInfo->HIDEMYLISTING;
-            }
-
-            if (isset($agentInfo->BROKERCODE)) {
-                $newPossibleRentalAgent->BROKERCODE = $agentInfo->BROKERCODE;
-            }
-
-            if (isset($agentInfo->OFFICE_NUMBER)) {
-                $newPossibleRentalAgent->OFFICE_NUMBER = $agentInfo->OFFICE_NUMBER;
-            }
-
-            if (isset($agentInfo->OFFICE_NAME)) {
-                $newPossibleRentalAgent->OFFICE_NAME = $agentInfo->OFFICE_NAME;
-            }
-
-            if (isset($agentInfo->OFFICE_EMAIL)) {
-                $newPossibleRentalAgent->OFFICE_EMAIL = $agentInfo->OFFICE_EMAIL;
-            }
-
-            if (isset($agentInfo->OFFICE_PHONE)) {
-                $newPossibleRentalAgent->OFFICE_PHONE = $agentInfo->OFFICE_PHONE;
-            }
-
-            if (isset($agentInfo->OFFICE_WEBSITE)) {
-                $newPossibleRentalAgent->OFFICE_WEBSITE = $agentInfo->OFFICE_WEBSITE;
-            }
-
-            if (isset($agentInfo->OFFICE_PHOTO)) {
-                $newPossibleRentalAgent->OFFICE_PHOTO = $agentInfo->OFFICE_PHOTO;
-            }
-
-            if (isset($agentInfo->OFFICE_ADDRESS)) {
-                $newPossibleRentalAgent->OFFICE_ADDRESS = $agentInfo->OFFICE_ADDRESS;
-            }
-
-            if (isset($agentInfo->OFFICEADDRESS2)) {
-                $newPossibleRentalAgent->OFFICEADDRESS2 = $agentInfo->OFFICEADDRESS2;
-            }
-
-            if (isset($agentInfo->OFFICE_FULLADDRESS)) {
-                $newPossibleRentalAgent->OFFICE_FULLADDRESS = $agentInfo->OFFICE_FULLADDRESS;
-            }
-
-            if (isset($agentInfo->OFFICE_NAME_NOQUOTE)) {
-                $newPossibleRentalAgent->OFFICE_NAME_NOQUOTE = $agentInfo->OFFICE_NAME_NOQUOTE;
-            }
-
-            if (isset($agentInfo->OFFICE_CITY)) {
-                $newPossibleRentalAgent->OFFICE_CITY = $agentInfo->OFFICE_CITY;
-            }
-
-            if (isset($agentInfo->OFFICE_STATE)) {
-                $newPossibleRentalAgent->OFFICE_STATE = $agentInfo->OFFICE_STATE;
-            }
-
-            if (isset($agentInfo->OFFICE_ZIP)) {
-                $newPossibleRentalAgent->OFFICE_ZIP = $agentInfo->OFFICE_ZIP;
-            }
-
-            if (isset($agentInfo->REGIONID)) {
-                $newPossibleRentalAgent->REGIONID = $agentInfo->REGIONID;
-            }
-
-            if (isset($agentInfo->MLS_PREMIUM)) {
-                $newPossibleRentalAgent->MLS_PREMIUM = $agentInfo->MLS_PREMIUM;
-            }
-
-            $newPossibleRentalAgent->save();
 
             $updateRental = PossibleRental::find($newPossibleRental['id']);
 
@@ -463,24 +466,6 @@ class HarRentalController extends Controller {
             echo '$newPossibleRentalAgent->'.$index. ' = $agentInfo->'.$index.';<BR>';
             echo '}<BR><BR>';
         }
-
-//        echo 'create table possible_rentals ( <BR>';
-//
-//        foreach ($columns as $index=>$column) {
-//            echo $index.' varchar('.$column.'),<BR>';
-//        }
-//
-//        echo 'created_at datetime, <BR>';
-//        echo 'updated_at datetime, <BR>)';
-//
-//        foreach ($columns as $index=>$column) {
-//            echo 'if (isset($rental->'.$index.')) {<BR>';
-//            echo '$newPossibleRental->'.$index. ' = $rental->'.$index.';<BR>';
-//            echo '}<BR><BR>';
-//
-//
-//
-//        }
     }
 
     public function getRentals() {

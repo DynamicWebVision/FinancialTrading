@@ -470,7 +470,7 @@ class ServersController extends Controller {
             'server_count' => 10,
             'interruption_behavior'=>'terminate',
             'image_id' => 'ami-0bf51fd46fb140e1d',
-            'template_id'=> 'lt-05bf893a7ea53c6b7',
+            'template_id'=> 'lt-0702e1fb61d77a770',
             'tags'=> [
                 'Key' => 'server_type',
                 'Value' => 'utility',
