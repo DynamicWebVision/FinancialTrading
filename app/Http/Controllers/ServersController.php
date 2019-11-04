@@ -467,10 +467,10 @@ class ServersController extends Controller {
         $validUntil = time() + $utility->hoursInSeconds(1);
 
         $params = [
-            'server_count' => 10,
+            'server_count' => 1,
             'interruption_behavior'=>'terminate',
             'image_id' => 'ami-0bf51fd46fb140e1d',
-            'template_id'=> 'lt-0702e1fb61d77a770',
+            'template_id'=> 'lt-0922ae228636b0ce1',
             'tags'=> [
                 'Key' => 'server_type',
                 'Value' => 'utility',
