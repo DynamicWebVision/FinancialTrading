@@ -464,7 +464,7 @@ class ServersController extends Controller {
         $utility = new Utility();
 
 
-        $validUntil = time() + $utility->hoursInSeconds(3);
+        $validUntil = time() + $utility->hoursInSeconds(1);
 
         $params = [
             'server_count' => 10,
