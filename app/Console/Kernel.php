@@ -62,14 +62,6 @@ class Kernel extends ConsoleKernel
             /*********************************************************************
              * SCHEDULE PROCESS JOBS
              *********************************************************************/
-            $schedule->call('App\Http\Controllers\ProcessScheduleController@checkForDueProcesses')->everyMinute();
-
-            $schedule->command('schedule_process eq_fundamental_td 3')->dailyAt('23:00');
-            $schedule->command('schedule_process fx_delete_dev_bts 2')->tuesdays()
-                ->at('17:00');
-            $schedule->command('schedule_process fx_live_transactions 3')->hourly();
-            $schedule->command('schedule_process historical_fx_rates 3')->hourly();
-
 
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenHour')->hourlyAt(15);
 
@@ -94,24 +86,17 @@ class Kernel extends ConsoleKernel
             
         }
         elseif (env('APP_ENV') == 'fin_master') {
+            $schedule->call('App\Http\Controllers\ProcessScheduleController@checkForDueProcesses')->everyMinute();
 
+            $schedule->command('schedule_process eq_fundamental_td 3')->dailyAt('23:00');
+            $schedule->command('schedule_process fx_delete_dev_bts 2')->tuesdays()
+                ->at('17:00');
+            $schedule->command('schedule_process fx_live_transactions 3')->hourly();
+            $schedule->command('schedule_process historical_fx_rates 3')->hourly();
         }
         elseif (env('APP_ENV') == 'utility') {
             $schedule->call('App\Http\Controllers\ProcessController@serverRunCheck')->hourly();
 
-//            if ($server->task_code == 'fx_maintenance') {
-
-//                $schedule->call('App\Http\Controllers\AccountsController@createNewLiveAccounts')->dailyAt('0:00');
-//                $schedule->call('App\Http\Controllers\AccountsController@createNewPracticeAccounts')->dailyAt('1:00');
-
-//
-//                $schedule->call('App\Http\Controllers\TransactionController@saveLiveTransactions')->hourly();
-//                $schedule->call('App\Http\Controllers\TransactionController@savePracticeTransactions')->cron($this->everyFifteenMinutesInterval);
-//
-//                $schedule->call('App\Http\Controllers\HistoricalDataController@populateHistoricalData')->hourly();
-//            }
-//            elseif ($server->task_code == 'stock_fund_data') {
-//            }
         }
     }
 

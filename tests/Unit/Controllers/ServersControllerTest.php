@@ -122,6 +122,6 @@ class ServersControllerTest extends TestCase
 
     public function testSetServerId() {
         $serversController = new ServersController();
-        $serversController->backupDbWithImageDeleteOld();
+        $serversController->requestSmallMiniFleetFor3Hours();
     }
 }
