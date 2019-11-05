@@ -57,7 +57,7 @@ class ProcessController extends Controller
     }
 
     public function processNextJob() {
-        DB::statement("UPDATE process_queue SET server_id = ? where server_id = 0 limit 1", [Config::get('server_id')]);
+        DB::statement("UPDATE process_queue SET server_id = ? where server_id = 0 order by priority desc limit 1", [Config::get('server_id')]);
 
         $processToBeRun = ProcessQueue::where('server_id', '=', Config::get('server_id'))->whereNull('start_time')->first();
 
