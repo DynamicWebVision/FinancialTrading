@@ -67,25 +67,8 @@ class YahooFinanceController extends Controller {
             $year++;
         }
 
-
         $scheduleController = new ProcessScheduleController();
-
-        $nextStock = Stocks::where('initial_daily_load','=',1)->where('yahoo_prices_check','=',0)->first();
-
-        if (!is_null($nextStock)) {
-            $scheduleController->createQueueRecordsWithVariableIds('yahoo_price', [$nextStock->id]);
-
-            $stock = Stocks::find($nextStock->id);
-            $stock->yahoo_prices_check = 1;
-            $stock->save();
-        }
-        else {
-            $textMessage = new TextMessage();
-            $message = 'All of the Stocks have been processed for Yahoo Price Rates';
-            $textMessage->sendTextMessage($message);
-        }
-
-
+        $scheduleController->createQueueRecordsWithVariableIds('eq_book_iex', [$stock->id]);
     }
 
     protected function saveOnePrice($price) {
