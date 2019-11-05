@@ -464,10 +464,10 @@ class ServersController extends Controller {
         $utility = new Utility();
 
 
-        $validUntil = time() + $utility->hoursInSeconds(8);
+        $validUntil = time() + $utility->hoursInSeconds(24);
 
         $params = [
-            'server_count' => 20,
+            'server_count' => 10,
             'interruption_behavior'=>'terminate',
             'image_id' => 'ami-0bf51fd46fb140e1d',
             'template_id'=> 'lt-084f84871df31725a',
