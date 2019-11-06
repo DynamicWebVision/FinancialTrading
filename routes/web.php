@@ -228,6 +228,10 @@ Route::get('php', function () {
     echo phpinfo();
 });
 
+Route::get('env', function () {
+    echo env('APP_ENV');
+});
+
 Route::get('test_text', 'StrategySystemController@strategySystems');
 
 //TBD Test

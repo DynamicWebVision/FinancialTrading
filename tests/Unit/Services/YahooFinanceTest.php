@@ -41,4 +41,8 @@ class YahooFinanceTest extends TestCase
         $scheduler->createQueueRecordsWithVariableIds('yahoo_price', $ids);
     }
 
+
+    public function testTrue() {
+        $this->assertTrue(true);
+    }
 }
