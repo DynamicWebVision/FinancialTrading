@@ -35,6 +35,8 @@ class ProcessScheduleController extends Controller
             $this->createProcessRecords($dueSchedule);
             $this->createNextScheduleTime($dueSchedule);
         }
+
+        $this->logger->processEnd();
     }
 
     public function createProcessRecords($dueSchedule) {
