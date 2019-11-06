@@ -454,9 +454,13 @@ class ServersController extends Controller {
 
         shell_exec("cd /home/ec2-user/keys && ssh -i Currency.pem ec2-user@".$ip_address." 'sudo service mysqld start'");
 
+        sleep(60);
+
+        $this->requestSmallMiniFleetFor23Hours();
+
     }
 
-    public function requestSmallMiniFleetFor3Hours() {
+    public function requestSmallMiniFleetFor23Hours() {
         $this->logger = new ProcessLogger('create_mini_utility');
 
         $awsService = new AwsService();
@@ -464,7 +468,7 @@ class ServersController extends Controller {
         $utility = new Utility();
 
 
-        $validUntil = time() + $utility->hoursInSeconds(16);
+        $validUntil = time() + $utility->hoursInSeconds(23);
 
         $params = [
             'server_count' => 20,

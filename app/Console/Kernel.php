@@ -86,6 +86,8 @@ class Kernel extends ConsoleKernel
             
         }
         elseif (env('APP_ENV') == 'fin_master') {
+            $schedule->call('App\Http\Controllers\ServersController@backupDbWithImageDeleteOld')->dailyAt('05:00');
+
             $schedule->call('App\Http\Controllers\ProcessScheduleController@checkForDueProcesses')->everyMinute();
 
             $schedule->command('schedule_process eq_fundamental_td 3')->dailyAt('23:00');
