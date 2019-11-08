@@ -71,6 +71,47 @@ class YahooFinanceController extends Controller {
         $scheduleController->createQueueRecordsWithVariableIds('eq_book_iex', [$stock->id]);
     }
 
+
+    public function updateMostRecentPrices($stockId) {
+
+        sleep(rand(2,7));
+
+        $this->logger = new ProcessLogger('yahoo_price_recent');
+
+        $this->stock_id = $stockId;
+        $stock = Stocks::find($stockId);
+
+        $mostRecentPriceUnix = StocksDailyPricesYahoo::where('stock_id','=', $stockId)->max('date_time_unix');
+
+        $mostRecentPriceUnix = $mostRecentPriceUnix - 90000;
+
+        $this->logger->logMessage($stock->id.'-'.$stock->symbol.'-'.$stock->name);
+
+        $yahooFinance = new YahooFinance();
+        $yahooFinance->logger = $this->logger;
+        $yahooFinance->symbol = $stock->symbol;
+
+        $prices = $yahooFinance->getHistoricalRates(false);
+
+        if ($prices) {
+            foreach ($prices as $price) {
+                if (isset($price->high)) {
+                    if ($price->date > $mostRecentPriceUnix) {
+                        $this->saveOnePrice($price);
+                    }
+                }
+            }
+        }
+        else {
+            $this->logger->logMessage('prices response false');
+        }
+
+        $scheduleController = new ProcessScheduleController();
+        $scheduleController->createQueueRecordsWithVariableIds('eq_book_iex', [$stock->id]);
+
+        $this->logger->processEnd();
+    }
+
     protected function saveOnePrice($price) {
         try {
             $stockPriceRecord = StocksDailyPricesYahoo::firstOrNew([
@@ -136,5 +177,19 @@ class YahooFinanceController extends Controller {
                 $priceIssue->save();
             }
         }
+    }
+
+
+    public function createRecentUpdateRecords() {
+        $this->logger = new ProcessLogger('yahoo_price_recent');
+
+        $stocks = Stocks::where('initial_daily_upload','=', 1)->get()->toArray();
+
+        $stockIDs = array_column($stocks, 'id');
+
+        $scheduleController = new ProcessScheduleController();
+        $scheduleController->createQueueRecordsWithVariableIds('yahoo_price_recent', [$stockIDs]);
+
+        $this->logger->processEnd();
     }
 }

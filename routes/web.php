@@ -224,6 +224,10 @@ Route::get('/specific_rental_curl', 'Marketing\RentalController@testCurl');
 Route::get('/rentals/send_email', 'Marketing\HarRentalController@getRentalEmail');
 Route::get('/getListings', 'Marketing\RentalController@getListings');
 
+
+
+Route::get('/ade', 'Equity\YahooFinanceController@abcTestBro');
+
 Route::get('php', function () {
     echo phpinfo();
 });

@@ -93,7 +93,7 @@ class StocksBookController extends Controller {
     public function getClosestPriceDate($unix_time) {
         $mysql_date_time = $this->utility->unixToMysqlDate($unix_time);
 
-        $closestPriceRecord = DB::select("select * from stocks_daily_prices 
+        $closestPriceRecord = DB::select("select * from stocks_daily_prices_yahoo 
                             where stock_id = ?
                             ORDER BY ABS( DATEDIFF( price_date_time, ? ) ) 
                             LIMIT 0, 1
@@ -112,25 +112,25 @@ class StocksBookController extends Controller {
 
         try {
             $this->currentStockPrice = StocksDailyPricesYahoo::where('stock_id','=', $this->stock->id)
-                ->where('price_date_time', '=', $this->currentStockDate)
+                ->orderBy('price_date_time', 'desc')
                 ->first();
 
-            $oneYearAgoDate = strtotime($this->currentStockDate.' -1 year');
+            $oneYearAgoDate = strtotime($this->currentStockPrice->price_date_time.' -1 year');
             $oneYearAgoPriceRecord = $this->getClosestPriceDate($oneYearAgoDate);
 
             $stockBook['ytd_change'] = $this->getPercentChange($oneYearAgoPriceRecord->close, $this->currentStockPrice->close);
 
-            $oneWeekAgoDate = strtotime($this->currentStockDate.' -1 week');
+            $oneWeekAgoDate = strtotime($this->currentStockPrice->price_date_time.' -1 week');
             $oneWeekAgoDatePriceRecord = $this->getClosestPriceDate($oneWeekAgoDate);
 
             $stockBook['week_change'] = $this->getPercentChange($oneWeekAgoDatePriceRecord->close, $this->currentStockPrice->close);
 
-            $oneMonthAgoDate = strtotime($this->currentStockDate.' -1 month');
+            $oneMonthAgoDate = strtotime($this->currentStockPrice->price_date_time.' -1 month');
             $oneMonthAgoDatePriceRecord = $this->getClosestPriceDate($oneMonthAgoDate);
 
             $stockBook['month_change'] = $this->getPercentChange($oneMonthAgoDatePriceRecord->close, $this->currentStockPrice->close);
 
-            $oneDayAgoPrice = StocksDailyPricesYahoo::where('stock_id','=', $this->stock->id)->where('price_date_time', '<', $this->currentStockDate)->orderBy('price_date_time', 'desc')
+            $oneDayAgoPrice = StocksDailyPricesYahoo::where('stock_id','=', $this->stock->id)->where('price_date_time', '<', $this->currentStockPrice->price_date_time)->orderBy('price_date_time', 'desc')
                 ->first();
 
             $stockBook['change_percent'] = $this->getPercentChange($oneDayAgoPrice->close, $this->currentStockPrice->close);
@@ -139,6 +139,7 @@ class StocksBookController extends Controller {
         }
         catch (\Exception $e) {
             $this->logger->logMessage('Error Exception '.$this->stock->id.'-'.$this->stock->symbol.' '.$e->getMessage());
+            return $e->getMessage();
         }
 
     }
@@ -232,4 +233,7 @@ class StocksBookController extends Controller {
         $processScheduleController = new ProcessScheduleController();
         $processScheduleController->createQueueRecordsWithVariableIds('stck_book_hist_1_stck', $variableIds);
     }
+
+
+
 }

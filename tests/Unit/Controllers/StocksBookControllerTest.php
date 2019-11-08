@@ -62,4 +62,15 @@ class StocksBookControllerTest extends TestCase
 
         $stocksHistoricalDataTest->createHistoricalStockBookProcesses(5050);
     }
+
+    public function testGetStockBook() {
+        $stocksHistoricalDataTest = new StocksBookController();
+        $stocksHistoricalDataTest->logger = new ProcessLogger('stck_book_hist');
+
+        $stocksHistoricalDataTest->stock = Stocks::find(1047);
+
+        $book = $stocksHistoricalDataTest->getStockBook();
+
+        $this->assertEquals('asdfasf', $book);
+    }
 }
