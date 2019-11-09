@@ -226,7 +226,7 @@ Route::get('/getListings', 'Marketing\RentalController@getListings');
 
 
 
-Route::get('/ade', 'Equity\YahooFinanceController@abcTestBro');
+Route::get('/ade', 'Equity\YahooFinanceController@createRecentUpdateRecords');
 
 Route::get('php', function () {
     echo phpinfo();

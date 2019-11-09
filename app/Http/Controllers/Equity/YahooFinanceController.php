@@ -183,12 +183,12 @@ class YahooFinanceController extends Controller {
     public function createRecentUpdateRecords() {
         $this->logger = new ProcessLogger('yahoo_price_recent');
 
-        $stocks = Stocks::where('initial_daily_upload','=', 1)->get()->toArray();
+        $stocks = Stocks::where('initial_daily_load','=', 1)->get()->toArray();
 
         $stockIDs = array_column($stocks, 'id');
 
         $scheduleController = new ProcessScheduleController();
-        $scheduleController->createQueueRecordsWithVariableIds('yahoo_price_recent', [$stockIDs]);
+        $scheduleController->createQueueRecordsWithVariableIds('yahoo_price_recent', $stockIDs);
 
         $this->logger->processEnd();
     }
