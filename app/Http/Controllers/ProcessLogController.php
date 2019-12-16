@@ -10,11 +10,13 @@ use \App\Model\ProcessLog\ProcessLogMessageType;
 
 use \App\Model\ProcessLog\ProcessLogMessage;
 use \App\Model\Servers;
-
+use App\Services\ProcessLogger;
 use App\Services\ProcessLog\ProcessLogFilter;
 use App\Services\ProcessLog\ProcessLogMessagesFilter;
 
 class ProcessLogController extends Controller {
+
+    public $logger;
 
     public function index() {
         $processLogFilter = new ProcessLogFilter();
@@ -36,19 +38,39 @@ class ProcessLogController extends Controller {
     }
 
     public function deleteOldProcessLogs() {
+        $this->logger = new ProcessLogger('delete_process_logs');
+
         ini_set('memory_limit', '2048M');
         $processes = Process::get()->toArray();
         $today = date('Y-m-d H:i:s', time());
 
+        //Loop Through All Processes to Get Log to Keep Cutoff
         foreach ($processes as $process) {
             $cutoffDate = date('Y-m-d H:i:s', strtotime($today. ' - '.$process['days_to_keep'].' days'));
-            $processLogs = ProcessLog::where('start_date_time', '<', $cutoffDate)->get()->toArray();
 
-            foreach($processLogs as $processLog) {
-                ProcessLogMessage::where('process_log_id', '=', $processLog['id'])->delete();
-                ProcessLog::destroy($processLog['id']);
+            $this->logger->logMessage('Checking for Process '.$process['name'].' with cutoff date '.$cutoffDate);
+
+            $processToBeDeletedCount = ProcessLog::where('start_date_time', '<', $cutoffDate)
+                ->where('process_id', '=', $process['id'])->count();
+
+            //Loop Through Specific Process for Logs to Delete in Batches of 1000
+            while ($processToBeDeletedCount > 0) {
+                $processLogsToBeDeleted = ProcessLog::where('start_date_time', '<', $cutoffDate)
+                    ->where('process_id', '=', $process['id'])->take(1000)->get(['id'])->toArray();
+
+                $this->logger->logMessage('Deleting another 1000 Logs for Process Id '.$process['name']);
+
+                //Loop Through Specific Process for Logs to Delete
+                foreach($processLogsToBeDeleted as $processLog) {
+                    ProcessLogMessage::where('process_log_id', '=', $processLog['id'])->delete();
+                    ProcessLog::destroy($processLog['id']);
+                }
+                //Getting Count of Process Logs to be Deleted after last batch
+                $processToBeDeletedCount = ProcessLog::where('start_date_time', '<', $cutoffDate)
+                    ->where('process_id', '=', $process['id'])->count();
             }
         }
+        $this->logger->processEnd();
     }
 
     public function getLogs() {

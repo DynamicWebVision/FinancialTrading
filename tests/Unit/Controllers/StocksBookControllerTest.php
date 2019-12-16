@@ -53,7 +53,7 @@ class StocksBookControllerTest extends TestCase
         $stocksHistoricalDataTest = new StocksBookController();
         $stocksHistoricalDataTest->logger = new ProcessLogger('eq_book_iex');
 
-        $stocksHistoricalDataTest->createHistoricalStockBooks(5050);
+        $stocksHistoricalDataTest->createHistoricalStockBooks(1721);
     }
 
     public function testCreateQueeu() {
