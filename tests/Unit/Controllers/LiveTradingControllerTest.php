@@ -17,9 +17,9 @@ class LiveTradingControllerTest extends TestCase
     public $transactionController;
     public $oanda;
 
-    public function testHmaFifteen() {
+    public function testMmarketIfTouchedReturnToOpenWeekly() {
         $livePracticeController = new LiveTradingController();
 
-        $livePracticeController->hmaFifteenMinutes();
+        $livePracticeController->marketIfTouchedReturnToOpenWeekly();
     }
 }
