@@ -151,6 +151,35 @@ class MySqlObjectCreate  {
 
     }
 
+    public function createDbSaveStatementJsonSpaces($json, $recordName, $jsonObjectName) {
+        $jsonObject = json_decode($json);
+        $columnSaves = "";
+        $recordName = '$'.$recordName;
+        $jsonObjectName = '$'.$jsonObjectName;
+
+        foreach ($jsonObject as $label => $value) {
+            $columnName = $this->convertCamelCaseToSnakeCase($label);
+
+            if (is_numeric($value)) {
+                $columnSaves = $columnSaves.'if (isset('.$jsonObjectName.'->{"'.$label.'"})) { <BR>';
+                $columnSaves = $columnSaves.'if (is_numeric('.$jsonObjectName.'->{"'.$label.'"})) { <BR>';
+                $columnSaves = $columnSaves.$recordName.'->'.$columnName.' = '.$jsonObjectName.'->{"'.$label.'"};<br>';
+                $columnSaves = $columnSaves.' } <BR><BR>';
+                $columnSaves = $columnSaves.' } <BR><BR>';
+            }
+            else {
+                $columnSaves = $columnSaves.'if (isset('.$jsonObjectName.'->{"'.$label.'"})) { <BR>';
+                $columnSaves = $columnSaves.$recordName.'->'.$columnName.' = '.$jsonObjectName.'->{"'.$label.'"};<br>';
+                $columnSaves = $columnSaves.' } <BR><BR>';
+            }
+
+
+        }
+        $columnSaves = $columnSaves."<BR><BR>".$recordName."->save();";
+        dd($columnSaves);
+
+    }
+
     public function createDecodeTable($tableName) {
 
         $this->addTextToCreateTable('create table '.$tableName.' (');

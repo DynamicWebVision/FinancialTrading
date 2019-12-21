@@ -14,7 +14,7 @@ class MySqlObjectCreateTest extends TestCase
     public function testCreateTableFromJson() {
         $mysqlObjectCreate = new MySqlObjectCreate();
 
-        $jsonObject = '{"AGENT_PHOTO_NUM":null,"HASOPENHOUSE":null,"MLSNUM":"RFGC21-JV4EKB","SHOWADDRESSONLINE":1,"LISTINGID":1308583,"LISTSTATUS":"A","STREETNUM":null,"STREETNAME":"SE Intersection US 290 7D Road","LISTPRICE":4000000,"PROPTYPE":"Lots And Land","BEDROOM":0,"BATHHALF":0,"PHOTOPRIMARY":"https:\/\/pics.harstatic.com\/lr\/RFGC21\/JV4EKB\/1.jpg","BATHFULL":0,"ACRES":null,"AGENTLISTNAME":"robert sadler","AGENTLISTID":"RFGC21-b78c34cb-d446-4e42-935d-4a7f29565728","BLDGSQFT":null,"BLDGSQFTSRC":null,"KEYMAP":null,"LOTSIZE":387,"LOTSIZESRC":null,"STORIES":null,"SUBDIVISION":null,"YEARBUILT":null,"YEARBUILTSRC":null,"CITY":"Fort Stockton","ZIP":79735,"OFFICELISTNAME":"century 21 sadler & associates","OFFICELISTID":"RFGC21-216161-0001","PROPSUBTYPE":"Other","LONGITUDE":-102.802841187,"LATITUDE":30.683643341,"FULLSTREETADDRESS":"SE Intersection US 290 7D Road IH-10","LISTDATE":"2017-12-14 00:00:00","PROPERTY_CLASS_ID":3,"LASTREDUCED":null,"LISTPRICEORI":1935000,"REGION_ID":10,"LOTSIZEUNIT":"squar","IMPROVEMENT":null,"RESTRICTION":null,"LANDUSE":null,"DOH":324,"STATE":"TX","HARID":14195005,"SHOW_LOT":1,"LISTSTATUS_CLASS":"active","LISTSTATUS_TEXT":"For Sale","LISTPRICE_HTML":"4,000,000","LOTSIZE_FORMAT":387,"MLS_AREA":" ( in RFGC21 ) ","MLS_NUM":"JV4EKB","ADDRESSURL":"se-intersection-us-290-7d-road-ih-10"}';
+
 
         $mysqlObjectCreate->createTableFromJson('possible_rentals', $jsonObject, false);
         //$mysqlObjectCreate->createDbSaveStatement($jsonObject, 'newStockCompanyProfile', 'response');
@@ -26,6 +26,48 @@ class MySqlObjectCreateTest extends TestCase
 
         //$mysqlObjectCreate->createTableFromJson('stocks_', $jsonObject);
         $mysqlObjectCreate->createDbSaveStatement($jsonObject, 'newIexBook', 'response');
+    }
+
+    public function testCreateObjectSaveFromJsonSpaces() {
+        $mysqlObjectCreate = new MySqlObjectCreate();
+
+        $jsonObject = '{
+            "date" : "2019-09-28",
+            "Revenue" : "260174000000.0",
+            "Revenue Growth" : "-0.0204",
+            "Cost of Revenue" : "161782000000.0",
+            "Gross Profit" : "98392000000.0",
+            "R&D Expenses" : "16217000000.0",
+            "SG&A Expense" : "18245000000.0",
+            "Operating Expenses" : "34462000000.0",
+            "Operating Income" : "63930000000.0",
+            "Interest Expense" : "0.0",
+            "Earnings before Tax" : "65737000000.0",
+            "Income Tax Expense" : "10481000000.0",
+            "Net Income - Non-Controlling int" : "0.0",
+            "Net Income - Discontinued ops" : "0.0",
+            "Net Income" : "55256000000.0",
+            "Preferred Dividends" : "0.0",
+            "Net Income Com" : "55256000000.0",
+            "EPS" : "11.97",
+            "EPS Diluted" : "11.89",
+            "Weighted Average Shs Out" : "4519180000.0",
+            "Weighted Average Shs Out (Dil)" : "4617834000.0",
+            "Dividend per Share" : "3.0",
+            "Gross Margin" : "0.3782",
+            "EBITDA Margin" : "0.301",
+            "EBIT Margin" : "0.2527",
+            "Profit Margin" : "0.212",
+            "Free Cash Flow margin" : "0.2264",
+            "EBITDA" : "78284000000.0",
+            "EBIT" : "65737000000.0",
+            "Consolidated Income" : "55256000000.0",
+            "Earnings Before Tax Margin" : "0.2527",
+            "Net Profit Margin" : "0.2124"
+          }';
+
+        //$mysqlObjectCreate->createTableFromJson('stocks_', $jsonObject);
+        $mysqlObjectCreate->createDbSaveStatementJsonSpaces($jsonObject, 'newIncomeStatement', 'incomeStatement');
     }
 
     public function testCreateIndexesFromJson() {
