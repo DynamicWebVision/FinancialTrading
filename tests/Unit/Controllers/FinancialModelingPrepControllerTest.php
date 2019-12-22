@@ -22,4 +22,9 @@ class LivePracticeControllerTest extends TestCase
 
         $financialModelingController->stockIncomeStatements(4542);
     }
+    public function testWeeklyJobs() {
+        $financialModelingController = new FinancialModelingPrepController();
+
+        $financialModelingController->createWeeklyFinancialJobs();
+    }
 }
