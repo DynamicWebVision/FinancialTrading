@@ -39,6 +39,11 @@ class FinancialModelingPrep  {
         $url = 'https://financialmodelingprep.com/api/v3/financials/income-statement/'.$symbol;
         $response = $this->get($url);
 
-        return $response->financials;
+        if (isset($response->financials)) {
+            return $response->financials;
+        }
+        else {
+            return false;
+        }
     }
 }

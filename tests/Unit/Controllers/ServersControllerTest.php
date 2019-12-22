@@ -120,8 +120,13 @@ class ServersControllerTest extends TestCase
 //        $this->assertEquals('currency', $test);
 //    }
 
+//    public function testSetServerId() {
+//        $serversController = new ServersController();
+//        $serversController->requestSmallMiniFleetFor23Hours();
+//    }
+
     public function testSetServerId() {
         $serversController = new ServersController();
-        $serversController->requestSmallMiniFleetFor23Hours();
+        $serversController->backupDbWithImageDeleteOld();
     }
 }

@@ -26,9 +26,13 @@ class FinancialModelingPrepController extends Controller {
 
         $incomeStatements = $financialModelingPrep->annualIncomeStatements($stock->symbol);
 
-        foreach ($incomeStatements as $incomeStatement) {
-            $this->saveIncomeStatement($stock, $incomeStatement);
-
+        if ($incomeStatements) {
+            foreach ($incomeStatements as $incomeStatement) {
+                $this->saveIncomeStatement($stock, $incomeStatement);
+            }
+        }
+        else {
+            $this->logger->logMessage('Income Statements Empty');
         }
     }
 
