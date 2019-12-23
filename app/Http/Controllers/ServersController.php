@@ -439,24 +439,24 @@ class ServersController extends Controller {
         $instances = $awsService->getAllInstances();
         $imageId = $awsService->getReservationIdWithTag($instances,'finance_db');
 
-//        try {
-//            $awsService->createImage($imageId);
-//        }
-//        catch (\Exception $e) {
-//            die($e->getMessage());
-//        }
+        try {
+            $awsService->createImage($imageId);
+        }
+        catch (\Exception $e) {
+            die($e->getMessage());
+        }
 
         //$images = $awsService->getImages();
 
-//        sleep(300);
-//
+        sleep(300);
+
         $ip_address = $awsService->getReservationIPWithTag($instances,'finance_db');
 
         shell_exec("cd /home/ec2-user/keys && ssh -i Currency.pem ec2-user@".$ip_address." 'sudo service mysqld start'");
 
-//        sleep(60);
-//
-//        $this->requestSmallMiniFleetFor23Hours();
+        sleep(60);
+
+        $this->requestSmallMiniFleetFor23Hours();
 
     }
 
