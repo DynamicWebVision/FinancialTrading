@@ -174,13 +174,19 @@ class StocksBookController extends Controller {
         $stockBook = $this->getStockBook();
 
         if ($stockBook) {
-            $stockBookRecord = StocksBook::firstOrNew(['stock_id'=> $this->stock->id]);
-            $stockBookRecord->ytd_change = $stockBook['ytd_change'];
-            $stockBookRecord->week_change = $stockBook['week_change'];
-            $stockBookRecord->month_change = $stockBook['month_change'];
-            $stockBookRecord->change_percent = $stockBook['change_percent'];
-            $stockBookRecord->save();
-            $this->logger->logMessage('Successful Save '.$this->stock->id.' symbol: '.$this->stock->symbol);
+            try {
+                $stockBookRecord = StocksBook::firstOrNew(['stock_id'=> $this->stock->id]);
+                $stockBookRecord->ytd_change = $stockBook['ytd_change'];
+                $stockBookRecord->week_change = $stockBook['week_change'];
+                $stockBookRecord->month_change = $stockBook['month_change'];
+                $stockBookRecord->change_percent = $stockBook['change_percent'];
+                $stockBookRecord->save();
+                $this->logger->logMessage('Successful Save '.$this->stock->id.' symbol: '.$this->stock->symbol);
+            }
+            catch (\Exception $e) {
+                $this->logger->logMessage('Error on Save '.$this->stock->id.' symbol: '.$this->stock->symbol);
+                $this->logger->logMessage($e->getMessage());
+            }
         }
     }
 

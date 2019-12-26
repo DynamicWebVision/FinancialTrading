@@ -40,20 +40,28 @@ class ProcessScheduleController extends Controller
     }
 
     public function createProcessRecords($dueSchedule) {
+        \DB::enableQueryLog();
         $processes = Process::where('schedule_def_id', '=', $dueSchedule['id'])->where('active','=',1)->get()->toArray();
+        $a = \DB::getQueryLog();
 
         foreach ($processes as $process) {
-            if ($process['single_process_record'] == 1) {
-                $this->logger->logMessage('Creating Queue Record for '.$process['id'].'-'.$process['name']);
+            $this->logger->logMessage('Creating Queue Record for '.$process['id'].'-'.$process['name']);
 
-                $newProcessQueue = new ProcessQueue();
-                $newProcessQueue->process_id = $process['id'];
-                $newProcessQueue->priority = $process['priority'];
-                $newProcessQueue->save();
-            }
-            else {
-                //Handle Multiple Process Records
-            }
+            $newProcessQueue = new ProcessQueue();
+            $newProcessQueue->process_id = $process['id'];
+            $newProcessQueue->priority = $process['priority'];
+            $newProcessQueue->save();
+//            if ($process['single_process_record'] == 1) {
+//                $this->logger->logMessage('Creating Queue Record for '.$process['id'].'-'.$process['name']);
+//
+//                $newProcessQueue = new ProcessQueue();
+//                $newProcessQueue->process_id = $process['id'];
+//                $newProcessQueue->priority = $process['priority'];
+//                $newProcessQueue->save();
+//            }
+//            else {
+//                //Handle Multiple Process Records
+//            }
         }
     }
 

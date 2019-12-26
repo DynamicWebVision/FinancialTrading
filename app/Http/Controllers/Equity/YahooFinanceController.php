@@ -181,7 +181,7 @@ class YahooFinanceController extends Controller {
 
 
     public function createRecentUpdateRecords() {
-        $this->logger = new ProcessLogger('yahoo_price_recent');
+        $this->logger = new ProcessLogger('yahoo_price_create_recent');
 
         $stocks = Stocks::where('initial_daily_load','=', 1)->get()->toArray();
 

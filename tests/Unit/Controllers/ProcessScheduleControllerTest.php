@@ -9,6 +9,7 @@ use App\Services\CurrencyIndicators;
 use App\Model\HistoricalRates;
 use App\Model\TmpTestRates;
 use App\Model\Servers\ServerEnvironmentDef;
+use App\Model\ProcessScheduleDefinition;
 use App\Http\Controllers\ProcessScheduleController;
 use Illuminate\Support\Facades\Config;
 use App\Model\Servers;
@@ -31,5 +32,12 @@ class ProcessScheduleControllerTest extends TestCase
         $serversController->createQueueRecordsWithVariableIds('yahoo_price',
             [1]
             );
+    }
+
+    public function testCreateProcessRecords() {
+        $serversController = new ProcessScheduleController();
+
+        $processSchedule = ProcessScheduleDefinition::find(6)->toArray();
+        $serversController->createProcessRecords($processSchedule);
     }
 }
