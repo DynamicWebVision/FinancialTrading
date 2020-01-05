@@ -67,7 +67,7 @@ class StocksBookControllerTest extends TestCase
         $stocksHistoricalDataTest = new StocksBookController();
         $stocksHistoricalDataTest->logger = new ProcessLogger('stck_book_hist');
 
-        $stocksHistoricalDataTest->stock = Stocks::find(1047);
+        $stocksHistoricalDataTest->stock = Stocks::find(2924	);
 
         $book = $stocksHistoricalDataTest->getStockBook();
 

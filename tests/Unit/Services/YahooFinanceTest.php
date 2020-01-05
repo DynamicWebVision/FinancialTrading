@@ -26,23 +26,23 @@ class YahooFinanceTest extends TestCase
 //    }
 
     public function testProcessOneStock() {
-        $textMessage = new YahooFinanceController();
+        $yahooFinanceController = new YahooFinanceController();
 
-        $textMessage->createRecentUpdateRecords();
+        $yahooFinanceController->createRecentUpdateRecords();
     }
 
-    public function testCreateCheckPriceRecords() {
-        $stocks = Stocks::where('initial_daily_load','=', 1)->get()->toArray();
-
-        $ids = array_column($stocks, 'id');
-
-        $scheduler = new ProcessScheduleController();
-
-        $scheduler->createQueueRecordsWithVariableIds('yahoo_price', $ids);
-    }
-
-
-    public function testTrue() {
-        $this->assertTrue(true);
-    }
+//    public function testCreateCheckPriceRecords() {
+//        $stocks = Stocks::where('initial_daily_load','=', 1)->get()->toArray();
+//
+//        $ids = array_column($stocks, 'id');
+//
+//        $scheduler = new ProcessScheduleController();
+//
+//        $scheduler->createQueueRecordsWithVariableIds('yahoo_price', $ids);
+//    }
+//
+//
+//    public function testTrue() {
+//        $this->assertTrue(true);
+//    }
 }
