@@ -649,64 +649,64 @@ class LivePracticeController extends Controller {
         Log::info('hourlyStochPullback: END');
     }
 
-    public function hmaFifteenMinutes() {
-
-        $this->utility->sleepUntilAtLeastFiveSeconds();
-
-        $strategy = new HmaSimple('101-001-7608904-007', 'initialload');
-
-        $marginAvailable = $strategy->getAvailableMargin();
-
-        //Need to Change
-        $exchanges = \App\Model\Exchange::get();
-
-        foreach ($exchanges as $exchange) {
-            $logPrefix = "emaXAdxConfirmWithMarketIfTouchedHr-".$exchange->exchange."-".uniqid();
-
-            $systemStrategy = new HmaSimple('101-001-7608904-007', $logPrefix);
-            $systemStrategy->accountAvailableMargin = $marginAvailable;
-
-            $strategyLogger = new StrategyLogger();
-            $strategyLogger->exchange_id = $exchange->id;
-            $strategyLogger->method = 'hmaFifteenMinutes';
-            $strategyLogger->oanda_account_id = 4;
-
-            $strategyLogger->newStrategyLog();
-            $systemStrategy->setLogger($strategyLogger);
-
-            if ($exchange->exchange == 'EUR_USD') {
-                $systemStrategy->logDbRates = true;
-            }
-
-            $systemStrategy->exchange = $exchange;
-            $systemStrategy->oanda->frequency = 'M15';
-
-            $systemStrategy->rateCount = 1000;
-
-            $systemStrategy->rates = $systemStrategy->getRates('both', true);
-            $systemStrategy->setCurrentPrice();
-
-            $systemStrategy->exchange = $exchange;
-            $systemStrategy->strategyId = 5;
-            $systemStrategy->strategyDesc = 'hmaSimple';
-            $systemStrategy->positionMultiplier = 5;
-
-            $systemStrategy->maxPositions = 3;
-
-            //Specific Strategy Variables
-            $systemStrategy->fastHma = 250;
-
-            $systemStrategy->adxLength = 14;
-            $systemStrategy->adxUndersoldThreshold = 20;
-
-            $systemStrategy->takeProfitTrueRangeMultiplier = 10;
-            $systemStrategy->stopLossTrueRangeMultiplier = 2;
-
-            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
-
-            $systemStrategy->checkForNewPosition();
-        }
-    }
+//    public function hmaFifteenMinutes() {
+//
+//        $this->utility->sleepUntilAtLeastFiveSeconds();
+//
+//        $strategy = new HmaSimple('101-001-7608904-007', 'initialload');
+//
+//        $marginAvailable = $strategy->getAvailableMargin();
+//
+//        //Need to Change
+//        $exchanges = \App\Model\Exchange::get();
+//
+//        foreach ($exchanges as $exchange) {
+//            $logPrefix = "emaXAdxConfirmWithMarketIfTouchedHr-".$exchange->exchange."-".uniqid();
+//
+//            $systemStrategy = new HmaSimple('101-001-7608904-007', $logPrefix);
+//            $systemStrategy->accountAvailableMargin = $marginAvailable;
+//
+//            $strategyLogger = new StrategyLogger();
+//            $strategyLogger->exchange_id = $exchange->id;
+//            $strategyLogger->method = 'hmaFifteenMinutes';
+//            $strategyLogger->oanda_account_id = 4;
+//
+//            $strategyLogger->newStrategyLog();
+//            $systemStrategy->setLogger($strategyLogger);
+//
+//            if ($exchange->exchange == 'EUR_USD') {
+//                $systemStrategy->logDbRates = true;
+//            }
+//
+//            $systemStrategy->exchange = $exchange;
+//            $systemStrategy->oanda->frequency = 'M15';
+//
+//            $systemStrategy->rateCount = 1000;
+//
+//            $systemStrategy->rates = $systemStrategy->getRates('both', true);
+//            $systemStrategy->setCurrentPrice();
+//
+//            $systemStrategy->exchange = $exchange;
+//            $systemStrategy->strategyId = 5;
+//            $systemStrategy->strategyDesc = 'hmaSimple';
+//            $systemStrategy->positionMultiplier = 5;
+//
+//            $systemStrategy->maxPositions = 3;
+//
+//            //Specific Strategy Variables
+//            $systemStrategy->fastHma = 250;
+//
+//            $systemStrategy->adxLength = 14;
+//            $systemStrategy->adxUndersoldThreshold = 20;
+//
+//            $systemStrategy->takeProfitTrueRangeMultiplier = 10;
+//            $systemStrategy->stopLossTrueRangeMultiplier = 2;
+//
+//            $systemStrategy->orderType = 'MARKET_IF_TOUCHED';
+//
+//            $systemStrategy->checkForNewPosition();
+//        }
+//    }
 
     public function hmaThirty() {
 
