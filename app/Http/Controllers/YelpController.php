@@ -54,10 +54,16 @@ class YelpController extends Controller
             $yelpLocation->name = $business->name;
             $yelpLocation->alias = $business->alias;
             $yelpLocation->address1 = $business->location->address1;
+            $yelpLocation->address2 = $business->location->address2;
             $yelpLocation->city = $business->location->city;
             $yelpLocation->state = $business->location->state;
             $yelpLocation->zip = $business->location->zip_code;
             $yelpLocation->yelp_id = $business->id;
+
+            if (isset($business->price)) {
+                $yelpLocation->price = strlen($business->price);
+            }
+
             $yelpLocation->phone_no = preg_replace("/[^0-9]/", "", $business->display_phone);
 
             $yelpLocation->save();
@@ -121,8 +127,12 @@ class YelpController extends Controller
             $this->saveBusinesses($response->businesses, $yelpCityTracker['city_id'], $yelpCityTracker['yelp_category_id']);
 
             if ($first_search) {
-                $yelpCityTracker->total_records = $response->total;
-                $currentOffset = 20;
+                if (20 >= $yelpCityTracker->total_records) {
+                    $yelpCityTracker->total_records = $response->total;
+                    $currentOffset = 20;
+                    $yelpCityTracker->completed = 1;
+                }
+
             }
             else {
                 $currentOffset = $yelpCityTracker->current_offset + 20;
