@@ -298,7 +298,7 @@ class YelpControllerTest extends TestCase
         foreach ($states as $state) {
             $newState = new States();
 
-            $newState->state = $state->name;
+            $newState->name = $state->name;
             $newState->postal_code = $state->abbreviation;
 
             $newState->save();
@@ -322,7 +322,7 @@ class YelpControllerTest extends TestCase
 
         $category_id = 1187;
 
-        $cities = Cities::get()->toArray();
+        $cities = Cities::where('rank', '=', 1)->get()->toArray();
 
         foreach ($cities as $city) {
             $yelpCityTracker = new YelpCityTracker();
@@ -338,14 +338,14 @@ class YelpControllerTest extends TestCase
 
         $restaurantCategories = YelpCategories::where('parent','=', 'restaurants')->get()->toArray();
 
-        $cities = [14,4];
+        $cities = Cities::where('ranking', '=', 1)->get()->toArray();
 
         foreach ($cities as $city) {
             foreach ($restaurantCategories as $category) {
                 $yelpCityTracker = new YelpCityTracker();
 
                 $yelpCityTracker->yelp_category_id = $category['id'];
-                $yelpCityTracker->city_id = $city;
+                $yelpCityTracker->city_id = $city['id'];
 
                 $yelpCityTracker->save();
             }

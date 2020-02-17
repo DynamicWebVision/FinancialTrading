@@ -45,7 +45,7 @@ CONST BUSINESS_PATH = "/v3/businesses/";  // Business ID will come after slash.
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "GET",
                 CURLOPT_HTTPHEADER => array(
-                    "authorization: Bearer " . $yelpApi->yelp_api_key,
+                    "authorization: Bearer " . $yelpApi->api_key,
                     "cache-control: no-cache",
                 ),
             ));
@@ -63,7 +63,7 @@ CONST BUSINESS_PATH = "/v3/businesses/";  // Business ID will come after slash.
             $this->logger->logMessage($e->getMessage(), 4);
             return false;
         }
-
+        $this->logger->logMessage(substr($response, 0, 200));
         return json_decode($response);
     }
 

@@ -45,7 +45,7 @@ class ShopifyTest extends TestCase
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
 
-        curl_setopt($this->curl, CURLOPT_URL, 'https://www.airbnb.com/api/v1/listings/28985284?api_key=d306zoyjsyarp7ifhu67rjxn52tv0t20');
+        curl_setopt($this->curl, CURLOPT_URL, 'https://abnb.me/LFyhcEYxl1');
         $resp = curl_exec($this->curl);
 
         $resp = json_decode($resp);

@@ -58,7 +58,7 @@ class YelpController extends Controller
             $yelpLocation->state = $business->location->state;
             $yelpLocation->zip = $business->location->zip_code;
             $yelpLocation->yelp_id = $business->id;
-            $yelpLocation->phone_no = $business->display_phone;
+            $yelpLocation->phone_no = preg_replace("/[^0-9]/", "", $business->display_phone);
 
             $yelpLocation->save();
 
@@ -87,8 +87,9 @@ class YelpController extends Controller
         $this->logger = new ProcessLogger('yelp_one_search');
 
         $yelp = new Yelp();
+        $yelp->logger = $this->logger;
 
-        $yelpCityTracker = YelpCityTracker::where('completed','=', NULL)->first();
+        $yelpCityTracker = YelpCityTracker::where('completed','=', 0)->first();
 
         if (!$yelpCityTracker) {
             $this->logger->logMessage('No non-completed records in Yelp City Tracker');
@@ -101,12 +102,12 @@ class YelpController extends Controller
 
         $city = Cities::find($yelpCityTracker['city_id']);
 
-        $yelp->urlParams['location'] = $city->city.', '.$city->state_postal;
+        $yelp->urlParams['location'] = $city->name.', '.$city->state_postal;
         $yelp->urlParams['categories'] = $category->alias;
 
         $this->logger->logMessage('Starting Run for '.$yelp->urlParams['location'].' and category '.$category->alias);
 
-        if (!is_null($yelpCityTracker->total_records)) {
+        if ($yelpCityTracker->total_records != 0) {
             $first_search = false;
             $yelp->urlParams['offset'] = $yelpCityTracker->current_offset;
         }
@@ -139,9 +140,9 @@ class YelpController extends Controller
             $this->logger->logMessage('ERROR RESPONSE '.$response);
         }
 
-        sleep(rand(2, 22));
+        sleep(60);
 
         $scheduleController = new ProcessScheduleController();
-        $scheduleController->createQueueRecord('yelp_one_search');
+//        $scheduleController->createQueueRecord('yelp_one_search');
     }
 }
