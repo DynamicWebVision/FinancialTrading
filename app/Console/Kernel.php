@@ -56,7 +56,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         if (env('APP_ENV') == 'live_trading') {
-            $schedule->call('App\Http\Controllers\LiveTradingController@marketIfTouchedReturnToOpenWeekly')->weeklyOn(2, '9:28');
+            //$schedule->call('App\Http\Controllers\LiveTradingController@marketIfTouchedReturnToOpenWeekly')->weeklyOn(2, '9:28');
 
             $schedule->call('App\Http\Controllers\ProcessScheduleController@checkForDueProcesses')->everyMinute();
 
@@ -91,8 +91,6 @@ class Kernel extends ConsoleKernel
             
         }
         elseif (env('APP_ENV') == 'fin_master') {
-
-
 
 
             $schedule->command('schedule_process eq_fundamental_td 3')->dailyAt('23:00');

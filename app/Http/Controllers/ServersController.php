@@ -289,7 +289,11 @@ class ServersController extends Controller {
     }
 
     public function createEnvironmentVariableFile($dbHost = false) {
-        $environmentVariables = ServerEnvironmentDef::where('type', '=', 'worker')->get()->toArray();
+        $awsService = new AwsService();
+
+        $type = $awsService->getInstanceTagValue('type');
+
+        $environmentVariables = ServerEnvironmentDef::where('type', '=', $type)->get()->toArray();
 
         $fileHandler = new FileHandler();
         $fileHandler->filePath = env('APP_ROOT').'.env';
