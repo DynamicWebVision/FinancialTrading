@@ -450,8 +450,6 @@ class ServersController extends Controller {
             die($e->getMessage());
         }
 
-        //$images = $awsService->getImages();
-
         sleep(300);
 
         $ip_address = $awsService->getReservationIPWithTag($instances,'finance_db');
