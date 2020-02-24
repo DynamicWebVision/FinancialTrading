@@ -91,11 +91,10 @@ class Kernel extends ConsoleKernel
             
         }
         elseif (env('APP_ENV') == 'fin_master') {
-
-
             $schedule->command('schedule_process eq_fundamental_td 3')->dailyAt('23:00');
             $schedule->command('schedule_process fx_delete_dev_bts 2')->tuesdays()
                 ->at('17:00');
+
             $schedule->command('schedule_process fx_live_transactions 3')->hourly();
             $schedule->command('schedule_process historical_fx_rates 3')->hourly();
         }

@@ -15,6 +15,7 @@ use App\Services\ProcessLogger;
 class YelpController extends Controller
 {
     public $logger;
+    protected $businesses;
 
     public function search() {
         $yelp = new Yelp();
@@ -45,47 +46,55 @@ class YelpController extends Controller
         }
     }
 
-    public function saveBusinesses($businesses, $city_id, $category_id) {
-        foreach ($businesses as $business) {
-            $yelpLocation = YelpLocation::firstOrCreate(['yelp_id' => $business->id]);
+    public function saveBusinesses($city_id, $category_id) {
+        foreach ($this->businesses as $business) {
 
-            $yelpLocation->city_id = $city_id;
+            try {
+                $yelpLocation = YelpLocation::firstOrCreate(['yelp_id' => $business->id]);
 
-            $yelpLocation->name = $business->name;
-            $yelpLocation->alias = $business->alias;
-            $yelpLocation->address1 = $business->location->address1;
-            $yelpLocation->address2 = $business->location->address2;
-            $yelpLocation->city = $business->location->city;
-            $yelpLocation->state = $business->location->state;
-            $yelpLocation->zip = $business->location->zip_code;
-            $yelpLocation->yelp_id = $business->id;
+                $yelpLocation->city_id = $city_id;
 
-            if (isset($business->price)) {
-                $yelpLocation->price = strlen($business->price);
-            }
+                $yelpLocation->name = $business->name;
+                $yelpLocation->alias = $business->alias;
+                $yelpLocation->address1 = $business->location->address1;
+                $yelpLocation->address2 = $business->location->address2;
+                $yelpLocation->city = $business->location->city;
+                $yelpLocation->state = $business->location->state;
+                $yelpLocation->zip = $business->location->zip_code;
+                $yelpLocation->yelp_id = $business->id;
 
-            $yelpLocation->phone_no = preg_replace("/[^0-9]/", "", $business->display_phone);
+                if (isset($business->price)) {
+                    $yelpLocation->price = strlen($business->price);
+                }
 
-            $yelpLocation->save();
+                $yelpLocation->phone_no = preg_replace("/[^0-9]/", "", $business->display_phone);
 
-            if (sizeof($business->categories) > 1) {
-                foreach ($business->categories as $category) {
-                    $dbCategory = YelpCategories::where('alias', '=', $category->alias)->first();
+                $yelpLocation->save();
 
+                if (sizeof($business->categories) > 1) {
+                    foreach ($business->categories as $category) {
+                        $dbCategory = YelpCategories::where('alias', '=', $category->alias)->first();
+
+                        $yelpLocationCategory = new YelpLocationCategory();
+                        $yelpLocationCategory->yelp_category_id = $dbCategory->id;
+                        $yelpLocationCategory->yelp_location_id = $yelpLocation->id;
+
+                        $yelpLocationCategory->save();
+                    }
+                }
+                else {
                     $yelpLocationCategory = new YelpLocationCategory();
-                    $yelpLocationCategory->yelp_category_id = $dbCategory->id;
+                    $yelpLocationCategory->yelp_category_id = $category_id;
                     $yelpLocationCategory->yelp_location_id = $yelpLocation->id;
 
                     $yelpLocationCategory->save();
                 }
             }
-            else {
-                $yelpLocationCategory = new YelpLocationCategory();
-                $yelpLocationCategory->yelp_category_id = $category_id;
-                $yelpLocationCategory->yelp_location_id = $yelpLocation->id;
-
-                $yelpLocationCategory->save();
+            catch (\Exception $e) {
+                $this->logger->logMessage('Error Trying to Save business '.json_encode($business));
+                $this->logger->logMessage($e->getMessage());
             }
+
         }
     }
 
@@ -96,6 +105,8 @@ class YelpController extends Controller
         $yelp->logger = $this->logger;
 
         $yelpCityTracker = YelpCityTracker::where('completed','=', 0)->first();
+
+        $this->logger->logMessage('yelpCityTracker: '.$yelpCityTracker->id);
 
         if (!$yelpCityTracker) {
             $this->logger->logMessage('No non-completed records in Yelp City Tracker');
@@ -121,10 +132,10 @@ class YelpController extends Controller
             $first_search = true;
         }
 
-        $response = $yelp->search();
+        $this->businesses = $yelp->search();
 
-        if ($response) {
-            $this->saveBusinesses($response->businesses, $yelpCityTracker['city_id'], $yelpCityTracker['yelp_category_id']);
+        if ($this->businesses) {
+            $this->saveBusinesses($yelpCityTracker['city_id'], $yelpCityTracker['yelp_category_id']);
 
             if ($first_search) {
                 if (20 >= $yelpCityTracker->total_records) {
