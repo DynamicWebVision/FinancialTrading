@@ -15,11 +15,11 @@ use App\Services\ProcessLogger;
 class YelpController extends Controller
 {
     public $logger;
-    protected $businesses;
+    protected $apiResponse;
 
     public function search() {
         $yelp = new Yelp();
-        $response = $yelp->search('employmentagencies', 'San Francisco, California');
+        $this->apiResponse = $yelp->search('employmentagencies', 'San Francisco, California');
     }
 
     public function getBusiness() {
@@ -47,7 +47,7 @@ class YelpController extends Controller
     }
 
     public function saveBusinesses($city_id, $category_id) {
-        foreach ($this->businesses as $business) {
+        foreach ($this->apiResponse->businesses as $business) {
 
             try {
                 $yelpLocation = YelpLocation::firstOrCreate(['yelp_id' => $business->id]);
@@ -132,14 +132,14 @@ class YelpController extends Controller
             $first_search = true;
         }
 
-        $this->businesses = $yelp->search();
+        $this->apiResponse = $yelp->search();
 
-        if ($this->businesses) {
+        if ($this->apiResponse) {
             $this->saveBusinesses($yelpCityTracker['city_id'], $yelpCityTracker['yelp_category_id']);
 
             if ($first_search) {
                 if (20 >= $yelpCityTracker->total_records) {
-                    $yelpCityTracker->total_records = $response->total;
+                    $yelpCityTracker->total_records = $this->apiResponse->total;
                     $currentOffset = 20;
                     $yelpCityTracker->completed = 1;
                 }
@@ -158,7 +158,7 @@ class YelpController extends Controller
             $yelpCityTracker->save();
         }
         else {
-            $this->logger->logMessage('ERROR RESPONSE '.$response);
+            $this->logger->logMessage('ERROR RESPONSE '.$this->apiResponse);
         }
 
         sleep(60);
