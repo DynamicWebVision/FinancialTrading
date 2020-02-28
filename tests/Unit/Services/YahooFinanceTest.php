@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services;
 
+use App\Services\Recruiters;
 use App\Services\Scraper;
 use Tests\TestCase;
 
@@ -57,7 +58,7 @@ class YahooFinanceTest extends TestCase
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
 
-        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/organizations');
+        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/networks/:networkId/devices/:serial');
         $resp = curl_exec($this->curl);
 
         $scraper = new \App\Services\Scraper();
@@ -283,6 +284,12 @@ class YahooFinanceTest extends TestCase
         $curlInfo = curl_getinfo($this->curl);
 
         return $resp;
+    }
+
+    public function testRecruiters() {
+        $recruiters = new \App\Services\Recruiters();
+
+        $links = $recruiters->sendTextMessage();
     }
 
 //    public function testCreateCheckPriceRecords() {

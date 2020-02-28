@@ -165,5 +165,7 @@ class YelpController extends Controller
 
         $scheduleController = new ProcessScheduleController();
         $scheduleController->createQueueRecord('yelp_one_search');
+
+        sleep(60);
     }
 }
