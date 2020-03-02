@@ -124,7 +124,7 @@ class AwsService  {
                             [
                                 'LaunchTemplateSpecification' => [
                                     'LaunchTemplateId' => $requestParams['template_id'],
-                                    'Version' => '1',
+                                    'Version' => $requestParams['template_version'],
                                 ]
                 // ...
                         ],

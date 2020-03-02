@@ -479,6 +479,7 @@ class ServersController extends Controller {
             'interruption_behavior'=>'terminate',
             'image_id' => 'ami-0bf51fd46fb140e1d',
             'template_id'=> 'lt-084f84871df31725a',
+            'template_version'=> '5',
             'tags'=> [
                 'Key' => 'server_type',
                 'Value' => 'utility',
