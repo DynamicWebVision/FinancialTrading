@@ -41,6 +41,12 @@ class ProcessLogger  {
         $newProcessLog->server_id = $serverId;
         $newProcessLog->linux_pid = getmypid();
 
+        $processQueueId = Config::get('process_queue_id');
+
+        if (!is_null($processQueueId)) {
+            $newProcessLog->process_queue_id = $processQueueId;
+        }
+
         $newProcessLog->save();
 
         $this->logId = $newProcessLog->id;

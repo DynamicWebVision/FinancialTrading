@@ -62,7 +62,7 @@ class ProcessController extends Controller
         $processToBeRun = ProcessQueue::where('server_id', '=', Config::get('server_id'))->whereNull('start_time')->first();
 
         if (is_null($processToBeRun)) {
-            $this->logger->logMessage('$processToBeRun is null, kicking off backtest');
+            $this->logger->logMessage('$processToBeRun is null, Sleeping for 5 Minutes');
             $this->logger->processEnd();
 
             sleep(300);
@@ -70,6 +70,8 @@ class ProcessController extends Controller
 //            $automatedBacktestController->runOneProcessOrAllBacktestStats();
         }
         else {
+
+            Config::set('process_queue_id', $processToBeRun->id);
 
             $processToBeRun->server_id = Config::get('server_id');
             $processToBeRun->start_time = $this->utility->mysqlDateTime();
@@ -103,7 +105,6 @@ class ProcessController extends Controller
     }
 
     public function currentRunningProcessThresholdCheck() {
-
         $stillRunningProcesses = ProcessLog::whereNull('end_date_time')->where('server_id', '=', $this->serverController->serverId)
             ->distinct(['linux_pid'])->get()->toArray();
 

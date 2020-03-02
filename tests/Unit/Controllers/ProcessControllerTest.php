@@ -28,7 +28,7 @@ class ProcessControllerTest extends TestCase
     public function testProcessNextJob() {
         $livePracticeController = new ProcessController();
 
-        $livePracticeController->processNextJob();
+        $livePracticeController->createContinuousToRunRecords();
 
     }
 }
