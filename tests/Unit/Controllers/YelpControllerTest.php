@@ -33,11 +33,12 @@ class YelpControllerTest extends TestCase
 
         $yelpController->search();
     }
+
     public function testProcessOneSearch() {
         $yelpController = new YelpController();
-
         $yelpController->processOneSearch();
     }
+
     public function testBusiness() {
         $yelpController = new YelpController();
 

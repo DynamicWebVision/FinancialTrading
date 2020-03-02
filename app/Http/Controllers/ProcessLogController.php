@@ -6,6 +6,7 @@ use Request;
 
 use \App\Model\ProcessLog\Process;
 use \App\Model\ProcessLog\ProcessLog;
+use \App\Model\ProcessLog\ProcessQueue;
 use \App\Model\ProcessLog\ProcessLogMessageType;
 
 use \App\Model\ProcessLog\ProcessLogMessage;
@@ -64,6 +65,7 @@ class ProcessLogController extends Controller {
                 foreach($processLogsToBeDeleted as $processLog) {
                     ProcessLogMessage::where('process_log_id', '=', $processLog['id'])->delete();
                     ProcessLog::destroy($processLog['id']);
+                    ProcessQueue::destroy($processLog['process_queue_id']);
                 }
                 //Getting Count of Process Logs to be Deleted after last batch
                 $processToBeDeletedCount = ProcessLog::where('start_date_time', '<', $cutoffDate)

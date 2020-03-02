@@ -67,7 +67,7 @@ class YelpController extends Controller
                     $yelpLocation->price = strlen($business->price);
                 }
 
-                $yelpLocation->phone_no = preg_replace("/[^0-9]/", "", $business->display_phone);
+                $yelpLocation->phone_no = $business->display_phone;
 
                 $yelpLocation->save();
 
@@ -104,7 +104,7 @@ class YelpController extends Controller
         $yelp = new Yelp();
         $yelp->logger = $this->logger;
 
-        $yelpCityTracker = YelpCityTracker::where('completed','=', 0)->first();
+        $yelpCityTracker = YelpCityTracker::where('completed','=', 0)->orderBy('priority')->first();
 
         $this->logger->logMessage('yelpCityTracker: '.$yelpCityTracker->id);
 
@@ -138,12 +138,11 @@ class YelpController extends Controller
             $this->saveBusinesses($yelpCityTracker['city_id'], $yelpCityTracker['yelp_category_id']);
 
             if ($first_search) {
+                $yelpCityTracker->total_records = $this->apiResponse->total;
+                $currentOffset = 20;
                 if (20 >= $yelpCityTracker->total_records) {
-                    $yelpCityTracker->total_records = $this->apiResponse->total;
-                    $currentOffset = 20;
                     $yelpCityTracker->completed = 1;
                 }
-
             }
             else {
                 $currentOffset = $yelpCityTracker->current_offset + 20;
@@ -161,7 +160,7 @@ class YelpController extends Controller
             $this->logger->logMessage('ERROR RESPONSE '.$this->apiResponse);
         }
 
-        sleep(60);
+        sleep(rand(60, 85));
 
         $scheduleController = new ProcessScheduleController();
         $scheduleController->createQueueRecord('yelp_one_search');
