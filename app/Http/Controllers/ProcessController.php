@@ -132,10 +132,10 @@ class ProcessController extends Controller
         }
     }
 
-    public function createContinousToRunRecords() {
+    public function createContinuousToRunRecords() {
         $processes = Process::where('continuous_run', '=', 1)->get();
         $scheduleController = new ProcessScheduleController();
-        
+
         foreach ($processes as $process) {
             $scheduleController->createQueueRecord($process->code);
         }

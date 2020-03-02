@@ -460,7 +460,8 @@ class ServersController extends Controller {
 
         $this->requestSmallMiniFleetFor23Hours();
 
-
+        $processController = new ProcessController();
+        $processController->createContinuousToRunRecords();
     }
 
     public function requestSmallMiniFleetFor23Hours() {
