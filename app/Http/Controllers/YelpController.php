@@ -147,7 +147,7 @@ class YelpController extends Controller
             else {
                 $currentOffset = $yelpCityTracker->current_offset + 20;
 
-                if ($currentOffset >= $yelpCityTracker->total_records) {
+                if ($currentOffset >= $yelpCityTracker->total_records || $currentOffset >= 980) {
                     $currentOffset = $yelpCityTracker->total_records;
                     $yelpCityTracker->completed = 1;
                 }
