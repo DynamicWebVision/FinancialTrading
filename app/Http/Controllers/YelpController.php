@@ -104,7 +104,11 @@ class YelpController extends Controller
         $yelp = new Yelp();
         $yelp->logger = $this->logger;
 
-        $yelpCityTracker = YelpCityTracker::where('completed','=', 0)->orderBy('priority')->first();
+        $allOutstanding = YelpCityTracker::where('completed','=', 0)->get(['id'])->toArray();
+
+        $allIds = array_column($allOutstanding, 'id');
+
+        $yelpCityTracker = YelpCityTracker::find(array_rand($allIds));
 
         $this->logger->logMessage('yelpCityTracker: '.$yelpCityTracker->id);
 
@@ -112,8 +116,6 @@ class YelpController extends Controller
             $this->logger->logMessage('No non-completed records in Yelp City Tracker');
             return;
         }
-
-        $yelpCityTracker = YelpCityTracker::find($yelpCityTracker['id']);
 
         $category = YelpCategories::find($yelpCityTracker['yelp_category_id']);
 
