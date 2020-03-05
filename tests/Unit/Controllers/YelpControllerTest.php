@@ -38,7 +38,7 @@ class YelpControllerTest extends TestCase
 
     public function testProcessOneSearch() {
         $yelpController = new YelpController();
-        $yelpController->contactEmail(6824);
+        $yelpController->checkOneWebsiteUrl();
     }
 
     public function testProcessOneEmail() {

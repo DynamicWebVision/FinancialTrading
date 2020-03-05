@@ -191,7 +191,8 @@ class YelpController extends Controller
 
         if ($scraper->inString($yelpHtml, '"linkText":"')) {
             $this->logger->logMessage('Link Text Found');
-            $webSiteUrl = $scraper->getInBetween($yelpHtml, '"linkText":"', '",');
+            $webSiteUrl = $scraper->getInBetween($yelpHtml, '"href":"/biz_redir?url=', ';');
+            $webSiteUrl = $scraper->getTextBeforeString('&', urldecode($webSiteUrl));
             $yelpLocation->website = $webSiteUrl;
         }
         else {
