@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Services\Yelp;
+use App\Services\Scraper;
 use App\Model\Yelp\YelpCategories;
 use App\Model\Yelp\Cities;
 use App\Model\Yelp\YelpCityTracker;
@@ -168,5 +169,49 @@ class YelpController extends Controller
         $scheduleController->createQueueRecord('yelp_one_search');
 
         sleep(60);
+    }
+
+    public function checkOneWebsiteUrl() {
+        $yelpLocation = YelpLocation::where('website_checked','=', 0)->first();
+
+        $this->getWebsiteUrl($yelpLocation->id);
+    }
+
+    public function getWebsiteUrl($yelpLocationId) {
+        //"linkText":"
+        $yelpLocation = YelpLocation::find($yelpLocationId);
+
+        $scraper = new Scraper();
+
+        $yelpHtml = $scraper->getCurl('https://www.yelp.com/biz/'.$yelpLocation->alias);
+
+        if ($scraper->inString($yelpHtml, '"linkText":"')) {
+            $webSiteUrl = $scraper->getInBetween($yelpHtml, '"linkText":"', '",');
+            $yelpLocation->website = $webSiteUrl;
+
+        }
+
+        $yelpLocation->website_checked = 1;
+
+        $yelpLocation->save();
+    }
+
+    public function contactEmail($yelpLocationId) {
+        //"linkText":"
+//        $yelpLocation = YelpLocation::find($yelpLocationId);
+//
+//        $scraper = new Scraper();
+//
+//        $websiteContent = $scraper->getCurl('https://www.yelp.com/biz/'.$yelpLocation->alias);
+//
+//        if ($scraper->inString($yelpHtml, '"linkText":"')) {
+//            $webSiteUrl = $scraper->getInBetween($yelpHtml, '"linkText":"', '",');
+//            $yelpLocation->website = $webSiteUrl;
+//
+//        }
+//
+//        $yelpLocation->website_checked = 1;
+//
+//        $yelpLocation->save();
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Controllers;
 
+use App\Model\Yelp\YelpLocation;
+use App\Services\Scraper;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -36,7 +38,12 @@ class YelpControllerTest extends TestCase
 
     public function testProcessOneSearch() {
         $yelpController = new YelpController();
-        $yelpController->processOneSearch();
+        $yelpController->contactEmail(6824);
+    }
+
+    public function testProcessOneEmail() {
+        $yelpController = new YelpController();
+        $yelpController->getWebsiteUrl(6824);
     }
 
     public function testBusiness() {
@@ -49,11 +56,13 @@ class YelpControllerTest extends TestCase
 
         $yelpController->loadCategories();
     }
+
     public function testCities() {
         $yelpController = new YelpController();
 
         $yelpController->loadUsCities();
     }
+
     public function testStates() {
         $states = '[
     {
@@ -336,7 +345,6 @@ class YelpControllerTest extends TestCase
     }
 
     public function testLoadRestaurantsForCity() {
-
         $restaurantCategories = YelpCategories::where('parent','=', 'restaurants')->get()->toArray();
 
         $cities = Cities::where('ranking', '=', 1)->get()->toArray();
@@ -350,7 +358,6 @@ class YelpControllerTest extends TestCase
 
                 $yelpCityTracker->save();
             }
-
         }
     }
 }

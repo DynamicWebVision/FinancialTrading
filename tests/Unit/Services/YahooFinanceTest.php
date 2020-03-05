@@ -58,8 +58,14 @@ class YahooFinanceTest extends TestCase
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
 
-        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/networks/:networkId/devices/:serial');
-        $resp = curl_exec($this->curl);
+        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/organizations/930117/networks');
+
+        //curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347200424/devices');
+        //curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347199903');
+        //curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0//networks/'+network_id+'/devices/claim');
+       // curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/organizations/930117/devices');
+
+        $resp = json_decode(curl_exec($this->curl));
 
         $scraper = new \App\Services\Scraper();
         $links = $scraper->getAllLinksInText($resp);
@@ -167,10 +173,11 @@ class YahooFinanceTest extends TestCase
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($this->curl,CURLOPT_POST, 1);
 
-        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347191416/devices/Q2XD-KGFH-LLDF/remove');
+        //curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347191416');
+        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks');
         //abcdefg
 
-        $resp = curl_exec($this->curl);
+        $resp = json_decode(curl_exec($this->curl));
 
         $links = $scraper->getAllLinksInText($resp);
 
@@ -288,22 +295,7 @@ class YahooFinanceTest extends TestCase
 
     public function testRecruiters() {
         $recruiters = new \App\Services\Recruiters();
-
         $links = $recruiters->sendTextMessage();
     }
 
-//    public function testCreateCheckPriceRecords() {
-//        $stocks = Stocks::where('initial_daily_load','=', 1)->get()->toArray();
-//
-//        $ids = array_column($stocks, 'id');
-//
-//        $scheduler = new ProcessScheduleController();
-//
-//        $scheduler->createQueueRecordsWithVariableIds('yahoo_price', $ids);
-//    }
-//
-//
-//    public function testTrue() {
-//        $this->assertTrue(true);
-//    }
 }

@@ -138,6 +138,7 @@ class ProcessController extends Controller
         $scheduleController = new ProcessScheduleController();
 
         foreach ($processes as $process) {
+            ProcessQueue::where('process_id', '=', $process->id)->where('server_id','=',0)->delete();
             $scheduleController->createQueueRecord($process->code);
         }
     }
