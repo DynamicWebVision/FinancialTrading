@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Http\Controllers\ProcessScheduleController;
 use Illuminate\Http\Request;
 use App\Services\Yelp;
 use App\Services\Scraper;
@@ -182,7 +183,7 @@ class YelpController extends Controller
     }
 
     public function getWebsiteUrl($yelpLocationId) {
-        //"linkText":"
+
         $yelpLocation = YelpLocation::find($yelpLocationId);
 
         $scraper = new Scraper();
@@ -202,6 +203,12 @@ class YelpController extends Controller
         $yelpLocation->website_checked = 1;
 
         $yelpLocation->save();
+
+        sleep(22);
+
+        $scheduleController = new ProcessScheduleController();
+
+        $scheduleController->createQueueRecord('yelp_website');
     }
 
     public function contactEmail($yelpLocationId) {
