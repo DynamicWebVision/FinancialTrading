@@ -172,7 +172,11 @@ class YelpController extends Controller
     }
 
     public function checkOneWebsiteUrl() {
+        $this->logger = new ProcessLogger('yelp_website');
+
         $yelpLocation = YelpLocation::where('website_checked','=', 0)->first();
+
+        $this->logger->logMessage('Checking Website for Yelp Location '.$yelpLocation->id.' '.$yelpLocation->name);
 
         $this->getWebsiteUrl($yelpLocation->id);
     }
@@ -186,9 +190,12 @@ class YelpController extends Controller
         $yelpHtml = $scraper->getCurl('https://www.yelp.com/biz/'.$yelpLocation->alias);
 
         if ($scraper->inString($yelpHtml, '"linkText":"')) {
+            $this->logger->logMessage('Link Text Found');
             $webSiteUrl = $scraper->getInBetween($yelpHtml, '"linkText":"', '",');
             $yelpLocation->website = $webSiteUrl;
-
+        }
+        else {
+            $this->logger->logMessage('Link Text NOT Found');
         }
 
         $yelpLocation->website_checked = 1;
