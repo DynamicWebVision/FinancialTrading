@@ -51,17 +51,7 @@ class ProcessScheduleController extends Controller
             $newProcessQueue->process_id = $process['id'];
             $newProcessQueue->priority = $process['priority'];
             $newProcessQueue->save();
-//            if ($process['single_process_record'] == 1) {
-//                $this->logger->logMessage('Creating Queue Record for '.$process['id'].'-'.$process['name']);
-//
-//                $newProcessQueue = new ProcessQueue();
-//                $newProcessQueue->process_id = $process['id'];
-//                $newProcessQueue->priority = $process['priority'];
-//                $newProcessQueue->save();
-//            }
-//            else {
-//                //Handle Multiple Process Records
-//            }
+
         }
     }
 

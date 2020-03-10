@@ -260,9 +260,15 @@ class YelpController extends Controller
         foreach ($links as $link) {
             $fullUrl = $website.$link;
 
-            $emails = $scraper->getEmailAddressesInLink($fullUrl);
+            try{
+                $emails = $scraper->getEmailAddressesInLink($fullUrl);
 
-            $this->saveEmails($yelpLocation, $emails, $fullUrl);
+                $this->saveEmails($yelpLocation, $emails, $fullUrl);
+            }
+            catch ( \Exception $e) {
+                $this->logger->logMessage('Error for link '.$link);
+                $this->logger->logMessage($e->getMessage());
+            }
 
             sleep(rand(2, 15));
         }
