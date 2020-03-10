@@ -70,6 +70,31 @@ class Scraper {
         return $urls;
     }
 
+    public function getLinksWithWebsiteEndpoints($text) {
+        $allLinks = $this->getAllLinksInText($text);
+        $endpointLinks = [];
+
+        foreach ($allLinks as $link) {
+            $firstCharacter = $this->firstCharacter($link);
+            $firstThree = strtolower(substr($link, 0, 3));
+
+            if ($firstCharacter != '#'
+                && $firstThree != 'htt') {
+                    if ($firstCharacter == '/') {
+                        $endpointLinks[] = $link;
+                    }
+                    else {
+                        $endpointLinks[] = '/'.$link;
+                    }
+            }
+        }
+        return array_unique($endpointLinks);
+    }
+
+    public function firstCharacter($text) {
+        return substr($text,0, 1);
+    }
+
     //
     public function getNextHref($text) {
         $linkToEnd = substr($text, strpos($text, "href=")+6);
@@ -207,6 +232,9 @@ class Scraper {
     public function getEmailAddressesInLink($link) {
         $html = $this->getCurl($link);
         $emails = [];
+
+        str_replace('%40','@', $html);
+
 
         while (strpos(strtoupper($html), '@') !== false) {
             $atPosition = strpos($html, "@");

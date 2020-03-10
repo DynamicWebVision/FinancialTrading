@@ -86,4 +86,9 @@ class ProcessLogger  {
         $logStrategy->forced_end = 1;
         $logStrategy->save();
     }
+
+    public function __destruct()
+    {
+        $this->processEnd();
+    }
 }

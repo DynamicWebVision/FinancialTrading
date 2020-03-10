@@ -12,6 +12,7 @@ use App\Model\Yelp\Cities;
 use App\Model\Yelp\YelpCityTracker;
 use App\Model\Yelp\YelpLocation;
 use App\Model\Yelp\YelpLocationCategory;
+use App\Model\Yelp\YelpLocationEmail;
 use App\Services\ProcessLogger;
 
 class YelpController extends Controller
@@ -195,9 +196,11 @@ class YelpController extends Controller
             $webSiteUrl = $scraper->getInBetween($yelpHtml, '"href":"/biz_redir?url=', ';');
             $webSiteUrl = $scraper->getTextBeforeString('&', urldecode($webSiteUrl));
             $yelpLocation->website = $webSiteUrl;
+            $hasWebsite = true;
         }
         else {
             $this->logger->logMessage('Link Text NOT Found');
+            $hasWebsite = false;
         }
 
         $yelpLocation->website_checked = 1;
@@ -209,24 +212,59 @@ class YelpController extends Controller
         $scheduleController = new ProcessScheduleController();
 
         $scheduleController->createQueueRecord('yelp_website');
+
+        if ($hasWebsite) {
+            $scheduleController->createQueueRecordsWithVariableIds('yelp_email', [$yelpLocationId]);
+        }
+    }
+
+    protected function saveEmails($yelpLocation, $emails, $url) {
+        foreach ($emails as $email) {
+            $yelpLocationEmail = YelpLocationEmail::firstOrNew(
+                ['email'=> $email],
+                ['yelp_location_id'=> $yelpLocation->id]
+            );
+
+            $yelpLocationEmail->website_url = $url;
+
+            $yelpLocationEmail->save();
+        }
     }
 
     public function contactEmail($yelpLocationId) {
-        //"linkText":"
-//        $yelpLocation = YelpLocation::find($yelpLocationId);
-//
-//        $scraper = new Scraper();
-//
-//        $websiteContent = $scraper->getCurl('https://www.yelp.com/biz/'.$yelpLocation->alias);
-//
-//        if ($scraper->inString($yelpHtml, '"linkText":"')) {
-//            $webSiteUrl = $scraper->getInBetween($yelpHtml, '"linkText":"', '",');
-//            $yelpLocation->website = $webSiteUrl;
-//
-//        }
-//
-//        $yelpLocation->website_checked = 1;
-//
-//        $yelpLocation->save();
+        $this->logger = new ProcessLogger('yelp_email');
+
+        $yelpLocation = YelpLocation::find($yelpLocationId);
+
+        $this->logger->logMessage('Checking for Email for '.$yelpLocation->id.'-'.$yelpLocation->name);
+
+        $scraper = new Scraper();
+
+        $website = $yelpLocation->website;
+
+        $websiteText = $scraper->getCurl($website);
+
+        $links = $scraper->getLinksWithWebsiteEndpoints($websiteText);
+
+        $this->logger->logMessage('Count of '.sizeof($links).' links found.');
+
+        if (substr($website, -1) == '/') {
+            $website = substr($website, 0, -1);
+        }
+
+        $rootEmails = $scraper->getEmailAddressesInLink($website);
+        sleep(rand(2, 15));
+
+        $this->saveEmails($yelpLocation, $rootEmails, $website);
+
+        foreach ($links as $link) {
+            $fullUrl = $website.$link;
+
+            $emails = $scraper->getEmailAddressesInLink($fullUrl);
+
+            $this->saveEmails($yelpLocation, $emails, $fullUrl);
+
+            sleep(rand(2, 15));
+        }
     }
 }
