@@ -48,7 +48,7 @@ class YelpControllerTest extends TestCase
 
     public function testGetEmailAddress() {
         $yelpController = new YelpController();
-        $yelpController->contactEmail(1971);
+        $yelpController->contactEmail(5948);
     }
 
     public function testBusiness() {

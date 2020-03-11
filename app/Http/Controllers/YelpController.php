@@ -244,7 +244,7 @@ class YelpController extends Controller
 
         $websiteText = $scraper->getCurl($website);
 
-        $links = $scraper->getLinksWithWebsiteEndpoints($websiteText);
+        $links = $scraper->getLinksWithWebsiteEndpoints($websiteText, $website);
 
         $this->logger->logMessage('Count of '.sizeof($links).' links found.');
 
@@ -252,13 +252,24 @@ class YelpController extends Controller
             $website = substr($website, 0, -1);
         }
 
-        $rootEmails = $scraper->getEmailAddressesInLink($website);
-        sleep(rand(2, 15));
+        try {
+            $rootEmails = $scraper->getEmailAddressesInLink($website);
+            sleep(rand(2, 15));
 
-        $this->saveEmails($yelpLocation, $rootEmails, $website);
+            $this->saveEmails($yelpLocation, $rootEmails, $website);
+        }
+        catch (\Exception $e) {
+            $this->logger->logMessage('Error for root '.$website);
+            $this->logger->logMessage($e->getMessage());
+        }
 
         foreach ($links as $link) {
-            $fullUrl = $website.$link;
+            if ($scraper->inString($link, $website)) {
+                $fullUrl = $link;
+            }
+            else {
+                $fullUrl = $website.$link;
+            }
 
             try{
                 $emails = $scraper->getEmailAddressesInLink($fullUrl);

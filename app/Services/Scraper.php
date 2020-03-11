@@ -62,15 +62,24 @@ class Scraper {
     public function getAllLinksInText($text) {
         $urls = [];
         $text = strtolower($text);
-        while (strpos($text, 'href') !== false) {
-            $urlEndpoint = $this->getNextHref($text);
-            $urls[] = $this->baseUrl.$urlEndpoint;
-            $text = substr($text, strpos($text, '</a>') + 3);
+        while ($this->inString($text, 'href') && $this->inString($text, '<a')) {
+            $text = substr($text, strpos($text, '<a'));
+
+            if (strpos($text, 'href') < 100) {
+                $urlEndpoint = $this->getNextHref($text);
+                $urls[] = $this->baseUrl.$urlEndpoint;
+            }
+            if ($this->inString($text, '</a>')) {
+                $text = substr($text, strpos($text, '</a>') + 3);
+            }
+            else {
+                $text = '';
+            }
         }
         return $urls;
     }
 
-    public function getLinksWithWebsiteEndpoints($text) {
+    public function getLinksWithWebsiteEndpoints($text, $website) {
         $allLinks = $this->getAllLinksInText($text);
         $endpointLinks = [];
 
@@ -86,6 +95,9 @@ class Scraper {
                     else {
                         $endpointLinks[] = '/'.$link;
                     }
+            }
+            elseif ($this->inString($link, $website)) {
+                $endpointLinks[] = $link;
             }
         }
         return array_unique($endpointLinks);
