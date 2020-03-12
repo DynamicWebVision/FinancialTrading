@@ -195,9 +195,10 @@ class YahooFinanceTest extends TestCase
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
 
-        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/devices/Q2PD-PKMN-AFKF/clients');
-        //curl_setopt($this->curl, CURLOPT_URL, 'https://api.meraki.com/api/v0//networks/N_600104650347186811/devices');
-        $resp = curl_exec($this->curl);
+        //curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/devices/Q2PD-PKMN-AFKF/clients');
+        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347200189/ssids/0/splashSettings');
+        $resp = json_decode(curl_exec($this->curl));
+
 
         $scraper = new \App\Services\Scraper();
         $links = $scraper->getAllLinksInText($resp);
@@ -216,12 +217,13 @@ class YahooFinanceTest extends TestCase
         $this->curl = curl_init();
 //        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , 'Authorization: Bearer 1d95d8dd88b59a1f7c53e7cb2886df89-3f40f99e79545ae6539aabd8b718cbb0' ));
         // curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer 1d95d8dd88b59a1f7c53e7cb2886df89-3f40f99e79545ae6539aabd8b718cbb0' ));
-        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('X-Cisco-Meraki-API-Key: 79cb810aa1d55a8e2110ee0249dbb5e1c566ce06'));
+
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, 1);
 
 //        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347186811/traffic?timespan=1000000');
-        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347191945/devices');
+        curl_setopt($this->curl, CURLOPT_URL, 'https://betalist.com/startups/sermly/visit');
         $resp = curl_exec($this->curl);
 
         $scraper = new \App\Services\Scraper();
@@ -244,14 +246,11 @@ class YahooFinanceTest extends TestCase
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('X-Cisco-Meraki-API-Key: 79cb810aa1d55a8e2110ee0249dbb5e1c566ce06'));
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PUT");
 
-        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347191416/devices/Q2PD-PKMN-AFKF');
+        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0//organizations/930117/devices');
         //curl_setopt($this->curl, CURLOPT_URL, 'https://api.meraki.com/api/v0//networks/N_600104650347186811/devices');
-        curl_setopt($this->curl,CURLOPT_POSTFIELDS, json_encode([
-            'name'=>'API TEST'
-        ]));
-        $resp = curl_exec($this->curl);
+
+        $resp = json_decode(curl_exec($this->curl));
 
         $scraper = new \App\Services\Scraper();
         $links = $scraper->getAllLinksInText($resp);

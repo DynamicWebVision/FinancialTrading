@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use App\Services\ProcessLogger;
 use App\Model\ProcessLog\ProcessLog;
+use App\Model\ProcessLog\VwServerLastLogMessage;
 
 class ProcessController extends Controller
 {
@@ -86,7 +87,14 @@ class ProcessController extends Controller
                 $relevantVariable = $processToBeRun->variable_id;
             }
             $this->logger->processEnd();
-            $this->runJob($relevantVariable);
+
+            try {
+                $this->runJob($relevantVariable);
+            }
+            catch (\Exception $e) {
+
+            }
+
 
             $processToBeRun->end_time = $this->utility->mysqlDateTime();
             $processToBeRun->save();
@@ -105,8 +113,14 @@ class ProcessController extends Controller
     }
 
     public function currentRunningProcessThresholdCheck() {
+        $this->logger->logMessage('Server ID: '. $this->serverController->serverId.'XX');
+
         $stillRunningProcesses = ProcessLog::whereNull('end_date_time')->where('server_id', '=', $this->serverController->serverId)
             ->distinct(['linux_pid'])->get()->toArray();
+
+        $lastProcessLogMessage = VwServerLastLogMessage::where('server_id','=', $this->serverController->serverId)->first()->toArray();
+
+        $hoursSinceLastLogMessage = $lastProcessLogMessage['last_message_unix']/(3600);
 
         $this->logger->logMessage('stillRunningProcessPids :'. substr(json_encode($stillRunningProcesses), 0, 20000));
 
@@ -126,7 +140,7 @@ class ProcessController extends Controller
 
         $this->logger->logMessage($processesRunningCount.' processes running count.');
 
-        if ($processesRunningCount > 1) {
+        if ($processesRunningCount > 1 && $hoursSinceLastLogMessage < 2) {
             $this->logger->logMessage('Killing this run due to already too many processes running.');
             $this->logger->processEnd();
             die();
