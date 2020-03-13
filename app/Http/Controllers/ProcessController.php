@@ -118,13 +118,13 @@ class ProcessController extends Controller
         $stillRunningProcesses = ProcessLog::whereNull('end_date_time')->where('server_id', '=', $this->serverController->serverId)
             ->distinct(['linux_pid'])->get()->toArray();
 
-        $lastProcessLogMessage = VwServerLastLogMessage::where('server_id','=', $this->serverController->serverId)->first()->toArray();
+        $lastProcessLogMessage = VwServerLastLogMessage::where('server_id','=', $this->serverController->serverId)->first();
 
         if (is_null($lastProcessLogMessage)) {
             $hoursSinceLastLogMessage = 2.1;
         }
         else {
-            $hoursSinceLastLogMessage = $lastProcessLogMessage['last_message_unix']/(3600);
+            $hoursSinceLastLogMessage = $lastProcessLogMessage->last_message_unix/(3600);
         }
 
 
