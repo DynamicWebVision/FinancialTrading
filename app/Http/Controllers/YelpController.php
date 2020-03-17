@@ -244,6 +244,8 @@ class YelpController extends Controller
 
         $websiteText = $scraper->getCurl($website);
 
+        $this->logger->logMessage($websiteText);
+
         $links = $scraper->getLinksWithWebsiteEndpoints($websiteText, $website);
 
         $this->logger->logMessage('Count of '.sizeof($links).' links found.');

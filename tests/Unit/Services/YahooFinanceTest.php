@@ -216,15 +216,15 @@ class YahooFinanceTest extends TestCase
     public function testContentFilteringCategories() {
         $this->curl = curl_init();
 //        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , 'Authorization: Bearer 1d95d8dd88b59a1f7c53e7cb2886df89-3f40f99e79545ae6539aabd8b718cbb0' ));
-        // curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer 1d95d8dd88b59a1f7c53e7cb2886df89-3f40f99e79545ae6539aabd8b718cbb0' ));
+         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer sk_e9f902a77f356767c9914cf48a93d101' ));
 
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, 1);
 
 //        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347186811/traffic?timespan=1000000');
-        curl_setopt($this->curl, CURLOPT_URL, 'https://betalist.com/startups/sermly/visit');
-        $resp = curl_exec($this->curl);
+        curl_setopt($this->curl, CURLOPT_URL, 'https://person.clearbit.com/v1/people/email/emilia.barton.1028@gmail.com');
+        $resp = json_decode(curl_exec($this->curl));
 
         $scraper = new \App\Services\Scraper();
         $links = $scraper->getAllLinksInText($resp);
