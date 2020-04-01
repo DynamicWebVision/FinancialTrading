@@ -255,6 +255,7 @@ class YelpController extends Controller
         }
 
         try {
+            $this->logger->logMessage('Searching for Email for root '.$website);
             $rootEmails = $scraper->getEmailAddressesInLink($website);
             sleep(rand(2, 15));
 
@@ -274,6 +275,7 @@ class YelpController extends Controller
             }
 
             try{
+                $this->logger->logMessage('Searching for Email for  '.$fullUrl);
                 $emails = $scraper->getEmailAddressesInLink($fullUrl);
 
                 $this->saveEmails($yelpLocation, $emails, $fullUrl);

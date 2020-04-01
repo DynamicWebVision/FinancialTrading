@@ -223,7 +223,7 @@ class YahooFinanceTest extends TestCase
         curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, 1);
 
 //        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347186811/traffic?timespan=1000000');
-        curl_setopt($this->curl, CURLOPT_URL, 'https://person.clearbit.com/v1/people/email/emilia.barton.1028@gmail.com');
+        curl_setopt($this->curl, CURLOPT_URL, 'https://person.clearbit.com/v1/people/email/brian.oneill.tx@gmail.com');
         $resp = json_decode(curl_exec($this->curl));
 
         $scraper = new \App\Services\Scraper();
