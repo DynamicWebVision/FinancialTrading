@@ -171,13 +171,14 @@ class YahooFinanceTest extends TestCase
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('X-Cisco-Meraki-API-Key: 79cb810aa1d55a8e2110ee0249dbb5e1c566ce06'));
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($this->curl,CURLOPT_POST, 1);
 
         //curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347191416');
         curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks');
         //abcdefg
 
-        $resp = json_decode(curl_exec($this->curl));
+        $test = curl_exec($this->curl);
+
+        $resp = json_decode($test);
 
         $links = $scraper->getAllLinksInText($resp);
 
@@ -274,7 +275,7 @@ class YahooFinanceTest extends TestCase
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
 
         //curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347186811/ssids');
-        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347191416/ssids/0');
+        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks');
         //curl_setopt($this->curl, CURLOPT_URL, 'https://api.meraki.com/api/v0//networks/N_600104650347186811/devices');
         $resp = curl_exec($this->curl);
         $d = json_decode($resp);

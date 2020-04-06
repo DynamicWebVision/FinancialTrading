@@ -486,6 +486,6 @@ class ServersController extends Controller {
             ],
             'valid_until' => $validUntil
         ];
-        $awsService->requestSpotFleet($params);
+        //$awsService->requestSpotFleet($params);
     }
 }
