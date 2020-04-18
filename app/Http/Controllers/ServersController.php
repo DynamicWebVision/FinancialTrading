@@ -475,17 +475,17 @@ class ServersController extends Controller {
         $validUntil = time() + $utility->hoursInSeconds(23);
 
         $params = [
-            'server_count' => 10,
+            'server_count' => 6,
             'interruption_behavior'=>'terminate',
             'image_id' => 'ami-0bf51fd46fb140e1d',
             'template_id'=> 'lt-084f84871df31725a',
-            'template_version'=> '5',
+            'template_version'=> '6',
             'tags'=> [
                 'Key' => 'server_type',
                 'Value' => 'utility',
             ],
             'valid_until' => $validUntil
         ];
-        //$awsService->requestSpotFleet($params);
+        $awsService->requestSpotFleet($params);
     }
 }
