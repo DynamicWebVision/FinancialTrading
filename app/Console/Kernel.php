@@ -58,7 +58,7 @@ class Kernel extends ConsoleKernel
         if (env('APP_ENV') == 'live_trading') {
             //$schedule->call('App\Http\Controllers\LiveTradingController@marketIfTouchedReturnToOpenWeekly')->weeklyOn(2, '9:28');
 
-            $schedule->call('App\Http\Controllers\ProcessScheduleController@checkForDueProcesses')->everyMinute();
+            $schedule->call('App\Http\Controllers\ProcessScheduleController@checkForDueProcesses')->everyTenMinutes();
 
             $schedule->call('App\Http\Controllers\ServersController@backupDbWithImageDeleteOld')->dailyAt('5:00');
         }
