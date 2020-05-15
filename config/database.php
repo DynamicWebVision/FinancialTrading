@@ -81,6 +81,34 @@ return [
             'engine' => null,
         ],
 
+        'product_advice_local' => [
+            'driver' => 'mysql',
+            'host' => 'localhost',
+            'port' => env('DB_PORT', '3306'),
+            'database' => 'showplace_product_advice_dev',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
+        'product_advice_prod' => [
+            'driver' => 'mysql',
+            'host' => '3.133.160.162',
+            'port' => env('DB_PORT', '3306'),
+            'database' => 'product_advice_prd',
+            'username' => 'admin_product_advice',
+            'password' => 'BrocPotKleenex7410#',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

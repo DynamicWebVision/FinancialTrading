@@ -332,7 +332,7 @@ class Scraper {
     }
 
     public function getTextAfterString($needle, $haystack) {
-        return substr($haystack,strpos($haystack, $needle)+strlen($needle));
+        return substr($haystack,strpos($haystack, $needle)+strlen($needle)+1);
     }
 
 
