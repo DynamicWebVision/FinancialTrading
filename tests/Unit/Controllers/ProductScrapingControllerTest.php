@@ -33,10 +33,10 @@ class ProductScrapingControllerTest extends TestCase
 //        $serversController->parseJsonData();
 //    }
 
-    public function testGetJsonData() {
-        $serversController = new ProductScrapingController();
-        $serversController->getJsonData();
-    }
+//    public function testGetJsonData() {
+//        $serversController = new ProductScrapingController();
+//        $serversController->getJsonData();
+//    }
 
 //    public function testTwoStrings() {
 //        $productType = \App\Model\ProductAdvice\ProductType::find(57);
