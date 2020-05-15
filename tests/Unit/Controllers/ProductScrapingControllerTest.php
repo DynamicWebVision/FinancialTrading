@@ -23,27 +23,27 @@ class ProductScrapingControllerTest extends TestCase
     public $oanda;
 
 
-    public function testGetRoot() {
-        $serversController = new ProductScrapingController();
-        $serversController->getRoot();
-    }
-
-    public function testParseJson() {
-        $serversController = new ProductScrapingController();
-        $serversController->parseJsonData();
-    }
-
-    public function testGetJsonData() {
-        $serversController = new ProductScrapingController();
-        $serversController->getJsonData();
-    }
-
-    public function testTwoStrings() {
-        $productType = \App\Model\ProductAdvice\ProductType::find(57);
-
-        $serversController = new ProductScrapingController();
-        $serversController->populatePriceLevels($productType);
-    }
+//    public function testGetRoot() {
+//        $serversController = new ProductScrapingController();
+//        $serversController->getRoot();
+//    }
+//
+//    public function testParseJson() {
+//        $serversController = new ProductScrapingController();
+//        $serversController->parseJsonData();
+//    }
+//
+//    public function testGetJsonData() {
+//        $serversController = new ProductScrapingController();
+//        $serversController->getJsonData();
+//    }
+//
+//    public function testTwoStrings() {
+//        $productType = \App\Model\ProductAdvice\ProductType::find(57);
+//
+//        $serversController = new ProductScrapingController();
+//        $serversController->populatePriceLevels($productType);
+//    }
 
     public function testLoadAllProductTypePricePoints() {
         $productTypes = \App\Model\ProductAdvice\ProductType::get();
