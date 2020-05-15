@@ -162,12 +162,14 @@ class ProductScrapingController extends Controller
 
         $this->lustreObject = json_decode($jsonString);
 
-        foreach ($this->lustreObject->responses->categoryRankings as $rankingEntities) {
-            foreach ($rankingEntities as $entity) {
-                $productTypePricePoint = ProductTypePricePoint::firstOrCreate(
-                    ['price_point' => $entity->groupLabelPrice->amount,
-                    'product_type_id' => $productType->id]
-                );
+        if (isset($this->lustreObject->responses->categoryRankings)) {
+            foreach ($this->lustreObject->responses->categoryRankings as $rankingEntities) {
+                foreach ($rankingEntities as $entity) {
+                    $productTypePricePoint = ProductTypePricePoint::firstOrCreate(
+                        ['price_point' => $entity->groupLabelPrice->amount,
+                            'product_type_id' => $productType->id]
+                    );
+                }
             }
         }
     }
