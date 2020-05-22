@@ -220,7 +220,7 @@ Route::resource('strategy_notes', 'StrategyNotesController');
 
 
 Route::post('/rentals/load', 'Marketing\HarRentalController@load');
-Route::post('/lustre/load', 'Marketing\HarRentalController@load');
+Route::post('/lustre/load', 'ProductScrapingController@load');
 Route::get('/specific_rental_curl', 'Marketing\RentalController@testCurl');
 Route::get('/rentals/send_email', 'Marketing\HarRentalController@getRentalEmail');
 Route::get('/getListings', 'Marketing\RentalController@getListings');
