@@ -18,7 +18,5 @@
                 alert('Loaded');
             });
         }
-
-        vm.getRentals();
     }
 })();
