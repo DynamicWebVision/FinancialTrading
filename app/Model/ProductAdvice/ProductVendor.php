@@ -3,8 +3,10 @@ namespace App\Model\ProductAdvice;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductCategory extends Model {
+class ProductVendor extends Model {
     protected $connection = 'product_advice_prod';
 
-    protected $table = 'product_types';
+    protected $table = 'product_vendors';
+
+    protected $fillable = ['product_id', 'vendor_id'];
 }

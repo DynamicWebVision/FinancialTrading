@@ -3,8 +3,8 @@ namespace App\Model\ProductAdvice;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductCategory extends Model {
+class ProductImage extends Model {
     protected $connection = 'product_advice_prod';
 
-    protected $table = 'product_types';
+    protected $table = 'product_images';
 }

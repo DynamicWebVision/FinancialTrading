@@ -3,8 +3,10 @@ namespace App\Model\ProductAdvice;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductCategory extends Model {
+class ReviewRatingSource extends Model {
     protected $connection = 'product_advice_prod';
 
-    protected $table = 'product_types';
+    protected $table = 'review_rating_sources';
+
+    protected $fillable = ['third_party_id'];
 }

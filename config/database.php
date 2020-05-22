@@ -109,6 +109,20 @@ return [
             'engine' => null,
         ],
 
+        'showplace_prod' => [
+            'driver' => 'mysql',
+            'host' => 'showplaceprod-1.czwtosxemrvj.us-east-2.rds.amazonaws.com',
+            'port' => env('DB_PORT', '3306'),
+            'database' => 'showplaceprodlive',
+            'username' => 'showplaceadmin',
+            'password' => 'Showplaceiscool1!',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

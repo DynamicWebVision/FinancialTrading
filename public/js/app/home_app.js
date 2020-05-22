@@ -119,4 +119,9 @@ app.config(function($routeProvider) {
             controller : "HarRentalsController",
             controllerAs: 'vm'
         })
+        .when("/lustre/dump", {
+            templateUrl : "js/modules/marketing/lustre-dump/lustre-dump.html",
+            controller : "LustreDumpController",
+            controllerAs: 'vm'
+        })
 });
