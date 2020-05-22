@@ -73,6 +73,7 @@
     <script type="text/javascript" src="js/modules/stocks/factory/stocks-technical-check.js"></script>
     <script type="text/javascript" src="js/modules/nurse-jobs/nurse-jobs.js"></script>
     <script type="text/javascript" src="js/modules/marketing/rentals/rentals.js"></script>
+    <script type="text/javascript" src="js/modules/marketing/lustre-dump/lustre-dump.js"></script>
 @stop
 
 @section('side_nav')
