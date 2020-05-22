@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
+use Request;
 use App\Http\Controllers\ProcessScheduleController;
 use App\Model\ProductAdvice\ListingImage;
 use App\Model\ProductAdvice\ProductImage;
 use App\Model\ProductAdvice\ReviewRatingSource;
 use App\Model\ProductAdvice\ReviewRatingType;
 use App\Model\ProductAdvice\Review;
-use Illuminate\Http\Request;
+
 use App\Services\Yelp;
 use App\Services\Scraper;
 use App\Model\Yelp\YelpCategories;
