@@ -14,10 +14,8 @@ class MySqlObjectCreateTest extends TestCase
     public function testCreateTableFromJson() {
         $mysqlObjectCreate = new MySqlObjectCreate();
 
+        $mysqlObjectCreate->createTableFromJson('validated_emails', '{"email":"catering@sushieatstation.com","did_you_mean":"","user":"catering","domain":"sushieatstation.com","format_valid":true,"mx_found":true,"smtp_check":true,"catch_all":null,"role":false,"disposable":false,"free":false,"score":0.96}', false);
 
-
-        $mysqlObjectCreate->createTableFromJson('possible_rentals', $jsonObject, false);
-        //$mysqlObjectCreate->createDbSaveStatement($jsonObject, 'newStockCompanyProfile', 'response');
     }
     public function testCreateObjectSaveFromJson() {
         $mysqlObjectCreate = new MySqlObjectCreate();

@@ -242,6 +242,50 @@ class Scraper {
         return $response;
     }
 
+    public function getHostPeriodPosition($htmlText) {
+        $dotFound = false;
+        $atFound = false;
+        $position = -1;
+
+        while (!$dotFound && $position < 500) {
+            $position = $position + 1;
+
+            $currentCharacter = substr($htmlText, $position, 1);
+
+            if (!$atFound) {
+                if ($currentCharacter == '@') {
+                    $atFound = true;
+                }
+            }
+            else {
+                if ($currentCharacter == '.') {
+                    $dotFound = true;
+                }
+            }
+        }
+        return $position;
+    }
+
+    public function checkEmailExtension($email) {
+        $emailRevers = strrev($email);
+
+        $reverseExtension = substr($emailRevers, 0, strpos($emailRevers, '.'));
+
+        $extension = strtolower(strrev($reverseExtension));
+
+        if (strlen($extension) < 2) {
+            return false;
+        }
+        else {
+            if ( in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    }
+
     public function getEmailAddressesInLink($link) {
         $html = $this->getCurl($link);
         $emails = [];
@@ -258,12 +302,13 @@ class Scraper {
                 $atPosition--;
                 $previousCharacter = substr($html, $atPosition, 1);
 
-                if (!ctype_alnum($previousCharacter)) {
+                if (!ctype_alnum($previousCharacter) && !in_array($previousCharacter, ['.', '-', '_'])) {
                     $html = substr($html, $atPosition+1);
                     $foundEmailStart = true;
                 }
             }
-            $emailDotPosition = strpos($html, ".");
+
+            $emailDotPosition = $this->getHostPeriodPosition($html);
             $foundEmailEnd = false;
 
             while (!$foundEmailEnd) {
@@ -273,7 +318,11 @@ class Scraper {
                 if (!ctype_alnum($nextCharacter)) {
                     $email = substr($html,0,$emailDotPosition);
                     if (filter_var($email, FILTER_VALIDATE_EMAIL) && !in_array($email, $emails)) {
-                        $emails[] = $email;
+                        $validExtensionCheck = $this->checkEmailExtension($email);
+
+                        if ($validExtensionCheck) {
+                            $emails[] = $email;
+                        }
                     }
                     $foundEmailEnd = true;
                 }
