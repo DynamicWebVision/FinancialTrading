@@ -316,7 +316,7 @@ class ServersController extends Controller {
         }
         $fileHandler->clearFileAndWriteNewText();
 
-        \Log::emergency("createEnvironmentVariableFile COMPLETE";
+        \Log::emergency("createEnvironmentVariableFile with type ".$type);
     }
 
     public function setConfigDBHost($dbHost) {
