@@ -439,26 +439,41 @@ class ServersController extends Controller {
     }
 
     public function backupDbWithImageDeleteOld() {
+        Log::info('Starting backupDbWithImageDeleteOld');
         $awsService = new AwsService();
         $instances = $awsService->getAllInstances();
         $imageId = $awsService->getReservationIdWithTag($instances,'finance_db');
+
+        Log::info('Found Image ID '.$imageId);
 
         try {
             $awsService->createImage($imageId);
         }
         catch (\Exception $e) {
+            Log::info('Creating DB Image Failed');
+            Log::info($e->getMessage());
             die($e->getMessage());
         }
+
+        Log::info('Successfully created DB image ');
 
         sleep(300);
 
         $ip_address = $awsService->getReservationIPWithTag($instances,'finance_db');
 
+        Log::info('Got IP Address '.$ip_address);
+
         shell_exec("cd /home/ec2-user/keys && ssh -i Currency.pem ec2-user@".$ip_address." 'sudo service mysqld start'");
+
+        Log::info('Executed command');
 
         sleep(60);
 
+        Log::info('About to request small fleet of servers for 23 hours');
+
         $this->requestSmallMiniFleetFor23Hours();
+
+        Log::info('Creating createContinuousToRunRecords');
 
         $processController = new ProcessController();
         $processController->createContinuousToRunRecords();
