@@ -293,6 +293,8 @@ class ServersController extends Controller {
 
         $type = $awsService->getInstanceTagValue('type');
 
+        \Log::emergency("createEnvironmentVariableFile with type ".$type);
+
         $environmentVariables = ServerEnvironmentDef::where('type', '=', $type)->get()->toArray();
 
         $fileHandler = new FileHandler();
@@ -313,6 +315,8 @@ class ServersController extends Controller {
             }
         }
         $fileHandler->clearFileAndWriteNewText();
+
+        \Log::emergency("createEnvironmentVariableFile COMPLETE";
     }
 
     public function setConfigDBHost($dbHost) {
@@ -344,6 +348,7 @@ class ServersController extends Controller {
 
         $dbHost = $this->getCurrentDBHostFromAws();
         $this->setConfigDBHost($dbHost);
+        \Log::emergency("set DB Host");
         $this->updateEnvDBRecord($dbHost);
 
         $this->createEnvironmentVariableFile($dbHost);
