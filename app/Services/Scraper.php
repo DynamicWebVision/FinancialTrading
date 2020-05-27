@@ -277,7 +277,7 @@ class Scraper {
             return false;
         }
         else {
-            if ( in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
+            if ( in_array($extension, ['jpeg', 'jpg', 'png', 'gif', 'svg'])) {
                 return false;
             }
             else {
