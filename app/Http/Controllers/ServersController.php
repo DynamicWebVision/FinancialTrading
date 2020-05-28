@@ -347,11 +347,12 @@ class ServersController extends Controller {
 
 
         $dbHost = $this->getCurrentDBHostFromAws();
-        \Log::info('Got DB Host '.$dbHost);
-        
+        \Log::emergency('Got DB Host '.$dbHost);
+
         $this->setConfigDBHost($dbHost);
         \Log::emergency("set DB Host");
         $this->updateEnvDBRecord($dbHost);
+        \Log::emergency("successfully updated host");
 
         $this->createEnvironmentVariableFile($dbHost);
     }
