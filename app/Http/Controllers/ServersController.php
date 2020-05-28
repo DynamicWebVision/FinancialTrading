@@ -289,7 +289,10 @@ class ServersController extends Controller {
     }
 
     public function createEnvironmentVariableFile($dbHost = false) {
+        \Log::emergency("Top of createEnvironmentVariableFile");
         $awsService = new AwsService();
+
+        \Log::emergency("About to try to get type");
 
         $type = $awsService->getInstanceTagValue('type');
 
