@@ -130,7 +130,7 @@ class ServersControllerTest extends TestCase
         $serversController = new ServersController();
         //$serversController->backupDbWithImageDeleteOld();
 
-        $debug = file_get_contents('http://169.254.169.254/latest/meta-data/');
+        $debug = file_get_contents('http://169.254.169.254/latest/meta-data/instance-id');
         echo $debug;
     }
 }
