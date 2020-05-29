@@ -292,6 +292,8 @@ class ServersController extends Controller {
         \Log::emergency("Top of createEnvironmentVariableFile");
         $awsService = new AwsService();
 
+        $awsService->setCurrentServerAttributes();
+
         \Log::emergency("About to try to get type");
 
         $type = $awsService->getInstanceTagValue('type');
@@ -356,6 +358,8 @@ class ServersController extends Controller {
         \Log::emergency("set DB Host");
         $this->updateEnvDBRecord($dbHost);
         \Log::emergency("successfully updated host");
+
+
 
         $this->createEnvironmentVariableFile($dbHost);
     }
