@@ -16,7 +16,7 @@ class AwsService  {
     }
 
     public function setCurrentServerAttributes() {
-        $instance_id = file_get_contents("http://instance-data/latest/meta-data/instance-id");
+        $instance_id = file_get_contents("http://169.254.169.254/latest/meta-data/instance-id");
 
         $response = $this->ec2Client->describeInstances(['InstanceIds'=>[$instance_id]]);
 
