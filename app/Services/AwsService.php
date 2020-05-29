@@ -28,6 +28,8 @@ class AwsService  {
 
         $this->currentInstance = $response['Reservations'][0]['Instances'][0];
 
+        Log::emergency('Current Instance '.$this->currentInstance);
+
     }
 
     public function getAllInstances() {
@@ -38,12 +40,14 @@ class AwsService  {
     }
 
     public function getInstanceTagValue($tagKey) {
+        Log::emergency($this->currentInstance['Tags']);
         foreach ($this->currentInstance['Tags'] as $tag) {
             if ($tag['Key'] == $tagKey) {
                 return $tag['Value'];
                 break;
             }
         }
+        return false;
     }
 
     public function getReservationIPWithTag($reservations, $tag) {
