@@ -1,6 +1,7 @@
 <?php namespace App\Services;
 
 use \Aws;
+use \Log;
 
 class AwsService  {
 
@@ -16,7 +17,12 @@ class AwsService  {
     }
 
     public function setCurrentServerAttributes() {
-        $instance_id = file_get_contents("http://169.254.169.254/latest/meta-data/instance-id");
+        try {
+            $instance_id = file_get_contents("http://169.254.169.254/latest/meta-data/instance-id");
+        }
+        catch (\Exception $e) {
+            Log::emergency($e->getMessage());
+        }
 
         $response = $this->ec2Client->describeInstances(['InstanceIds'=>[$instance_id]]);
 
