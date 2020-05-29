@@ -128,6 +128,9 @@ class ServersControllerTest extends TestCase
 
     public function testSetServerId() {
         $serversController = new ServersController();
-        $serversController->backupDbWithImageDeleteOld();
+        //$serversController->backupDbWithImageDeleteOld();
+
+        $debug = file_get_contents('http://169.254.169.254/latest/meta-data/');
+        echo $debug;
     }
 }

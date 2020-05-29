@@ -29,7 +29,6 @@ class AwsService  {
 
         return $response['Reservations'];
 
-
     }
 
     public function getInstanceTagValue($tagKey) {
