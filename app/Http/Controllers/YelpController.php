@@ -20,14 +20,14 @@ class YelpController extends Controller
     public $logger;
     protected $apiResponse;
 
+    protected $yelp;
+
     public function search() {
-        $yelp = new Yelp();
-        $this->apiResponse = $yelp->search('employmentagencies', 'San Francisco, California');
+        $this->apiResponse = $this->yelp->search('employmentagencies', 'San Francisco, California');
     }
 
     public function getBusiness() {
-        $yelp = new Yelp();
-        $yelp->getBusiness('cHoNUKltOAJWSmNfsZ1h-w');
+        $this->yelp->getBusiness('cHoNUKltOAJWSmNfsZ1h-w');
     }
 
     public function loadCategories() {
@@ -101,10 +101,10 @@ class YelpController extends Controller
         }
     }
 
-    public function processOneSearch() {
+    public function processOneSearch($yelpApiId) {
         $this->logger = new ProcessLogger('yelp_one_search');
 
-        $yelp = new Yelp();
+        $yelp = new Yelp($yelpApiId);
         $yelp->logger = $this->logger;
 
         $allOutstanding = YelpCityTracker::where('completed','=', 0)->get(['id'])->toArray();

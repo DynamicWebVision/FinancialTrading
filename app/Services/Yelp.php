@@ -14,6 +14,8 @@ class Yelp  {
 
     public $urlParams = [];
 
+    protected $yelpApi;
+
 
 // API constants, you shouldn't have to change these.
 CONST API_HOST = "https://api.yelp.com";
@@ -25,12 +27,15 @@ CONST BUSINESS_PATH = "/v3/businesses/";  // Business ID will come after slash.
 //$DEFAULT_LOCATION = "San Francisco, CA";
 //$SEARCH_LIMIT = 3;
 
+    public function __construct($yelpId)
+    {
+        $this->yelpApi = YelpApi::find($yelpId);
+    }
+
 
     public function apiRequest($path, $url_params = array()) {
         // Send Yelp API Call
         try {
-            $yelpApi = YelpApi::first();
-
             $curl = curl_init();
             if (FALSE === $curl)
                 throw new Exception('Failed to initialize');
@@ -45,7 +50,7 @@ CONST BUSINESS_PATH = "/v3/businesses/";  // Business ID will come after slash.
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "GET",
                 CURLOPT_HTTPHEADER => array(
-                    "authorization: Bearer " . $yelpApi->api_key,
+                    "authorization: Bearer " . $this->yelpApi->api_key,
                     "cache-control: no-cache",
                 ),
             ));

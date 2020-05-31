@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Services\ProcessLogger;
 use App\Model\ProcessLog\ProcessLog;
 use App\Model\ProcessLog\VwServerLastLogMessage;
+use App\Model\Yelp\YelpApi;
 
 class ProcessController extends Controller
 {
@@ -158,8 +159,18 @@ class ProcessController extends Controller
         $scheduleController = new ProcessScheduleController();
 
         foreach ($processes as $process) {
-            ProcessQueue::where('process_id', '=', $process->id)->where('server_id','=',0)->delete();
-            $scheduleController->createQueueRecord($process->code);
+            if ($process->id == 37) {
+                $yelpAPiKeys = YelpApi::get();
+
+                foreach ($yelpAPiKeys as $yelpApiKey) {
+                    ProcessQueue::where('process_id', '=', $process->id)->where('server_id','=',0)->delete();
+                    $scheduleController->createQueueRecordsWithVariableIds($process->code, $yelpApiKey->id);
+                }
+            }
+            else {
+                ProcessQueue::where('process_id', '=', $process->id)->where('server_id','=',0)->delete();
+                $scheduleController->createQueueRecord($process->code);
+            }
         }
     }
 }
