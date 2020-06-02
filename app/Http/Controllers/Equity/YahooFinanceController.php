@@ -83,6 +83,16 @@ class YahooFinanceController extends Controller {
 
         $mostRecentPriceUnix = StocksDailyPricesYahoo::where('stock_id','=', $stockId)->max('date_time_unix');
 
+        $unixOneYearAgo = strtotime("-1 year");
+
+        $allOneYearStocks = StocksDailyPricesYahoo::where('stock_id','=', $stockId)->where('date_time_unix', '>=', $unixOneYearAgo)->get()->toArray();
+
+        $oneYearStocks = [];
+
+        foreach ($allOneYearStocks as $stock) {
+            $oneYearStocks[$stock['date_time_unix']] = $stock['close'];
+        }
+
         $mostRecentPriceUnix = $mostRecentPriceUnix - 90000;
 
         $this->logger->logMessage($stock->id.'-'.$stock->symbol.'-'.$stock->name);
@@ -96,8 +106,13 @@ class YahooFinanceController extends Controller {
         if ($prices) {
             foreach ($prices as $price) {
                 if (isset($price->high)) {
-                    if ($price->date > $mostRecentPriceUnix) {
-                        $this->saveOnePrice($price);
+                    if ($price->date > $unixOneYearAgo) {
+                        if (!isset($oneYearStocks[$price->date])) {
+                            $this->saveOnePrice($price);
+                        }
+                        elseif ($oneYearStocks[$price->date] != round($price->close, 2)) {
+                            $this->saveOnePrice($price);
+                        }
                     }
                 }
             }

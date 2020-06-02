@@ -30,7 +30,7 @@ class YahooFinanceTest extends TestCase
     public function testProcessOneStock() {
         $yahooFinanceController = new YahooFinanceController();
 
-        $yahooFinanceController->createRecentUpdateRecords();
+        $yahooFinanceController->updateMostRecentPrices(2778);
     }
 
     public function __construct() {
