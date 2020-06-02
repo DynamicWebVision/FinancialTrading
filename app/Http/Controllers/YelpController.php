@@ -107,7 +107,9 @@ class YelpController extends Controller
         $yelp = new Yelp($yelpApiId);
         $yelp->logger = $this->logger;
 
-        $allOutstanding = YelpCityTracker::where('completed','=', 0)->get(['id'])->toArray();
+        $priority = YelpCityTracker::where('completed','=', 0)->max('priority');
+
+        $allOutstanding = YelpCityTracker::where('completed','=', 0)->where('priority', '=', $priority)->get(['id'])->toArray();
 
         $allIds = array_column($allOutstanding, 'id');
 
