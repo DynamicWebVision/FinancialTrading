@@ -507,7 +507,7 @@ class ServersController extends Controller {
         $params = [
             'server_count' => 15,
             'interruption_behavior'=>'terminate',
-            'image_id' => 'ami-0bf51fd46fb140e1d',
+            'image_id' => 'ami-05ae84c03a0c924d3',
             'template_id'=> 'lt-084f84871df31725a',
             'template_version'=> '6',
             'tags'=> [
