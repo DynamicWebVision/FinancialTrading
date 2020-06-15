@@ -59,9 +59,14 @@ class ProcessController extends Controller
     }
 
     public function processNextJob() {
+        $this->logger->logMessage('processNextJob -> About to try to update process_queue with active server for next process');
         DB::statement("UPDATE process_queue SET server_id = ? where server_id = 0 order by priority desc limit 1", [Config::get('server_id')]);
 
+        $this->logger->logMessage('processNextJob -> Update statement worked, about to try first');
+
         $processToBeRun = ProcessQueue::where('server_id', '=', Config::get('server_id'))->whereNull('start_time')->first();
+
+        $this->logger->logMessage('processNextJob -> record found succeed');
 
         if (is_null($processToBeRun)) {
             $this->logger->logMessage('$processToBeRun is null, Sleeping for 5 Minutes');
@@ -79,6 +84,8 @@ class ProcessController extends Controller
             $processToBeRun->start_time = $this->utility->mysqlDateTime();
 
             $processToBeRun->save();
+
+            $this->logger->logMessage('Process to be run saved in else');
 
             $this->processId = $processToBeRun->process_id;
 
@@ -164,7 +171,7 @@ class ProcessController extends Controller
 
                 foreach ($yelpAPiKeys as $yelpApiKey) {
                     ProcessQueue::where('process_id', '=', $process->id)->where('server_id','=',0)->delete();
-                    $scheduleController->createQueueRecordsWithVariableIds($process->code, $yelpApiKey->id);
+                    $scheduleController->createQueueRecordsWithVariableIds($process->code, [$yelpApiKey->id]);
                 }
             }
             else {

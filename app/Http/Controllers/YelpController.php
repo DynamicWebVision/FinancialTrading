@@ -170,7 +170,7 @@ class YelpController extends Controller
         sleep(rand(60, 85));
 
         $scheduleController = new ProcessScheduleController();
-        $scheduleController->createQueueRecord('yelp_one_search');
+        $scheduleController->createQueueRecordsWithVariableIds('yelp_one_search', [$yelpApiId]);
 
         sleep(60);
     }

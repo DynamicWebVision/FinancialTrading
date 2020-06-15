@@ -425,9 +425,11 @@ class ServersController extends Controller {
     }
 
     public function updateProcessRun() {
+        $this->logger->logMessage('Top of updateProcessRun');
         $server = Servers::find(Config::get('server_id'));
         $server->last_process_run = time();
         $server->save();
+        $this->logger->logMessage('Bottom/Saved updateProcessRun');
     }
 
     public function gitPullCheck() {
