@@ -169,8 +169,8 @@ class ProcessController extends Controller
             if ($process->id == 37) {
                 $yelpAPiKeys = YelpApi::get();
 
+                ProcessQueue::where('process_id', '=', $process->id)->where('server_id','=',0)->delete();
                 foreach ($yelpAPiKeys as $yelpApiKey) {
-                    ProcessQueue::where('process_id', '=', $process->id)->where('server_id','=',0)->delete();
                     $scheduleController->createQueueRecordsWithVariableIds($process->code, [$yelpApiKey->id]);
                 }
             }

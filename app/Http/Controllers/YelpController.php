@@ -10,6 +10,7 @@ use App\Services\Scraper;
 use App\Model\Yelp\YelpCategories;
 use App\Model\Yelp\Cities;
 use App\Model\Yelp\YelpCityTracker;
+use Illuminate\Support\Facades\DB;
 use App\Model\Yelp\YelpLocation;
 use App\Model\Yelp\YelpLocationCategory;
 use App\Model\Yelp\YelpLocationEmail;
@@ -113,7 +114,9 @@ class YelpController extends Controller
 
         $allIds = array_column($allOutstanding, 'id');
 
-        $yelpCityTracker = YelpCityTracker::find(array_rand($allIds));
+        $randomIndex = array_rand($allIds);
+
+        $yelpCityTracker = YelpCityTracker::find($allIds[$randomIndex]);
 
         $this->logger->logMessage('yelpCityTracker: '.$yelpCityTracker->id);
 
