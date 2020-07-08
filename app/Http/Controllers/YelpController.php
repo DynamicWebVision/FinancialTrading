@@ -144,7 +144,7 @@ class YelpController extends Controller
 
         $this->apiResponse = $yelp->search();
 
-        if ($this->apiResponse) {
+        if (!$yelp->invalidResponse) {
             $this->saveBusinesses($yelpCityTracker['city_id'], $yelpCityTracker['yelp_category_id']);
 
             if ($first_search) {
@@ -168,6 +168,13 @@ class YelpController extends Controller
         }
         else {
             $this->logger->logMessage('ERROR RESPONSE '.$this->apiResponse);
+
+            $scraper = new Scraper();
+
+            if ($scraper->inString($this->apiResponse, 'LOCATION_NOT_FOUND')) {
+                $yelpCityTracker->completed = 1;
+                $yelpCityTracker->save();
+            }
         }
 
         sleep(rand(60, 85));

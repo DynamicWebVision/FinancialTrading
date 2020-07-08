@@ -103,7 +103,6 @@ class ProcessController extends Controller
 
             }
 
-
             $processToBeRun->end_time = $this->utility->mysqlDateTime();
             $processToBeRun->save();
         }

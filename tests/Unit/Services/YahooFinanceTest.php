@@ -12,6 +12,7 @@ use \App\Services\BackTest;
 use \App\Services\YahooFinance;
 use \App\Http\Controllers\Equity\YahooFinanceController;
 use \App\Http\Controllers\ProcessScheduleController;
+use Illuminate\Support\Facades\DB;
 
 class YahooFinanceTest extends TestCase
 {
@@ -58,14 +59,16 @@ class YahooFinanceTest extends TestCase
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
 
+        //curl_setopt($this->curl, CURLOPT_URL, 'https://api.meraki.com/api/v0/organizations/930117/networks');
         curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/organizations/930117/networks');
+
 
         //curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347200424/devices');
         //curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347199903');
         //curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0//networks/'+network_id+'/devices/claim');
        // curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/organizations/930117/devices');
 
-        $resp = json_decode(curl_exec($this->curl));
+        $resp = curl_exec($this->curl);
 
         $scraper = new \App\Services\Scraper();
         $links = $scraper->getAllLinksInText($resp);
@@ -217,15 +220,19 @@ class YahooFinanceTest extends TestCase
     public function testContentFilteringCategories() {
         $this->curl = curl_init();
 //        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , 'Authorization: Bearer 1d95d8dd88b59a1f7c53e7cb2886df89-3f40f99e79545ae6539aabd8b718cbb0' ));
-         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer sk_e9f902a77f356767c9914cf48a93d101' ));
+        // curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer sk_e9f902a77f356767c9914cf48a93d101' ));
 
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, 1);
+        //curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, 1);
 
 //        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347186811/traffic?timespan=1000000');
-        curl_setopt($this->curl, CURLOPT_URL, 'https://person.clearbit.com/v1/people/email/brian.oneill.tx@gmail.com');
-        $resp = json_decode(curl_exec($this->curl));
+        curl_setopt($this->curl, CURLOPT_URL, 'https://publicwww.com/websites/%22shopify-section%22/889?export=csvu&key=8229eba6c4234536964e9787255e9eed');
+        $resp = curl_exec($this->curl);
+
+        sleep(5);
+
+        $resp = curl_exec($this->curl);
 
         $scraper = new \App\Services\Scraper();
         $links = $scraper->getAllLinksInText($resp);
@@ -254,7 +261,7 @@ class YahooFinanceTest extends TestCase
 
         curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347194146/clients');
 
-        //curl_setopt($this->curl, CURLOPT_URL, 'https://api.meraki.com/api/v0//networks//devices');
+        //curl_setopt($this->curl, CURLOPT_URL, 'https://api.meraki.com/api/v0/networks//devices');
         //v0/networks/networkId4/clients
 
         $resp = json_decode(curl_exec($this->curl));
@@ -327,8 +334,30 @@ class YahooFinanceTest extends TestCase
     }
 
     public function testRecruiters() {
-        $recruiters = new \App\Services\Recruiters();
-        $links = $recruiters->sendTextMessage();
+        //$recruiters = new \App\Services\Recruiters();
+        //$links = $recruiters->sendTextMessage();
+
+        //file_get_contents('/Users/boneill/Documents/Showplace/ProductionLogs/serverDown.log');
+
+        $scraper = new Scraper();
+
+        $file = fopen('/Users/boneill/Documents/Showplace/ProductionLogs/serverDown.log', "r");
+
+
+
+        while(! feof($file))
+        {
+            $lineHopefully = fgets($file);
+
+            if ($scraper->inString($lineHopefully, '2020-06-30T10') || $scraper->inString($lineHopefully, '2020-06-30T11')) {
+                DB::table('tbd_log')->insert(
+                    array('log_line' => $lineHopefully)
+                );
+            }
+        }
+
+        fclose($file);
+
     }
 
 }

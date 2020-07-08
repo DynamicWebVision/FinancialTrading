@@ -1,39 +1,79 @@
-INSERT INTO `server_environment_def` (`id`, `type`, `env_variable`, `env_variable_value`, `created_at`, `updated_at`)
-VALUES
-(38, 'fin_practice_trading', 'APP_ENV', 'live_practice', NULL, NULL),
-(39, 'fin_practice_trading', 'APP_DEBUG', 'true', NULL, NULL),
-(40, 'fin_practice_trading', 'APP_KEY', 'base64:dTSRA0qwpFb0tKWsQyGdiup3U2vKfKuAZ7CYm5lGW3Q=', NULL, NULL),
-(41, 'fin_practice_trading', 'APP_LOG_LEVEL', 'emergency', NULL, NULL),
-(42, 'fin_practice_trading', 'DB_HOST', '100.24.60.99', NULL, NULL),
-(43, 'fin_practice_trading', 'DB_DATABASE', 'currency', NULL, NULL),
-(44, 'fin_practice_trading', 'DB_USERNAME', 'admin', NULL, NULL),
-(45, 'fin_practice_trading', 'DB_PASSWORD', 'BalencestoHockey96321', NULL, NULL),
-(46, 'fin_practice_trading', 'APP_LOG', 'daily', NULL, NULL),
-(47, 'fin_practice_trading', 'APP_ROOT', '/var/www/FinancialTrading/', NULL, NULL),
-(48, 'fin_practice_trading', 'LOG_STRATEGY', '0', NULL, NULL),
-(49, 'fin_practice_trading', 'SERVER_ID', '3', NULL, NULL),
-(50, 'fin_practice_trading', 'SERVER_NAME', 'LIVE_PRACTICE', NULL, NULL),
-(51, 'fin_practice_trading', 'OANDA_API_URL', 'https://api-fxpractice.oanda.com/v3/', NULL, NULL),
-(52, 'fin_practice_trading', 'OANDA_AUTHORIZATION_TOKEN', 'a2ffe2a48d4bda741341a65abf86789c-f299b9116316898d11e3a8fc86e74b36', NULL, NULL),
-(53, 'fin_practice_trading', 'HISTORICAL_DATA_CURRENCY', '4', NULL, NULL),
-(54, 'fin_practice_trading', 'HISTORICAL_DATA_FREQUENCY', '3', NULL, NULL),
-(55, 'fin_practice_trading', 'UTILITY_DB_HOST', '52.88.231.119', NULL, NULL),
-(56, 'fin_practice_trading', 'UTILITY_DB_DATABASE', 'utility', NULL, NULL),
-(57, 'fin_practice_trading', 'UTILITY_DB_USERNAME', 'utility_mgmt', NULL, NULL),
-(58, 'fin_practice_trading', 'UTILITY_DB_PASSWORD', 'BalencestoHockey96321', NULL, NULL),
-(59, 'fin_practice_trading', 'CACHE_DRIVER', 'file', NULL, NULL),
-(60, 'fin_practice_trading', 'SESSION_DRIVER', 'file', NULL, NULL),
-(61, 'fin_practice_trading', 'QUEUE_DRIVER', 'sync', NULL, NULL),
-(62, 'fin_practice_trading', 'REDIS_HOST', 'localhost', NULL, NULL),
-(63, 'fin_practice_trading', 'REDIS_PASSWORD', 'null', NULL, NULL),
-(64, 'fin_practice_trading', 'REDIS_PORT', '6379', NULL, NULL),
-(65, 'fin_practice_trading', 'MAIL_DRIVER', 'smtp', NULL, NULL),
-(66, 'fin_practice_trading', 'MAIL_HOST', 'mailtrap.io', NULL, NULL),
-(67, 'fin_practice_trading', 'MAIL_PORT', '2525', NULL, NULL),
-(68, 'fin_practice_trading', 'TD_AMERITRADE_API_URL', 'https://api.tdameritrade.com/v1/', NULL, NULL),
-(69, 'fin_practice_trading', 'TD_AMERITRADE_APP_KEY', 'TEST89434@AMER.OAUTHAP', NULL, NULL),
-(70, 'fin_practice_trading', 'TD_AMERITRADE_CODE', 'qkyzl5Q+yM6mq0qcvccXnBq9EU8aj6eeROOlOOUlrLFMlU9sdx5p2LvGz/1UdTfWcD1jDxhkh7kZyT6SM5CozJ8lFHnXJ+6+A5wYvQluqGMlMWGQXviizyy5OOJDK/BuLKG87aq4XiGM1EH2dmHqOvvMhhXQ9BOsJQ2p6dTkPwor5F0Rm9SwQ6upfidYtE2nOkjRVeBQpecAV3rr65d+tnuhJ3pHSPrOv75P5KszYmI+9RUcrK8ofTf02qu4vnRih222LXX2VntbI8SDTWLJe1nb8RfBgO+cTO+Z0XVo6GMs8UOBLJAyPdV9oA+Foe0PiKK8uVUTza06Ak2pMt1eKSigTXUT04p4CRlfdM8V4cJ9eB6C/ANCEkDOOpyjHtgCUb0C/aAGmq1iyRllWM84dmR7j++CxUQLYXY4UqdoEwVMTtMVp5cRIAM4qMT100MQuG4LYrgoVi/JHHvllKgH/sPTFrOKNBLGg8dB52CVfWpQFSQKRBSz', NULL, NULL),
-(71, 'fin_practice_trading', 'TD_AMERITRADE_ACCESS_TOKEN', 'zWVciv0FcVzPsohm8AQcIcjB08k2qRKUAxjAofclQnjqxo47338W0xBk+6lAdO0dUo04RNz8K/zTk4zuPt8l0YQEFO5/pBikEOsafvoktt91+//MX8mYEjbNJx+EaFdjanGUGsmWv2cBgCPAtqKv8NY6KnsFDSeEVUYXvUDeQhd9Hv34Vy0tl3WqBUi/fYtc81F5hNXXnO8eeftbBVbX1kVCO7MtcVlqOaCNjC9mO2Oc+Y2GWB3Ux8tH9RmgJVLFDs4n5Oip+hfTjLGkZgoWSbOjL9tLbK05jMH0a/QHl5MnorgexewU5/j2s122tPAGMXiS73+N61fBXYoYAqGuhVdzSk5SMGULUYfW5wJjk6I4hLW+TYXaWJwHnJztaUQDUe3ulUoJz560J0R+SI1x31QfcTdnk7ZwaLVZxlaNczQBrqSSv/D9DEVJSt5I279pB1CdrC2c3gHfoPXiDu6tDkCJxO6mG7nqC77iLVaVnVX4Khy9eogV', NULL, NULL),
-(72, 'fin_practice_trading', 'TWILIO_TOKEN', 'fd59d488123ed157536fc1fd24fe5376', NULL, NULL),
-(73, 'fin_practice_trading', 'TWILIO_SID', 'ACbe0456ee36d7e6e4ca810e8242f47c45', NULL, NULL),
-(74, 'fin_practice_trading', 'TWILIO_FROM', '12816455692', NULL, NULL);
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Page not found - Cisco Meraki</title>
+    <style type="text/css">
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 0 2em;
+            font-family: Helvetica, Arial, sans-serif;
+            line-height: 1.45;
+            color: #222325; /* same as $gray-10 in mkiColorVariables.json */
+        }
+        .header__container,
+        .content__container,
+        .footer__container {
+            max-width: 800px;
+            width: 100%;
+        }
+        .header__container {
+            padding: 2em 0;
+            border-bottom: 1px solid #D7D7D9; /* same as $gray-80 in mkiColorVariables.json */
+        }
+        .header__merakiLogo {
+            height: 2.125em;
+        }
+        .header__merakiLogo--gray {
+            fill: #898b8e;
+        }
+        .header__merakiLogo--green {
+            fill: #67b346;
+        }
+        h1.content__title {
+            font-size: 1.728em; /* from typographyBase.scss */
+            font-weight: 300;
+            margin-bottom: 1em;
+        }
+        .content__container {
+            margin-bottom: 1em;
+        }
+        .content__container a {
+            color: #1D770B; /* same as $linkColor in variables.scss */
+        }
+        .footer__container {
+            padding: 1em 0;
+            text-align: right;
+            border-top: 1px solid #D7D7D9; /* same as $gray-80 in mkiColorVariables.json */
+        }
+        .footer__text {
+            font-size: 0.833em;
+            color: #898A8C; /* same as $gray-50 in mkiColorVariables.json */
+        }
+    </style>
+</head>
+<body>
+<div class="header__container">
+    <svg class="header__merakiLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 25"><title>Cisco Meraki</title><rect class="header__merakiLogo--gray" x="13.29" y="16.46" width="2.06" height="8.17"/><path class="header__merakiLogo--gray" d="M32,18.8a3.64,3.64,0,0,0-1.73-.44,2.18,2.18,0,1,0,0,4.36A3.63,3.63,0,0,0,32,22.29v2.19a6.53,6.53,0,0,1-1.88.29,4.23,4.23,0,1,1,0-8.46,6.29,6.29,0,0,1,1.88.29Z"/><path class="header__merakiLogo--gray" d="M10.46,18.8a3.59,3.59,0,0,0-1.73-.44,2.18,2.18,0,1,0,0,4.36,3.59,3.59,0,0,0,1.73-.43v2.19a6.49,6.49,0,0,1-1.88.29,4.23,4.23,0,1,1,0-8.46,6.23,6.23,0,0,1,1.88.29Z"/><path class="header__merakiLogo--gray" d="M38.45,18.4a2.15,2.15,0,1,0,2.13,2.15,2.11,2.11,0,0,0-2.13-2.15m4.31,2.15a4.31,4.31,0,1,1-4.31-4.23,4.2,4.2,0,0,1,4.31,4.23"/><path class="header__merakiLogo--gray" d="M23.17,18.32a7.05,7.05,0,0,0-1.61-.25c-.83,0-1.27.27-1.27.67s.6.67.94.78l.57.18A2.46,2.46,0,0,1,23.74,22c0,2.05-1.81,2.74-3.38,2.74a12.56,12.56,0,0,1-2.22-.22V22.67a7.73,7.73,0,0,0,1.95.31c1,0,1.5-.3,1.5-.77s-.41-.65-.92-.81l-.44-.14c-1.15-.36-2.1-1-2.1-2.39,0-1.53,1.14-2.55,3-2.55a8.91,8.91,0,0,1,2,.26Z"/><path class="header__merakiLogo--gray" d="M2,7.68a1,1,0,0,0-2,0V9.83a1,1,0,1,0,2,0Z"/><path class="header__merakiLogo--gray" d="M7.66,4.87a1,1,0,0,0-2,0v5a1,1,0,0,0,2,0Z"/><path class="header__merakiLogo--gray" d="M13.28,1a1,1,0,0,0-2,0V11.87a1,1,0,1,0,2,0Z"/><path class="header__merakiLogo--gray" d="M18.9,4.87a1,1,0,0,0-2,0v5a1,1,0,1,0,2,0Z"/><path class="header__merakiLogo--gray" d="M24.52,7.68a1,1,0,0,0-2,0V9.83a1,1,0,1,0,2,0Z"/><path class="header__merakiLogo--gray" d="M30.14,4.87a1,1,0,0,0-2,0v5a1,1,0,1,0,2,0Z"/><path class="header__merakiLogo--gray" d="M35.77,1a1,1,0,1,0-2,0V11.87a1,1,0,1,0,2,0Z"/><path class="header__merakiLogo--gray" d="M41.39,4.87a1,1,0,0,0-2.06,0v5a1,1,0,0,0,2.06,0Z"/><path class="header__merakiLogo--gray" d="M47,7.68a1,1,0,0,0-2,0V9.83a1,1,0,1,0,2,0Z"/><path class="header__merakiLogo--green" d="M68.43,24.64,62.06,8.9V24.64H60.73V7.13h2l6.44,16,6.08-16h1.95V24.64H75.9V9l-6,15.61Z"/><path class="header__merakiLogo--green" d="M91.28,21.18A5.11,5.11,0,0,1,86,25c-3.43,0-6-2.36-6-6.69s2.5-6.69,5.76-6.69,5.71,2.19,5.71,7H81.36c.12,3.6,2.16,5.25,4.69,5.25a3.77,3.77,0,0,0,3.84-2.7Zm-9.9-3.65h8.75c-.17-3.24-2-4.84-4.35-4.84S81.63,14.37,81.38,17.54Z"/><path class="header__merakiLogo--green" d="M94.57,24.64V12h1.07l.19,2.43a3.67,3.67,0,0,1,3.55-2.8,4.51,4.51,0,0,1,1.31.2v1.29a4.93,4.93,0,0,0-1.39-.22c-1.85,0-3.43,1.8-3.43,4.84v6.91Z"/><path class="header__merakiLogo--green" d="M102.35,15.28c.19-2.16,2.12-3.65,4.91-3.65S112,13.21,112,15.79v8.85h-1.07l-.19-2.09A5,5,0,0,1,106.22,25c-2.46,0-4.23-1.33-4.23-3.57s1.31-3.48,4.86-4.06l3.79-.63v-1.1c0-1.82-1.29-2.94-3.45-2.94s-3.31,1-3.48,2.58Zm8.29,4.86V17.78l-3.4.58c-3,.51-3.89,1.46-3.89,3,0,1.7,1.31,2.55,3.21,2.55A4,4,0,0,0,110.64,20.14Z"/><path class="header__merakiLogo--green" d="M115.32,24.64V7.13h1.31v10L122.69,12h1.78L118,17.51l7.3,7.12h-1.77L116.63,18v6.69Z"/><path class="header__merakiLogo--green" d="M126.92,8.93V7.13h1.58v1.8ZM127,24.64V12h1.31V24.64Z"/></svg>
+</div>
+<div class="content__container">
+    <h1 class="content__title">Page not found</h1>
+    <p class="content__primaryText">The page you are looking for may have been moved or does not exist.</p>
+    <p class="content__secondaryText">To log in to the Cisco Meraki Dashboard, go to <a href="https://dashboard.meraki.com">https://dashboard.meraki.com</a>.</p>
+</div>
+<div class="footer__container">
+    <span id="footer" class="footer__text">&copy; Cisco Systems, Inc.</span>
+</div>
+<script type="text/javascript" charset="utf-8">
+    //<![CDATA[
+    (function () {
+        var year = new Date().getFullYear();
+        document.getElementById("footer").innerHTML = '&copy; ' + year + ' Cisco Systems, Inc.';
+    })()
+    //]]>
+</script>
+</body>
+</html>
+

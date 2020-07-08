@@ -11,6 +11,7 @@ class Yelp  {
     public $start_date;
     public $end_date;
     public $logger;
+    public $invalidResponse;
 
     public $urlParams = [];
 
@@ -62,11 +63,12 @@ CONST BUSINESS_PATH = "/v3/businesses/";  // Business ID will come after slash.
             $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
             if (200 != $http_status)
                 throw new \Exception($response, $http_status);
-
+            $this->invalidResponse = false;
             curl_close($curl);
         } catch(\Exception $e) {
             $this->logger->logMessage($e->getMessage(), 4);
-            return false;
+            $this->invalidResponse = true;
+            return $response;
         }
         $this->logger->logMessage(substr($response, 0, 200));
         return json_decode($response);
