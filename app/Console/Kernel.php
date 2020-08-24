@@ -6,6 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Model\Servers;
 use App\Http\Controllers\ServersController;
+use \Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -66,6 +67,8 @@ class Kernel extends ConsoleKernel
             /*********************************************************************
              * SCHEDULE PROCESS JOBS
              *********************************************************************/
+
+            Log::emergency('live_practice Kenrel');
 
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpen')->dailyAt('13:00');
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenWeekly')->weeklyOn(2, '9:28');
