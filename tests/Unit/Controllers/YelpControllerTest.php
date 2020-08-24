@@ -365,4 +365,12 @@ class YelpControllerTest extends TestCase
             }
         }
     }
+
+    public function testTmpTestRates() {
+        $test = TmpTestRates::find(6);
+
+        $test->log_line = 'aldskfjakljsdfajklsdf';
+
+        $test->save();
+    }
 }

@@ -5,5 +5,6 @@ use \DB;
 
 class TmpTestRates extends Model {
 
-    protected $table = 'tmp_test_rates';
+    protected $table = 'temp_tbd_log';
+    public $timestamps = false;
 }

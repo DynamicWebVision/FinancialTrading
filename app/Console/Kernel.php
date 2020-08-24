@@ -67,27 +67,20 @@ class Kernel extends ConsoleKernel
              * SCHEDULE PROCESS JOBS
              *********************************************************************/
 
-            $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenHour')->hourlyAt(15);
-
-            $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouched')->cron($this->everyFifteenMinutesInterval);
-            $schedule->call('App\Http\Controllers\LivePracticeController@hmaFifteenMinutes')->cron($this->everyFifteenMinutesInterval);
-
-            $schedule->command('schedule_process lp_close_weekly_accounts 9')->weeklyOn(5, '21:40');
-
-
+            $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpen')->dailyAt('13:00');
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenWeekly')->weeklyOn(2, '9:28');
 
-            $schedule->call('App\Http\Controllers\LivePracticeController@priceBreakoutHourly')->hourlyAt(2);
-            $schedule->call('App\Http\Controllers\LivePracticeController@amazingCrossoverTrailingStop')->hourly();
-
-            $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouchedHr')->hourly();
-            $schedule->call('App\Http\Controllers\LivePracticeController@weeklyPriceBreakout')->sundays()->at('17:00');
-
-            //
-            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('21:02');
-            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakoutTpSl')->dailyAt('21:02');
-            $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpen')->dailyAt('13:00');
-            $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenTpSl')->dailyAt('13:00');
+//            $schedule->call('App\Http\Controllers\LivePracticeController@priceBreakoutHourly')->hourlyAt(2);
+//            $schedule->call('App\Http\Controllers\LivePracticeController@amazingCrossoverTrailingStop')->hourly();
+//
+//            $schedule->call('App\Http\Controllers\LivePracticeController@emaXAdxConfirmWithMarketIfTouchedHr')->hourly();
+//            $schedule->call('App\Http\Controllers\LivePracticeController@weeklyPriceBreakout')->sundays()->at('17:00');
+//
+//            //
+//            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakout')->dailyAt('21:02');
+//            $schedule->call('App\Http\Controllers\LivePracticeController@dailyPreviousPriceBreakoutTpSl')->dailyAt('21:02');
+//
+//            $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenTpSl')->dailyAt('13:00');
             
         }
         elseif (env('APP_ENV') == 'fin_master') {
