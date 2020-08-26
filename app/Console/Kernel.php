@@ -68,7 +68,7 @@ class Kernel extends ConsoleKernel
              * SCHEDULE PROCESS JOBS
              *********************************************************************/
 
-            Log::emergency('live_practice Kenrel');
+            Log::emergency('live_practice Kernel');
 
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpen')->dailyAt('13:00');
             $schedule->call('App\Http\Controllers\LivePracticeController@marketIfTouchedReturnToOpenWeekly')->weeklyOn(2, '9:28');

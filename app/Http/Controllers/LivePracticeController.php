@@ -917,6 +917,8 @@ class LivePracticeController extends Controller {
 
     public function marketIfTouchedReturnToOpen() {
 
+        Log::info('We are trying to run marketIfTouchedReturnToOpen');
+
         $this->utility->sleepUntilAtLeastFiveSeconds();
 
         $strategy = new MarketIfTouchedReturnToOpen('101-001-7608904-011', 'initialload');

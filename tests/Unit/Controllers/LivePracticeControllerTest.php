@@ -17,33 +17,33 @@ class LivePracticeControllerTest extends TestCase
     public $transactionController;
     public $oanda;
 
-    public function testBacktestProcessStatsSpecificProcess() {
-        $livePracticeController = new LivePracticeController();
-
-        $livePracticeController->hmaHour();
-    }
-
-    public function testDailyPreviousPriceBreakoutCheck() {
-        $livePracticeController = new LivePracticeController();
-
-        $livePracticeController->fourHourPriceBreakout();
-    }
+//    public function testBacktestProcessStatsSpecificProcess() {
+//        $livePracticeController = new LivePracticeController();
+//
+//        $livePracticeController->hmaHour();
+//    }
+//
+//    public function testDailyPreviousPriceBreakoutCheck() {
+//        $livePracticeController = new LivePracticeController();
+//
+//        $livePracticeController->fourHourPriceBreakout();
+//    }
 
     public function testDailyPreviousPriceBreakout() {
         $livePracticeController = new LivePracticeController();
 
-        $livePracticeController->marketIfTouchedReturnToOpenWeekly();
+        $livePracticeController->marketIfTouchedReturnToOpen();
     }
 
-    public function testSDFSDF() {
-        $livePracticeController = new LivePracticeController();
-
-        $livePracticeController->weeklyPriceBreakout();
-    }
-
-    public function testSDFSDDF() {
-        $livePracticeController = new LivePracticeController();
-
-        $livePracticeController->marketIfTouchedHighLowDaily();
-    }
+//    public function testSDFSDF() {
+//        $livePracticeController = new LivePracticeController();
+//
+//        $livePracticeController->weeklyPriceBreakout();
+//    }
+//
+//    public function testSDFSDDF() {
+//        $livePracticeController = new LivePracticeController();
+//
+//        $livePracticeController->marketIfTouchedHighLowDaily();
+//    }
 }
