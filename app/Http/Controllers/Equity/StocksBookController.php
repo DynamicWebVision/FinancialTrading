@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Equity;
 
 use App\Model\Stocks\StocksCompanyProfile;
+use App\Model\Stocks\StocksDailyPrice;
 use \DB;
 use \Log;
 use Request;
@@ -14,8 +15,6 @@ use App\Model\Stocks\StocksDump;
 use App\Model\Stocks\Stocks;
 use App\Model\Stocks\StocksApiJobs;
 use App\Model\Stocks\StocksBook;
-use App\Model\Stocks\StocksDailyPricesYahoo;
-use App\Model\Stocks\StocksDailyPricesYahoosYahoo;
 use App\Model\Stocks\StocksHistoryBook;
 use App\Model\ProcessLog\ProcessQueue;
 use App\Model\Stocks\StocksTags;
@@ -93,7 +92,7 @@ class StocksBookController extends Controller {
     public function getClosestPriceDate($unix_time) {
         $mysql_date_time = $this->utility->unixToMysqlDate($unix_time);
 
-        $closestPriceRecord = DB::select("select * from stocks_daily_prices_yahoo 
+        $closestPriceRecord = DB::select("select * from stocks_daily_prices 
                             where stock_id = ?
                             ORDER BY ABS( DATEDIFF( price_date_time, ? ) ) 
                             LIMIT 0, 1
@@ -111,7 +110,7 @@ class StocksBookController extends Controller {
         $stockBook = [];
 
         try {
-            $this->currentStockPrice = StocksDailyPricesYahoo::where('stock_id','=', $this->stock->id)
+            $this->currentStockPrice = StocksDailyPrice::where('stock_id','=', $this->stock->id)
                 ->orderBy('price_date_time', 'desc')
                 ->first();
 
@@ -130,7 +129,8 @@ class StocksBookController extends Controller {
 
             $stockBook['month_change'] = $this->getPercentChange($oneMonthAgoDatePriceRecord->close, $this->currentStockPrice->close);
 
-            $oneDayAgoPrice = StocksDailyPricesYahoo::where('stock_id','=', $this->stock->id)->where('price_date_time', '<', $this->currentStockPrice->price_date_time)->orderBy('price_date_time', 'desc')
+            $oneDayAgoPrice = StocksDailyPrice::where('stock_id','=', $this->stock->id)
+                ->where('price_date_time', '<', $this->currentStockPrice->price_date_time)->orderBy('price_date_time', 'desc')
                 ->first();
 
             $stockBook['change_percent'] = $this->getPercentChange($oneDayAgoPrice->close, $this->currentStockPrice->close);
@@ -147,7 +147,7 @@ class StocksBookController extends Controller {
     public function updateBook() {
         $this->logger->logMessage('Getting Book Calculations for id: '.$this->stock->id.' symbol: '.$this->stock->symbol);
 
-        $this->currentStockDate = StocksDailyPricesYahoo::where('stock_id','=', $this->stock->id)->max('price_date_time');
+        $this->currentStockDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->max('price_date_time');
 
         $stockBook = $this->getStockBook();
 
@@ -169,7 +169,7 @@ class StocksBookController extends Controller {
 
         $this->logger->logMessage('Getting Book Calculations for id: '.$this->stock->id.' symbol: '.$this->stock->symbol);
 
-        $this->currentStockDate = StocksDailyPricesYahoo::where('stock_id','=', $this->stock->id)->max('price_date_time');
+        $this->currentStockDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->max('price_date_time');
 
         $stockBook = $this->getStockBook();
 
@@ -191,7 +191,7 @@ class StocksBookController extends Controller {
     }
 
     public function getInitialHistoricalBookDate() {
-        $minDate = StocksDailyPricesYahoo::where('stock_id','=', $this->stock->id)->min('price_date_time');
+        $minDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->min('price_date_time');
 
         if (is_null($minDate)) {
             //$this->logger->logMessage('No Rates for '.$this->stock->id.' symbol: '.$this->stock->symbol.' CANCELLING');
@@ -227,7 +227,7 @@ class StocksBookController extends Controller {
                 $stockBook['book_date'] = $this->currentStockDate;
                 StocksHistoryBook::firstOrCreate($stockBook);
 
-                $this->currentStockDate = StocksDailyPricesYahoo::where('stock_id','=', $this->stock->id)->where('price_date_time', '>', $this->currentStockDate)->min('price_date_time');
+                $this->currentStockDate = StocksDailyPrice::where('stock_id','=', $this->stock->id)->where('price_date_time', '>', $this->currentStockDate)->min('price_date_time');
             }
         }
     }

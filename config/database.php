@@ -123,6 +123,22 @@ return [
             'engine' => null,
         ],
 
+        'homestead' => [
+            'driver' => 'mysql',
+            'host' => env('HOMESTEAD__HOST', '127.0.0.1'),
+            'port' => env('HOMESTEAD__PORT', '3306'),
+            'database' => env('HOMESTEAD__DATABASE', 'forge'),
+            'username' => env('HOMESTEAD__USERNAME', 'forge'),
+            'password' => env('HOMESTEAD__PASSWORD', ''),
+            'unix_socket' => env('HOMESTEAD__SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

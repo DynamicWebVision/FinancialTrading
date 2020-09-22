@@ -366,10 +366,8 @@ class YelpControllerTest extends TestCase
         }
     }
 
-    public function testTmpTestRates() {
-        $test = TmpTestRates::find(6);
-
-        $test->log_line = 'aldskfjakljsdfajklsdf';
+    public function testLoadRestaurants() {
+        $restaurants = YelpLocation::where('city_id', '=', 5554)->get();
 
         $test->save();
     }

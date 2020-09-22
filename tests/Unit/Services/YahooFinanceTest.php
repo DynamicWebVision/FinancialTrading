@@ -106,12 +106,11 @@ class YahooFinanceTest extends TestCase
         $this->curl = curl_init();
 //        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , 'Authorization: Bearer 1d95d8dd88b59a1f7c53e7cb2886df89-3f40f99e79545ae6539aabd8b718cbb0' ));
         // curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer 1d95d8dd88b59a1f7c53e7cb2886df89-3f40f99e79545ae6539aabd8b718cbb0' ));
-        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('X-Cisco-Meraki-API-Key: 79cb810aa1d55a8e2110ee0249dbb5e1c566ce06'));
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
 
         //curl_setopt($this->curl, CURLOPT_URL, 'https://api.meraki.com/api/v0/organizations/930117/networks');
-        curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/organizations/930117/devices');
+        curl_setopt($this->curl, CURLOPT_URL, 'https://www.airbnb.com/api/v1/listings/40736360?api_key=d306zoyjsyarp7ifhu67rjxn52tv0t20');
         $resp = curl_exec($this->curl);
         $decoded = json_decode($resp);
 
