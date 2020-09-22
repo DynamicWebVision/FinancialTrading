@@ -2,6 +2,7 @@
 
 use App\Services\Scraper;
 use App\Model\Yelp\YelpApi;
+use \Log;
 
 class AirbnbService  {
 
