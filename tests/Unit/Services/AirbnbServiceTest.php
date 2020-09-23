@@ -15,19 +15,24 @@ class AirbnbServiceTest extends TestCase
         $tiingo->search2();
     }
 
-//    public function testUserInfo() {
-//        $tiingo = new AirbnbService();
-//        $tiingo->userInfo();
-//    }
-//
-//    public function testReviews() {
-//        $tiingo = new AirbnbService();
-//        $tiingo->getListingReviews();
-//    }
-//
-//    public function testVanityUrl() {
-//        $tiingo = new AirbnbService();
-//        $tiingo->vanityUrl();
-//    }
+    public function testUserInfo() {
+        $tiingo = new AirbnbService();
+        $tiingo->userInfo();
+    }
+
+    public function testListingINfo() {
+        $tiingo = new AirbnbService();
+        $tiingo->listingInfo(37498564);
+    }
+
+    public function testReviews() {
+        $tiingo = new AirbnbService();
+        $tiingo->getListingReviews();
+    }
+
+    public function testVanityUrl() {
+        $tiingo = new AirbnbService();
+        $tiingo->vanityUrl();
+    }
 
 }

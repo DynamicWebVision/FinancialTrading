@@ -24,10 +24,6 @@ class AirbnbService  {
     CONST SEARCH_PATH = "/v3/businesses/search";
     CONST BUSINESS_PATH = "/v3/businesses/";  // Business ID will come after slash.
 
-//// Defaults for our simple example.
-//$DEFAULT_TERM = "dinner";
-//$DEFAULT_LOCATION = "San Francisco, CA";
-//$SEARCH_LIMIT = 3;
 
     public function __construct()
     {
@@ -131,7 +127,8 @@ class AirbnbService  {
             CURLOPT_CUSTOMREQUEST => "GET",
         ));
 
-        $response = curl_exec($curl);
+        $response = json_decode(curl_exec($curl));
+
         Log::emergency('!!!AirBnB Curl Response: '.$response);
 
 //        https://www.airbnb.com/api/v1/listings/'+airbnb_listing_id+'/reviews?api_key=d306zoyjsyarp7ifhu67rjxn52tv0t20
@@ -145,11 +142,27 @@ class AirbnbService  {
 
 
     function userInfo() {
-
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.airbnb.com/v2/listings?api_key=d306zoyjsyarp7ifhu67rjxn52tv0t20&user_id=83201218',
+            CURLOPT_RETURNTRANSFER => true,  // Capture response.
+            CURLOPT_ENCODING => "",  // Accept gzip/deflate/whatever.
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+        ));
+
+        $response = json_decode(curl_exec($curl));
+        $debug = 1;
+    }
+
+    function listingInfo($listingId) {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://www.airbnb.com/api/v1/listings/'.$listingId.'?api_key=d306zoyjsyarp7ifhu67rjxn52tv0t20',
             CURLOPT_RETURNTRANSFER => true,  // Capture response.
             CURLOPT_ENCODING => "",  // Accept gzip/deflate/whatever.
             CURLOPT_MAXREDIRS => 10,
@@ -181,7 +194,6 @@ class AirbnbService  {
     }
 
     function vanityUrl() {
-
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
