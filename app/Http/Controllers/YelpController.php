@@ -188,7 +188,7 @@ class YelpController extends Controller
     public function checkOneWebsiteUrl() {
         $this->logger = new ProcessLogger('yelp_website');
 
-        $yelpLocation = YelpLocation::where('website_checked','=', 0)->first();
+        $yelpLocation = YelpLocation::where('website_checked','=', 0)->orderByDesc('id')->first();
 
         $this->logger->logMessage('Checking Website for Yelp Location '.$yelpLocation->id.' '.$yelpLocation->name);
 

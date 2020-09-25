@@ -20,7 +20,7 @@ class AirbnbServiceTest extends TestCase
         $tiingo->userInfo();
     }
 
-    public function testListingINfo() {
+    public function testListingInfo() {
         $tiingo = new AirbnbService();
         $tiingo->listingInfo(37498564);
     }

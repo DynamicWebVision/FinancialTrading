@@ -26,7 +26,7 @@ class ProcessScheduleControllerTest extends TestCase
 
     public function testCheckForDueProcesses() {
         $serversController = new ProcessScheduleController();
-        $serversController->checkForDueProcesses();
+        $serversController->createQueueRecord('yelp_website');
     }
 
     public function testCreateMultiRecords() {

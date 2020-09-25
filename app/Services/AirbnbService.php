@@ -141,11 +141,11 @@ class AirbnbService  {
 
 
 
-    function userInfo() {
+    function userListings() {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.airbnb.com/v2/listings?api_key=d306zoyjsyarp7ifhu67rjxn52tv0t20&user_id=83201218',
+            CURLOPT_URL => 'https://api.airbnb.com/v2/listings?api_key=d306zoyjsyarp7ifhu67rjxn52tv0t20&user_id=143717562',
             CURLOPT_RETURNTRANSFER => true,  // Capture response.
             CURLOPT_ENCODING => "",  // Accept gzip/deflate/whatever.
             CURLOPT_MAXREDIRS => 10,
