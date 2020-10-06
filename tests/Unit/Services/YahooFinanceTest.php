@@ -135,13 +135,13 @@ class YahooFinanceTest extends TestCase
         $resp = curl_exec($this->curl);
         $decoded = json_decode($resp);
 
-        $scraper = new \App\Services\Scraper();
-        $links = $scraper->getAllLinksInText($resp);
 
-        curl_setopt($this->curl, CURLOPT_URL, $links[0]);
-        $resp = curl_exec($this->curl);
+        foreach ($decoded as $device) {
+            if ($device->serial == 'Q2XD-5EK2-G2LW' || $device->serial == 'Q2XD-Z2K8-ANDA') {
+                $debug =1;
+            }
+        }
 
-        return $resp;
     }
 
     public function testClients() {
@@ -152,9 +152,9 @@ class YahooFinanceTest extends TestCase
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
        // curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
 
-        curl_setopt($this->curl, CURLOPT_URL, 'https://d16645b06c184c7b658c8e18cebbc41b:cf068e17357eb14d16ecd57094d9fc5a@showplacehq.myshopify.com/admin/api/2020-01/products.json');
+        //curl_setopt($this->curl, CURLOPT_URL, 'https://d16645b06c184c7b658c8e18cebbc41b:cf068e17357eb14d16ecd57094d9fc5a@showplacehq.myshopify.com/admin/api/2020-01/products.json');
         //GET /networks/{networkId}/groupPolicies
-        //curl_setopt($this->curl, CURLOPT_URL, 'https://api.meraki.com/api/v0//networks/N_600104650347186811/devices');
+       curl_setopt($this->curl, CURLOPT_URL, 'https://n66.meraki.com/api/v0/networks/N_600104650347186811/devices');
         $resp = curl_exec($this->curl);
 
         $scraper = new \App\Services\Scraper();

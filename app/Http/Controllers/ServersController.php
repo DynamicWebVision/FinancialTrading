@@ -6,6 +6,7 @@ use \App\Model\Servers;
 use \App\Model\Strategy;
 use \App\Model\StrategySystem;
 use \App\Model\ServerTasks;
+use \App\Model\GeneralConfig;
 use \App\Model\Servers\ServerEnvironmentDef;
 use App\Model\BackTestToBeProcessed;
 use App\Services\Utility;
@@ -503,11 +504,13 @@ class ServersController extends Controller {
         $awsService->logger = $this->logger;
         $utility = new Utility();
 
+        $awsWorkerCountConfig = GeneralConfig::where('code', '=', 'aws_worker_count')->first();
+
 
         $validUntil = time() + $utility->hoursInSeconds(23);
 
         $params = [
-            'server_count' => 18,
+            'server_count' => $awsWorkerCountConfig->value,
             'interruption_behavior'=>'terminate',
             'image_id' => 'ami-05ae84c03a0c924d3',
             'template_id'=> 'lt-084f84871df31725a',
