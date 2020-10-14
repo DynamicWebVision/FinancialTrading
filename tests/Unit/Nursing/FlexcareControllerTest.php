@@ -29,6 +29,36 @@ class FlexcareControllerTest extends TestCase
     }
 
     public function testMedproLoad() {
+
+        $fileHandle = fopen("/Users/boneill/Downloads/cto_data.csv", "r");
+
+        //Loop through the CSV rows.
+        while (($row = fgetcsv($fileHandle, 0, ",")) !== FALSE) {
+            //Dump out the row for the sake of clarity.
+            var_dump($row);
+            DB::table('cto_stats')->insert(
+                [
+                    'company_title' => $row[0],
+                    'founder_status' => $row[1],
+                    'employee_region' => $row[2],
+                    'base_salary' => $row[3],
+                    'tbd_for_calculation' => $row[4],
+                    'tgt_bonus_or_commission' => $row[5],
+                    'ttp_for_calculation' => $row[6],
+                    'total_target_pay' => $row[7],
+                    'fds_for_calculation' => $row[8],
+                    'percent_deluted_shares' => $row[9],
+                    'company_founded' => $row[10],
+                    'industry' => $row[11],
+                    'dev_stage' => $row[12],
+                    'capital_raised' => $row[13],
+                    'revenue' => $row[14],
+                    'head_count' => $row[15],
+                ]
+            );
+        }
+
+
         $controller = new MedproController();
         $controller->loadFromFile();
     }
