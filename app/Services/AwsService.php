@@ -28,7 +28,7 @@ class AwsService  {
 
         $this->currentInstance = $response['Reservations'][0]['Instances'][0];
 
-        Log::emergency('Current Instance '.$this->currentInstance);
+        Log::emergency('Current Instance '.json_encode($this->currentInstance));
 
     }
 

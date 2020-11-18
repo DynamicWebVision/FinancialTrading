@@ -182,7 +182,6 @@ class YahooFinanceTest extends TestCase
 
         $resp = json_decode($test);
 
-        $links = $scraper->getAllLinksInText($resp);
 
         curl_setopt($this->curl, CURLOPT_URL, $links[0]);
         $resp = curl_exec($this->curl);
@@ -356,6 +355,11 @@ class YahooFinanceTest extends TestCase
         }
 
         fclose($file);
+
+    }
+
+    public function testWasdf() {
+        $debug = 1;
 
     }
 

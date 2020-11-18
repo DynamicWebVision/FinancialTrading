@@ -11,6 +11,7 @@ use App\Model\TmpTestRates;
 use App\Http\Controllers\Nursing\FlexcareController;
 use App\Http\Controllers\Nursing\MedproController;
 use App\Broker\OandaV20;
+use Illuminate\Support\Facades\DB;
 
 class FlexcareControllerTest extends TestCase
 {
@@ -35,7 +36,6 @@ class FlexcareControllerTest extends TestCase
         //Loop through the CSV rows.
         while (($row = fgetcsv($fileHandle, 0, ",")) !== FALSE) {
             //Dump out the row for the sake of clarity.
-            var_dump($row);
             DB::table('cto_stats')->insert(
                 [
                     'company_title' => $row[0],
