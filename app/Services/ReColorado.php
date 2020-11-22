@@ -38,17 +38,17 @@ class ReColorado  {
             $pageMax = 5;
             while ($pageNumber < $pageMax) {
                 if ($pageNumber == 1) {
-                    $url = 'https://www.recolorado.com/find-real-estate/co/denver/type-single_family/type-multi_family/from-'.$higher.'/to-800000/1-pg/newestfirst-dorder/for_sale-listingstatus/photo-tab/';
+                    $url = 'https://www.recolorado.com/find-real-estate/co/denver/type-single_family/type-multi_family/from-'.$lower.'/to-'.$higher.'/1-pg/newestfirst-dorder/for_sale-listingstatus/photo-tab/';
                 }
                 else {
-                    $url = 'https://www.recolorado.com/find-real-estate/co/denver/type-single_family/type-multi_family/from-400000/to-800000/'.$pageNumber.'-pg/newestfirst-dorder/for_sale-listingstatus/photo-tab/';
+                    $url = 'https://www.recolorado.com/find-real-estate/co/denver/type-single_family/type-multi_family/from-'.$lower.'/to-'.$higher.'/'.$pageNumber.'-pg/newestfirst-dorder/for_sale-listingstatus/photo-tab/';
                 }
 
                 $response = $this->scraper->getCurl($url);
 
                 if ($pageNumber == 1) {
                     $records = $this->scraper->getInBetween($response, 'search-count--highlight__listings">', '</strong>');
-                    $pageMax = round($records/12);
+                    $pageMax = round(preg_replace("/[^0-9]/", "", $records )/12);
                 }
 
                 $uniqueUrls = $this->getSearchUrls($response);
