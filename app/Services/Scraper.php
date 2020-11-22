@@ -55,6 +55,18 @@ class Scraper {
         return $this->getAllLinksInText($text);
     }
 
+    public function getInBetweenSubBlocks($text, $start, $end) {
+        $blocks = [];
+        $currentText = $text;
+
+        while ($this->inString($currentText, $start) && $this->inString($currentText, $end)) {
+            $blocks[] = $this->getInBetween($currentText, $start, $end);
+
+            $currentText = $this->getToEnd($currentText, $end);
+        }
+        return $blocks;
+    }
+
     public function getLinkBetweenText($text, $start, $end) {
         $text = $this->getInBetween($text, $start, $end);
         return $this->getNextHref($text);
