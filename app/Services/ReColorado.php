@@ -102,7 +102,6 @@ class ReColorado  {
         $listing = ReColoradoListing::find($re_colorado_listing_id);
 
         $this->listingResponse = $this->scraper->getCurl('https://www.recolorado.com'.$listing->re_colorado_url);
-        $this->listingResponse = $this->scraper->getCurl('https://www.recolorado.com'.$listing->re_colorado_url);
 
         $listing->street_address = $this->parseHtmlProp('streetAddress');
         $listing->city = $this->parseHtmlProp('addressLocality');
