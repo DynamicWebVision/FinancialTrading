@@ -154,7 +154,7 @@ class ReColorado  {
         $listing->faces = $this->parseDataItem('Faces');
         $listing->status = $this->getListingStatus();
 
-        $listing->lost_size = trim($this->scraper->getInBetween($this->listingResponse, 'listing--detail__lot-size">', '<span'));
+        $listing->lot_size = trim($this->scraper->getInBetween($this->listingResponse, 'listing--detail__lot-size">', '<span'));
 
         $listing->save();
 
