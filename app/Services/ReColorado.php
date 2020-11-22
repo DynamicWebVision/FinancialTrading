@@ -29,12 +29,12 @@ class ReColorado  {
     }
 
     public function initialSearch() {
-        $pageNumber = 1;
 
         $lower = 300000;
 
         while ($lower < 825000) {
             $higher = $lower + 25000;
+            $pageNumber = 5;
             $pageMax = 5;
             while ($pageNumber < $pageMax) {
                 if ($pageNumber == 1) {
