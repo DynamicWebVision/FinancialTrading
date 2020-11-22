@@ -9,6 +9,7 @@ use \App\Model\Exchange;
 use \App\Services\BackTest;
 use \App\Services\Yelp;
 use \App\Services\ReColorado;
+use \App\Model\ReColoradoListing;
 
 use App\Model\Yelp\States;
 use App\Model\Yelp\Cities;
@@ -283,10 +284,23 @@ class YelpTest extends TestCase
 //
 //    }
 
-    public function testReColorado() {
+//    public function testReColorado() {
+//        $reColorado = new ReColorado();
+//
+//        $reColorado->initialSearch();
+//    }
+
+    public function testPopulateAllListings() {
+        $listings = ReColoradoListing::all();
+
         $reColorado = new ReColorado();
 
-        $reColorado->initialSearch();
+        foreach ($listings as $listing) {
+            $reColorado->fetchOneListing($listing->id);
+            $reColorado->listingId = $listing->id;
+            $reColorado->checkPriceHistory();
+        }
+
     }
 
 //    public function testFetchOneListing() {
