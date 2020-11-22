@@ -34,7 +34,7 @@ class ReColorado  {
 
         while ($lower < 825000) {
             $higher = $lower + 25000;
-            $pageNumber = 5;
+            $pageNumber = 1;
             $pageMax = 5;
             while ($pageNumber < $pageMax) {
                 if ($pageNumber == 1) {
