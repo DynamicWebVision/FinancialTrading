@@ -54,6 +54,23 @@ class BackTestDebugTest extends TestCase
         }
     }
 
+    public function testEveryDayRun() {
+        $id = 9;
+
+        foreach ($this->allDays as $day) {
+
+                $def_time = new ProcessScheduleDefTimes();
+
+                $def_time->process_schedule_def_id = $id;
+                $def_time->day_of_week = $day;
+                $def_time->hours = 4;
+                $def_time->minutes = '06';
+
+                $def_time->save();
+
+        }
+    }
+
     public function testCreateDaily() {
         $id = 6;
 
