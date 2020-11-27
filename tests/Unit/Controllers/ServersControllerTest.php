@@ -121,16 +121,16 @@ class ServersControllerTest extends TestCase
 //        $this->assertEquals('currency', $test);
 //    }
 
-//    public function testSetServerId() {
-//        $serversController = new ServersController();
-//        $serversController->requestSmallMiniFleetFor23Hours();
-//    }
-
     public function testSetServerId() {
         $serversController = new ServersController();
-        $serversController->backupDbWithImageDeleteOld();
-
-        $debug = file_get_contents('http://169.254.169.254/latest/meta-data/instance-id');
-        echo $debug;
+        $serversController->requestSmallMiniFleetFor23Hours();
     }
+
+//    public function testSetServerId() {
+//        $serversController = new ServersController();
+//        $serversController->backupDbWithImageDeleteOld();
+//
+//        $debug = file_get_contents('http://169.254.169.254/latest/meta-data/instance-id');
+//        echo $debug;
+//    }
 }

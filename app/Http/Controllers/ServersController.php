@@ -512,9 +512,9 @@ class ServersController extends Controller {
         $params = [
             'server_count' => $awsWorkerCountConfig->value,
             'interruption_behavior'=>'terminate',
-            'image_id' => 'ami-05ae84c03a0c924d3',
+            'image_id' => 'ami-0c0b00f9f83ddbdd4',
             'template_id'=> 'lt-084f84871df31725a',
-            'template_version'=> '6',
+            'template_version'=> '7',
             'tags'=> [
                 'Key' => 'server_type',
                 'Value' => 'utility',
