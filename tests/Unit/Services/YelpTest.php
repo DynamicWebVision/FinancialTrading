@@ -284,24 +284,24 @@ class YelpTest extends TestCase
 //
 //    }
 
-//    public function testReColorado() {
-//        $reColorado = new ReColorado();
-//
-//        $reColorado->initialSearch();
-//    }
-
-    public function testPopulateAllListings() {
-        $listings = ReColoradoListing::all();
-
+    public function testReColorado() {
         $reColorado = new ReColorado();
 
-        foreach ($listings as $listing) {
-            $reColorado->fetchOneListing($listing->id);
-            $reColorado->listingId = $listing->id;
-            $reColorado->checkPriceHistory();
-        }
-
+        $reColorado->initialSearch();
     }
+
+//    public function testPopulateAllListings() {
+//        $listings = ReColoradoListing::all();
+//
+//        $reColorado = new ReColorado();
+//
+//        foreach ($listings as $listing) {
+//            $reColorado->fetchOneListing($listing->id);
+//            $reColorado->listingId = $listing->id;
+//            $reColorado->checkPriceHistory();
+//        }
+//
+//    }
 
 //    public function testFetchOneListing() {
 //        $reColorado = new ReColorado();
