@@ -290,17 +290,57 @@ class YelpTest extends TestCase
 //        $reColorado->initialSearch();
 //    }
 
-    public function testPopulateAllListings() {
-        $listings = ReColoradoListing::all();
+//    public function testPopulateAllListings() {
+//        $listings = ReColoradoListing::all();
+//
+//        $reColorado = new ReColorado();
+//
+//        foreach ($listings as $listing) {
+//            $reColorado->fetchOneListing($listing->id);
+//            $reColorado->listingId = $listing->id;
+//            $reColorado->checkPriceHistory();
+//        }
+//
+//    }
 
-        $reColorado = new ReColorado();
+    public function testFonts() {
+        $colors = ['gold', 'blue', 'orange', 'fuschia', 'green', 'yellow', 'neutral'];
 
-        foreach ($listings as $listing) {
-            $reColorado->fetchOneListing($listing->id);
-            $reColorado->listingId = $listing->id;
-            $reColorado->checkPriceHistory();
+        $text = '';
+
+
+        foreach ($colors as $color) {
+            $counter = 1;
+
+            while ($counter < 10) {
+                $text .= '.font-color-'.$color.'-'.$counter.' {<BR>';
+                $text .= 'color: $'.$color.'-'.$counter.';<BR>';
+                $text .= '}<BR>';
+
+                $counter = $counter + 1;
+            }
+            $text.= '<BR><BR>';
         }
+        $asdf=1;
 
+    }
+
+    public function testScraper() {
+       $scraper = new Scraper();
+
+       $test = $scraper->getCurl('https://www.tsescorts.com/texas/austin/shemale-escorts');
+
+       $links = $scraper->getLinksWithClass($test, 'eitem');
+
+       $d=1;
+
+       foreach ($links as $i=> $link) {
+            if ($i > 1) {
+                $phone = str_replace("https://www.tsescorts.com/texas/austin/shemale-escorts/", "", $link);
+                $d .= $phone."<br>";
+            }
+        }
+        $a=1;
     }
 
 //    public function testFetchOneListing() {
