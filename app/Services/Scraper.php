@@ -123,7 +123,27 @@ class Scraper {
     //
     public function getNextHref($text) {
         $linkToEnd = substr($text, strpos($text, "href=")+6);
-        return substr($linkToEnd, 0, strpos($linkToEnd, '"'));
+
+        $singleQuotePosition = strpos($linkToEnd, "'");
+
+        $doubleQuotePosition = strpos($linkToEnd, '"');
+
+        if (is_null($singleQuotePosition)) {
+            $end = '"';
+        }
+        elseif (is_null($doubleQuotePosition)) {
+            $end = "'";
+        }
+        else {
+            if ($singleQuotePosition < $doubleQuotePosition) {
+                $end = "'";
+            }
+            else {
+                $end = '"';
+            }
+        }
+
+        return substr($linkToEnd, 0, strpos($linkToEnd, $end));
     }
 
     public function getInBetween($text, $start, $end) {

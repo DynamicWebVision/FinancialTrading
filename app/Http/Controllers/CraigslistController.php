@@ -157,7 +157,6 @@ class CraigslistController extends \App\Http\Controllers\Controller {
                         catch (\Exception $e) {
                             $this->logger->logMessage('Error on Save'.$e->getMessage());
                         }
-
                     }
                 }
             }

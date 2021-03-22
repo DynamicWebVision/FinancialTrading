@@ -326,21 +326,7 @@ class YelpTest extends TestCase
     }
 
     public function testScraper() {
-       $scraper = new Scraper();
-
-       $test = $scraper->getCurl('https://www.tsescorts.com/texas/austin/shemale-escorts');
-
-       $links = $scraper->getLinksWithClass($test, 'eitem');
-
-       $d=1;
-
-       foreach ($links as $i=> $link) {
-            if ($i > 1) {
-                $phone = str_replace("https://www.tsescorts.com/texas/austin/shemale-escorts/", "", $link);
-                $d .= $phone."<br>";
-            }
-        }
-        $a=1;
+        $hubspot = SevenShores\Hubspot\Factory::create('api-key');
     }
 
 //    public function testFetchOneListing() {
@@ -349,15 +335,25 @@ class YelpTest extends TestCase
 //        $reColorado->fetchOneListing(2);
 //    }
 //
-//    public function testFetchBlocks() {
-//        $reColorado = new ReColorado();
-//        $reColorado->listingId = 1;
-//
-//        $scraper = new Scraper();
-//
-//        $reColorado->listingResponse = $scraper->getCurl('https://www.recolorado.com/listing/281607912-151082055/921-kalamath-street-denver-co-80204/');
-//
-//        $reColorado->checkPriceHistory();
-//    }
+    public function testFetchBlocks() {
+        $scraper = new Scraper();
+
+        $test= $scraper->getCurl('https://transx.com.listcrawler.eu/brief/escorts/usa/texas/austin/1/');
+
+        $links = $scraper->getLinksWithClass($test, 'listtitle');
+
+        $phoneNumbers = [];
+        foreach ($links as $link) {
+            $response= $scraper->getCurl($link);
+//            phone: '9153029830',
+            $phoneNumbers[] = ['first_name' => $link,
+                'mobile_phone' => $scraper->getInBetween($response, "phone: '", "',")
+            ];
+            //<a href="tel:9153029830" data-transition="slide" class="normal" data-analytic="click"> 915-302-9830</a>
+
+            sleep(rand(3,12));
+        }
+        $test = 1;
+    }
 
 }

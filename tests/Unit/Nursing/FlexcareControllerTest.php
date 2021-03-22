@@ -40,7 +40,7 @@ class FlexcareControllerTest extends TestCase
                 [
                     'company_title' => $row[0],
                     'founder_status' => $row[1],
-                    'employee_region' => $row[2],
+                    'employee_region' => $row[3],
                     'base_salary' => $row[5],
                     'tbd_for_calculation' => $row[6],
                     'tgt_bonus_or_commission' => $row[7],
