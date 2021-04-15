@@ -338,7 +338,7 @@ class YelpTest extends TestCase
     public function testFetchBlocks() {
         $scraper = new Scraper();
 
-        $test= $scraper->getCurl('https://transx.com.listcrawler.eu/brief/escorts/usa/texas/austin/1/');
+        $test= $scraper->getCurl('https://transx.com.listcrawler.eu/brief/escorts/usa/colorado/denver/1/');
 
         $links = $scraper->getLinksWithClass($test, 'listtitle');
 
